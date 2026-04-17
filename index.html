@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>VISIONARY Web Studio — We Build What Others Can't Imagine</title>
-<meta name="description" content="VISIONARY is a premium web studio crafting extraordinary digital experiences for ambitious local businesses. 7 demos built.">
+<meta name="description" content="VISIONARY is a premium web studio crafting extraordinary digital experiences for ambitious local businesses.">
 <link rel="canonical" href="https://visionary.studio/">
 <meta property="og:title" content="VISIONARY Web Studio">
 <meta property="og:description" content="We Build What Others Can't Imagine">
@@ -52,7 +52,7 @@ body{background:#000;color:#fff;overflow-x:hidden;font-family:'Inter',sans-serif
 }
 .nav-link::after{
   content:'';position:absolute;bottom:-5px;left:0;
-  width:0;height:1px;background:linear-gradient(90deg,#8b00ff,#00e5ff);
+  width:0;height:1px;background:linear-gradient(90deg,#7c3aed,#06b6d4);
   transition:width .35s;
 }
 .nav-link:hover{color:#fff}
@@ -65,56 +65,71 @@ body{background:#000;color:#fff;overflow-x:hidden;font-family:'Inter',sans-serif
 #hero-text{
   position:absolute;top:0;left:50%;transform:translateX(-50%);
   text-align:center;z-index:1;
-  padding-top:66px;pointer-events:none;opacity:0;width:100%;
+  padding-top:68px;pointer-events:none;opacity:0;width:100%;
 }
 #vis-title{
   font-family:'Playfair Display',Georgia,serif;
   font-size:clamp(52px,8.5vw,130px);
   font-weight:900;color:#fff;letter-spacing:0.08em;line-height:1;
-  text-shadow:0 0 80px rgba(110,0,210,0.5),0 0 160px rgba(0,170,255,0.1);
+  text-shadow:0 0 70px rgba(124,58,237,0.55),0 0 140px rgba(6,182,212,0.12);
 }
 #vis-tagline{
   font-size:clamp(7px,0.82vw,10px);
   letter-spacing:0.42em;text-transform:uppercase;
-  color:rgba(255,255,255,0.32);margin-top:15px;
+  color:rgba(255,255,255,0.28);margin-top:15px;
 }
 
 /* ── CARDS LAYER ── */
 #cards-layer{position:absolute;inset:0;z-index:10;pointer-events:none}
 .proj-card{
   position:absolute;
-  width:108px;
-  background:rgba(3,1,8,0.92);
-  border:1px solid rgba(100,0,190,0.28);
-  border-radius:3px;padding:8px 10px;cursor:pointer;
+  width:118px;
+  background:rgba(3,1,12,0.86);
+  border:1px solid rgba(124,58,237,0.38);
+  border-radius:5px;padding:9px 11px;cursor:pointer;
   transform:translate(-50%,-50%);
-  transition:width .32s ease,border-color .32s,box-shadow .32s;
+  transition:width .32s ease,border-color .32s,box-shadow .32s,transform .28s;
   pointer-events:all;
-  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
   opacity:0;
 }
 .proj-card:hover{
-  width:158px;
-  border-color:rgba(0,205,255,0.58);
-  box-shadow:0 0 18px rgba(0,205,255,0.14),0 0 36px rgba(100,0,255,0.1);
+  width:164px;
+  border-color:rgba(6,182,212,0.65);
+  box-shadow:0 0 22px rgba(6,182,212,0.18),0 0 48px rgba(124,58,237,0.12);
+  transform:translate(-50%,-50%) translateY(-5px);
 }
 .pc-vertical{
-  font-size:6.5px;letter-spacing:.3em;text-transform:uppercase;
-  color:rgba(120,0,230,0.85);margin-bottom:4px;font-weight:500;
+  font-size:6px;letter-spacing:.34em;text-transform:uppercase;
+  color:rgba(124,58,237,0.9);margin-bottom:4px;font-weight:600;
   white-space:nowrap;overflow:hidden;transition:color .3s;
+  font-variant:small-caps;
 }
-.proj-card:hover .pc-vertical{color:rgba(0,215,255,0.9)}
+.proj-card:hover .pc-vertical{color:rgba(6,182,212,0.95)}
 .pc-name{
   font-family:'Playfair Display',Georgia,serif;
-  font-size:10px;color:rgba(255,255,255,0.78);
+  font-size:10.5px;color:rgba(255,255,255,0.82);
   line-height:1.35;font-weight:700;
   white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
 }
 .proj-card:hover .pc-name{color:#fff}
+.pc-view{
+  display:none;margin-top:7px;
+  font-size:6.5px;letter-spacing:.26em;text-transform:uppercase;
+  color:rgba(6,182,212,0.85);
+  padding:3px 8px;border:1px solid rgba(6,182,212,0.35);
+  border-radius:2px;text-align:center;
+  transition:background .2s,border-color .2s;
+}
+.proj-card:hover .pc-view{display:block}
+.proj-card:hover .pc-view:hover{
+  background:rgba(6,182,212,0.10);
+  border-color:rgba(6,182,212,0.7);
+}
 
 /* ── HERO CTAs ── */
 #hero-ctas{
-  position:absolute;bottom:108px;left:50%;transform:translateX(-50%);
+  position:absolute;bottom:100px;left:50%;transform:translateX(-50%);
   z-index:50;display:flex;gap:16px;opacity:0;white-space:nowrap;
 }
 .btn{
@@ -123,9 +138,9 @@ body{background:#000;color:#fff;overflow-x:hidden;font-family:'Inter',sans-serif
   text-decoration:none;color:#fff;border:1px solid rgba(255,255,255,0.52);
   background:transparent;transition:border-color .3s,color .3s;
 }
-.btn:hover{border-color:rgba(0,229,255,.72);color:#00e5ff}
-.btn-outline{border-color:rgba(0,229,255,.28);color:rgba(0,229,255,.72)}
-.btn-outline:hover{border-color:#00e5ff;color:#fff}
+.btn:hover{border-color:rgba(6,182,212,.72);color:#06b6d4}
+.btn-outline{border-color:rgba(6,182,212,.28);color:rgba(6,182,212,.72)}
+.btn-outline:hover{border-color:#06b6d4;color:#fff}
 
 /* ── SCROLL INDICATOR ── */
 .scroll-indicator{
@@ -133,10 +148,10 @@ body{background:#000;color:#fff;overflow-x:hidden;font-family:'Inter',sans-serif
   display:flex;flex-direction:column;align-items:center;gap:8px;
   z-index:50;opacity:0;pointer-events:none;
 }
-.scroll-indicator span{font-size:7px;letter-spacing:.35em;color:rgba(255,255,255,.22)}
+.scroll-indicator span{font-size:7px;letter-spacing:.35em;color:rgba(255,255,255,.18)}
 .scroll-line{
   width:1px;height:44px;
-  background:linear-gradient(to bottom,rgba(100,0,200,.6),transparent);
+  background:linear-gradient(to bottom,rgba(124,58,237,.6),transparent);
   animation:sPulse 2s ease-in-out infinite;
 }
 @keyframes sPulse{
@@ -145,44 +160,12 @@ body{background:#000;color:#fff;overflow-x:hidden;font-family:'Inter',sans-serif
   100%{transform:scaleY(1);transform-origin:bottom;opacity:0}
 }
 
-/* ── COUNTER ── */
-#counter{
-  position:relative;z-index:1;
-  min-height:80vh;display:flex;align-items:center;justify-content:center;
-  flex-direction:column;text-align:center;padding:80px 40px;
-}
-#counter::before{
-  content:'';position:absolute;inset:0;
-  background:rgba(0,0,0,0.62);z-index:0;
-}
-#counter > *{position:relative;z-index:1}
-.counter-num{
-  font-family:'Playfair Display',Georgia,serif;
-  font-size:clamp(110px,18vw,260px);line-height:.9;
-  background:linear-gradient(135deg,#5500bb 0%,#00b8e6 100%);
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-}
-.counter-label{
-  font-size:9.5px;letter-spacing:.45em;text-transform:uppercase;
-  color:rgba(255,255,255,.26);margin-top:14px;
-}
-.editorial-text{
-  font-family:'Playfair Display',Georgia,serif;
-  font-size:clamp(20px,3vw,48px);line-height:1.35;
-  color:rgba(255,255,255,0.58);max-width:580px;font-style:italic;margin-top:56px;
-}
-.editorial-text em{
-  font-style:normal;
-  background:linear-gradient(90deg,#8800ff,#00e5ff);
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-}
-
 /* ── MOBILE ── */
 @media(max-width:768px){
   #nav{padding:16px 22px}
   .nav-links{display:none}
-  .proj-card{width:82px}
-  .proj-card:hover{width:118px}
+  .proj-card{width:88px}
+  .proj-card:hover{width:132px}
   #hero-ctas{flex-direction:column;align-items:center;gap:12px}
 }
 </style>
@@ -219,12 +202,6 @@ body{background:#000;color:#fff;overflow-x:hidden;font-family:'Inter',sans-serif
   </div>
 </section>
 
-<section id="counter">
-  <span class="counter-num" data-target="7">0</span>
-  <span class="counter-label">Demos Built</span>
-  <p class="editorial-text">Every pixel intentional.<br><em>Every interaction earned.</em></p>
-</section>
-
 <canvas id="cursor-canvas"></canvas>
 
 <script>
@@ -243,74 +220,93 @@ try {
 const mouse = { x: -9999, y: -9999 };
 window.addEventListener('mousemove', e => { mouse.x = e.clientX; mouse.y = e.clientY; });
 
-/* ─────────────────────────────────────────
+/* ──────────────────────────────────────────────
    TREE SKELETON
-   [xFraction, yFraction] of viewport
-   Trunk at top-center, branches downward
-─────────────────────────────────────────── */
+   Trunk at BOTTOM CENTER, branches grow UPWARD.
+   Coordinates: [xFraction, yFraction], y=0=top, y=1=bottom.
+──────────────────────────────────────────────── */
 const NODES = [
-  [0.500, 0.005],  //  0  trunk top
-  [0.500, 0.072],  //  1  upper trunk
-  [0.500, 0.215],  //  2  first split
-  [0.275, 0.368],  //  3  left main branch
-  [0.725, 0.368],  //  4  right main branch
-  [0.112, 0.538],  //  5  left-left
-  [0.362, 0.522],  //  6  left-right
-  [0.500, 0.445],  //  7  center drop
-  [0.638, 0.522],  //  8  right-left
-  [0.888, 0.538],  //  9  right-right
-  [0.100, 0.735],  // 10  TIP 0 — far left    (card 0)
-  [0.210, 0.705],  // 11  TIP 1               (card 1)
-  [0.345, 0.742],  // 12  TIP 2               (card 2)
-  [0.500, 0.672],  // 13  TIP 3 — center      (card 3)
-  [0.655, 0.742],  // 14  TIP 4               (card 4)
-  [0.790, 0.705],  // 15  TIP 5               (card 5)
-  [0.900, 0.735],  // 16  TIP 6 — far right   (card 6)
+  [0.500, 0.980],  //  0  trunk base (bottom center)
+  [0.500, 0.820],  //  1  lower trunk
+  [0.500, 0.640],  //  2  first split
+  [0.275, 0.555],  //  3  left main branch
+  [0.725, 0.555],  //  4  right main branch
+  [0.110, 0.405],  //  5  left-left secondary
+  [0.365, 0.385],  //  6  left-right secondary
+  [0.500, 0.465],  //  7  center secondary
+  [0.635, 0.385],  //  8  right-left secondary
+  [0.890, 0.405],  //  9  right-right secondary
+  [0.050, 0.272],  // 10  TIP 0 — far left     (card 0)
+  [0.188, 0.244],  // 11  TIP 1                 (card 1)
+  [0.332, 0.228],  // 12  TIP 2                 (card 2)
+  [0.500, 0.248],  // 13  TIP 3 — center        (card 3)
+  [0.668, 0.228],  // 14  TIP 4                 (card 4)
+  [0.812, 0.244],  // 15  TIP 5                 (card 5)
+  [0.950, 0.272],  // 16  TIP 6 — far right     (card 6)
 ];
 
-// [fromNode, toNode, depth]  depth 0=trunk … 3=tips
+// [fromNode, toNode, depth]  depth: 0=trunk … 3=tips
 const EDGES = [
   [0,  1,  0], [1,  2,  0],
   [2,  3,  1], [2,  4,  1], [2,  7,  1],
   [3,  5,  2], [3,  6,  2],
   [4,  8,  2], [4,  9,  2],
-  [5,  10, 3], [5,  11, 3],
-  [6,  12, 3],
-  [7,  13, 3],
-  [8,  14, 3],
-  [9,  15, 3], [9,  16, 3],
+  [5, 10,  3], [5, 11,  3],
+  [6, 12,  3],
+  [7, 13,  3],
+  [8, 14,  3],
+  [9, 15,  3], [9, 16,  3],
 ];
 
 const TIP_INDICES = [10, 11, 12, 13, 14, 15, 16];
 
 const PROJECTS = [
-  { name:'Maverick Contracting', vertical:'Contractors',   url:'work.html' },
-  { name:'Ember & Oak',          vertical:'Restaurant',    url:'work.html' },
-  { name:'Studio Noir',          vertical:'Beauty',        url:'work.html' },
-  { name:'Apex Auto',            vertical:'Auto Dealer',   url:'work.html' },
-  { name:'Titan Roofing',        vertical:'Contractors',   url:'work.html' },
-  { name:'La Maison',            vertical:'Wellness',      url:'work.html' },
-  { name:'Pacific HVAC',         vertical:'Home Services', url:'work.html' },
+  { name: 'Apex Construction',     vertical: 'Contractors',   url: 'https://effervescent-puppy-4b3695.netlify.app' },
+  { name: 'KŌSAI Miami',          vertical: 'Restaurant',    url: 'https://restaurant-chi-two-55.vercel.app' },
+  { name: 'Solène Atelier',       vertical: 'Beauty',        url: 'https://beauty.traviskenlocean1.workers.dev' },
+  { name: 'Nova Black',            vertical: 'Automotive',    url: 'https://nova-black-murex.vercel.app' },
+  { name: 'Summit Roofing Co',     vertical: 'Contractors',   url: 'https://profound-puppy-6dab0b.netlify.app' },
+  { name: 'Lala Sweets',           vertical: 'Food & Sweets', url: 'https://lalasweets.vercel.app' },
+  { name: 'Arctic Air & Plumbing', vertical: 'HVAC',          url: 'https://hvac-plumbing-demo.vercel.app' },
 ];
 
-/* ─────────────────────────────────────────
+/* ── COLOR UTILITY ─────────────────────────────
+   4-stop piecewise gradient:
+   depth 0 → deep purple (88,28,190)
+   depth 1 → violet      (124,58,237)
+   depth 2 → cyan        (6,182,212)
+   depth 3 → mint        (134,239,172)
+──────────────────────────────────────────────── */
+const COLOR_STOPS = [[88,28,190],[124,58,237],[6,182,212],[134,239,172]];
+
+function treeRGB(cd, tw) {
+  const s = Math.min(cd, 0.9999) * 3;
+  const i = Math.floor(s), f = s - i;
+  const a = COLOR_STOPS[i], b = COLOR_STOPS[i + 1];
+  return [
+    Math.round((a[0] + (b[0] - a[0]) * f) * tw),
+    Math.round((a[1] + (b[1] - a[1]) * f) * tw),
+    Math.round((a[2] + (b[2] - a[2]) * f) * tw),
+  ];
+}
+
+/* ──────────────────────────────────────────────
    STAR BACKGROUND
-─────────────────────────────────────────── */
+──────────────────────────────────────────────── */
 (function initStars() {
-  const c   = document.getElementById('star-canvas');
+  const c = document.getElementById('star-canvas');
   const ctx = c.getContext('2d');
   let stars = [];
 
   function resize() {
-    c.width  = window.innerWidth;
-    c.height = window.innerHeight;
-    stars = Array.from({ length: 260 }, () => ({
-      x:  Math.random() * c.width,
-      y:  Math.random() * c.height,
-      r:  0.28 + Math.random() * 1.0,
-      a:  0.07 + Math.random() * 0.44,
-      vx: (Math.random() - 0.5) * 0.055,
-      vy: (Math.random() - 0.5) * 0.055,
+    c.width = window.innerWidth; c.height = window.innerHeight;
+    stars = Array.from({ length: 280 }, () => ({
+      x: Math.random() * c.width,
+      y: Math.random() * c.height,
+      r: 0.25 + Math.random() * 1.1,
+      a: 0.06 + Math.random() * 0.42,
+      vx: (Math.random() - 0.5) * 0.05,
+      vy: (Math.random() - 0.5) * 0.05,
       ph: Math.random() * Math.PI * 2,
     }));
   }
@@ -334,46 +330,86 @@ const PROJECTS = [
   })();
 })();
 
-/* ─────────────────────────────────────────
+/* ──────────────────────────────────────────────
    PARTICLE TREE
-─────────────────────────────────────────── */
+──────────────────────────────────────────────── */
 let treeParticles = [];
+let leafPetals    = [];
+let fireflies     = [];
 
 function buildParticles() {
   const W = window.innerWidth, H = window.innerHeight;
   treeParticles = [];
+  leafPetals    = [];
+  fireflies     = [];
 
+  // ── Branch particles ──
   EDGES.forEach(([ai, bi, depth]) => {
-    const ax = NODES[ai][0] * W,  ay = NODES[ai][1] * H;
-    const bx = NODES[bi][0] * W,  by = NODES[bi][1] * H;
+    const ax = NODES[ai][0] * W, ay = NODES[ai][1] * H;
+    const bx = NODES[bi][0] * W, by = NODES[bi][1] * H;
     const len  = Math.hypot(bx - ax, by - ay);
-    const dens = [3.2, 2.5, 2.0, 1.6][depth];
+    const dens = [3.4, 2.6, 2.1, 1.7][depth];
     const cnt  = Math.floor(len * dens);
-
     for (let i = 0; i < cnt; i++) {
       const t  = i / cnt;
-      // color depth: 0 = deep purple, 1 = cyan
-      const cd = (depth + t) / 3.6;
+      const cd = (depth + t) / 3.0;
       treeParticles.push({
         bx: ax + (bx - ax) * t,
         by: ay + (by - ay) * t,
-        x: 0, y: 0,
-        vx: 0, vy: 0,
+        x: 0, y: 0, vx: 0, vy: 0,
         ph:  Math.random() * Math.PI * 2,
         ph2: Math.random() * Math.PI * 2,
-        r:   0.75 + Math.random() * 1.7,
+        r:   0.7 + Math.random() * 1.8,
         cd,
-        br:  0.42 + Math.random() * 0.58,
+        br:  0.4 + Math.random() * 0.6,
         depth,
       });
     }
   });
+
+  // ── Leaf petals at each tip ──
+  TIP_INDICES.forEach(tipIdx => {
+    const count = 8 + Math.floor(Math.random() * 6);
+    for (let i = 0; i < count; i++) {
+      leafPetals.push({
+        tipIdx,
+        orbitR:   13 + Math.random() * 22,
+        orbitPh:  Math.random() * Math.PI * 2,
+        orbitSpd: (0.15 + Math.random() * 0.30) * (Math.random() < 0.5 ? 1 : -1),
+        flutter:  Math.random() * Math.PI * 2,
+        fltrSpd:  0.6 + Math.random() * 1.3,
+        rx: 1.4 + Math.random() * 1.8,
+        ry: 4.2 + Math.random() * 5.6,
+        br: 0.48 + Math.random() * 0.52,
+        isMint: Math.random() < 0.58,
+      });
+    }
+  });
+
+  // ── Firefly particles drifting around branches ──
+  const allNodeIdxs = NODES.map((_, i) => i);
+  for (let i = 0; i < 52; i++) {
+    const nodeIdx = allNodeIdxs[Math.floor(Math.random() * allNodeIdxs.length)];
+    fireflies.push({
+      nodeIdx,
+      offX: (Math.random() - 0.5) * 150,
+      offY: (Math.random() - 0.5) * 110,
+      ph:  Math.random() * Math.PI * 2,
+      ph2: Math.random() * Math.PI * 2,
+      ph3: Math.random() * Math.PI * 2,
+      spX: 0.35 + Math.random() * 0.75,
+      spY: 0.28 + Math.random() * 0.62,
+      r:   2.0 + Math.random() * 3.2,
+      br:  0.55 + Math.random() * 0.45,
+      cd:  Math.random(),
+    });
+  }
 }
 
 (function initTree() {
   const c   = document.getElementById('tree-canvas');
   const ctx = c.getContext('2d');
-  const REPEL = 88, STR = 5.8;
+  const REPEL = 100, STR = 6.0;
 
   function resize() {
     c.width  = window.innerWidth;
@@ -390,79 +426,141 @@ function buildParticles() {
     ctx.clearRect(0, 0, c.width, c.height);
     t += 0.011;
     const mx = mouse.x, my = mouse.y;
+    const W = c.width, H = c.height;
 
+    // ── Branch particles ──
     treeParticles.forEach(p => {
-      // Sway — tip branches sway more than trunk
-      const swX = Math.sin(t * 0.31 + p.ph  * 0.55) * (2.2 + 3.8 * p.cd);
-      const swY = Math.cos(t * 0.19 + p.ph2 * 0.40) * 1.1;
-      // Gentle drift
-      const drX = Math.sin(t * 0.84 + p.ph)  * 1.4;
-      const drY = Math.cos(t * 0.63 + p.ph2) * 1.4;
+      // Deeper branches sway more — bioluminescent breathing effect
+      const swX = Math.sin(t * 0.31 + p.ph  * 0.55) * (2.0 + 4.2 * p.cd);
+      const swY = Math.cos(t * 0.19 + p.ph2 * 0.40) * 1.2;
+      const drX = Math.sin(t * 0.84 + p.ph)  * 1.5;
+      const drY = Math.cos(t * 0.63 + p.ph2) * 1.5;
 
       let px = p.bx + swX + drX;
       let py = p.by + swY + drY;
 
-      // Cursor repulsion
       const dx = px - mx, dy = py - my;
       const d2 = dx * dx + dy * dy;
       if (d2 < REPEL * REPEL && d2 > 0.01) {
-        const d = Math.sqrt(d2);
-        const f = (REPEL - d) / REPEL;
+        const d = Math.sqrt(d2), f = (REPEL - d) / REPEL;
         p.vx += (dx / d) * f * STR * 0.10;
         p.vy += (dy / d) * f * STR * 0.10;
       }
-      p.vx *= 0.88;
-      p.vy *= 0.88;
+      p.vx *= 0.88; p.vy *= 0.88;
       p.x = px + p.vx;
       p.y = py + p.vy;
 
-      // Twinkle
-      const tw = p.br * (0.48 + 0.52 * Math.sin(t * 2.1 + p.ph));
+      const tw = p.br * (0.46 + 0.54 * Math.sin(t * 2.1 + p.ph));
+      const [rv, gv, bv] = treeRGB(p.cd, tw);
+      const av = Math.min(tw, 0.93);
 
-      // Color: purple(138,0,255) → cyan(0,212,228)
-      const rv = Math.round((138 - 138 * p.cd) * tw);
-      const gv = Math.round(212 * p.cd * tw);
-      const bv = Math.round((255 - 27  * p.cd) * tw);
-      const av = Math.min(tw, 0.92);
-
-      // Soft glow halo
+      // Glow halo
       ctx.beginPath();
-      ctx.arc(p.x, p.y, p.r * 2.6, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(${rv},${gv},${bv},0.07)`;
+      ctx.arc(p.x, p.y, p.r * 2.8, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(${rv},${gv},${bv},0.055)`;
       ctx.fill();
-      // Core particle
+      // Core
       ctx.beginPath();
       ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
       ctx.fillStyle = `rgba(${rv},${gv},${bv},${av.toFixed(3)})`;
       ctx.fill();
     });
+
+    // ── Leaf petals (elongated ellipses, flutter at tips) ──
+    leafPetals.forEach(p => {
+      const n = NODES[p.tipIdx];
+      const nx = n[0] * W, ny = n[1] * H;
+
+      // Tip sway applied to orbit center
+      const swX = Math.sin(t * 0.29 + p.orbitPh * 0.6) * 4.5;
+      const swY = Math.cos(t * 0.21 + p.orbitPh * 0.4) * 1.8;
+
+      p.orbitPh += p.orbitSpd * 0.011;
+      p.flutter  += p.fltrSpd  * 0.011;
+
+      const ox = Math.cos(p.orbitPh) * p.orbitR;
+      const oy = Math.sin(p.orbitPh) * p.orbitR * 0.52;
+      const px = nx + ox + swX;
+      const py = ny + oy + swY;
+
+      const tw = p.br * (0.5 + 0.5 * Math.sin(t * 1.9 + p.orbitPh));
+      const alpha = tw * 0.85;
+
+      // Petal glow halo
+      ctx.save();
+      ctx.translate(px, py);
+      ctx.beginPath();
+      ctx.arc(0, 0, p.rx * 4.5, 0, Math.PI * 2);
+      ctx.fillStyle = p.isMint
+        ? `rgba(134,239,172,${(alpha * 0.07).toFixed(3)})`
+        : `rgba(220,255,230,${(alpha * 0.055).toFixed(3)})`;
+      ctx.fill();
+      ctx.restore();
+
+      // Petal body — elongated ellipse via scale trick
+      ctx.save();
+      ctx.translate(px, py);
+      ctx.rotate(p.flutter);
+      ctx.scale(1, p.ry / p.rx);
+      ctx.beginPath();
+      ctx.arc(0, 0, p.rx, 0, Math.PI * 2);
+      ctx.fillStyle = p.isMint
+        ? `rgba(134,239,172,${(alpha * 0.88).toFixed(3)})`
+        : `rgba(240,253,244,${(alpha * 0.72).toFixed(3)})`;
+      ctx.fill();
+      ctx.restore();
+    });
+
+    // ── Fireflies — larger orbs drifting like alien bioluminescence ──
+    fireflies.forEach(f => {
+      const n = NODES[f.nodeIdx];
+      const nx = n[0] * W + f.offX;
+      const ny = n[1] * H + f.offY;
+
+      const fx = nx + Math.sin(t * f.spX + f.ph)  * 32;
+      const fy = ny + Math.cos(t * f.spY + f.ph2) * 24;
+
+      const tw = f.br * (0.52 + 0.48 * Math.sin(t * 1.1 + f.ph3));
+      const [rv, gv, bv] = treeRGB(f.cd, tw);
+
+      // Outer diffuse glow
+      ctx.beginPath();
+      ctx.arc(fx, fy, f.r * 5.5, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(${rv},${gv},${bv},0.035)`;
+      ctx.fill();
+      // Inner glow
+      ctx.beginPath();
+      ctx.arc(fx, fy, f.r * 2.4, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(${rv},${gv},${bv},0.11)`;
+      ctx.fill();
+      // Bright core
+      ctx.beginPath();
+      ctx.arc(fx, fy, f.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(${rv},${gv},${bv},${(tw * 0.96).toFixed(3)})`;
+      ctx.fill();
+    });
   })();
 })();
 
-/* ─────────────────────────────────────────
+/* ──────────────────────────────────────────────
    PROJECT CARDS
-─────────────────────────────────────────── */
+──────────────────────────────────────────────── */
 function positionCards() {
   const layer = document.getElementById('cards-layer');
   const W = window.innerWidth, H = window.innerHeight;
 
-  // Build cards once
   if (layer.children.length === 0) {
     PROJECTS.forEach((proj, i) => {
       const card = document.createElement('div');
       card.className = 'proj-card';
-      card.innerHTML = `<div class="pc-vertical">${proj.vertical}</div>
-                        <div class="pc-name">${proj.name}</div>`;
-      card.addEventListener('click', () => {
-        gsap.fromTo('#page-transition', { x: '100%' }, {
-          x: '0%', duration: 0.5, ease: 'power3.inOut',
-          onComplete: () => window.location.href = proj.url,
-        });
-      });
+      card.innerHTML =
+        `<div class="pc-vertical">${proj.vertical}</div>` +
+        `<div class="pc-name">${proj.name}</div>` +
+        `<div class="pc-view">View Live ↗</div>`;
+      card.addEventListener('click', () => window.open(proj.url, '_blank', 'noopener'));
       layer.appendChild(card);
     });
 
-    // Staggered reveal after tree appears
     gsap.to('.proj-card', {
       opacity: 1, duration: 0.7,
       stagger: { each: 0.09, from: 'random' },
@@ -470,8 +568,7 @@ function positionCards() {
     });
   }
 
-  // Position each card at its tip node, clamped from screen edges
-  const HW = 62; // half of widest card state
+  const HW = 68;
   Array.from(layer.children).forEach((card, i) => {
     const n  = NODES[TIP_INDICES[i]];
     const px = Math.max(HW, Math.min(W - HW, n[0] * W));
@@ -481,17 +578,14 @@ function positionCards() {
   });
 }
 
-/* ─────────────────────────────────────────
+/* ──────────────────────────────────────────────
    CURSOR STARDUST  (canvas 2D, default cursor kept)
-─────────────────────────────────────────── */
+──────────────────────────────────────────────── */
 (function initCursorTrail() {
   const c   = document.getElementById('cursor-canvas');
   const ctx = c.getContext('2d');
 
-  function resize() {
-    c.width  = window.innerWidth;
-    c.height = window.innerHeight;
-  }
+  function resize() { c.width = window.innerWidth; c.height = window.innerHeight; }
   resize();
   window.addEventListener('resize', resize);
 
@@ -506,41 +600,30 @@ function positionCards() {
       const ang = Math.random() * Math.PI * 2;
       const spd = 0.32 + Math.random() * 0.88;
       pool.push({
-        x:   lx, y: ly,
-        vx:  Math.cos(ang) * spd,
-        vy:  Math.sin(ang) * spd - 0.22,
+        x: lx, y: ly,
+        vx: Math.cos(ang) * spd,
+        vy: Math.sin(ang) * spd - 0.22,
         life: 1.0,
-        dec: 1 / (42 + Math.random() * 18),
-        sz:  2.0 + Math.random() * 2.2,
-        rot: Math.random() * Math.PI,
-        hue: 46 + Math.random() * 18,
+        dec:  1 / (42 + Math.random() * 18),
+        sz:   2.0 + Math.random() * 2.2,
+        rot:  Math.random() * Math.PI,
+        hue:  46 + Math.random() * 18,
       });
     }
   });
 
   function drawSparkle(x, y, sz, rot, alpha, hue) {
     ctx.save();
-    ctx.translate(x, y);
-    ctx.rotate(rot);
+    ctx.translate(x, y); ctx.rotate(rot);
     ctx.globalAlpha = alpha;
     ctx.fillStyle = `hsl(${hue},100%,93%)`;
-    // Vertical arm
     ctx.beginPath();
-    ctx.moveTo(0, -sz);
-    ctx.lineTo(sz * 0.13, 0);
-    ctx.lineTo(0,  sz);
-    ctx.lineTo(-sz * 0.13, 0);
-    ctx.closePath();
-    ctx.fill();
-    // Cross arm (90° rotated, 55% length)
+    ctx.moveTo(0, -sz); ctx.lineTo(sz * 0.13, 0); ctx.lineTo(0, sz); ctx.lineTo(-sz * 0.13, 0);
+    ctx.closePath(); ctx.fill();
     ctx.rotate(Math.PI * 0.5);
     ctx.beginPath();
-    ctx.moveTo(0, -sz * 0.55);
-    ctx.lineTo(sz * 0.085, 0);
-    ctx.lineTo(0,  sz * 0.55);
-    ctx.lineTo(-sz * 0.085, 0);
-    ctx.closePath();
-    ctx.fill();
+    ctx.moveTo(0, -sz * 0.55); ctx.lineTo(sz * 0.085, 0); ctx.lineTo(0, sz * 0.55); ctx.lineTo(-sz * 0.085, 0);
+    ctx.closePath(); ctx.fill();
     ctx.restore();
   }
 
@@ -549,57 +632,29 @@ function positionCards() {
     ctx.clearRect(0, 0, c.width, c.height);
     for (let i = pool.length - 1; i >= 0; i--) {
       const s = pool[i];
-      s.x    += s.vx;
-      s.y    += s.vy;
-      s.vx   *= 0.97;
-      s.vy   *= 0.97;
-      s.life -= s.dec;
-      s.rot  += 0.042;
+      s.x += s.vx; s.y += s.vy;
+      s.vx *= 0.97; s.vy *= 0.97;
+      s.life -= s.dec; s.rot += 0.042;
       if (s.life <= 0) { pool.splice(i, 1); continue; }
       drawSparkle(s.x, s.y, s.sz, s.rot, s.life * s.life, s.hue);
     }
   })();
 })();
 
-/* ─────────────────────────────────────────
-   NAV SCROLL GLASS
-─────────────────────────────────────────── */
-ScrollTrigger.create({
-  start: 'top -60',
-  onUpdate: s => document.getElementById('nav').classList.toggle('scrolled', s.scroll() > 60),
-});
+/* ── NAV SCROLL GLASS ── */
+window.addEventListener('scroll', () => {
+  document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 60);
+}, { passive: true });
 
-/* ─────────────────────────────────────────
-   HERO REVEAL
-─────────────────────────────────────────── */
+/* ── HERO REVEAL ── */
 gsap.set(['#hero-text', '#hero-ctas', '.scroll-indicator'], { opacity: 0 });
 gsap.set('#hero-text', { y: 14 });
-
 gsap.timeline({ delay: 0.5 })
   .to('#hero-text',        { opacity: 1, y: 0, duration: 1.3, ease: 'power3.out' })
   .to('#hero-ctas',        { opacity: 1,       duration: 0.9, ease: 'power2.out' }, '-=0.4')
   .to('.scroll-indicator', { opacity: 1,       duration: 0.8, ease: 'power2.out' }, '-=0.3');
 
-/* ─────────────────────────────────────────
-   COUNTER
-─────────────────────────────────────────── */
-ScrollTrigger.create({
-  trigger: '#counter', start: 'top 72%', once: true,
-  onEnter: () => {
-    const el = document.querySelector('.counter-num');
-    gsap.from('.counter-num',    { opacity: 0, scale: 0.5, duration: 1.4, ease: 'back.out(2)' });
-    gsap.from('.counter-label',  { opacity: 0, y: 16,      duration: 0.9, ease: 'power2.out', delay: 0.25 });
-    gsap.from('.editorial-text', { opacity: 0, y: 40,      duration: 1.2, ease: 'power3.out', delay: 0.5 });
-    gsap.to({ v: 0 }, {
-      v: 7, duration: 2.4, ease: 'power2.out', delay: 0.3,
-      onUpdate: function() { el.textContent = Math.round(this.targets()[0].v); },
-    });
-  },
-});
-
-/* ─────────────────────────────────────────
-   PAGE TRANSITIONS
-─────────────────────────────────────────── */
+/* ── PAGE TRANSITIONS ── */
 gsap.set('#page-transition', { x: '100%' });
 document.querySelectorAll('a[href]').forEach(a => {
   const hr = a.getAttribute('href');
