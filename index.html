@@ -4,166 +4,116 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>VISIONARY Web Studio — We Build What Others Can't Imagine</title>
-<meta name="description" content="VISIONARY is a premium web studio crafting extraordinary digital experiences for ambitious local businesses.">
-<link rel="canonical" href="https://visionary.studio/">
+<meta name="description" content="VISIONARY Web Studio. Premium web design that converts. We build what others can't imagine.">
+<link rel="canonical" href="https://visionary.traviskenlocean1.workers.dev/">
 <meta property="og:title" content="VISIONARY Web Studio">
 <meta property="og:description" content="We Build What Others Can't Imagine">
 <meta property="og:type" content="website">
-<meta property="og:url" content="https://visionary.studio/">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"ProfessionalService","name":"VISIONARY Web Studio","description":"Premium web design studio building extraordinary digital experiences","url":"https://visionary.studio/"}</script>
+<meta name="robots" content="index, follow">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LocalBusiness","name":"VISIONARY Web Studio","description":"Premium web design and development","url":"https://visionary.traviskenlocean1.workers.dev"}</script>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-<script src="https://unpkg.com/lenis@1.1.14/dist/lenis.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/Observer.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/SplitText.min.js"></script>
 
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:auto}
-body{background:#000;color:#fff;overflow-x:hidden;font-family:'Inter',sans-serif}
+html,body{height:100%;overflow:hidden;background:#000;color:#fff;font-family:'Inter',sans-serif}
 
+/* ── FIXED LAYERS ── */
 #nebula-canvas{position:fixed;inset:0;z-index:0;pointer-events:none}
 #cursor-canvas{position:fixed;inset:0;z-index:9999;pointer-events:none}
 #page-transition{position:fixed;inset:0;background:#000;z-index:99999;transform:translateX(-100%);pointer-events:none}
 
-/* ══ BOOK INTRO ══ */
-#book-intro{position:fixed;inset:0;z-index:100000;perspective:1500px;perspective-origin:50% 50%}
-.book-panel{
-  position:absolute;top:0;height:100%;width:50%;will-change:transform;
-  background:
-    repeating-linear-gradient(108deg,transparent 0,transparent 2px,rgba(255,255,255,0.009) 2px,rgba(255,255,255,0.009) 3px),
-    repeating-linear-gradient(-72deg,transparent 0,transparent 5px,rgba(0,0,0,0.05) 5px,rgba(0,0,0,0.05) 6px),
-    radial-gradient(ellipse at 35% 45%,rgba(60,0,80,0.55) 0%,transparent 58%),
-    linear-gradient(168deg,#120014 0%,#080009 38%,#0e000f 68%,#0a0008 100%);
-}
-#book-left{left:0;box-shadow:inset -1px 0 0 rgba(212,175,55,.95),inset -4px 0 10px rgba(212,175,55,.28),inset -16px 0 40px rgba(140,0,180,.22)}
-#book-right{
-  right:0;
-  box-shadow:inset 1px 0 0 rgba(212,175,55,.95),inset 4px 0 10px rgba(212,175,55,.28),inset 16px 0 40px rgba(140,0,180,.22);
-  background:
-    repeating-linear-gradient(-108deg,transparent 0,transparent 2px,rgba(255,255,255,0.009) 2px,rgba(255,255,255,0.009) 3px),
-    repeating-linear-gradient(72deg,transparent 0,transparent 5px,rgba(0,0,0,0.05) 5px,rgba(0,0,0,0.05) 6px),
-    radial-gradient(ellipse at 65% 45%,rgba(60,0,80,0.55) 0%,transparent 58%),
-    linear-gradient(-168deg,#120014 0%,#080009 38%,#0e000f 68%,#0a0008 100%);
-}
-#book-logo{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;z-index:100002;pointer-events:none}
-#book-logo-text{font-family:'Playfair Display',Georgia,serif;font-size:clamp(28px,4.5vw,68px);font-weight:900;letter-spacing:.18em;color:rgba(212,175,55,.92);text-shadow:0 0 28px rgba(212,175,55,.55),0 0 60px rgba(212,175,55,.22)}
-#book-logo-sub{font-size:clamp(6px,.68vw,9px);letter-spacing:.52em;text-transform:uppercase;color:rgba(212,175,55,.42);margin-top:11px}
-
-/* ══ NAV ══ */
+/* ── NAV ── */
 #nav{position:fixed;top:0;left:0;right:0;padding:26px 56px;display:flex;justify-content:space-between;align-items:center;z-index:500;transition:background .4s,backdrop-filter .4s}
-#nav.scrolled{background:rgba(0,0,0,.55);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,.05)}
+#nav.solid{background:rgba(0,0,0,.65);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,.06)}
 .nav-logo{font-family:'Playfair Display',Georgia,serif;font-size:17px;color:#fff;text-decoration:none;letter-spacing:.15em;font-weight:700}
 .nav-links{display:flex;gap:44px;list-style:none;align-items:center}
-.nav-link{font-size:9.5px;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.5);text-decoration:none;transition:color .3s;position:relative;display:inline-block}
+.nav-link{font-size:9.5px;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.5);text-decoration:none;transition:color .3s;position:relative}
 .nav-link::after{content:'';position:absolute;bottom:-5px;left:0;width:0;height:1px;background:linear-gradient(90deg,#7c3aed,#06b6d4);transition:width .35s}
 .nav-link:hover{color:#fff}
-.nav-link:hover::after{width:100%}
+.nav-link:hover::after,.nav-link.active::after{width:100%}
+.nav-link.active{color:rgba(255,255,255,.85)}
 
-/* ══ HERO ══ */
-#hero{position:relative;height:100vh;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center}
+/* ── OBSERVER SECTIONS ── */
+.section{position:fixed;width:100%;height:100%;top:0;left:0;visibility:hidden;z-index:10}
+.outer,.inner{width:100%;height:100%;overflow:hidden}
+#s0 .outer{background:transparent}
+#s1 .outer{background:#060814}
+#s2 .outer{background:#0c0614}
+#s3 .outer{background:#080808}
+#s4 .outer{background:#000}
 
-/* Centered VISIONARY — tagline below, no overlap with anything */
-#hero-text{
-  position:relative;z-index:20;text-align:center;pointer-events:none;
-  opacity:0;transform:translateY(18px);
-}
-#vis-title{
-  font-family:'Playfair Display',Georgia,serif;
-  font-size:clamp(52px,8.5vw,132px);font-weight:900;color:#fff;letter-spacing:.08em;line-height:1;
-  text-shadow:
-    0 0 14px rgba(124,58,237,1),
-    0 0 40px rgba(124,58,237,.72),
-    0 0 90px rgba(124,58,237,.40),
-    0 0 180px rgba(6,182,212,.18);
-}
-#vis-tagline{
-  font-size:clamp(7px,.80vw,10px);letter-spacing:.44em;text-transform:uppercase;
-  color:rgba(255,255,255,.26);margin-top:18px;
-}
+/* ── SECTION CONTENT ── */
+.section-content{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;padding:120px 60px 80px;text-align:center;position:relative;z-index:2}
 
-/* CTAs below text */
-#hero-ctas{
-  position:relative;z-index:50;display:flex;gap:16px;
-  margin-top:44px;opacity:0;white-space:nowrap;
-}
-.btn{display:inline-block;padding:12px 36px;font-size:8.5px;font-weight:600;letter-spacing:.24em;text-transform:uppercase;text-decoration:none;color:#fff;border:1px solid rgba(255,255,255,.52);background:transparent;transition:border-color .3s,color .3s}
-.btn:hover{border-color:rgba(6,182,212,.72);color:#06b6d4}
-.btn-outline{border-color:rgba(6,182,212,.28);color:rgba(6,182,212,.72)}
-.btn-outline:hover{border-color:#06b6d4;color:#fff}
+/* ── HERO / TUBE ── */
+.tube-wrapper{position:relative;perspective:700px;margin-bottom:36px}
+.tube-sizer{font-family:'Playfair Display',Georgia,serif;font-size:clamp(52px,9.5vw,155px);font-weight:900;letter-spacing:.08em;visibility:hidden;display:block;white-space:nowrap}
+.tube-line{font-family:'Playfair Display',Georgia,serif;font-size:clamp(52px,9.5vw,155px);font-weight:900;letter-spacing:.08em;color:#fff;text-shadow:0 0 22px rgba(124,58,237,1),0 0 65px rgba(124,58,237,.5),0 0 130px rgba(124,58,237,.2);transform-style:preserve-3d;white-space:nowrap;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%)}
+#hero-sub{font-size:clamp(9px,1vw,12px);letter-spacing:.3em;text-transform:uppercase;color:rgba(255,255,255,.35);opacity:0;margin-top:4px;transform:translateY(10px)}
+#scroll-hint{position:absolute;bottom:36px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;font-size:8px;letter-spacing:.32em;text-transform:uppercase;color:rgba(255,255,255,.22);animation:hintPulse 2.4s ease-in-out infinite}
+.scroll-line{width:1px;height:40px;background:linear-gradient(to bottom,rgba(124,58,237,.7),transparent);animation:scrollLine 1.7s ease-in-out infinite}
+@keyframes hintPulse{0%,100%{opacity:.28}50%{opacity:.75}}
+@keyframes scrollLine{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}50.01%{transform:scaleY(1);transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
 
-.scroll-indicator{
-  position:absolute;bottom:18px;left:50%;transform:translateX(-50%);
-  display:flex;flex-direction:column;align-items:center;gap:7px;
-  z-index:50;opacity:0;pointer-events:none;
-}
-.scroll-indicator span{font-size:7px;letter-spacing:.35em;color:rgba(255,255,255,.16)}
-.scroll-line{width:1px;height:38px;background:linear-gradient(to bottom,rgba(124,58,237,.65),transparent);animation:sPulse 2s ease-in-out infinite}
-@keyframes sPulse{
-  0%  {transform:scaleY(0);transform-origin:top}
-  50% {transform:scaleY(1);transform-origin:top}
-  100%{transform:scaleY(1);transform-origin:bottom;opacity:0}
-}
+/* ── HEADINGS ── */
+.section-heading{font-family:'Playfair Display',Georgia,serif;font-size:clamp(44px,7.5vw,125px);font-weight:900;letter-spacing:.04em;line-height:1.05;color:#fff;margin-bottom:52px}
+#s1 .section-heading{text-shadow:none}
+#s2 .section-heading{text-shadow:0 0 18px rgba(124,58,237,.6)}
+#s3 .section-heading{text-shadow:0 0 18px rgba(6,182,212,.45)}
+#s4 .section-heading{text-shadow:0 0 14px rgba(124,58,237,.4)}
 
-/* ══ EASTER EGG — genuinely hidden ══ */
-#easter-egg{
-  position:absolute;bottom:22px;right:38px;
-  width:3px;height:3px;border-radius:50%;
-  background:rgba(124,58,237,.06);
-  cursor:pointer;z-index:60;
-  transition:background .8s;
-}
-#easter-egg:hover{background:rgba(124,58,237,.22)}
+/* ── S1 THE WORK ── */
+.work-list{display:flex;flex-direction:column;gap:10px;margin-bottom:40px}
+.work-item{font-family:'Playfair Display',Georgia,serif;font-size:clamp(20px,3vw,48px);font-weight:700;color:rgba(255,255,255,.58);letter-spacing:.04em;transition:color .3s;cursor:default}
+.work-item:hover{color:#fff}
+.view-all-link{display:inline-block;font-size:9px;letter-spacing:.32em;text-transform:uppercase;color:rgba(124,58,237,.9);text-decoration:none;border:1px solid rgba(124,58,237,.45);padding:10px 28px;border-radius:2px;background:rgba(124,58,237,.06);transition:background .25s,border-color .25s,color .25s}
+.view-all-link:hover{background:rgba(124,58,237,.18);border-color:rgba(124,58,237,.85);color:#fff}
 
-/* ══ EASTER EGG MODAL ══ */
-#ee-modal{
-  position:fixed;inset:0;z-index:200000;
-  display:flex;align-items:center;justify-content:center;
-  background:rgba(0,0,0,0);pointer-events:none;
-  transition:background .7s;
-}
-#ee-modal.open{background:rgba(0,0,0,.94);pointer-events:all}
-#ee-inner{
-  text-align:center;opacity:0;transform:scale(.88);
-  transition:opacity .9s,transform .9s;
-  max-width:480px;padding:0 24px;
-}
-#ee-modal.open #ee-inner{opacity:1;transform:scale(1)}
-#ee-glyph{
-  font-size:52px;margin-bottom:28px;
-  animation:eeGlow 2.4s ease-in-out infinite;
-  color:rgba(192,132,252,1);
-}
-@keyframes eeGlow{
-  0%,100%{text-shadow:0 0 24px rgba(124,58,237,.7),0 0 60px rgba(124,58,237,.3)}
-  50%{text-shadow:0 0 40px rgba(6,182,212,.9),0 0 90px rgba(6,182,212,.4),0 0 180px rgba(124,58,237,.2)}
-}
-#ee-title{font-family:'Playfair Display',Georgia,serif;font-size:clamp(22px,3.2vw,38px);font-weight:900;color:#fff;letter-spacing:.06em;margin-bottom:16px;text-shadow:0 0 30px rgba(124,58,237,.6)}
-#ee-sub{font-size:clamp(9px,1.1vw,13px);letter-spacing:.28em;text-transform:uppercase;color:rgba(255,255,255,.36);line-height:1.8}
-#ee-close{margin-top:40px;display:inline-block;padding:9px 30px;font-size:7.5px;letter-spacing:.28em;text-transform:uppercase;color:rgba(255,255,255,.38);border:1px solid rgba(255,255,255,.14);background:none;cursor:pointer;transition:color .3s,border-color .3s}
-#ee-close:hover{color:#fff;border-color:rgba(124,58,237,.5)}
+/* ── S2 BUILT DIFFERENT ── */
+.agency-desc{font-size:clamp(13px,1.3vw,18px);line-height:1.85;color:rgba(255,255,255,.4);max-width:620px;letter-spacing:.02em}
+
+/* ── S3 THE PROCESS ── */
+.process-list{display:flex;flex-direction:column;width:100%;max-width:660px;text-align:left}
+.process-item{display:flex;align-items:flex-start;gap:32px;padding:26px 0;border-bottom:1px solid rgba(255,255,255,.06)}
+.process-item:last-child{border-bottom:none}
+.process-num{font-family:'Playfair Display',Georgia,serif;font-size:clamp(26px,2.8vw,46px);font-weight:900;color:rgba(124,58,237,.22);line-height:1;flex-shrink:0;width:56px}
+.process-info{display:flex;flex-direction:column;gap:5px}
+.process-name{font-size:clamp(11px,1vw,14px);letter-spacing:.22em;text-transform:uppercase;font-weight:600;color:rgba(255,255,255,.82)}
+.process-desc{font-size:clamp(11px,.9vw,13px);color:rgba(255,255,255,.3);letter-spacing:.02em;line-height:1.55}
+
+/* ── S4 START A PROJECT ── */
+.contact-wrapper{display:flex;flex-direction:column;align-items:center;gap:28px;width:100%;max-width:540px}
+.ripple-input-wrapper{position:relative;width:100%}
+#ripple-canvas{position:absolute;inset:0;pointer-events:none;border-radius:3px}
+.email-input{width:100%;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);color:#fff;font-family:'Inter',sans-serif;font-size:14px;letter-spacing:.06em;padding:18px 22px;border-radius:3px;outline:none;transition:border-color .35s,background .35s;position:relative;z-index:1}
+.email-input::placeholder{color:rgba(255,255,255,.22)}
+.email-input:focus{border-color:rgba(124,58,237,.7);background:rgba(124,58,237,.04)}
+.magnetic-btn{display:inline-flex;align-items:center;gap:10px;padding:16px 44px;background:rgba(124,58,237,1);color:#fff;font-family:'Inter',sans-serif;font-size:9.5px;font-weight:600;letter-spacing:.26em;text-transform:uppercase;border:none;border-radius:3px;cursor:pointer;transition:background .25s;will-change:transform}
+.magnetic-btn:hover{background:rgba(139,92,246,1)}
+.btn-arrow{font-size:14px;transition:transform .2s}
+.magnetic-btn:hover .btn-arrow{transform:translateX(4px)}
+
+/* ── SECTION DOTS ── */
+.sec-indicators{position:fixed;right:28px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:10px;z-index:500}
+.sec-dot{width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,.2);cursor:pointer;transition:background .3s,transform .3s}
+.sec-dot.active{background:rgba(124,58,237,.9);transform:scale(1.6)}
 
 @media(max-width:768px){
   #nav{padding:16px 22px}
   .nav-links{display:none}
-  #hero-ctas{flex-direction:column;align-items:center;gap:11px}
+  .section-content{padding:90px 22px 60px}
+  .sec-indicators{display:none}
 }
 </style>
 </head>
 <body>
-
-<!-- BOOK INTRO -->
-<div id="book-intro">
-  <div id="book-left"  class="book-panel"></div>
-  <div id="book-right" class="book-panel"></div>
-  <div id="book-logo">
-    <div id="book-logo-text">VISIONARY</div>
-    <div id="book-logo-sub">Web Studio</div>
-  </div>
-</div>
 
 <div id="page-transition"></div>
 <canvas id="nebula-canvas"></canvas>
@@ -171,186 +121,362 @@ body{background:#000;color:#fff;overflow-x:hidden;font-family:'Inter',sans-serif
 <nav id="nav">
   <a href="index.html" class="nav-logo">VISIONARY</a>
   <ul class="nav-links">
-    <li><a href="work.html"     class="nav-link">Work</a></li>
-    <li><a href="about.html"    class="nav-link">About</a></li>
+    <li><a href="work.html" class="nav-link">Work</a></li>
+    <li><a href="about.html" class="nav-link">About</a></li>
     <li><a href="services.html" class="nav-link">Services</a></li>
-    <li><a href="contact.html"  class="nav-link">Contact</a></li>
+    <li><a href="contact.html" class="nav-link">Contact</a></li>
   </ul>
 </nav>
 
-<section id="hero">
-  <div id="hero-text">
-    <h1 id="vis-title">VISIONARY</h1>
-    <p id="vis-tagline">WE BUILD WHAT OTHERS CAN'T IMAGINE</p>
-  </div>
-  <div id="hero-ctas">
-    <a href="work.html"    class="btn">SEE OUR WORK</a>
-    <a href="contact.html" class="btn btn-outline">START A PROJECT</a>
-  </div>
-  <!-- Easter egg: 3px dot, bottom-right, barely there -->
-  <div id="easter-egg" aria-hidden="true"></div>
-  <div class="scroll-indicator">
-    <span>SCROLL</span>
-    <div class="scroll-line"></div>
-  </div>
+<div class="sec-indicators" id="sec-indicators">
+  <div class="sec-dot" data-index="0"></div>
+  <div class="sec-dot" data-index="1"></div>
+  <div class="sec-dot" data-index="2"></div>
+  <div class="sec-dot" data-index="3"></div>
+  <div class="sec-dot" data-index="4"></div>
+</div>
+
+<!-- S0 HERO -->
+<section class="section" id="s0">
+  <div class="outer"><div class="inner">
+    <div class="section-content">
+      <div class="tube-wrapper" id="tube-wrapper">
+        <span class="tube-sizer">VISIONARY</span>
+        <div class="tube-line" id="tube-l0">VISIONARY</div>
+        <div class="tube-line" id="tube-l1">VISIONARY</div>
+        <div class="tube-line" id="tube-l2">VISIONARY</div>
+        <div class="tube-line" id="tube-l3">VISIONARY</div>
+      </div>
+      <p id="hero-sub">WE BUILD WHAT OTHERS CAN'T IMAGINE</p>
+      <div id="scroll-hint">
+        <div class="scroll-line"></div>
+        <span>Scroll</span>
+      </div>
+    </div>
+  </div></div>
 </section>
 
-<!-- Easter egg modal -->
-<div id="ee-modal">
-  <div id="ee-inner">
-    <div id="ee-glyph">✦</div>
-    <h2 id="ee-title">You found it.</h2>
-    <p id="ee-sub">Most people never look this deep.<br>You are not most people.</p>
-    <button id="ee-close">CLOSE</button>
-  </div>
-</div>
+<!-- S1 THE WORK -->
+<section class="section" id="s1">
+  <div class="outer"><div class="inner">
+    <div class="section-content">
+      <h2 class="section-heading">THE WORK</h2>
+      <div class="work-list">
+        <div class="work-item">Apex Construction</div>
+        <div class="work-item">KŌSAI Miami</div>
+        <div class="work-item">Nova Black</div>
+      </div>
+      <a href="work.html" class="view-all-link">View All Projects →</a>
+    </div>
+  </div></div>
+</section>
+
+<!-- S2 BUILT DIFFERENT -->
+<section class="section" id="s2">
+  <div class="outer"><div class="inner">
+    <div class="section-content">
+      <h2 class="section-heading">BUILT DIFFERENT</h2>
+      <p class="agency-desc">We don't use templates. Every line of code is written for one client,
+      one goal, one result. Studios charge for hours. We charge for outcomes.
+      The sites we build generate leads before the client finishes reading the proposal.</p>
+    </div>
+  </div></div>
+</section>
+
+<!-- S3 THE PROCESS -->
+<section class="section" id="s3">
+  <div class="outer"><div class="inner">
+    <div class="section-content">
+      <h2 class="section-heading">THE PROCESS</h2>
+      <div class="process-list">
+        <div class="process-item">
+          <span class="process-num">01</span>
+          <div class="process-info">
+            <div class="process-name">Foundation</div>
+            <div class="process-desc">Brand identity + single landing page. Launches in 72 hours.</div>
+          </div>
+        </div>
+        <div class="process-item">
+          <span class="process-num">02</span>
+          <div class="process-info">
+            <div class="process-name">Growth</div>
+            <div class="process-desc">Multi-page site + SEO layer + conversion optimization.</div>
+          </div>
+        </div>
+        <div class="process-item">
+          <span class="process-num">03</span>
+          <div class="process-info">
+            <div class="process-name">Cinematic</div>
+            <div class="process-desc">Full studio experience. 3D, WebGL, custom interactions.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div></div>
+</section>
+
+<!-- S4 START A PROJECT -->
+<section class="section" id="s4">
+  <div class="outer"><div class="inner">
+    <div class="section-content">
+      <h2 class="section-heading">START A PROJECT</h2>
+      <div class="contact-wrapper">
+        <div class="ripple-input-wrapper">
+          <canvas id="ripple-canvas"></canvas>
+          <input type="email" id="email-input" class="email-input" placeholder="your@email.com" autocomplete="email">
+        </div>
+        <button id="submit-btn" class="magnetic-btn">
+          <span>Let's Build</span>
+          <span class="btn-arrow">→</span>
+        </button>
+      </div>
+    </div>
+  </div></div>
+</section>
 
 <canvas id="cursor-canvas"></canvas>
 
 <script>
-gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(Observer, SplitText);
 
-/* ── LENIS ── */
-let lenis=null;
-try{
-  lenis=new Lenis({lerp:.08,wheelMultiplier:.85,smoothTouch:false});
-  lenis.on('scroll',ScrollTrigger.update);
-  gsap.ticker.add(t=>lenis.raf(t*1000));
-  gsap.ticker.lagSmoothing(0);
-}catch(e){console.warn('[V] Lenis:',e.message)}
-
-/* ── MOUSE ── */
-const mouse={x:-9999,y:-9999};
-window.addEventListener('mousemove',e=>{mouse.x=e.clientX;mouse.y=e.clientY});
-
-/* ══════════════════════════════════════════════════════
-   COSMIC NEBULA SYSTEM
-
-   Two visual layers on one canvas:
-   1. Gas blobs — large radial-gradient spheres drawn in
-      'screen' composite mode so overlapping purple + cyan
-      blends toward white-violet, simulating nebula cores.
-   2. Star particles — tiny points following a flow field
-      made from summed sinusoids ("fake Perlin noise").
-      Mouse proximity gently pushes them away.
-══════════════════════════════════════════════════════ */
-
-/* Nebula color palette */
-const NC=[
-  [124, 58,237],   // deep purple
-  [167,139,250],   // soft violet
-  [139, 92,246],   // medium violet
-  [192,132,252],   // light purple
-  [  6,182,212],   // cyan
-  [ 34,211,238],   // light cyan
-  [236, 72,153],   // hot pink
-  [217, 70,239],   // fuchsia
-];
-
-/* Flow field — multi-octave sinusoidal "fake Perlin" */
-function flowAngle(x,y,t){
-  return(
-    Math.sin(x*.0042+t*.28)*2.2+
-    Math.cos(y*.0035-x*.0022+t*.22)*1.5+
-    Math.sin((x+y)*.0028+t*.17)*.9+
-    Math.cos(x*.0018-y*.0030-t*.12)*.6
-  );
-}
-
+/* ══ NEBULA — 3000 particles + gas blobs, dense flow field ══ */
 (function initNebula(){
   const c=document.getElementById('nebula-canvas');
   const ctx=c.getContext('2d');
   const TAU=Math.PI*2;
-  let W,H,blobs=[],stars=[];
+  const COLS=[[124,58,237],[168,85,247],[192,132,252],[6,182,212],[236,72,153],[167,139,250],[217,70,239]];
+  const MOUSE={x:-9999,y:-9999};
 
+  function flow(x,y,t){
+    return(
+      Math.sin(x*.0038+t*.22)*2.4+
+      Math.cos(y*.0031-x*.0019+t*.18)*1.8+
+      Math.sin((x+y)*.0025+t*.14)*1.1+
+      Math.cos(x*.0016-y*.0027-t*.10)*.7+
+      Math.sin(x*.0055+y*.0033+t*.31)*.5
+    );
+  }
+
+  let W,H,pts=[],blobs=[];
   function resize(){
-    W=c.width=window.innerWidth;
-    H=c.height=window.innerHeight;
-    build();
-  }
-
-  function build(){
-    /* Gas blobs — large soft spheres, very low alpha */
-    blobs=Array.from({length:62},()=>({
+    W=c.width=window.innerWidth; H=c.height=window.innerHeight;
+    pts=Array.from({length:3000},()=>({
       x:Math.random()*W, y:Math.random()*H,
-      r:70+Math.random()*140,
-      cIdx:Math.floor(Math.random()*NC.length),
+      vx:(Math.random()-.5)*.3, vy:(Math.random()-.5)*.3,
+      r:.5+Math.random()*2.1,
+      ci:Math.floor(Math.random()*COLS.length),
       ph:Math.random()*TAU,
-      vx:(Math.random()-.5)*.06,
-      vy:(Math.random()-.5)*.05,
+      spd:.35+Math.random()*.75,
+      a:.3+Math.random()*.5,
     }));
-
-    /* Star particles — tiny, flowing */
-    stars=Array.from({length:1800},()=>({
+    blobs=Array.from({length:44},()=>({
       x:Math.random()*W, y:Math.random()*H,
-      vx:(Math.random()-.5)*.4, vy:(Math.random()-.5)*.4,
-      r:.4+Math.random()*1.8,
-      cIdx:Math.floor(Math.random()*NC.length),
+      r:80+Math.random()*170,
+      ci:Math.floor(Math.random()*COLS.length),
       ph:Math.random()*TAU,
-      ba:.12+Math.random()*.55,
-      spd:.5+Math.random()*.9,
+      vx:(Math.random()-.5)*.055,
+      vy:(Math.random()-.5)*.045,
     }));
   }
+  resize();
+  window.addEventListener('resize',resize);
+  window.addEventListener('mousemove',e=>{MOUSE.x=e.clientX;MOUSE.y=e.clientY});
 
-  resize(); window.addEventListener('resize',resize);
-
-  const REPEL=110, REPEL_STR=3.8;
+  const REPEL=88,RS=2.6;
   let t=0;
-
   (function loop(){
     requestAnimationFrame(loop);
-    ctx.clearRect(0,0,W,H);
-    t+=.008;
+    ctx.fillStyle='rgba(0,0,0,.16)';
+    ctx.fillRect(0,0,W,H);
+    t+=.006;
 
-    /* ── Pass 1: Gas blobs in 'screen' blend ──
-       screen blend: result = 1-(1-A)(1-B)
-       Overlapping purple+cyan merges toward bright white-violet,
-       exactly like a real emission nebula. */
     ctx.globalCompositeOperation='screen';
     blobs.forEach(b=>{
       b.x=(b.x+b.vx+W)%W; b.y=(b.y+b.vy+H)%H;
-      const alpha=.028+.016*Math.sin(t*.32+b.ph);
-      const [rv,gv,bv]=NC[b.cIdx];
-      const grd=ctx.createRadialGradient(b.x,b.y,0,b.x,b.y,b.r);
-      grd.addColorStop(0,`rgba(${rv},${gv},${bv},${alpha.toFixed(3)})`);
-      grd.addColorStop(.55,`rgba(${rv},${gv},${bv},${(alpha*.35).toFixed(3)})`);
-      grd.addColorStop(1,'rgba(0,0,0,0)');
-      ctx.fillStyle=grd;
-      ctx.beginPath(); ctx.arc(b.x,b.y,b.r,0,TAU); ctx.fill();
+      const al=.022+.013*Math.sin(t*.28+b.ph);
+      const [rv,gv,bv]=COLS[b.ci];
+      const g=ctx.createRadialGradient(b.x,b.y,0,b.x,b.y,b.r);
+      g.addColorStop(0,`rgba(${rv},${gv},${bv},${al.toFixed(3)})`);
+      g.addColorStop(.55,`rgba(${rv},${gv},${bv},${(al*.28).toFixed(3)})`);
+      g.addColorStop(1,'rgba(0,0,0,0)');
+      ctx.fillStyle=g; ctx.beginPath(); ctx.arc(b.x,b.y,b.r,0,TAU); ctx.fill();
     });
     ctx.globalCompositeOperation='source-over';
 
-    /* ── Pass 2: Star particles following flow field ── */
-    stars.forEach(p=>{
-      /* Flow field velocity nudge */
-      const ang=flowAngle(p.x,p.y,t);
-      p.vx+=Math.cos(ang)*p.spd*.016;
-      p.vy+=Math.sin(ang)*p.spd*.016;
-      /* Mouse repulsion — gentle drift away */
-      const dx=p.x-mouse.x, dy=p.y-mouse.y, d2=dx*dx+dy*dy;
-      if(d2<REPEL*REPEL&&d2>.01){
-        const d=Math.sqrt(d2),f=(REPEL-d)/REPEL;
-        p.vx+=(dx/d)*f*REPEL_STR*.12;
-        p.vy+=(dy/d)*f*REPEL_STR*.12;
-      }
-      p.vx*=.95; p.vy*=.95;
+    pts.forEach(p=>{
+      const ang=flow(p.x,p.y,t);
+      p.vx+=Math.cos(ang)*p.spd*.014; p.vy+=Math.sin(ang)*p.spd*.014;
+      const dx=p.x-MOUSE.x,dy=p.y-MOUSE.y,d2=dx*dx+dy*dy;
+      if(d2<REPEL*REPEL&&d2>.01){const d=Math.sqrt(d2),f=(REPEL-d)/REPEL;p.vx+=(dx/d)*f*RS*.09;p.vy+=(dy/d)*f*RS*.09}
+      p.vx*=.962; p.vy*=.962;
       p.x=(p.x+p.vx+W)%W; p.y=(p.y+p.vy+H)%H;
-
-      const tw=p.ba*(.55+.45*Math.sin(t*1.4+p.ph));
-      const [rv,gv,bv]=NC[p.cIdx];
-
-      /* Soft glow halo */
-      ctx.beginPath(); ctx.arc(p.x,p.y,p.r*5.5,0,TAU);
-      ctx.fillStyle=`rgba(${rv},${gv},${bv},${(tw*.022).toFixed(3)})`; ctx.fill();
-      /* Bright core */
+      const tw=p.a*(.55+.45*Math.sin(t*1.5+p.ph));
+      const [rv,gv,bv]=COLS[p.ci];
+      ctx.beginPath(); ctx.arc(p.x,p.y,p.r*4.2,0,TAU);
+      ctx.fillStyle=`rgba(${rv},${gv},${bv},${(tw*.019).toFixed(3)})`; ctx.fill();
       ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,TAU);
-      ctx.fillStyle=`rgba(${rv},${gv},${bv},${Math.min(tw,.96).toFixed(3)})`; ctx.fill();
+      ctx.fillStyle=`rgba(${rv},${gv},${bv},${Math.min(tw,.9).toFixed(3)})`; ctx.fill();
     });
   })();
 })();
 
+/* ══ GSAP OBSERVER — 5 section scroll snap ══ */
+const sections=gsap.utils.toArray('.section');
+const outers=sections.map(s=>s.querySelector('.outer'));
+const inners=sections.map(s=>s.querySelector('.inner'));
+const dots=document.querySelectorAll('.sec-dot');
+const nav=document.getElementById('nav');
+
+const splits=sections.map((sec,i)=>{
+  if(i===0)return null;
+  const h=sec.querySelector('.section-heading');
+  return h?new SplitText(h,{type:'chars'}):null;
+});
+
+let cur=-1,busy=false;
+const wrap=gsap.utils.wrap(0,sections.length);
+
+function updateUI(idx){
+  dots.forEach((d,i)=>d.classList.toggle('active',i===idx));
+  nav.classList.toggle('solid',idx>0);
+}
+
+function go(index,dir){
+  index=wrap(index);
+  if(busy)return;
+  busy=true;
+  const d=dir===-1?-1:1;
+  const tl=gsap.timeline({
+    defaults:{duration:1.25,ease:'power1.inOut'},
+    onComplete(){busy=false}
+  });
+
+  if(cur>=0){
+    gsap.set(sections[cur],{zIndex:0});
+    tl.to(outers[cur],{yPercent:-15*d}).set(sections[cur],{autoAlpha:0});
+  }
+
+  gsap.set(sections[index],{autoAlpha:1,zIndex:1});
+  tl.fromTo(outers[index],{yPercent:100*d},{yPercent:0},0);
+  tl.fromTo(inners[index],{yPercent:-100*d},{yPercent:0},0);
+
+  if(splits[index]){
+    tl.from(splits[index].chars,{
+      yPercent:130*d,autoAlpha:0,
+      stagger:{amount:.5,from:'random'},
+      duration:.9,ease:'power3.out'
+    },.25);
+  }
+
+  if(index===1)tl.from('.work-item',{yPercent:40,autoAlpha:0,stagger:.1,duration:.7,ease:'power2.out'},.6).from('.view-all-link',{autoAlpha:0,y:10,duration:.5},.9);
+  if(index===2)tl.from('.agency-desc',{autoAlpha:0,y:22,duration:.85,ease:'power2.out'},.65);
+  if(index===3)tl.from('.process-item',{autoAlpha:0,x:-28,stagger:.12,duration:.7,ease:'power2.out'},.55);
+  if(index===4)tl.from('.contact-wrapper',{autoAlpha:0,y:22,duration:.8,ease:'power2.out'},.6);
+
+  updateUI(index);
+  cur=index;
+}
+
+go(0,1);
+
+Observer.create({
+  type:'wheel,touch,pointer',
+  wheelSpeed:-1,
+  onDown:()=>!busy&&go(cur-1,-1),
+  onUp:()=>!busy&&go(cur+1,1),
+  tolerance:10,
+  preventDefault:true
+});
+
+window.addEventListener('keydown',e=>{
+  if(e.key==='ArrowDown'||e.key==='PageDown')go(cur+1,1);
+  if(e.key==='ArrowUp'||e.key==='PageUp')go(cur-1,-1);
+});
+
+dots.forEach(dot=>{
+  dot.addEventListener('click',()=>{
+    const idx=parseInt(dot.dataset.index);
+    go(idx,idx>cur?1:-1);
+  });
+});
+
+/* ══ TUBE EFFECT — SplitText rotating cylinder ══ */
+(function initTube(){
+  const wrapper=document.getElementById('tube-wrapper');
+  const sizer=wrapper.querySelector('.tube-sizer');
+  wrapper.style.height=sizer.getBoundingClientRect().height+'px';
+
+  document.querySelectorAll('.tube-line').forEach((line,i)=>{
+    const split=new SplitText(line,{type:'chars'});
+    gsap.set(split.chars,{transformPerspective:600,backfaceVisibility:'hidden'});
+    gsap.fromTo(split.chars,
+      {rotationX:-90},
+      {rotationX:90,duration:.9,stagger:.08,ease:'none',repeat:-1,delay:i*.45}
+    );
+  });
+
+  gsap.to('#hero-sub',{opacity:1,y:0,duration:1,ease:'power2.out',delay:1.1});
+})();
+
+/* ══ WATER RIPPLE — email input focus ══ */
+(function initRipple(){
+  const input=document.getElementById('email-input');
+  const canvas=document.getElementById('ripple-canvas');
+  const ctx=canvas.getContext('2d');
+  let W,H,ripples=[],raf=null;
+
+  function resize(){
+    const r=input.getBoundingClientRect();
+    W=canvas.width=r.width; H=canvas.height=r.height;
+  }
+
+  function spawn(x,y){
+    ripples.push({x,y,r:0,a:.65});
+    if(!raf)tick();
+  }
+
+  function tick(){
+    raf=requestAnimationFrame(tick);
+    ctx.clearRect(0,0,W,H);
+    ripples=ripples.filter(rp=>rp.a>.01);
+    ripples.forEach(rp=>{
+      rp.r+=3.8; rp.a*=.92;
+      ctx.beginPath(); ctx.arc(rp.x,rp.y,rp.r,0,Math.PI*2);
+      ctx.strokeStyle=`rgba(124,58,237,${rp.a.toFixed(3)})`;
+      ctx.lineWidth=1.5; ctx.stroke();
+    });
+    if(!ripples.length){cancelAnimationFrame(raf);raf=null;}
+  }
+
+  input.addEventListener('focus',()=>{
+    resize();
+    for(let i=0;i<3;i++)setTimeout(()=>spawn(W/2,H/2),i*180);
+  });
+  input.addEventListener('click',e=>{
+    resize();
+    const r=canvas.getBoundingClientRect();
+    spawn(e.clientX-r.left,e.clientY-r.top);
+  });
+})();
+
+/* ══ MAGNETIC BUTTON ══ */
+(function(){
+  const btn=document.getElementById('submit-btn');
+  btn.addEventListener('mousemove',e=>{
+    const r=btn.getBoundingClientRect();
+    gsap.to(btn,{x:(e.clientX-r.left-r.width/2)*.28,y:(e.clientY-r.top-r.height/2)*.28,duration:.25,ease:'power1.out'});
+  });
+  btn.addEventListener('mouseleave',()=>gsap.to(btn,{x:0,y:0,duration:.6,ease:'elastic.out(1,.4)'}));
+  btn.addEventListener('click',()=>{
+    const email=document.getElementById('email-input').value;
+    window.location.href=email
+      ?`mailto:traviskenlocean1@gmail.com?subject=New Project Inquiry&body=From: ${email}`
+      :'mailto:traviskenlocean1@gmail.com?subject=New Project Inquiry';
+  });
+})();
+
 /* ══ CURSOR STARDUST ══ */
-(function initCursorTrail(){
+(function(){
   const c=document.getElementById('cursor-canvas');
   const ctx=c.getContext('2d');
   function resize(){c.width=window.innerWidth;c.height=window.innerHeight}
@@ -365,7 +491,7 @@ function flowAngle(x,y,t){
       pool.push({x:lx,y:ly,vx:Math.cos(ang)*spd,vy:Math.sin(ang)*spd-.22,life:1,dec:1/(42+Math.random()*18),sz:2+Math.random()*2.2,rot:Math.random()*Math.PI,hue:260+Math.random()*80});
     }
   });
-  function drawSparkle(x,y,sz,rot,alpha,hue){
+  function sparkle(x,y,sz,rot,alpha,hue){
     ctx.save();ctx.translate(x,y);ctx.rotate(rot);ctx.globalAlpha=alpha;ctx.fillStyle=`hsl(${hue},100%,88%)`;
     ctx.beginPath();ctx.moveTo(0,-sz);ctx.lineTo(sz*.13,0);ctx.lineTo(0,sz);ctx.lineTo(-sz*.13,0);ctx.closePath();ctx.fill();
     ctx.rotate(Math.PI*.5);
@@ -378,50 +504,10 @@ function flowAngle(x,y,t){
       const s=pool[i];
       s.x+=s.vx;s.y+=s.vy;s.vx*=.97;s.vy*=.97;s.life-=s.dec;s.rot+=.042;
       if(s.life<=0){pool.splice(i,1);continue}
-      drawSparkle(s.x,s.y,s.sz,s.rot,s.life*s.life,s.hue);
+      sparkle(s.x,s.y,s.sz,s.rot,s.life*s.life,s.hue);
     }
   })();
 })();
-
-/* ══ BOOK INTRO ══ */
-(function initBookIntro(){
-  gsap.set('#book-left', {transformOrigin:'right center',rotationY:0});
-  gsap.set('#book-right',{transformOrigin:'left center', rotationY:0});
-  gsap.set('#book-logo', {opacity:1});
-  gsap.timeline({delay:1.5})
-    .to('#book-logo', {opacity:0,duration:.40,ease:'power2.in'})
-    .to('#book-left', {rotationY:-108,y:10,duration:1.2,ease:'power2.inOut'},'-=0.15')
-    .to('#book-right',{rotationY: 108,y:10,duration:1.2,ease:'power2.inOut'},'<')
-    .to('#book-intro',{opacity:0,duration:.35,pointerEvents:'none',
-      onComplete(){document.getElementById('book-intro').style.display='none'}
-    },'-=0.25')
-    .call(startHeroReveal);
-})();
-
-/* ══ HERO REVEAL ══ */
-gsap.set(['#hero-text','#hero-ctas','.scroll-indicator'],{opacity:0});
-
-function startHeroReveal(){
-  gsap.timeline({delay:.12})
-    .to('#hero-text',       {opacity:1,y:0,duration:1.3,ease:'power3.out'})
-    .to('#hero-ctas',       {opacity:1,    duration:.9, ease:'power2.out'},'-=.4')
-    .to('.scroll-indicator',{opacity:1,    duration:.8, ease:'power2.out'},'-=.3');
-}
-
-/* ══ EASTER EGG ══ */
-(function initEasterEgg(){
-  const btn=document.getElementById('easter-egg');
-  const modal=document.getElementById('ee-modal');
-  const close=document.getElementById('ee-close');
-  btn.addEventListener('click',()=>modal.classList.add('open'));
-  close.addEventListener('click',()=>modal.classList.remove('open'));
-  modal.addEventListener('click',e=>{if(e.target===modal)modal.classList.remove('open')});
-})();
-
-/* ══ NAV ══ */
-window.addEventListener('scroll',()=>{
-  document.getElementById('nav').classList.toggle('scrolled',window.scrollY>60);
-},{passive:true});
 
 /* ══ PAGE TRANSITIONS ══ */
 gsap.set('#page-transition',{x:'100%'});
