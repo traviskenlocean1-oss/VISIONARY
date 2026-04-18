@@ -71,7 +71,7 @@ body{background:#000;color:#fff;overflow-x:hidden;font-family:'Inter',sans-serif
 #panels-wrapper{
   display:flex;
   gap:4px;
-  align-items:flex-end;
+  align-items:stretch;
   height:62vh;min-height:400px;max-height:580px;
   overflow:visible;
 }
@@ -81,7 +81,6 @@ body{background:#000;color:#fff;overflow-x:hidden;font-family:'Inter',sans-serif
   position:relative;
   flex:1 1 0;
   min-width:0;
-  height:100%;
   border-radius:5px;
   overflow:hidden;
   cursor:pointer;
@@ -352,7 +351,7 @@ const panelData=Array.from({length:N},(_,i)=>PROJECTS[i%PROJECTS.length]);
     /* Desktop panel */
     const panel=document.createElement('div');
     panel.className='panel';
-    panel.style.cssText=`--cr:${proj.rgb}`;
+    panel.style.setProperty('--cr',proj.rgb);
     panel.dataset.url=proj.url;
     panel.innerHTML=`
       <span class="panel-index">${String(i+1).padStart(2,'0')}</span>
@@ -370,7 +369,7 @@ const panelData=Array.from({length:N},(_,i)=>PROJECTS[i%PROJECTS.length]);
   PROJECTS.forEach(proj=>{
     const card=document.createElement('div');
     card.className='mob-card';
-    card.style.cssText=`--cr:${proj.rgb}`;
+    card.style.setProperty('--cr',proj.rgb);
     card.innerHTML=`
       <div class="mob-card-tag">${proj.tag}</div>
       <div class="mob-card-name">${proj.name}</div>
