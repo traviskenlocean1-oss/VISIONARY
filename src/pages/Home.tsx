@@ -7,7 +7,7 @@ import VLogo from '../components/VLogo'
 
 const HLS_SRC = 'https://stream.mux.com/4IMYGcL01xjs7ek5ANO17JC4VQVUTsojZlnw4fXzwSxc.m3u8'
 
-function HLSVideo() {
+function HLSVideoBackground() {
   const ref = useRef<HTMLVideoElement>(null)
 
   useEffect(() => {
@@ -24,14 +24,17 @@ function HLSVideo() {
   }, [])
 
   return (
-    <video
-      ref={ref}
-      autoPlay
-      muted
-      loop
-      playsInline
-      style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }}
-    />
+    <div className="fixed inset-0 -z-10 overflow-hidden">
+      <video
+        ref={ref}
+        autoPlay
+        muted
+        loop
+        playsInline
+        className="absolute inset-0 w-full h-full object-cover"
+      />
+      <div className="absolute inset-0" style={{ background: 'rgba(3,5,10,0.58)' }} />
+    </div>
   )
 }
 
@@ -109,8 +112,8 @@ function PricingCard({ plan, index }: { plan: typeof plans[0]; index: number }) 
         className="absolute inset-0 rounded-2xl"
         style={{
           background: plan.featured
-            ? 'linear-gradient(135deg, rgba(37,99,235,0.22) 0%, rgba(96,165,250,0.1) 100%)'
-            : 'rgba(255,255,255,0.04)',
+            ? 'linear-gradient(135deg, rgba(37,99,235,0.28) 0%, rgba(96,165,250,0.12) 100%)'
+            : 'rgba(5,8,20,0.65)',
           backdropFilter: 'blur(20px)',
           WebkitBackdropFilter: 'blur(20px)',
           border: plan.featured
@@ -217,6 +220,8 @@ export default function Home() {
 
   return (
     <PageIn>
+      <HLSVideoBackground />
+
       {/* ── HERO ── */}
       <section
         ref={heroRef}
@@ -224,22 +229,7 @@ export default function Home() {
         onMouseMove={handleHeroMouseMove}
         onMouseLeave={() => setMouse({ x: 0, y: 0 })}
       >
-        {/* Dark base */}
-        <div className="absolute inset-0" style={{ background: '#03050a' }} />
-
-        {/* HLS Video layer — parallax on mouse */}
-        <div
-          className="absolute inset-0"
-          style={{
-            transform: `translate(${mouse.x * -22}px, ${mouse.y * -22}px) scale(1.12)`,
-            transition: 'transform 0.08s linear',
-          }}
-        >
-          <HLSVideo />
-          <div className="absolute inset-0" style={{ background: 'rgba(3,5,10,0.72)' }} />
-        </div>
-
-        {/* Blue orb blobs — opposite parallax for depth */}
+        {/* Blue orb blobs — parallax for depth */}
         <div
           className="absolute inset-0 pointer-events-none"
           style={{
@@ -279,10 +269,10 @@ export default function Home() {
         />
 
         {/* Vignettes */}
-        <div className="absolute bottom-0 left-0 right-0 pointer-events-none" style={{ height: '35%', background: 'linear-gradient(to top, #03050a, transparent)' }} />
-        <div className="absolute top-0 left-0 right-0 pointer-events-none" style={{ height: '20%', background: 'linear-gradient(to bottom, rgba(3,5,10,0.6), transparent)' }} />
+        <div className="absolute bottom-0 left-0 right-0 pointer-events-none" style={{ height: '35%', background: 'linear-gradient(to top, rgba(3,5,10,0.7), transparent)' }} />
+        <div className="absolute top-0 left-0 right-0 pointer-events-none" style={{ height: '20%', background: 'linear-gradient(to bottom, rgba(3,5,10,0.4), transparent)' }} />
 
-        {/* Hero content — subtle parallax inward */}
+        {/* Hero content */}
         <div
           className="absolute inset-0 flex flex-col items-center justify-center px-6 text-center"
           style={{
@@ -351,7 +341,6 @@ export default function Home() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.7, duration: 0.7 }}
           >
-            {/* Magnetic CTA button */}
             <motion.div
               ref={btnRef}
               style={{ x: springX, y: springY, display: 'inline-flex' }}
@@ -396,7 +385,7 @@ export default function Home() {
       </section>
 
       {/* ── WHAT WE DO STRIP ── */}
-      <section className="bg-black py-20 px-6">
+      <section className="relative py-20 px-6 border-t" style={{ borderColor: 'rgba(255,255,255,0.06)' }}>
         <div className="max-w-6xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {[
@@ -407,7 +396,12 @@ export default function Home() {
               <motion.div
                 key={item.title}
                 className="rounded-2xl p-7"
-                style={{ background: '#0f0f0f', border: '1px solid rgba(255,255,255,0.05)' }}
+                style={{
+                  background: 'rgba(5,8,20,0.6)',
+                  backdropFilter: 'blur(16px)',
+                  WebkitBackdropFilter: 'blur(16px)',
+                  border: '1px solid rgba(255,255,255,0.07)',
+                }}
                 initial={{ opacity: 0, y: 24 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
@@ -425,7 +419,7 @@ export default function Home() {
       </section>
 
       {/* ── PRICING ── */}
-      <section id="pricing" ref={pricingRef} className="relative bg-black py-24 md:py-32 px-6 overflow-hidden">
+      <section id="pricing" ref={pricingRef} className="relative py-24 md:py-32 px-6 overflow-hidden border-t" style={{ borderColor: 'rgba(255,255,255,0.06)' }}>
         <div className="absolute inset-0 pointer-events-none">
           <div
             style={{
@@ -465,9 +459,10 @@ export default function Home() {
           <motion.div
             className="mt-6 rounded-2xl p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-5"
             style={{
-              background: 'rgba(255,255,255,0.03)',
-              border: '1px solid rgba(255,255,255,0.07)',
+              background: 'rgba(5,8,20,0.65)',
               backdropFilter: 'blur(16px)',
+              WebkitBackdropFilter: 'blur(16px)',
+              border: '1px solid rgba(255,255,255,0.07)',
             }}
             initial={{ opacity: 0, y: 20 }}
             animate={pricingInView ? { opacity: 1, y: 0 } : {}}
@@ -498,7 +493,7 @@ export default function Home() {
       </section>
 
       {/* ── CTA ── */}
-      <section className="relative bg-black py-28 px-6 text-center overflow-hidden">
+      <section className="relative py-28 px-6 text-center overflow-hidden border-t" style={{ borderColor: 'rgba(255,255,255,0.06)' }}>
         <div
           className="absolute inset-0 pointer-events-none"
           style={{ background: 'radial-gradient(ellipse at 50% 80%, rgba(37,99,235,0.1) 0%, transparent 65%)' }}
