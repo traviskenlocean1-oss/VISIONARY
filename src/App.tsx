@@ -6,6 +6,7 @@ import Footer from './components/Footer'
 import Home from './pages/Home'
 import About from './pages/About'
 import Contact from './pages/Contact'
+import Services from './pages/Services'
 import VLogo from './components/VLogo'
 
 function IntroScreen({ onDone }: { onDone: () => void }) {
@@ -19,21 +20,18 @@ function IntroScreen({ onDone }: { onDone: () => void }) {
 
   return (
     <div className="fixed inset-0 z-[9999] pointer-events-none">
-      {/* Top curtain panel */}
       <motion.div
         className="absolute left-0 right-0 top-0"
         style={{ height: '50%', background: '#000' }}
         animate={phase === 'out' ? { y: '-100%' } : { y: 0 }}
         transition={{ duration: 0.75, ease: [0.76, 0, 0.24, 1] }}
       />
-      {/* Bottom curtain panel */}
       <motion.div
         className="absolute left-0 right-0 bottom-0"
         style={{ height: '50%', background: '#000' }}
         animate={phase === 'out' ? { y: '100%' } : { y: 0 }}
         transition={{ duration: 0.75, ease: [0.76, 0, 0.24, 1] }}
       />
-      {/* Logo centered on top of curtains */}
       <motion.div
         className="absolute inset-0 flex flex-col items-center justify-center gap-5"
         style={{ zIndex: 10 }}
@@ -87,7 +85,6 @@ export default function App() {
       className="bg-black min-h-screen"
       onMouseMove={(e) => setMousePos({ x: e.clientX, y: e.clientY })}
     >
-      {/* Global ambient mouse glow */}
       <div
         className="fixed inset-0 pointer-events-none"
         style={{
@@ -104,6 +101,7 @@ export default function App() {
           <Routes location={location} key={location.pathname}>
             <Route path="/" element={<Home />} />
             <Route path="/about" element={<About />} />
+            <Route path="/services" element={<Services />} />
             <Route path="/contact" element={<Contact />} />
           </Routes>
         </AnimatePresence>
