@@ -9,6 +9,14 @@ import Contact from './pages/Contact'
 import Services from './pages/Services'
 import VLogo from './components/VLogo'
 
+function ScrollToTop() {
+  const { pathname } = useLocation()
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior })
+  }, [pathname])
+  return null
+}
+
 function IntroScreen({ onDone }: { onDone: () => void }) {
   const [phase, setPhase] = useState<'in' | 'out'>('in')
 
@@ -85,6 +93,7 @@ export default function App() {
       className="bg-black min-h-screen"
       onMouseMove={(e) => setMousePos({ x: e.clientX, y: e.clientY })}
     >
+      <ScrollToTop />
       <div
         className="fixed inset-0 pointer-events-none"
         style={{
