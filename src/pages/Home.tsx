@@ -1,8 +1,39 @@
-import { useRef } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { motion, useInView } from 'framer-motion'
+import { motion, useInView, useMotionValue, useSpring } from 'framer-motion'
 import { ArrowRight, Check, Zap, Star } from 'lucide-react'
+import Hls from 'hls.js'
 import VLogo from '../components/VLogo'
+
+const HLS_SRC = 'https://stream.mux.com/4IMYGcL01xjs7ek5ANO17JC4VQVUTsojZlnw4fXzwSxc.m3u8'
+
+function HLSVideo() {
+  const ref = useRef<HTMLVideoElement>(null)
+
+  useEffect(() => {
+    const video = ref.current
+    if (!video) return
+    if (Hls.isSupported()) {
+      const hls = new Hls()
+      hls.loadSource(HLS_SRC)
+      hls.attachMedia(video)
+      return () => hls.destroy()
+    } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+      video.src = HLS_SRC
+    }
+  }, [])
+
+  return (
+    <video
+      ref={ref}
+      autoPlay
+      muted
+      loop
+      playsInline
+      style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }}
+    />
+  )
+}
 
 function PageIn({ children }: { children: React.ReactNode }) {
   return (
@@ -74,7 +105,6 @@ function PricingCard({ plan, index }: { plan: typeof plans[0]; index: number }) 
       style={{ transformStyle: 'preserve-3d', transformOrigin: 'center bottom' }}
       className="relative flex flex-col rounded-2xl p-7 cursor-default transition-shadow duration-300"
     >
-      {/* Card background */}
       <div
         className="absolute inset-0 rounded-2xl"
         style={{
@@ -155,45 +185,89 @@ function PricingCard({ plan, index }: { plan: typeof plans[0]; index: number }) 
 export default function Home() {
   const pricingRef = useRef<HTMLElement>(null)
   const pricingInView = useInView(pricingRef, { once: true, margin: '-80px' })
+  const heroRef = useRef<HTMLElement>(null)
+  const btnRef = useRef<HTMLDivElement>(null)
+  const [mouse, setMouse] = useState({ x: 0, y: 0 })
+
+  const btnX = useMotionValue(0)
+  const btnY = useMotionValue(0)
+  const springX = useSpring(btnX, { stiffness: 200, damping: 18 })
+  const springY = useSpring(btnY, { stiffness: 200, damping: 18 })
+
+  const handleHeroMouseMove = (e: React.MouseEvent<HTMLElement>) => {
+    const rect = heroRef.current?.getBoundingClientRect()
+    if (!rect) return
+    setMouse({
+      x: (e.clientX - rect.left) / rect.width - 0.5,
+      y: (e.clientY - rect.top) / rect.height - 0.5,
+    })
+  }
+
+  const handleBtnMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = btnRef.current?.getBoundingClientRect()
+    if (!rect) return
+    btnX.set((e.clientX - rect.left - rect.width / 2) * 0.4)
+    btnY.set((e.clientY - rect.top - rect.height / 2) * 0.4)
+  }
+
+  const handleBtnMouseLeave = () => {
+    btnX.set(0)
+    btnY.set(0)
+  }
 
   return (
     <PageIn>
       {/* ── HERO ── */}
-      <section className="relative h-screen overflow-hidden">
+      <section
+        ref={heroRef}
+        className="relative h-screen overflow-hidden"
+        onMouseMove={handleHeroMouseMove}
+        onMouseLeave={() => setMouse({ x: 0, y: 0 })}
+      >
         {/* Dark base */}
         <div className="absolute inset-0" style={{ background: '#03050a' }} />
 
-        {/* Blue fluid blobs */}
+        {/* HLS Video layer — parallax on mouse */}
         <div
-          className="absolute pointer-events-none"
+          className="absolute inset-0"
           style={{
-            bottom: '-15%', left: '-5%',
-            width: '75%', height: '80%',
-            background: 'radial-gradient(ellipse at 40% 60%, rgba(37,99,235,0.65) 0%, rgba(79,70,229,0.35) 35%, transparent 70%)',
-            filter: 'blur(70px)',
-            animation: 'cosmicDrift1 16s ease-in-out infinite',
+            transform: `translate(${mouse.x * -22}px, ${mouse.y * -22}px) scale(1.12)`,
+            transition: 'transform 0.08s linear',
           }}
-        />
+        >
+          <HLSVideo />
+          <div className="absolute inset-0" style={{ background: 'rgba(3,5,10,0.72)' }} />
+        </div>
+
+        {/* Blue orb blobs — opposite parallax for depth */}
         <div
-          className="absolute pointer-events-none"
+          className="absolute inset-0 pointer-events-none"
           style={{
-            bottom: '-20%', right: '-8%',
-            width: '65%', height: '75%',
-            background: 'radial-gradient(ellipse at 60% 50%, rgba(6,182,212,0.5) 0%, rgba(37,99,235,0.3) 40%, transparent 70%)',
-            filter: 'blur(80px)',
-            animation: 'cosmicDrift2 20s ease-in-out infinite',
+            transform: `translate(${mouse.x * 38}px, ${mouse.y * 38}px)`,
+            transition: 'transform 0.12s linear',
           }}
-        />
-        <div
-          className="absolute pointer-events-none"
-          style={{
-            bottom: '10%', left: '30%',
-            width: '50%', height: '55%',
-            background: 'radial-gradient(ellipse, rgba(96,165,250,0.4) 0%, rgba(147,197,253,0.15) 40%, transparent 70%)',
-            filter: 'blur(90px)',
-            animation: 'cosmicDrift3 12s ease-in-out infinite',
-          }}
-        />
+        >
+          <div
+            className="absolute"
+            style={{
+              bottom: '-15%', left: '-5%',
+              width: '75%', height: '80%',
+              background: 'radial-gradient(ellipse at 40% 60%, rgba(37,99,235,0.4) 0%, rgba(79,70,229,0.2) 35%, transparent 70%)',
+              filter: 'blur(70px)',
+              animation: 'cosmicDrift1 16s ease-in-out infinite',
+            }}
+          />
+          <div
+            className="absolute"
+            style={{
+              bottom: '-20%', right: '-8%',
+              width: '65%', height: '75%',
+              background: 'radial-gradient(ellipse at 60% 50%, rgba(6,182,212,0.28) 0%, rgba(37,99,235,0.18) 40%, transparent 70%)',
+              filter: 'blur(80px)',
+              animation: 'cosmicDrift2 20s ease-in-out infinite',
+            }}
+          />
+        </div>
 
         {/* Subtle grid overlay */}
         <div
@@ -204,23 +278,18 @@ export default function Home() {
           }}
         />
 
-        {/* Bottom vignette */}
+        {/* Vignettes */}
+        <div className="absolute bottom-0 left-0 right-0 pointer-events-none" style={{ height: '35%', background: 'linear-gradient(to top, #03050a, transparent)' }} />
+        <div className="absolute top-0 left-0 right-0 pointer-events-none" style={{ height: '20%', background: 'linear-gradient(to bottom, rgba(3,5,10,0.6), transparent)' }} />
+
+        {/* Hero content — subtle parallax inward */}
         <div
-          className="absolute bottom-0 left-0 right-0 pointer-events-none"
-          style={{ height: '35%', background: 'linear-gradient(to top, #03050a, transparent)' }}
-        />
-
-        {/* Top vignette */}
-        <div
-          className="absolute top-0 left-0 right-0 pointer-events-none"
-          style={{ height: '20%', background: 'linear-gradient(to bottom, rgba(3,5,10,0.6), transparent)' }}
-        />
-
-        <div className="noise-overlay absolute inset-0 opacity-30 mix-blend-overlay pointer-events-none" />
-
-        {/* Hero content */}
-        <div className="absolute inset-0 flex flex-col items-center justify-center px-6 text-center">
-          {/* Badge */}
+          className="absolute inset-0 flex flex-col items-center justify-center px-6 text-center"
+          style={{
+            transform: `translate(${mouse.x * 8}px, ${mouse.y * 8}px)`,
+            transition: 'transform 0.1s linear',
+          }}
+        >
           <motion.div
             className="flex items-center gap-2 mb-8 px-4 py-2 rounded-full"
             style={{
@@ -238,7 +307,6 @@ export default function Home() {
             </span>
           </motion.div>
 
-          {/* Headline */}
           <div className="overflow-hidden mb-4">
             <motion.h1
               className="font-extrabold tracking-tight leading-none"
@@ -283,18 +351,27 @@ export default function Home() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.7, duration: 0.7 }}
           >
-            <Link
-              to="/contact"
-              className="group inline-flex items-center gap-3 rounded-full font-bold text-sm px-7 py-3.5 transition-all duration-300"
-              style={{ background: '#3b82f6', color: '#fff', boxShadow: '0 0 30px rgba(59,130,246,0.4)' }}
-              onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.boxShadow = '0 0 50px rgba(59,130,246,0.7)')}
-              onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.boxShadow = '0 0 30px rgba(59,130,246,0.4)')}
+            {/* Magnetic CTA button */}
+            <motion.div
+              ref={btnRef}
+              style={{ x: springX, y: springY, display: 'inline-flex' }}
+              onMouseMove={handleBtnMouseMove}
+              onMouseLeave={handleBtnMouseLeave}
             >
-              <span>Start a Project</span>
-              <span className="flex items-center justify-center rounded-full bg-white/20 transition-transform duration-200 group-hover:scale-110" style={{ width: 28, height: 28 }}>
-                <ArrowRight size={14} />
-              </span>
-            </Link>
+              <Link
+                to="/contact"
+                className="group inline-flex items-center gap-3 rounded-full font-bold text-sm px-7 py-3.5 transition-shadow duration-300"
+                style={{ background: '#3b82f6', color: '#fff', boxShadow: '0 0 30px rgba(59,130,246,0.4)' }}
+                onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.boxShadow = '0 0 55px rgba(59,130,246,0.75)')}
+                onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.boxShadow = '0 0 30px rgba(59,130,246,0.4)')}
+              >
+                <span>Start a Project</span>
+                <span className="flex items-center justify-center rounded-full bg-white/20 transition-transform duration-200 group-hover:scale-110" style={{ width: 28, height: 28 }}>
+                  <ArrowRight size={14} />
+                </span>
+              </Link>
+            </motion.div>
+
             <button
               onClick={() => document.getElementById('pricing')?.scrollIntoView({ behavior: 'smooth' })}
               className="text-sm font-medium tracking-wide transition-colors duration-200"
@@ -309,7 +386,7 @@ export default function Home() {
 
         {/* Scroll indicator */}
         <motion.div
-          className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
+          className="absolute bottom-8 left-1/2 -translate-x-1/2"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 1.4 }}
@@ -349,7 +426,6 @@ export default function Home() {
 
       {/* ── PRICING ── */}
       <section id="pricing" ref={pricingRef} className="relative bg-black py-24 md:py-32 px-6 overflow-hidden">
-        {/* Bg glow */}
         <div className="absolute inset-0 pointer-events-none">
           <div
             style={{
@@ -380,14 +456,12 @@ export default function Home() {
             </p>
           </motion.div>
 
-          {/* Cards */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-5 perspective-1000">
             {plans.map((plan, i) => (
               <PricingCard key={plan.name} plan={plan} index={i} />
             ))}
           </div>
 
-          {/* Maintenance add-on */}
           <motion.div
             className="mt-6 rounded-2xl p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-5"
             style={{
@@ -427,9 +501,7 @@ export default function Home() {
       <section className="relative bg-black py-28 px-6 text-center overflow-hidden">
         <div
           className="absolute inset-0 pointer-events-none"
-          style={{
-            background: 'radial-gradient(ellipse at 50% 80%, rgba(37,99,235,0.1) 0%, transparent 65%)',
-          }}
+          style={{ background: 'radial-gradient(ellipse at 50% 80%, rgba(37,99,235,0.1) 0%, transparent 65%)' }}
         />
         <motion.div
           initial={{ opacity: 0, y: 28 }}
