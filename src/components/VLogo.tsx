@@ -3,7 +3,7 @@ interface VLogoProps {
   showText?: boolean
 }
 
-export default function VLogo({ size = 46, showText = true }: VLogoProps) {
+export default function VLogo({ size = 54, showText = true }: VLogoProps) {
   const h = Math.round(size * 1.125)
 
   return (
@@ -30,16 +30,16 @@ export default function VLogo({ size = 46, showText = true }: VLogoProps) {
             <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
           </filter>
         </defs>
-        {/* Right arm — static dim */}
-        <line x1="78" y1="4" x2="40" y2="86" stroke="rgba(225,224,204,0.22)" strokeWidth="7" strokeLinecap="round" />
-        {/* Left arm — static dim base */}
-        <line x1="2" y1="4" x2="40" y2="86" stroke="rgba(225,224,204,0.08)" strokeWidth="7" strokeLinecap="round" />
+        {/* Right arm — static */}
+        <line x1="78" y1="4" x2="40" y2="86" stroke="rgba(225,224,204,0.28)" strokeWidth="11" strokeLinecap="round" />
+        {/* Left arm — dim base */}
+        <line x1="2" y1="4" x2="40" y2="86" stroke="rgba(225,224,204,0.1)" strokeWidth="11" strokeLinecap="round" />
         {/* Left arm — outer bloom */}
-        <line x1="2" y1="4" x2="40" y2="86" stroke="#1d4ed8" strokeWidth="13" strokeLinecap="round" filter="url(#vws-glow-a)" className="v-glow-outer" />
+        <line x1="2" y1="4" x2="40" y2="86" stroke="#1d4ed8" strokeWidth="18" strokeLinecap="round" filter="url(#vws-glow-a)" className="v-glow-outer" />
         {/* Left arm — mid glow */}
-        <line x1="2" y1="4" x2="40" y2="86" stroke="#60a5fa" strokeWidth="7" strokeLinecap="round" filter="url(#vws-glow-b)" className="v-glow-mid" />
+        <line x1="2" y1="4" x2="40" y2="86" stroke="#60a5fa" strokeWidth="10" strokeLinecap="round" filter="url(#vws-glow-b)" className="v-glow-mid" />
         {/* Left arm — bright core */}
-        <line x1="2" y1="4" x2="40" y2="86" stroke="#e0f2fe" strokeWidth="2.5" strokeLinecap="round" filter="url(#vws-glow-c)" className="v-glow-core" />
+        <line x1="2" y1="4" x2="40" y2="86" stroke="#e0f2fe" strokeWidth="4" strokeLinecap="round" filter="url(#vws-glow-c)" className="v-glow-core" />
       </svg>
       {showText && (
         <div className="flex flex-col leading-none gap-[3px]">

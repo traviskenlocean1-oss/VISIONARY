@@ -5,6 +5,8 @@ import { Instagram, Facebook, Mail, ArrowRight, Copy, Check as CheckIcon, Plus, 
 const VIDEO_URL =
   'https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260330_145725_08886141-ed95-4a8e-8d6d-b75eaadce638.mp4'
 
+const CONTACT_EMAIL = 'Visionarywebstudio6@gmail.com'
+
 const FAQS = [
   {
     q: 'How long does it take to build a website?',
@@ -23,16 +25,16 @@ const FAQS = [
     a: 'Starter is a single-page site great for getting online fast. Standard gives you up to 5 pages with animations and analytics. Full Build is the complete package — unlimited pages, all integrations, e-commerce ready, priority delivery.',
   },
   {
+    q: 'Can you match a specific style or vibe I have in mind?',
+    a: 'Absolutely. We build completely custom — no templates. Share references, a mood board, or just a description and we design around your vision. Luxury, bold, clean, industrial, minimal — whatever direction fits your brand, we bring it to life.',
+  },
+  {
     q: 'Can you redesign my existing website?',
     a: 'Absolutely. Redesigns fall under the Standard or Full Build packages depending on the scope. We start fresh with a clean design — no patching over old work.',
   },
   {
     q: 'Do you offer payment plans?',
     a: 'Yes. We typically split projects 50% upfront and 50% on delivery. For larger builds we can discuss a 3-payment structure. Reach out and we\'ll work something out.',
-  },
-  {
-    q: 'What platform do you build websites on?',
-    a: 'We build custom with React, Vite, and Tailwind CSS, then deploy to Cloudflare Workers for speed and reliability. No WordPress, no page builders — everything is hand-coded and built for performance.',
   },
   {
     q: 'Will my website show up on Google?',
@@ -82,7 +84,7 @@ function ContactCard({ icon, label, value, href, delay }: {
       <div className="absolute -top-px left-6 right-6 h-px opacity-0 group-hover:opacity-100 transition-opacity duration-500"
         style={{ background: 'linear-gradient(90deg, transparent, rgba(96,165,250,0.6), transparent)' }} />
 
-      <div className="relative w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
+      <div className="relative w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0"
         style={{ background: 'rgba(37,99,235,0.18)', border: '1px solid rgba(96,165,250,0.25)', color: '#60a5fa' }}>
         {icon}
       </div>
@@ -174,16 +176,15 @@ export default function Contact() {
 
   return (
     <PageIn>
-      {/* ── FIXED VIDEO BACKGROUND ── */}
+      {/* FIXED VIDEO BACKGROUND */}
       <div className="fixed inset-0 -z-10 overflow-hidden">
         <video autoPlay muted loop playsInline className="absolute inset-0 w-full h-full object-cover" src={VIDEO_URL} />
         <div className="absolute inset-0" style={{ background: 'rgba(0,0,0,0.62)' }} />
         <div className="absolute inset-0" style={{ background: 'rgba(5,15,50,0.3)', mixBlendMode: 'multiply' }} />
       </div>
 
-      {/* ── HERO ── */}
+      {/* HERO */}
       <section className="relative min-h-screen flex items-center justify-center px-6 text-center">
-        <div className="noise-overlay absolute inset-0 opacity-20 mix-blend-overlay pointer-events-none" />
         <div className="absolute bottom-0 left-0 right-0 h-40 pointer-events-none"
           style={{ background: 'linear-gradient(to bottom, transparent, rgba(0,0,0,0.5))' }} />
 
@@ -242,14 +243,13 @@ export default function Contact() {
           </motion.div>
         </div>
 
-        {/* Scroll cue */}
-        <motion.div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
+        <motion.div className="absolute bottom-10 left-1/2 -translate-x-1/2"
           initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.4 }}>
           <div className="w-px h-10" style={{ background: 'linear-gradient(to bottom, rgba(96,165,250,0.8), transparent)' }} />
         </motion.div>
       </section>
 
-      {/* ── CONTACT FORM + METHODS ── */}
+      {/* CONTACT FORM + METHODS */}
       <section id="contact-form" className="relative py-24 md:py-32 px-6 md:px-10">
         <div className="max-w-6xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-5 gap-10 lg:gap-14 items-start">
@@ -263,9 +263,9 @@ export default function Contact() {
                 </h2>
               </div>
 
-              <ContactCard icon={<Mail size={17} />} label="Email Us" value="traviskenlocean1@gmail.com" href="mailto:traviskenlocean1@gmail.com" delay={0.1} />
-              <ContactCard icon={<Instagram size={17} />} label="Instagram" value="@visionarywebstudio" href="https://instagram.com" delay={0.2} />
-              <ContactCard icon={<Facebook size={17} />} label="Facebook" value="Visionary Web Studio" href="https://facebook.com" delay={0.3} />
+              <ContactCard icon={<Mail size={22} />} label="Email Us Directly" value={CONTACT_EMAIL} href={`mailto:${CONTACT_EMAIL}`} delay={0.1} />
+              <ContactCard icon={<Instagram size={22} />} label="Instagram" value="@visionarywebstudio" href="https://instagram.com/visionarywebstudio" delay={0.2} />
+              <ContactCard icon={<Facebook size={22} />} label="Facebook" value="Visionary Web Studio" href="https://facebook.com" delay={0.3} />
 
               <motion.div className="mt-1 rounded-2xl p-5"
                 style={{ background: 'rgba(5,8,20,0.7)', backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)', border: '1px solid rgba(96,165,250,0.15)' }}
@@ -337,8 +337,8 @@ export default function Contact() {
                       onBlur={(e) => { (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.08)'; (e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,0.05)' }} />
                   </div>
 
-                  <input type="hidden" name="_replyto" value="traviskenlocean1@gmail.com" />
-                  {status === 'error' && <p className="text-xs" style={{ color: '#f87171' }}>Something went wrong. Email us at traviskenlocean1@gmail.com</p>}
+                  <input type="hidden" name="_replyto" value={CONTACT_EMAIL} />
+                  {status === 'error' && <p className="text-xs" style={{ color: '#f87171' }}>Something went wrong. Email us at {CONTACT_EMAIL}</p>}
 
                   <button type="submit" disabled={status === 'sending'}
                     className="group w-full py-4 rounded-xl font-bold text-sm tracking-widest uppercase transition-all duration-300 flex items-center justify-center gap-3"
@@ -354,7 +354,7 @@ export default function Contact() {
         </div>
       </section>
 
-      {/* ── FAQ ── */}
+      {/* FAQ */}
       <section id="faq" className="relative py-24 md:py-32 px-6 md:px-10">
         <div className="max-w-3xl mx-auto">
           <motion.div className="text-center mb-14"
@@ -377,7 +377,7 @@ export default function Contact() {
           <motion.div className="mt-14 text-center"
             initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ delay: 0.3 }}>
             <p className="text-sm mb-5" style={{ color: 'rgba(225,224,204,0.4)' }}>Still have questions?</p>
-            <a href="mailto:traviskenlocean1@gmail.com"
+            <a href={`mailto:${CONTACT_EMAIL}`}
               className="inline-flex items-center gap-2 text-sm font-bold tracking-wide transition-colors duration-200"
               style={{ color: '#60a5fa' }}
               onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = '#93c5fd')}
