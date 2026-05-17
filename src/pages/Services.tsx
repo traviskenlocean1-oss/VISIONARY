@@ -32,7 +32,7 @@ function HLSVideoBackground() {
         playsInline
         className="absolute inset-0 w-full h-full object-cover"
       />
-      <div className="absolute inset-0" style={{ background: 'rgba(0,0,0,0.42)' }} />
+      <div className="absolute inset-0" style={{ background: 'rgba(0,0,0,0.22)' }} />
     </div>
   )
 }
@@ -78,7 +78,7 @@ export default function Services() {
     if (location.hash) {
       setTimeout(() => {
         document.querySelector(location.hash)?.scrollIntoView({ behavior: 'smooth' })
-      }, 100)
+      }, 150)
     }
   }, [location.hash])
 
