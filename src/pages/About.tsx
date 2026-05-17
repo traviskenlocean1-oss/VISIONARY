@@ -1,39 +1,21 @@
-import { useEffect, useRef } from 'react'
 import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import { ArrowRight, Shield, Zap, Award, Users } from 'lucide-react'
-import Hls from 'hls.js'
 
-const ABOUT_HLS = 'https://stream.mux.com/sDz01Os9GN02ltJvgikeaUvZWsLRiR5FX5GuadCRkQc7E.m3u8'
+const ABOUT_VIDEO = 'https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260324_024928_1efd0b0d-6c02-45a8-8847-1030900c4f63.mp4'
 
-function HLSVideoBackground() {
-  const ref = useRef<HTMLVideoElement>(null)
-
-  useEffect(() => {
-    const video = ref.current
-    if (!video) return
-    if (Hls.isSupported()) {
-      const hls = new Hls()
-      hls.loadSource(ABOUT_HLS)
-      hls.attachMedia(video)
-      return () => hls.destroy()
-    } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-      video.src = ABOUT_HLS
-    }
-  }, [])
-
+function VideoBackground() {
   return (
     <div className="fixed inset-0 -z-10 overflow-hidden">
       <video
-        ref={ref}
+        src={ABOUT_VIDEO}
         autoPlay
         muted
         loop
         playsInline
         className="absolute inset-0 w-full h-full object-cover"
       />
-      <div className="absolute inset-0" style={{ background: 'rgba(0,0,0,0.65)' }} />
-      <div className="absolute inset-0" style={{ background: 'rgba(5,10,30,0.35)', mixBlendMode: 'multiply' }} />
+      <div className="absolute inset-0" style={{ background: 'rgba(0,0,0,0.52)' }} />
     </div>
   )
 }
@@ -99,7 +81,7 @@ const process = [
 export default function About() {
   return (
     <PageIn>
-      <HLSVideoBackground />
+      <VideoBackground />
 
       {/* HERO */}
       <section className="relative min-h-screen flex items-center justify-center px-6 text-center">
