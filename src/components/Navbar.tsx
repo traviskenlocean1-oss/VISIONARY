@@ -80,16 +80,17 @@ export default function Navbar() {
               onMouseEnter={() => setServicesOpen(true)}
               onMouseLeave={() => setServicesOpen(false)}
             >
-              <button
+              <Link
+                to="/services"
                 className="flex items-center gap-1.5 text-[11px] font-medium tracking-[0.2em] uppercase transition-colors duration-200"
-                style={{ color: isServicesActive ? '#E1E0CC' : 'rgba(225,224,204,0.45)', background: 'none', border: 'none', cursor: 'pointer', position: 'relative' }}
+                style={{ color: isServicesActive ? '#E1E0CC' : 'rgba(225,224,204,0.45)', position: 'relative' }}
                 onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = '#E1E0CC')}
                 onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = isServicesActive ? '#E1E0CC' : 'rgba(225,224,204,0.45)')}
               >
                 Services
                 <ChevronDown size={10} style={{ transition: 'transform 0.2s', transform: servicesOpen ? 'rotate(180deg)' : 'rotate(0deg)' }} />
                 {isServicesActive && <span className="absolute -bottom-[2px] left-0 right-0 h-px" style={{ background: '#60a5fa' }} />}
-              </button>
+              </Link>
 
               <AnimatePresence>
                 {servicesOpen && (
