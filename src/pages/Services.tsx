@@ -32,8 +32,7 @@ function HLSVideoBackground() {
         playsInline
         className="absolute inset-0 w-full h-full object-cover"
       />
-      <div className="absolute inset-0" style={{ background: 'rgba(0,0,0,0.68)' }} />
-      <div className="absolute inset-0" style={{ background: 'rgba(5,10,30,0.3)', mixBlendMode: 'multiply' }} />
+      <div className="absolute inset-0" style={{ background: 'rgba(0,0,0,0.42)' }} />
     </div>
   )
 }
