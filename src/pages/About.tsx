@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
-import { ArrowRight, Shield, Zap, Award, Users } from 'lucide-react'
+import { ArrowRight, Shield, Zap, Award, Users, Check } from 'lucide-react'
 
 const ABOUT_VIDEO = 'https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260324_024928_1efd0b0d-6c02-45a8-8847-1030900c4f63.mp4'
 
@@ -75,6 +75,21 @@ const process = [
     step: '04',
     title: 'Launch',
     desc: 'We handle everything: deployment, domain connection, final testing. You get a live site and a walkthrough of how it all works.',
+  },
+]
+
+const capabilities = [
+  {
+    label: 'Design',
+    heading: 'Sites that look like they cost twice as much.',
+    body: "Every pixel is intentional. We don't pull from template libraries or copy trends — we build layouts, color systems, and typography stacks that are specific to your business. The result is a visual identity that feels premium, loads fast, and makes visitors stop scrolling. From the hero section down to the footer, everything is custom, cohesive, and built to leave a lasting impression.",
+    points: ['Custom layouts — no templates', 'Brand-matched color & typography', 'Scroll-triggered animations', 'Mobile-first, pixel-perfect'],
+  },
+  {
+    label: 'SEO',
+    heading: 'Built to be found. From day one.',
+    body: "Every site ships with the full SEO foundation already in place — not as an afterthought. That means semantic HTML structure, fully populated meta tags, Open Graph for social sharing, JSON-LD schema markup for Google's rich results, canonical tags, fast load speeds, and a performance score that reflects real-world results. You won't need to hire someone separately just to get the basics working.",
+    points: ['Meta tags & Open Graph', 'JSON-LD schema markup', 'Semantic HTML structure', 'Canonical tags & fast load speeds'],
   },
 ]
 
@@ -191,6 +206,79 @@ export default function About() {
               </p>
             </div>
           </motion.div>
+        </div>
+      </section>
+
+      {/* DESIGN + SEO CAPABILITIES */}
+      <section className="relative py-4 md:py-8 px-6 md:px-10">
+        <div className="max-w-5xl mx-auto flex flex-col gap-4">
+          {capabilities.map((item, i) => (
+            <motion.div
+              key={item.label}
+              className="flex rounded-2xl overflow-hidden"
+              style={{
+                background: 'rgba(5,8,20,0.78)',
+                backdropFilter: 'blur(24px)',
+                WebkitBackdropFilter: 'blur(24px)',
+                border: '1px solid rgba(255,255,255,0.07)',
+              }}
+              initial={{ opacity: 0, y: 28 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-60px' }}
+              transition={{ duration: 0.75, ease: [0.16, 1, 0.3, 1], delay: i * 0.12 }}
+              whileHover={{ borderColor: 'rgba(96,165,250,0.2)' }}
+            >
+              {/* Vertical label */}
+              <div
+                className="flex-shrink-0 w-11 md:w-14 flex items-center justify-center border-r"
+                style={{ borderColor: 'rgba(255,255,255,0.06)', background: 'rgba(0,0,0,0.18)' }}
+              >
+                <span
+                  className="font-extrabold tracking-[0.22em] uppercase text-[10px] select-none"
+                  style={{
+                    writingMode: 'vertical-rl',
+                    textOrientation: 'mixed',
+                    transform: 'rotate(180deg)',
+                    color: 'rgba(96,165,250,0.55)',
+                  }}
+                >
+                  {item.label}
+                </span>
+              </div>
+
+              {/* Content */}
+              <div className="p-7 md:p-10 flex-1">
+                <h3
+                  className="font-extrabold tracking-tight mb-4"
+                  style={{ fontSize: 'clamp(18px, 2.8vw, 30px)', color: '#E1E0CC', letterSpacing: '-0.03em' }}
+                >
+                  {item.heading}
+                </h3>
+                <p
+                  className="text-sm md:text-base leading-relaxed mb-6"
+                  style={{ color: 'rgba(225,224,204,0.52)', maxWidth: '640px' }}
+                >
+                  {item.body}
+                </p>
+                <ul className="flex flex-wrap gap-2">
+                  {item.points.map((pt) => (
+                    <li
+                      key={pt}
+                      className="flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-full"
+                      style={{
+                        background: 'rgba(37,99,235,0.12)',
+                        border: '1px solid rgba(96,165,250,0.18)',
+                        color: 'rgba(147,197,253,0.9)',
+                      }}
+                    >
+                      <Check size={10} />
+                      {pt}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </motion.div>
+          ))}
         </div>
       </section>
 
