@@ -198,8 +198,8 @@ export default function About() {
       <section className="relative py-12 md:py-16 px-6 md:px-10">
         <div className="max-w-5xl mx-auto">
           <motion.p
-            className="text-[10px] tracking-[0.32em] uppercase mb-10"
-            style={{ color: 'rgba(225,224,204,0.3)' }}
+            className="text-[13px] tracking-[0.32em] uppercase mb-10"
+            style={{ color: 'rgba(96,165,250,0.7)' }}
             initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ duration: 0.6 }}
           >
             What We Stand For
