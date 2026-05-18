@@ -93,17 +93,6 @@ const capabilities = [
   },
 ]
 
-const labelStyle: React.CSSProperties = {
-  writingMode: 'vertical-rl',
-  transform: 'rotate(180deg)',
-  fontSize: '10px',
-  fontWeight: 800,
-  letterSpacing: '0.28em',
-  textTransform: 'uppercase',
-  color: 'rgba(96,165,250,0.65)',
-  userSelect: 'none',
-}
-
 export default function About() {
   return (
     <PageIn>
@@ -123,7 +112,6 @@ export default function About() {
           >
             Our Story
           </motion.p>
-
           <div className="overflow-hidden mb-3">
             <motion.h1
               className="font-extrabold tracking-tight leading-none"
@@ -147,7 +135,6 @@ export default function About() {
               }}>businesses.</span>
             </motion.h1>
           </div>
-
           <motion.p
             className="text-base md:text-xl max-w-2xl mx-auto mb-10 leading-relaxed"
             style={{ color: 'rgba(225,224,204,0.65)' }}
@@ -155,7 +142,6 @@ export default function About() {
           >
             We design and build custom websites for brands that are serious about their presence — and serious about results.
           </motion.p>
-
           <motion.div
             className="flex justify-center"
             initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.8, duration: 0.6 }}
@@ -171,7 +157,6 @@ export default function About() {
             </button>
           </motion.div>
         </div>
-
         <motion.div className="absolute bottom-10 left-1/2 -translate-x-1/2"
           initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.4 }}>
           <div className="w-px h-10" style={{ background: 'linear-gradient(to bottom, rgba(96,165,250,0.8), transparent)' }} />
@@ -195,7 +180,6 @@ export default function About() {
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           >
             <p className="text-[10px] tracking-[0.32em] uppercase mb-6" style={{ color: 'rgba(96,165,250,0.7)' }}>Who We Are</p>
-
             <h2
               className="font-extrabold tracking-tight leading-tight mb-8"
               style={{ fontSize: 'clamp(26px, 4vw, 48px)', color: '#E1E0CC', letterSpacing: '-0.03em' }}
@@ -204,7 +188,6 @@ export default function About() {
               <span style={{ color: '#60a5fa' }}> great businesses</span> and
               <span style={{ color: '#60a5fa' }}> great websites.</span>
             </h2>
-
             <div className="flex flex-col gap-5 max-w-3xl">
               <p className="text-base md:text-lg leading-relaxed" style={{ color: 'rgba(225,224,204,0.7)' }}>
                 Visionary Web Studio is a boutique creative studio specializing in custom-built, high-performance websites for businesses that want to stand out. We work with restaurants, contractors, beauty studios, automotive brands, service companies, and entrepreneurs who know that their online presence is their first impression — and it needs to be a great one.
@@ -220,99 +203,125 @@ export default function About() {
         </div>
       </section>
 
-      {/* ── DESIGN + SEO — sticky sidebar mimicking Vectra layout ── */}
-      <section
-        className="relative flex"
-        style={{
-          borderTop: '1px solid rgba(255,255,255,0.06)',
-          borderBottom: '1px solid rgba(255,255,255,0.06)',
-          overflowX: 'clip',
-        }}
-      >
-        {/* STICKY SIDEBAR — slides in from left edge on scroll */}
-        <motion.div
-          className="sticky top-0 flex-shrink-0 flex flex-col"
-          style={{
-            width: '52px',
-            height: '100vh',
-            background: 'rgba(3,5,14,0.55)',
-            backdropFilter: 'blur(20px)',
-            WebkitBackdropFilter: 'blur(20px)',
-            borderRight: '1px solid rgba(255,255,255,0.07)',
-            zIndex: 10,
-          }}
-          initial={{ x: -52, opacity: 0 }}
-          whileInView={{ x: 0, opacity: 1 }}
-          viewport={{ once: true, margin: '-40px' }}
-          transition={{ duration: 1.1, ease: [0.16, 1, 0.3, 1] }}
-        >
-          {/* Design label — top half */}
-          <div
-            className="flex-1 flex items-center justify-center"
-            style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}
+      {/* ── DESIGN + SEO — left sidebar + content panels ── */}
+      {/*
+        Outer div clips the x-overflow so the sidebar starts hidden off-screen.
+        Inner flex: sidebar (full section height) | content panels (stacked).
+        No sticky, no overflow on flex parent — just a clean flex column sidebar.
+      */}
+      <div style={{ overflowX: 'hidden', borderTop: '1px solid rgba(255,255,255,0.06)', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
+        <div className="flex">
+
+          {/* LEFT SIDEBAR — slides in from off-screen left when section enters view */}
+          <motion.div
+            className="flex-shrink-0 flex flex-col self-stretch"
+            style={{
+              width: '52px',
+              background: 'rgba(3,5,14,0.6)',
+              backdropFilter: 'blur(20px)',
+              WebkitBackdropFilter: 'blur(20px)',
+              borderRight: '1px solid rgba(255,255,255,0.07)',
+            }}
+            initial={{ x: -52, opacity: 0 }}
+            whileInView={{ x: 0, opacity: 1 }}
+            viewport={{ once: true, margin: '-40px' }}
+            transition={{ duration: 1.1, ease: [0.16, 1, 0.3, 1] }}
           >
-            <span style={labelStyle}>Design</span>
-          </div>
-
-          {/* Center dot */}
-          <div className="flex items-center justify-center py-3 flex-shrink-0">
-            <div style={{ width: 5, height: 5, borderRadius: '50%', background: 'rgba(96,165,250,0.35)', boxShadow: '0 0 8px rgba(96,165,250,0.4)' }} />
-          </div>
-
-          {/* SEO label — bottom half */}
-          <div className="flex-1 flex items-center justify-center">
-            <span style={labelStyle}>SEO</span>
-          </div>
-        </motion.div>
-
-        {/* Content panels — scroll past the sticky sidebar */}
-        <div className="flex-1">
-          {capabilities.map((item, i) => (
-            <motion.div
-              key={item.label}
-              className="py-20 px-8 md:px-16 lg:px-20"
-              style={{
-                borderBottom: i < capabilities.length - 1 ? '1px solid rgba(255,255,255,0.05)' : 'none',
-              }}
-              initial={{ opacity: 0, x: 50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true, margin: '-60px' }}
-              transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
+            {/* Design label — top half */}
+            <div
+              className="flex-1 flex items-center justify-center"
+              style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}
             >
-              <div className="max-w-3xl">
-                <h3
-                  className="font-extrabold tracking-tight mb-5"
-                  style={{ fontSize: 'clamp(22px, 3.5vw, 42px)', color: '#E1E0CC', letterSpacing: '-0.03em' }}
-                >
-                  {item.heading}
-                </h3>
-                <p
-                  className="text-sm md:text-base leading-relaxed mb-7"
-                  style={{ color: 'rgba(225,224,204,0.52)' }}
-                >
-                  {item.body}
-                </p>
-                <ul className="flex flex-wrap gap-2">
-                  {item.points.map((pt) => (
-                    <li
-                      key={pt}
-                      className="flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-full"
-                      style={{
-                        background: 'rgba(37,99,235,0.12)',
-                        border: '1px solid rgba(96,165,250,0.18)',
-                        color: 'rgba(147,197,253,0.9)',
-                      }}
-                    >
-                      <Check size={10} />
-                      {pt}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </motion.div>
-          ))}
+              <span
+                style={{
+                  writingMode: 'vertical-rl',
+                  transform: 'rotate(180deg)',
+                  fontSize: '10px',
+                  fontWeight: 800,
+                  letterSpacing: '0.28em',
+                  textTransform: 'uppercase',
+                  color: 'rgba(96,165,250,0.65)',
+                  userSelect: 'none',
+                }}
+              >
+                Design
+              </span>
+            </div>
+
+            {/* Center dot divider */}
+            <div className="flex items-center justify-center flex-shrink-0" style={{ paddingTop: '10px', paddingBottom: '10px' }}>
+              <div style={{ width: 5, height: 5, borderRadius: '50%', background: 'rgba(96,165,250,0.4)', boxShadow: '0 0 8px rgba(96,165,250,0.5)' }} />
+            </div>
+
+            {/* SEO label — bottom half */}
+            <div className="flex-1 flex items-center justify-center">
+              <span
+                style={{
+                  writingMode: 'vertical-rl',
+                  transform: 'rotate(180deg)',
+                  fontSize: '10px',
+                  fontWeight: 800,
+                  letterSpacing: '0.28em',
+                  textTransform: 'uppercase',
+                  color: 'rgba(96,165,250,0.65)',
+                  userSelect: 'none',
+                }}
+              >
+                SEO
+              </span>
+            </div>
+          </motion.div>
+
+          {/* CONTENT PANELS — right side, stacked vertically */}
+          <div className="flex-1">
+            {capabilities.map((item, i) => (
+              <motion.div
+                key={item.label}
+                className="py-20 px-8 md:px-16 lg:px-20"
+                style={{
+                  borderBottom: i < capabilities.length - 1 ? '1px solid rgba(255,255,255,0.05)' : 'none',
+                }}
+                initial={{ opacity: 0, x: 50 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true, margin: '-60px' }}
+                transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1], delay: 0.25 }}
+              >
+                <div className="max-w-3xl">
+                  <h3
+                    className="font-extrabold tracking-tight mb-5"
+                    style={{ fontSize: 'clamp(22px, 3.5vw, 42px)', color: '#E1E0CC', letterSpacing: '-0.03em' }}
+                  >
+                    {item.heading}
+                  </h3>
+                  <p
+                    className="text-sm md:text-base leading-relaxed mb-7"
+                    style={{ color: 'rgba(225,224,204,0.52)' }}
+                  >
+                    {item.body}
+                  </p>
+                  <ul className="flex flex-wrap gap-2">
+                    {item.points.map((pt) => (
+                      <li
+                        key={pt}
+                        className="flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-full"
+                        style={{
+                          background: 'rgba(37,99,235,0.12)',
+                          border: '1px solid rgba(96,165,250,0.18)',
+                          color: 'rgba(147,197,253,0.9)',
+                        }}
+                      >
+                        <Check size={10} />
+                        {pt}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+
         </div>
-      </section>
+      </div>
 
       {/* VALUES */}
       <section className="relative py-12 md:py-16 px-6 md:px-10">
@@ -367,7 +376,6 @@ export default function About() {
               <span style={{ color: '#60a5fa' }}>in days, not months.</span>
             </h2>
           </motion.div>
-
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {process.map((p, i) => (
               <motion.div
