@@ -59,7 +59,7 @@ const plans = [
       '2 revision rounds',
       'Delivered in 5 days',
     ],
-    cta: 'Get Started',
+    cta: 'Get Basic',
     featured: false,
   },
   {
@@ -74,7 +74,7 @@ const plans = [
       'Social media links',
       '3 revision rounds',
     ],
-    cta: 'Most Popular',
+    cta: 'Choose Standard',
     featured: true,
   },
   {
@@ -89,7 +89,7 @@ const plans = [
       'Priority 7-day delivery',
       'Unlimited revisions',
     ],
-    cta: 'Build Everything',
+    cta: 'Get Premium',
     featured: false,
   },
 ]
