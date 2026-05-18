@@ -93,6 +93,17 @@ const capabilities = [
   },
 ]
 
+const labelStyle: React.CSSProperties = {
+  writingMode: 'vertical-rl',
+  transform: 'rotate(180deg)',
+  fontSize: '10px',
+  fontWeight: 800,
+  letterSpacing: '0.28em',
+  textTransform: 'uppercase',
+  color: 'rgba(96,165,250,0.65)',
+  userSelect: 'none',
+}
+
 export default function About() {
   return (
     <PageIn>
@@ -209,54 +220,69 @@ export default function About() {
         </div>
       </section>
 
-      {/* ── DESIGN + SEO — full-width rows, labels slide in from left edge ── */}
-      <section className="relative overflow-hidden" style={{ borderTop: '1px solid rgba(255,255,255,0.05)', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
-        {capabilities.map((item, i) => (
+      {/* ── DESIGN + SEO — sticky sidebar mimicking Vectra layout ── */}
+      <section
+        className="relative flex"
+        style={{
+          borderTop: '1px solid rgba(255,255,255,0.06)',
+          borderBottom: '1px solid rgba(255,255,255,0.06)',
+          overflowX: 'clip',
+        }}
+      >
+        {/* STICKY SIDEBAR — slides in from left edge on scroll */}
+        <motion.div
+          className="sticky top-0 flex-shrink-0 flex flex-col"
+          style={{
+            width: '52px',
+            height: '100vh',
+            background: 'rgba(3,5,14,0.55)',
+            backdropFilter: 'blur(20px)',
+            WebkitBackdropFilter: 'blur(20px)',
+            borderRight: '1px solid rgba(255,255,255,0.07)',
+            zIndex: 10,
+          }}
+          initial={{ x: -52, opacity: 0 }}
+          whileInView={{ x: 0, opacity: 1 }}
+          viewport={{ once: true, margin: '-40px' }}
+          transition={{ duration: 1.1, ease: [0.16, 1, 0.3, 1] }}
+        >
+          {/* Design label — top half */}
           <div
-            key={item.label}
-            className="flex"
-            style={{
-              borderBottom: i < capabilities.length - 1 ? '1px solid rgba(255,255,255,0.05)' : 'none',
-            }}
+            className="flex-1 flex items-center justify-center"
+            style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}
           >
-            {/* Left-edge label — hidden off-screen, pulls in on scroll */}
-            <motion.div
-              className="flex-shrink-0 flex items-center justify-center"
-              style={{
-                width: '52px',
-                background: 'rgba(0,0,0,0.28)',
-                borderRight: '1px solid rgba(255,255,255,0.06)',
-              }}
-              initial={{ x: -52, opacity: 0 }}
-              whileInView={{ x: 0, opacity: 1 }}
-              viewport={{ once: true, margin: '-60px' }}
-              transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: 0.05 }}
-            >
-              <span
-                className="font-extrabold tracking-[0.26em] uppercase select-none"
-                style={{
-                  writingMode: 'vertical-rl',
-                  transform: 'rotate(180deg)',
-                  fontSize: '10px',
-                  color: 'rgba(96,165,250,0.65)',
-                }}
-              >
-                {item.label}
-              </span>
-            </motion.div>
+            <span style={labelStyle}>Design</span>
+          </div>
 
-            {/* Content — slides in from right */}
+          {/* Center dot */}
+          <div className="flex items-center justify-center py-3 flex-shrink-0">
+            <div style={{ width: 5, height: 5, borderRadius: '50%', background: 'rgba(96,165,250,0.35)', boxShadow: '0 0 8px rgba(96,165,250,0.4)' }} />
+          </div>
+
+          {/* SEO label — bottom half */}
+          <div className="flex-1 flex items-center justify-center">
+            <span style={labelStyle}>SEO</span>
+          </div>
+        </motion.div>
+
+        {/* Content panels — scroll past the sticky sidebar */}
+        <div className="flex-1">
+          {capabilities.map((item, i) => (
             <motion.div
-              className="flex-1 py-16 md:py-20 px-8 md:px-14 lg:px-20"
-              initial={{ x: 60, opacity: 0 }}
-              whileInView={{ x: 0, opacity: 1 }}
+              key={item.label}
+              className="py-20 px-8 md:px-16 lg:px-20"
+              style={{
+                borderBottom: i < capabilities.length - 1 ? '1px solid rgba(255,255,255,0.05)' : 'none',
+              }}
+              initial={{ opacity: 0, x: 50 }}
+              whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true, margin: '-60px' }}
-              transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1], delay: 0.18 }}
+              transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
             >
               <div className="max-w-3xl">
                 <h3
                   className="font-extrabold tracking-tight mb-5"
-                  style={{ fontSize: 'clamp(22px, 3.5vw, 40px)', color: '#E1E0CC', letterSpacing: '-0.03em' }}
+                  style={{ fontSize: 'clamp(22px, 3.5vw, 42px)', color: '#E1E0CC', letterSpacing: '-0.03em' }}
                 >
                   {item.heading}
                 </h3>
@@ -284,8 +310,8 @@ export default function About() {
                 </ul>
               </div>
             </motion.div>
-          </div>
-        ))}
+          ))}
+        </div>
       </section>
 
       {/* VALUES */}
