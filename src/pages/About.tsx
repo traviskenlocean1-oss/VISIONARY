@@ -209,54 +209,60 @@ export default function About() {
         </div>
       </section>
 
-      {/* DESIGN + SEO CAPABILITIES */}
-      <section className="relative py-4 md:py-8 px-6 md:px-10">
-        <div className="max-w-5xl mx-auto flex flex-col gap-4">
-          {capabilities.map((item, i) => (
+      {/* ── DESIGN + SEO — full-width rows, labels slide in from left edge ── */}
+      <section className="relative overflow-hidden" style={{ borderTop: '1px solid rgba(255,255,255,0.05)', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+        {capabilities.map((item, i) => (
+          <div
+            key={item.label}
+            className="flex"
+            style={{
+              borderBottom: i < capabilities.length - 1 ? '1px solid rgba(255,255,255,0.05)' : 'none',
+            }}
+          >
+            {/* Left-edge label — hidden off-screen, pulls in on scroll */}
             <motion.div
-              key={item.label}
-              className="flex rounded-2xl overflow-hidden"
+              className="flex-shrink-0 flex items-center justify-center"
               style={{
-                background: 'rgba(5,8,20,0.78)',
-                backdropFilter: 'blur(24px)',
-                WebkitBackdropFilter: 'blur(24px)',
-                border: '1px solid rgba(255,255,255,0.07)',
+                width: '52px',
+                background: 'rgba(0,0,0,0.28)',
+                borderRight: '1px solid rgba(255,255,255,0.06)',
               }}
-              initial={{ opacity: 0, y: 28 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              initial={{ x: -52, opacity: 0 }}
+              whileInView={{ x: 0, opacity: 1 }}
               viewport={{ once: true, margin: '-60px' }}
-              transition={{ duration: 0.75, ease: [0.16, 1, 0.3, 1], delay: i * 0.12 }}
-              whileHover={{ borderColor: 'rgba(96,165,250,0.2)' }}
+              transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: 0.05 }}
             >
-              {/* Vertical label */}
-              <div
-                className="flex-shrink-0 w-11 md:w-14 flex items-center justify-center border-r"
-                style={{ borderColor: 'rgba(255,255,255,0.06)', background: 'rgba(0,0,0,0.18)' }}
+              <span
+                className="font-extrabold tracking-[0.26em] uppercase select-none"
+                style={{
+                  writingMode: 'vertical-rl',
+                  transform: 'rotate(180deg)',
+                  fontSize: '10px',
+                  color: 'rgba(96,165,250,0.65)',
+                }}
               >
-                <span
-                  className="font-extrabold tracking-[0.22em] uppercase text-[10px] select-none"
-                  style={{
-                    writingMode: 'vertical-rl',
-                    textOrientation: 'mixed',
-                    transform: 'rotate(180deg)',
-                    color: 'rgba(96,165,250,0.55)',
-                  }}
-                >
-                  {item.label}
-                </span>
-              </div>
+                {item.label}
+              </span>
+            </motion.div>
 
-              {/* Content */}
-              <div className="p-7 md:p-10 flex-1">
+            {/* Content — slides in from right */}
+            <motion.div
+              className="flex-1 py-16 md:py-20 px-8 md:px-14 lg:px-20"
+              initial={{ x: 60, opacity: 0 }}
+              whileInView={{ x: 0, opacity: 1 }}
+              viewport={{ once: true, margin: '-60px' }}
+              transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1], delay: 0.18 }}
+            >
+              <div className="max-w-3xl">
                 <h3
-                  className="font-extrabold tracking-tight mb-4"
-                  style={{ fontSize: 'clamp(18px, 2.8vw, 30px)', color: '#E1E0CC', letterSpacing: '-0.03em' }}
+                  className="font-extrabold tracking-tight mb-5"
+                  style={{ fontSize: 'clamp(22px, 3.5vw, 40px)', color: '#E1E0CC', letterSpacing: '-0.03em' }}
                 >
                   {item.heading}
                 </h3>
                 <p
-                  className="text-sm md:text-base leading-relaxed mb-6"
-                  style={{ color: 'rgba(225,224,204,0.52)', maxWidth: '640px' }}
+                  className="text-sm md:text-base leading-relaxed mb-7"
+                  style={{ color: 'rgba(225,224,204,0.52)' }}
                 >
                   {item.body}
                 </p>
@@ -278,8 +284,8 @@ export default function About() {
                 </ul>
               </div>
             </motion.div>
-          ))}
-        </div>
+          </div>
+        ))}
       </section>
 
       {/* VALUES */}
