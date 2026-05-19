@@ -1,7 +1,7 @@
 import { useRef, useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { motion, useInView, useMotionValue, useSpring } from 'framer-motion'
-import { ArrowRight, Check, Zap, Star } from 'lucide-react'
+import { ArrowRight, Check, Zap, Star, TrendingUp } from 'lucide-react'
 import Hls from 'hls.js'
 import VLogo from '../components/VLogo'
 
@@ -229,7 +229,6 @@ export default function Home() {
         onMouseMove={handleHeroMouseMove}
         onMouseLeave={() => setMouse({ x: 0, y: 0 })}
       >
-        {/* Blue orb blobs — parallax for depth */}
         <div
           className="absolute inset-0 pointer-events-none"
           style={{
@@ -259,7 +258,6 @@ export default function Home() {
           />
         </div>
 
-        {/* Subtle grid overlay */}
         <div
           className="absolute inset-0 pointer-events-none"
           style={{
@@ -268,11 +266,9 @@ export default function Home() {
           }}
         />
 
-        {/* Vignettes */}
         <div className="absolute bottom-0 left-0 right-0 pointer-events-none" style={{ height: '35%', background: 'linear-gradient(to top, rgba(3,5,10,0.7), transparent)' }} />
         <div className="absolute top-0 left-0 right-0 pointer-events-none" style={{ height: '20%', background: 'linear-gradient(to bottom, rgba(3,5,10,0.4), transparent)' }} />
 
-        {/* Hero content */}
         <div
           className="absolute inset-0 flex flex-col items-center justify-center px-6 text-center"
           style={{
@@ -373,7 +369,6 @@ export default function Home() {
           </motion.div>
         </div>
 
-        {/* Scroll indicator */}
         <motion.div
           className="absolute bottom-8 left-1/2 -translate-x-1/2"
           initial={{ opacity: 0 }}
@@ -415,6 +410,149 @@ export default function Home() {
               </motion.div>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* ── VALUE COMPARISON ── */}
+      <section className="relative py-24 px-6 overflow-hidden border-t" style={{ borderColor: 'rgba(255,255,255,0.06)' }}>
+        {/* Purple side accent bars */}
+        <div className="absolute left-0 top-0 bottom-0 w-3 md:w-6" style={{ background: 'linear-gradient(to bottom, #7c3aed, #4f46e5, #7c3aed)' }} />
+        <div className="absolute right-0 top-0 bottom-0 w-3 md:w-6" style={{ background: 'linear-gradient(to bottom, #7c3aed, #4f46e5, #7c3aed)' }} />
+
+        <div className="max-w-2xl mx-auto text-center">
+          {/* Icon */}
+          <motion.div
+            className="flex justify-center mb-8"
+            initial={{ opacity: 0, scale: 0.7 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+          >
+            <div
+              className="w-16 h-16 rounded-full flex items-center justify-center"
+              style={{ background: 'linear-gradient(135deg, #7c3aed 0%, #4f46e5 100%)', boxShadow: '0 0 40px rgba(124,58,237,0.4)' }}
+            >
+              <TrendingUp size={28} color="#fff" />
+            </div>
+          </motion.div>
+
+          {/* Headline */}
+          <motion.h2
+            className="font-extrabold tracking-tight mb-5"
+            style={{ fontSize: 'clamp(32px, 6vw, 64px)', color: '#E1E0CC', letterSpacing: '-0.04em', lineHeight: 1.05 }}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7, delay: 0.1 }}
+          >
+            76% More Likely to Buy
+          </motion.h2>
+
+          <motion.p
+            className="text-base md:text-lg mb-10 leading-relaxed"
+            style={{ color: 'rgba(225,224,204,0.55)' }}
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+          >
+            With a professional website for your business, potential clients are{' '}
+            <span style={{ color: '#a78bfa', fontWeight: 700 }}>76% more likely to buy from you.</span>
+          </motion.p>
+
+          {/* Divider */}
+          <div className="w-full h-px mb-10" style={{ background: 'rgba(255,255,255,0.08)' }} />
+
+          {/* Comparison columns */}
+          <motion.div
+            className="grid grid-cols-2 gap-4 mb-10"
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7, delay: 0.25 }}
+          >
+            {/* Typical agencies */}
+            <div
+              className="rounded-2xl p-6 md:p-8 text-center"
+              style={{
+                background: 'rgba(5,8,20,0.7)',
+                backdropFilter: 'blur(16px)',
+                WebkitBackdropFilter: 'blur(16px)',
+                border: '1px solid rgba(255,255,255,0.07)',
+              }}
+            >
+              <p className="text-[10px] tracking-[0.25em] uppercase mb-5" style={{ color: 'rgba(225,224,204,0.35)' }}>
+                Typical Web Agencies
+              </p>
+              <p
+                className="font-extrabold mb-1 leading-none"
+                style={{
+                  fontSize: 'clamp(20px, 4vw, 38px)',
+                  color: 'rgba(225,224,204,0.25)',
+                  textDecoration: 'line-through',
+                  letterSpacing: '-0.03em',
+                  textDecorationColor: 'rgba(239,68,68,0.6)',
+                }}
+              >
+                $4,000–$20,000
+              </p>
+              <div className="flex items-center justify-center gap-2 mt-4">
+                <span style={{ color: '#ef4444', fontSize: '16px', fontWeight: 900 }}>✗</span>
+                <span className="text-sm font-semibold" style={{ color: '#ef4444' }}>Expensive &amp; Slow</span>
+              </div>
+            </div>
+
+            {/* Visionary */}
+            <div
+              className="rounded-2xl p-6 md:p-8 text-center relative overflow-hidden"
+              style={{
+                background: 'linear-gradient(135deg, rgba(124,58,237,0.2) 0%, rgba(79,70,229,0.12) 100%)',
+                backdropFilter: 'blur(16px)',
+                WebkitBackdropFilter: 'blur(16px)',
+                border: '1px solid rgba(124,58,237,0.4)',
+                boxShadow: '0 0 40px rgba(124,58,237,0.12)',
+              }}
+            >
+              <div className="absolute -top-px left-0 right-0 h-px" style={{ background: 'linear-gradient(90deg, transparent, #a78bfa, transparent)' }} />
+              <p className="text-[10px] tracking-[0.25em] uppercase mb-5" style={{ color: '#c4b5fd' }}>
+                Visionary
+              </p>
+              <p
+                className="font-extrabold mb-1 leading-none"
+                style={{ fontSize: 'clamp(28px, 5vw, 52px)', color: '#E1E0CC', letterSpacing: '-0.04em' }}
+              >
+                $750
+              </p>
+              <p className="text-xs mb-4" style={{ color: 'rgba(225,224,204,0.35)' }}>One-Time Fee</p>
+              <div className="flex items-center justify-center gap-2">
+                <span style={{ color: '#4ade80', fontSize: '16px', fontWeight: 900 }}>✓</span>
+                <span className="text-sm font-semibold" style={{ color: '#4ade80' }}>Affordable &amp; Fast</span>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* CTA */}
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.35 }}
+          >
+            <Link
+              to="/contact"
+              className="group inline-flex items-center gap-3 rounded-full font-bold text-sm px-8 py-4 transition-all duration-300"
+              style={{
+                background: 'linear-gradient(135deg, #7c3aed 0%, #3b82f6 100%)',
+                color: '#fff',
+                boxShadow: '0 0 30px rgba(124,58,237,0.35)',
+              }}
+              onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.boxShadow = '0 0 50px rgba(124,58,237,0.6)')}
+              onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.boxShadow = '0 0 30px rgba(124,58,237,0.35)')}
+            >
+              Get Your Professional Website Now
+              <ArrowRight size={16} className="transition-transform duration-200 group-hover:translate-x-1" />
+            </Link>
+          </motion.div>
         </div>
       </section>
 
