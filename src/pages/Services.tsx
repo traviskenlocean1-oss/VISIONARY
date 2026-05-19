@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+﻿import { useEffect, useRef } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { Check, ArrowRight, Code2, Server, Headphones, Palette, Smartphone, Gauge, Search, Plug, FileCode, Globe, Lock, Mail, Cpu, Shield, Clock, RefreshCw, BarChart3, MessageSquare } from 'lucide-react'
@@ -132,6 +132,9 @@ export default function Services() {
               { label: 'Website Development', href: '#web-development', icon: <Code2 size={13} /> },
               { label: 'Hosting & Domain', href: '#hosting', icon: <Server size={13} /> },
               { label: 'Support', href: '#support', icon: <Headphones size={13} /> },
+              { label: 'Website Creation', href: '#website-creation', icon: <Globe size={13} /> },
+              { label: 'Website Redesign', href: '#website-redesign', icon: <RefreshCw size={13} /> },
+              { label: 'Logo & Branding', href: '#logo-branding', icon: <Palette size={13} /> },
             ].map((item) => (
               <a
                 key={item.href}
@@ -309,7 +312,7 @@ export default function Services() {
             <div>
               <p className="text-[10px] tracking-[0.28em] uppercase mb-2" style={{ color: 'rgba(96,165,250,0.7)' }}>Monthly Plan</p>
               <p className="font-extrabold text-2xl mb-1" style={{ color: '#E1E0CC', letterSpacing: '-0.03em' }}>
-                $150<span className="font-normal text-base" style={{ color: 'rgba(225,224,204,0.4)' }}>/month</span>
+                $100<span className="font-normal text-base" style={{ color: 'rgba(225,224,204,0.4)' }}>/month</span>
               </p>
               <p className="text-sm max-w-sm" style={{ color: 'rgba(225,224,204,0.5)' }}>
                 Content updates, security monitoring, performance optimization, and priority support — all included. Cancel any time.
@@ -324,6 +327,153 @@ export default function Services() {
             >
               <span>Get Started</span>
               <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform duration-200" />
+            </Link>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* ── WEBSITE CREATION ── */}
+      <section id="website-creation" className="relative py-24 md:py-32 px-6 md:px-10 border-t" style={{ borderColor: 'rgba(255,255,255,0.06)' }}>
+        <div className="max-w-6xl mx-auto">
+          <motion.div
+            className="mb-14"
+            initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: '-60px' }} transition={{ duration: 0.7 }}
+          >
+            <div className="flex items-center gap-4 mb-6">
+              <div className="w-12 h-12 rounded-xl flex items-center justify-center" style={{ background: 'rgba(37,99,235,0.18)', backdropFilter: 'blur(12px)', border: '1px solid rgba(96,165,250,0.25)', color: '#60a5fa' }}>
+                <Globe size={22} />
+              </div>
+              <SectionLabel>Service 04</SectionLabel>
+            </div>
+            <h2 className="font-extrabold tracking-tight mb-4" style={{ fontSize: 'clamp(30px, 5.5vw, 68px)', color: '#E1E0CC', letterSpacing: '-0.04em' }}>
+              Website Creation
+            </h2>
+            <p className="text-base md:text-lg max-w-2xl leading-relaxed" style={{ color: 'rgba(225,224,204,0.55)' }}>
+              Starting from zero? We build your entire online presence from the ground up — custom design, clean code, and everything you need to go live fast. No templates, no compromises.
+            </p>
+          </motion.div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 mb-12">
+            {[
+              { icon: <Palette size={16} />, title: 'Custom Brand Design', desc: 'Your site is designed from scratch around your brand identity — colors, typography, and layout built specifically for you.' },
+              { icon: <Smartphone size={16} />, title: 'Mobile-First Build', desc: 'Every site is built mobile-first so it looks perfect on phones, tablets, and desktops without compromise.' },
+              { icon: <Search size={16} />, title: 'SEO Ready from Day One', desc: 'Semantic HTML, meta tags, Open Graph, and schema markup are all set up before your site goes live.' },
+              { icon: <Gauge size={16} />, title: 'Blazing Fast Load Times', desc: 'Clean, optimized code means your site loads in seconds — critical for both users and search rankings.' },
+              { icon: <Plug size={16} />, title: 'Forms & Integrations', desc: 'Contact forms, booking systems, payment processors, and analytics — all connected and tested at launch.' },
+              { icon: <Clock size={16} />, title: 'Delivered in 5–10 Days', desc: 'Most new sites are live within one to two weeks. We move fast without cutting corners on quality.' },
+            ].map((f, i) => (
+              <motion.div key={f.title} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.55, delay: (i % 3) * 0.08 }}>
+                <FeatureItem {...f} />
+              </motion.div>
+            ))}
+          </div>
+          <motion.div
+            className="rounded-2xl p-7 md:p-8"
+            style={{ background: 'rgba(5,8,20,0.65)', backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)', border: '1px solid rgba(96,165,250,0.15)' }}
+            initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}
+          >
+            <p className="text-sm mb-4" style={{ color: 'rgba(225,224,204,0.5)' }}>Starting at <span style={{ color: '#60a5fa', fontWeight: 700 }}>$500</span> — one-time fee, you own everything.</p>
+            <Link to="/contact" className="inline-flex items-center gap-2 text-sm font-bold tracking-wide transition-colors duration-200" style={{ color: '#60a5fa' }}
+              onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = '#93c5fd')}
+              onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = '#60a5fa')}>
+              Start your site <ArrowRight size={14} />
+            </Link>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* ── WEBSITE REDESIGN ── */}
+      <section id="website-redesign" className="relative py-24 md:py-32 px-6 md:px-10 border-t" style={{ borderColor: 'rgba(255,255,255,0.06)' }}>
+        <div className="max-w-6xl mx-auto">
+          <motion.div
+            className="mb-14"
+            initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: '-60px' }} transition={{ duration: 0.7 }}
+          >
+            <div className="flex items-center gap-4 mb-6">
+              <div className="w-12 h-12 rounded-xl flex items-center justify-center" style={{ background: 'rgba(37,99,235,0.18)', backdropFilter: 'blur(12px)', border: '1px solid rgba(96,165,250,0.25)', color: '#60a5fa' }}>
+                <RefreshCw size={22} />
+              </div>
+              <SectionLabel>Service 05</SectionLabel>
+            </div>
+            <h2 className="font-extrabold tracking-tight mb-4" style={{ fontSize: 'clamp(30px, 5.5vw, 68px)', color: '#E1E0CC', letterSpacing: '-0.04em' }}>
+              Website Redesign
+            </h2>
+            <p className="text-base md:text-lg max-w-2xl leading-relaxed" style={{ color: 'rgba(225,224,204,0.55)' }}>
+              Already have a site but it's outdated, slow, or just not converting? We rebuild it from scratch — same domain, same address, completely new look and performance.
+            </p>
+          </motion.div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 max-w-3xl mb-12">
+            {[
+              { icon: <Palette size={16} />, title: 'Complete Visual Refresh', desc: 'We start fresh with a modern design that actually reflects your brand and stands out from your competition.' },
+              { icon: <Gauge size={16} />, title: 'Performance Overhaul', desc: 'Old sites are slow and bloated. We rebuild with clean code that loads fast and scores high on performance tests.' },
+              { icon: <Search size={16} />, title: 'SEO Preserved & Improved', desc: 'We carry over your existing SEO equity and strengthen the foundation so you don\'t lose rankings during the switch.' },
+              { icon: <Smartphone size={16} />, title: 'Mobile Experience Fixed', desc: 'Old sites break on phones. Your redesign will look sharp and function perfectly on every screen size.' },
+              { icon: <Clock size={16} />, title: 'Zero Downtime Launch', desc: 'We build your new site separately and swap it live all at once — no broken period, no downtime for your visitors.' },
+              { icon: <Check size={16} />, title: 'Same Domain & Links Kept', desc: 'Your existing domain, email, and any important URLs are preserved and redirected correctly during the transition.' },
+            ].map((f, i) => (
+              <motion.div key={f.title} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.55, delay: (i % 2) * 0.08 }}>
+                <FeatureItem {...f} />
+              </motion.div>
+            ))}
+          </div>
+          <motion.div
+            className="rounded-2xl p-7 md:p-8"
+            style={{ background: 'rgba(5,8,20,0.65)', backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)', border: '1px solid rgba(96,165,250,0.15)' }}
+            initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}
+          >
+            <p className="text-sm mb-4" style={{ color: 'rgba(225,224,204,0.5)' }}>Redesigns start at <span style={{ color: '#60a5fa', fontWeight: 700 }}>$750</span> depending on scope.</p>
+            <Link to="/contact" className="inline-flex items-center gap-2 text-sm font-bold tracking-wide transition-colors duration-200" style={{ color: '#60a5fa' }}
+              onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = '#93c5fd')}
+              onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = '#60a5fa')}>
+              Discuss your redesign <ArrowRight size={14} />
+            </Link>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* ── LOGO & BRANDING ── */}
+      <section id="logo-branding" className="relative py-24 md:py-32 px-6 md:px-10 border-t" style={{ borderColor: 'rgba(255,255,255,0.06)' }}>
+        <div className="max-w-6xl mx-auto">
+          <motion.div
+            className="mb-14"
+            initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: '-60px' }} transition={{ duration: 0.7 }}
+          >
+            <div className="flex items-center gap-4 mb-6">
+              <div className="w-12 h-12 rounded-xl flex items-center justify-center" style={{ background: 'rgba(37,99,235,0.18)', backdropFilter: 'blur(12px)', border: '1px solid rgba(96,165,250,0.25)', color: '#60a5fa' }}>
+                <Palette size={22} />
+              </div>
+              <SectionLabel>Service 06</SectionLabel>
+            </div>
+            <h2 className="font-extrabold tracking-tight mb-4" style={{ fontSize: 'clamp(30px, 5.5vw, 68px)', color: '#E1E0CC', letterSpacing: '-0.04em' }}>
+              Logo & Branding
+            </h2>
+            <p className="text-base md:text-lg max-w-2xl leading-relaxed" style={{ color: 'rgba(225,224,204,0.55)' }}>
+              Your logo is the face of your business. We design custom logos and full brand identities that look professional, scale to any size, and make the right first impression every time.
+            </p>
+          </motion.div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 max-w-3xl mb-12">
+            {[
+              { icon: <Palette size={16} />, title: 'Custom Logo Design', desc: 'We design a logo built around your business — your industry, your audience, and your brand personality. No stock icons.' },
+              { icon: <FileCode size={16} />, title: 'Full Vector Files Delivered', desc: 'You receive your logo in every format you\'ll ever need — SVG, PNG, PDF — at any size with perfect quality.' },
+              { icon: <Check size={16} />, title: 'Multiple Concepts', desc: 'We present multiple design directions so you have real options to choose from before we refine the final version.' },
+              { icon: <Globe size={16} />, title: 'Social Media Ready', desc: 'Profile picture versions, banner crops, and icon formats for every platform — ready to use the day you receive them.' },
+              { icon: <Cpu size={16} />, title: 'Color Palette & Typography', desc: 'Beyond the logo, we define your brand colors and font system so every design decision moving forward stays consistent.' },
+              { icon: <Shield size={16} />, title: 'Full Ownership Transferred', desc: 'Once delivered and paid, every file is 100% yours. No licensing fees, no restrictions, use it anywhere forever.' },
+            ].map((f, i) => (
+              <motion.div key={f.title} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.55, delay: (i % 2) * 0.08 }}>
+                <FeatureItem {...f} />
+              </motion.div>
+            ))}
+          </div>
+          <motion.div
+            className="rounded-2xl p-7 md:p-8"
+            style={{ background: 'rgba(5,8,20,0.65)', backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)', border: '1px solid rgba(96,165,250,0.15)' }}
+            initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}
+          >
+            <p className="text-sm mb-4" style={{ color: 'rgba(225,224,204,0.5)' }}>Pricing is custom — <Link to="/contact" style={{ color: '#60a5fa' }}>reach out</Link> and we'll quote based on your needs.</p>
+            <Link to="/contact" className="inline-flex items-center gap-2 text-sm font-bold tracking-wide transition-colors duration-200" style={{ color: '#60a5fa' }}
+              onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = '#93c5fd')}
+              onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = '#60a5fa')}>
+              Get a branding quote <ArrowRight size={14} />
             </Link>
           </motion.div>
         </div>
@@ -358,3 +508,4 @@ export default function Services() {
     </PageIn>
   )
 }
+
