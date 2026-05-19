@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
-import { ArrowRight, Shield, Zap, Award, Users, Check } from 'lucide-react'
+import { ArrowRight, Shield, Zap, Award, Users, Check, X, Trophy } from 'lucide-react'
 
 const ABOUT_VIDEO = 'https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260324_024928_1efd0b0d-6c02-45a8-8847-1030900c4f63.mp4'
 
@@ -91,6 +91,24 @@ const capabilities = [
     body: "Every site ships with the full SEO foundation already in place — not as an afterthought. That means semantic HTML structure, fully populated meta tags, Open Graph for social sharing, JSON-LD schema markup for Google's rich results, canonical tags, fast load speeds, and a performance score that reflects real-world results. You won't need to hire someone separately just to get the basics working.",
     points: ['Meta tags & Open Graph', 'JSON-LD schema markup', 'Semantic HTML structure', 'Canonical tags & fast load speeds'],
   },
+]
+
+const traditionalNegatives = [
+  '$4,000–$20,000+ just to get started',
+  '3–6 months before your site goes live',
+  'Hidden fees that add up fast',
+  'Limited support after launch',
+  'Complex contracts with fine print',
+  'You handle content updates yourself',
+]
+
+const visionaryPositives = [
+  '$750 starting price — honest and upfront',
+  'Launch in days, not months',
+  '100% transparent pricing, always',
+  'Support included after launch',
+  'Simple, no-nonsense process',
+  'We handle all updates for you',
 ]
 
 export default function About() {
@@ -393,6 +411,106 @@ export default function About() {
               </motion.div>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* THE VISIONARY DIFFERENCE */}
+      <section className="relative py-20 md:py-28 px-6 md:px-10">
+        <div className="max-w-5xl mx-auto">
+          <motion.div
+            className="text-center mb-14"
+            initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.7 }}
+          >
+            <div className="inline-flex items-center gap-2 rounded-full px-4 py-2 mb-6" style={{ background: 'rgba(37,99,235,0.15)', border: '1px solid rgba(96,165,250,0.25)' }}>
+              <Trophy size={13} style={{ color: '#60a5fa' }} />
+              <span className="text-[11px] tracking-[0.28em] uppercase font-bold" style={{ color: '#93c5fd' }}>Why Choose Us</span>
+            </div>
+            <h2
+              className="font-extrabold tracking-tight mb-4"
+              style={{ fontSize: 'clamp(28px, 5vw, 56px)', color: '#E1E0CC', letterSpacing: '-0.04em' }}
+            >
+              The Visionary <span style={{ color: '#60a5fa' }}>Difference</span>
+            </h2>
+            <p className="text-base max-w-2xl mx-auto" style={{ color: 'rgba(225,224,204,0.5)' }}>
+              See why smart business owners choose Visionary over traditional agencies.
+            </p>
+          </motion.div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* Traditional Agencies — left card */}
+            <motion.div
+              className="rounded-2xl p-8"
+              style={{ background: 'rgba(5,8,20,0.8)', backdropFilter: 'blur(24px)', WebkitBackdropFilter: 'blur(24px)', border: '1px solid rgba(255,255,255,0.07)' }}
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, margin: '-60px' }}
+              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+            >
+              <div className="flex items-center gap-3 mb-7">
+                <div className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(239,68,68,0.15)', border: '1px solid rgba(239,68,68,0.25)' }}>
+                  <X size={16} style={{ color: '#f87171' }} />
+                </div>
+                <h3 className="font-bold text-lg" style={{ color: '#E1E0CC' }}>Traditional Agencies</h3>
+              </div>
+              <ul className="flex flex-col gap-4">
+                {traditionalNegatives.map((item) => (
+                  <li key={item} className="flex items-start gap-3">
+                    <div className="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5" style={{ background: 'rgba(239,68,68,0.12)', border: '1px solid rgba(239,68,68,0.2)' }}>
+                      <X size={10} style={{ color: '#f87171' }} />
+                    </div>
+                    <span className="text-sm leading-relaxed" style={{ color: 'rgba(225,224,204,0.5)' }}>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </motion.div>
+
+            {/* Visionary — right card (highlighted) */}
+            <motion.div
+              className="rounded-2xl p-8 relative overflow-hidden"
+              style={{ background: 'rgba(10,20,50,0.85)', backdropFilter: 'blur(24px)', WebkitBackdropFilter: 'blur(24px)', border: '1px solid rgba(96,165,250,0.3)', boxShadow: '0 0 40px rgba(59,130,246,0.12)' }}
+              initial={{ opacity: 0, x: 30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, margin: '-60px' }}
+              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
+            >
+              <div className="absolute top-0 right-0 w-40 h-40 pointer-events-none" style={{ background: 'radial-gradient(circle at top right, rgba(96,165,250,0.15), transparent 70%)' }} />
+              <div className="flex items-center gap-3 mb-7">
+                <div className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(37,99,235,0.25)', border: '1px solid rgba(96,165,250,0.35)' }}>
+                  <Check size={16} style={{ color: '#60a5fa' }} />
+                </div>
+                <h3 className="font-bold text-lg" style={{ color: '#E1E0CC' }}>Visionary</h3>
+                <span className="ml-auto text-[10px] font-extrabold tracking-[0.2em] uppercase px-2.5 py-1 rounded-full" style={{ background: 'rgba(37,99,235,0.25)', border: '1px solid rgba(96,165,250,0.35)', color: '#93c5fd' }}>Best Choice</span>
+              </div>
+              <ul className="flex flex-col gap-4">
+                {visionaryPositives.map((item) => (
+                  <li key={item} className="flex items-start gap-3">
+                    <div className="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5" style={{ background: 'rgba(37,99,235,0.2)', border: '1px solid rgba(96,165,250,0.3)' }}>
+                      <Check size={10} style={{ color: '#60a5fa' }} />
+                    </div>
+                    <span className="text-sm leading-relaxed font-medium" style={{ color: 'rgba(225,224,204,0.85)' }}>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </motion.div>
+          </div>
+
+          <motion.div
+            className="text-center mt-12"
+            initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.3 }}
+          >
+            <Link
+              to="/contact"
+              className="group inline-flex items-center gap-3 rounded-full font-bold text-sm px-8 py-4 transition-all duration-300"
+              style={{ background: '#3b82f6', color: '#fff', boxShadow: '0 0 36px rgba(59,130,246,0.45)' }}
+              onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.boxShadow = '0 0 55px rgba(59,130,246,0.75)')}
+              onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.boxShadow = '0 0 36px rgba(59,130,246,0.45)')}
+            >
+              <span>Start Your Project Today</span>
+              <span className="flex items-center justify-center rounded-full bg-white/20 transition-transform duration-200 group-hover:scale-110" style={{ width: 30, height: 30 }}>
+                <ArrowRight size={14} />
+              </span>
+            </Link>
+          </motion.div>
         </div>
       </section>
 
