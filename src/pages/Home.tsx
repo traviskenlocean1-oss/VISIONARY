@@ -1,7 +1,7 @@
 import { useRef, useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { motion, useInView, useMotionValue, useSpring } from 'framer-motion'
-import { ArrowRight, Check, Zap, Star, TrendingUp, Globe, Wrench, Palette } from 'lucide-react'
+import { ArrowRight, Check, Zap, Star, TrendingUp, Globe, Wrench, Palette, Phone, Clock } from 'lucide-react'
 import Hls from 'hls.js'
 import VLogo from '../components/VLogo'
 
@@ -94,8 +94,8 @@ function PricingCard({ plan, index }: { plan: typeof plans[0]; index: number }) 
         <div className="absolute -top-px left-0 right-0 h-px rounded-t-2xl" style={{ background: 'linear-gradient(90deg, transparent, #60a5fa, transparent)' }} />
       )}
       {plan.featured && (
-        <div className="relative flex items-center gap-1.5 mb-5">
-          <Star size={11} fill="#fbbf24" stroke="none" />
+        <div className="relative flex items-center gap-2 mb-5">
+          <div style={{ width: 6, height: 6, borderRadius: '50%', background: '#fbbf24', boxShadow: '0 0 6px rgba(251,191,36,0.7)', flexShrink: 0 }} />
           <span className="text-[10px] font-bold tracking-[0.2em] uppercase" style={{ color: '#fbbf24' }}>Most Popular</span>
         </div>
       )}
@@ -539,12 +539,28 @@ export default function Home() {
               </button>
             </div>
 
-            <p className="mt-10 text-sm" style={{ color: 'rgba(225,224,204,0.3)' }}>
-              Have questions?{' '}
-              <Link to="/contact" className="transition-colors duration-200" style={{ color: '#60a5fa' }} onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = '#93c5fd')} onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = '#60a5fa')}>
-                We're here to help.
-              </Link>
-            </p>
+            <div className="mt-12 pt-10 border-t" style={{ borderColor: 'rgba(255,255,255,0.07)' }}>
+              <p className="text-base font-semibold mb-6" style={{ color: 'rgba(225,224,204,0.55)' }}>Have questions? We're here to help!</p>
+              <div className="flex flex-wrap items-center justify-center gap-5">
+                {[
+                  { icon: <Phone size={14} />, text: 'Free consultation call', href: 'tel:5618890507' },
+                  { icon: <Clock size={14} />, text: 'Quick 24-hour response', href: '/contact' },
+                  { icon: <Globe size={14} />, text: 'Serving clients worldwide', href: '/contact' },
+                ].map((item) => (
+                  <a
+                    key={item.text}
+                    href={item.href}
+                    className="flex items-center gap-2 text-sm font-medium transition-colors duration-200"
+                    style={{ color: 'rgba(225,224,204,0.5)' }}
+                    onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = '#93c5fd')}
+                    onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = 'rgba(225,224,204,0.5)')}
+                  >
+                    <span style={{ color: '#60a5fa' }}>{item.icon}</span>
+                    {item.text}
+                  </a>
+                ))}
+              </div>
+            </div>
           </motion.div>
         </div>
       </section>
