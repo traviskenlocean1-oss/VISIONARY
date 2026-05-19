@@ -80,7 +80,7 @@ const traditionalNegatives = [
 ]
 
 const visionaryPositives = [
-  '$750 starting price — honest and upfront',
+  '$500 starting price — honest and upfront',
   'Launch in days, not months',
   '100% transparent pricing, always',
   'Support included after launch',
