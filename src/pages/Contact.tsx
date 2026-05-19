@@ -252,37 +252,25 @@ export default function Contact() {
       {/* CONTACT FORM + METHODS */}
       <section id="contact-form" className="relative py-24 md:py-32 px-6 md:px-10">
         <div className="max-w-6xl mx-auto">
+          <motion.div
+            className="text-center mb-14"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.1 }}
+          >
+            <h2 className="font-extrabold tracking-tight mb-3" style={{ fontSize: 'clamp(28px, 4vw, 48px)', color: '#E1E0CC', letterSpacing: '-0.04em' }}>
+              Ready to Get Started?
+            </h2>
+            <p className="text-base max-w-lg mx-auto" style={{ color: 'rgba(225,224,204,0.45)' }}>
+              Tell us about your project and we'll get back to you within 24 hours with a custom proposal.
+            </p>
+          </motion.div>
+
           <div className="grid grid-cols-1 lg:grid-cols-5 gap-10 lg:gap-14 items-start">
 
-            {/* Left */}
-            <div className="lg:col-span-2 flex flex-col gap-4">
-              <div className="mb-4">
-                <p className="text-[10px] tracking-[0.32em] uppercase mb-3" style={{ color: 'rgba(96,165,250,0.7)' }}>Contact Methods</p>
-                <h2 className="font-extrabold tracking-tight leading-tight" style={{ fontSize: 'clamp(24px, 3.5vw, 38px)', color: '#E1E0CC', letterSpacing: '-0.03em' }}>
-                  Multiple ways<br />to reach us.
-                </h2>
-              </div>
-
-              <ContactCard icon={<Mail size={22} />} label="Email Us Directly" value={CONTACT_EMAIL} href={`mailto:${CONTACT_EMAIL}`} delay={0.1} />
-              <ContactCard icon={<Instagram size={22} />} label="Instagram" value="@visionarywebstudio" href="https://instagram.com/visionarywebstudio" delay={0.2} />
-              <ContactCard icon={<Facebook size={22} />} label="Facebook" value="Visionary Web Studio" href="https://facebook.com" delay={0.3} />
-
-              <motion.div className="mt-1 rounded-2xl p-5"
-                style={{ background: 'rgba(5,8,20,0.7)', backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)', border: '1px solid rgba(96,165,250,0.15)' }}
-                initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45, duration: 0.6 }}>
-                <div className="flex items-center gap-2 mb-2">
-                  <div className="w-1.5 h-1.5 rounded-full" style={{ background: '#4ade80', boxShadow: '0 0 6px #4ade80' }} />
-                  <span className="text-[10px] tracking-[0.2em] uppercase font-bold" style={{ color: '#4ade80' }}>Available Now</span>
-                </div>
-                <p className="text-xs leading-relaxed" style={{ color: 'rgba(225,224,204,0.5)' }}>
-                  We respond within <span style={{ color: '#E1E0CC' }}>24 hours</span>. For urgent projects, email us directly.
-                </p>
-              </motion.div>
-            </div>
-
-            {/* Right — form */}
+            {/* LEFT — Form */}
             <motion.div className="lg:col-span-3"
-              initial={{ opacity: 0, x: 24 }} animate={{ opacity: 1, x: 0 }}
+              initial={{ opacity: 0, x: -24 }} animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}>
               {status === 'sent' ? (
                 <div className="rounded-2xl p-14 text-center"
@@ -297,10 +285,11 @@ export default function Contact() {
               ) : (
                 <form onSubmit={handleSubmit} className="rounded-2xl p-8 md:p-10 flex flex-col gap-5"
                   style={{ background: 'rgba(5,8,20,0.8)', backdropFilter: 'blur(28px)', WebkitBackdropFilter: 'blur(28px)', border: '1px solid rgba(255,255,255,0.08)' }}>
+                  <p className="font-bold text-lg mb-1" style={{ color: '#E1E0CC' }}>Send Us a Message</p>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                     {[
-                      { name: 'name', label: 'Name', type: 'text', placeholder: 'Your name' },
-                      { name: 'email', label: 'Email', type: 'email', placeholder: 'your@email.com' },
+                      { name: 'name', label: 'First Name', type: 'text', placeholder: 'Your name' },
+                      { name: 'email', label: 'Email Address', type: 'email', placeholder: 'your@email.com' },
                     ].map((f) => (
                       <div key={f.name} className="flex flex-col gap-2">
                         <label className="text-[10px] tracking-[0.2em] uppercase" style={{ color: 'rgba(225,224,204,0.4)' }}>{f.label}</label>
@@ -329,8 +318,8 @@ export default function Contact() {
                   </div>
 
                   <div className="flex flex-col gap-2">
-                    <label className="text-[10px] tracking-[0.2em] uppercase" style={{ color: 'rgba(225,224,204,0.4)' }}>Tell us about your project</label>
-                    <textarea name="message" rows={5} placeholder="What are you building? Who is it for? What's the goal?"
+                    <label className="text-[10px] tracking-[0.2em] uppercase" style={{ color: 'rgba(225,224,204,0.4)' }}>Project Details</label>
+                    <textarea name="message" rows={5} placeholder="Tell us about your project, goals, timeline, and any specific requirements..."
                       className="w-full px-4 py-3 text-sm rounded-xl outline-none resize-none transition-all duration-200"
                       style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)', color: '#E1E0CC' }}
                       onFocus={(e) => { (e.currentTarget as HTMLElement).style.borderColor = 'rgba(96,165,250,0.5)'; (e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,0.08)' }}
@@ -344,12 +333,72 @@ export default function Contact() {
                     className="group w-full py-4 rounded-xl font-bold text-sm tracking-widest uppercase transition-all duration-300 flex items-center justify-center gap-3"
                     style={{ background: status === 'sending' ? 'rgba(96,165,250,0.4)' : '#3b82f6', color: '#fff', boxShadow: status === 'sending' ? 'none' : '0 0 28px rgba(59,130,246,0.4)' }}>
                     {status === 'sending' ? 'Sending...' : (
-                      <><span>Send Message</span><ArrowRight size={15} className="group-hover:translate-x-1 transition-transform duration-200" /></>
+                      <><span>Submit</span><ArrowRight size={15} className="group-hover:translate-x-1 transition-transform duration-200" /></>
                     )}
                   </button>
+                  <p className="text-center text-xs" style={{ color: 'rgba(225,224,204,0.35)' }}>
+                    We'll respond within 24 hours with a detailed proposal
+                  </p>
                 </form>
               )}
             </motion.div>
+
+            {/* RIGHT — Get In Touch + What Happens Next */}
+            <div className="lg:col-span-2 flex flex-col gap-4">
+              <motion.div
+                initial={{ opacity: 0, x: 24 }} animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1], delay: 0.15 }}
+              >
+                <p className="text-[10px] tracking-[0.32em] uppercase mb-3" style={{ color: 'rgba(96,165,250,0.7)' }}>Contact Methods</p>
+                <h3 className="font-extrabold tracking-tight mb-5" style={{ fontSize: 'clamp(20px, 2.5vw, 28px)', color: '#E1E0CC', letterSpacing: '-0.03em' }}>
+                  Get In Touch
+                </h3>
+                <p className="text-sm leading-relaxed mb-5" style={{ color: 'rgba(225,224,204,0.45)' }}>
+                  Ready to transform your online presence? We're here every step of the way — choose the method that works best for you.
+                </p>
+              </motion.div>
+
+              <ContactCard icon={<Mail size={22} />} label="Email Us" value={CONTACT_EMAIL} href={`mailto:${CONTACT_EMAIL}`} delay={0.2} />
+              <ContactCard icon={<Instagram size={22} />} label="Instagram" value="@visionarywebstudio" href="https://instagram.com/visionarywebstudio" delay={0.3} />
+              <ContactCard icon={<Facebook size={22} />} label="Facebook" value="Visionary Web Studio" href="https://facebook.com" delay={0.4} />
+
+              <motion.div
+                className="rounded-2xl p-5"
+                style={{ background: 'rgba(5,8,20,0.7)', backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)', border: '1px solid rgba(96,165,250,0.15)' }}
+                initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5, duration: 0.6 }}
+              >
+                <div className="flex items-center gap-2 mb-2">
+                  <div className="w-1.5 h-1.5 rounded-full" style={{ background: '#4ade80', boxShadow: '0 0 6px #4ade80' }} />
+                  <span className="text-[10px] tracking-[0.2em] uppercase font-bold" style={{ color: '#4ade80' }}>Quick Response</span>
+                </div>
+                <p className="text-xs leading-relaxed" style={{ color: 'rgba(225,224,204,0.5)' }}>
+                  We respond within <span style={{ color: '#E1E0CC' }}>24 hours</span>. Available for urgent projects.
+                </p>
+              </motion.div>
+
+              {/* What Happens Next */}
+              <motion.div
+                className="rounded-2xl p-6"
+                style={{ background: 'linear-gradient(135deg, rgba(37,99,235,0.25) 0%, rgba(79,70,229,0.18) 100%)', border: '1px solid rgba(96,165,250,0.25)' }}
+                initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6, duration: 0.6 }}
+              >
+                <p className="font-bold text-sm mb-4" style={{ color: '#E1E0CC' }}>What Happens Next?</p>
+                <div className="flex flex-col gap-3">
+                  {[
+                    'We review your project details within 24 hours',
+                    'Schedule a free consultation to discuss your vision',
+                    'Receive a custom proposal with timeline and pricing',
+                  ].map((step, i) => (
+                    <div key={i} className="flex items-start gap-3">
+                      <div className="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 text-[10px] font-bold mt-0.5" style={{ background: 'rgba(96,165,250,0.2)', border: '1px solid rgba(96,165,250,0.35)', color: '#93c5fd' }}>
+                        {i + 1}
+                      </div>
+                      <p className="text-xs leading-relaxed" style={{ color: 'rgba(225,224,204,0.65)' }}>{step}</p>
+                    </div>
+                  ))}
+                </div>
+              </motion.div>
+            </div>
           </div>
         </div>
       </section>
