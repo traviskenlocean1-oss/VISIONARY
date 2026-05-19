@@ -413,6 +413,101 @@ export default function Home() {
         </div>
       </section>
 
+      {/* ── HOW WE WORK ── */}
+      <section className="relative py-24 px-6 border-t" style={{ borderColor: 'rgba(255,255,255,0.06)' }}>
+        <div className="max-w-6xl mx-auto">
+          <motion.div
+            className="text-center mb-16"
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7 }}
+          >
+            <p className="text-[10px] tracking-[0.32em] uppercase mb-4" style={{ color: 'rgba(96,165,250,0.6)' }}>Our Process</p>
+            <h2
+              className="font-extrabold tracking-tight mb-5"
+              style={{ fontSize: 'clamp(28px, 5vw, 56px)', color: '#E1E0CC', letterSpacing: '-0.04em' }}
+            >
+              How We Transform Your Vision Into Reality
+            </h2>
+            <p className="text-base max-w-xl mx-auto" style={{ color: 'rgba(225,224,204,0.45)' }}>
+              A streamlined process that gets you a professional website — fast, clean, and built to convert.
+            </p>
+          </motion.div>
+
+          {/* Steps */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-14">
+            {[
+              { num: 1, title: 'Discovery & Strategy', desc: 'We learn your business, goals, and audience to map out a custom plan tailored to your brand.', points: ['Business Analysis', 'Competitor Research', 'Strategy Planning'], color: '#3b82f6' },
+              { num: 2, title: 'Design & Prototype', desc: 'Every pixel designed from scratch — no templates. Conversion-focused layouts built for your brand.', points: ['Custom Design', 'Mobile Mockups', 'User Experience'], color: '#818cf8' },
+              { num: 3, title: 'Development & Testing', desc: 'We build your site with clean code — fast load times and flawless performance across all devices.', points: ['Clean Coding', 'Performance Testing', 'Cross-browser Testing'], color: '#f59e0b' },
+              { num: 4, title: 'Launch & Support', desc: 'Your site goes live fully ready. We handle handover and are available every step after launch.', points: ['Website Launch', 'Training & Handover', 'Ongoing Support'], color: '#818cf8' },
+            ].map((step, i) => (
+              <motion.div
+                key={step.num}
+                className="relative rounded-2xl p-6 flex flex-col"
+                style={{ background: 'rgba(5,8,20,0.6)', backdropFilter: 'blur(16px)', WebkitBackdropFilter: 'blur(16px)', border: '1px solid rgba(255,255,255,0.07)' }}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: '-40px' }}
+                transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1], delay: i * 0.1 }}
+              >
+                <div
+                  className="w-12 h-12 rounded-full flex items-center justify-center font-extrabold text-lg mb-5 flex-shrink-0"
+                  style={{ border: `2px solid ${step.color}`, color: step.color, background: 'rgba(255,255,255,0.04)' }}
+                >
+                  {step.num}
+                </div>
+                <h3 className="font-bold text-base mb-2" style={{ color: '#E1E0CC' }}>{step.title}</h3>
+                <p className="text-sm leading-relaxed mb-4" style={{ color: 'rgba(225,224,204,0.45)' }}>{step.desc}</p>
+                <ul className="mt-auto flex flex-col gap-2">
+                  {step.points.map((point) => (
+                    <li key={point} className="flex items-center gap-2 text-xs" style={{ color: 'rgba(225,224,204,0.55)' }}>
+                      <Check size={11} style={{ color: step.color, flexShrink: 0 }} />
+                      {point}
+                    </li>
+                  ))}
+                </ul>
+              </motion.div>
+            ))}
+          </div>
+
+          {/* Timeline */}
+          <motion.div
+            className="rounded-2xl p-8 md:p-10 text-center"
+            style={{ background: 'rgba(5,8,20,0.7)', backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)', border: '1px solid rgba(255,255,255,0.08)' }}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7, delay: 0.2 }}
+          >
+            <p className="text-[10px] tracking-[0.3em] uppercase mb-8" style={{ color: 'rgba(225,224,204,0.35)' }}>Typical Project Timeline</p>
+            <div className="grid grid-cols-3 gap-6 mb-8">
+              {[
+                { time: '1–2 Days', label: 'Discovery & Planning' },
+                { time: '5–7 Days', label: 'Design & Development' },
+                { time: '1–2 Days', label: 'Testing & Launch' },
+              ].map((t, i) => (
+                <div key={i}>
+                  <p className="font-extrabold mb-1" style={{ fontSize: 'clamp(18px, 3vw, 28px)', color: '#60a5fa', letterSpacing: '-0.02em' }}>{t.time}</p>
+                  <p className="text-xs" style={{ color: 'rgba(225,224,204,0.45)' }}>{t.label}</p>
+                </div>
+              ))}
+            </div>
+            <Link
+              to="/contact"
+              className="inline-flex items-center gap-2 font-bold text-sm px-7 py-3.5 rounded-full transition-all duration-300"
+              style={{ background: '#3b82f6', color: '#fff', boxShadow: '0 0 24px rgba(59,130,246,0.35)' }}
+              onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.boxShadow = '0 0 40px rgba(59,130,246,0.6)')}
+              onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.boxShadow = '0 0 24px rgba(59,130,246,0.35)')}
+            >
+              Start Your Project Today
+              <ArrowRight size={14} />
+            </Link>
+          </motion.div>
+        </div>
+      </section>
+
       {/* ── VALUE COMPARISON ── */}
       <section className="relative py-24 px-6 overflow-hidden border-t" style={{ borderColor: 'rgba(255,255,255,0.06)' }}>
         {/* Purple side accent bars */}
