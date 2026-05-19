@@ -33,6 +33,10 @@ export default function Navbar() {
     }
   }
 
+  function handleLogoClick() {
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+
   const isServicesActive = pathname.startsWith('/services')
 
   return (
@@ -46,7 +50,7 @@ export default function Navbar() {
       }}
     >
       <div className="max-w-7xl mx-auto px-6 md:px-10 h-[72px] flex items-center justify-between">
-        <Link to="/" className="flex-shrink-0 select-none">
+        <Link to="/" className="flex-shrink-0 select-none" onClick={handleLogoClick}>
           <VLogo size={46} showText={true} />
         </Link>
 
@@ -106,7 +110,6 @@ export default function Navbar() {
                       className="rounded-2xl py-2 px-1.5 min-w-[220px] flex flex-col gap-0.5"
                       style={{ background: 'rgba(5,8,20,0.97)', backdropFilter: 'blur(24px)', WebkitBackdropFilter: 'blur(24px)', border: '1px solid rgba(255,255,255,0.08)', boxShadow: '0 20px 60px rgba(0,0,0,0.7)' }}
                     >
-                      {/* Top blue accent line */}
                       <div className="absolute -top-px left-8 right-8 h-px rounded-full" style={{ background: 'linear-gradient(90deg, transparent, rgba(96,165,250,0.5), transparent)' }} />
                       {SERVICE_ITEMS.map((item) => (
                         <Link
@@ -185,7 +188,6 @@ export default function Navbar() {
             <div className="px-6 pt-4 pb-8 flex flex-col gap-1">
               <Link to="/about" className="text-sm font-medium tracking-[0.2em] uppercase py-3 border-b" style={{ color: 'rgba(225,224,204,0.55)', borderColor: 'rgba(255,255,255,0.05)' }}>About</Link>
 
-              {/* Mobile Services accordion */}
               <div className="border-b" style={{ borderColor: 'rgba(255,255,255,0.05)' }}>
                 <button
                   onClick={() => setMobileServicesOpen((v) => !v)}
@@ -197,13 +199,7 @@ export default function Navbar() {
                 </button>
                 <AnimatePresence>
                   {mobileServicesOpen && (
-                    <motion.div
-                      initial={{ height: 0, opacity: 0 }}
-                      animate={{ height: 'auto', opacity: 1 }}
-                      exit={{ height: 0, opacity: 0 }}
-                      transition={{ duration: 0.25 }}
-                      style={{ overflow: 'hidden' }}
-                    >
+                    <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.25 }} style={{ overflow: 'hidden' }}>
                       <div className="pb-2 flex flex-col gap-0.5">
                         {SERVICE_ITEMS.map((item) => (
                           <Link key={item.href} to={item.href}
