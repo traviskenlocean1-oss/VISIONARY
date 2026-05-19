@@ -1,10 +1,10 @@
 import { Link } from 'react-router-dom'
-import { Instagram, Facebook, Twitter, Mail, Phone, Globe, Clock } from 'lucide-react'
+import { Instagram, Facebook, Mail, Phone, Globe, Clock } from 'lucide-react'
 import VLogo from './VLogo'
 
 const SOCIAL_LINKS = [
   { icon: <Facebook size={16} />, href: 'https://facebook.com/visionarywebstudio', label: 'Facebook' },
-  { icon: <Twitter size={16} />, href: '#', label: 'Twitter' },
+  { icon: <Mail size={16} />, href: 'mailto:Visionarywebstudio6@gmail.com', label: 'Email' },
   { icon: <Instagram size={16} />, href: 'https://instagram.com/visionarywebstudio', label: 'Instagram' },
 ]
 
