@@ -7,14 +7,7 @@ const ABOUT_VIDEO = 'https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttw
 function VideoBackground() {
   return (
     <div className="fixed inset-0 -z-10 overflow-hidden">
-      <video
-        src={ABOUT_VIDEO}
-        autoPlay
-        muted
-        loop
-        playsInline
-        className="absolute inset-0 w-full h-full object-cover"
-      />
+      <video src={ABOUT_VIDEO} autoPlay muted loop playsInline className="absolute inset-0 w-full h-full object-cover" />
       <div className="absolute inset-0" style={{ background: 'rgba(0,0,0,0.52)' }} />
     </div>
   )
@@ -30,25 +23,25 @@ function PageIn({ children }: { children: React.ReactNode }) {
 
 const values = [
   {
-    icon: <Shield size={18} />,
+    icon: <Shield size={22} />,
     num: '01',
     title: 'Honesty first.',
     desc: "We don't inflate portfolios, exaggerate results, or make promises we can't keep. You get straight answers, realistic timelines, and work that speaks for itself.",
   },
   {
-    icon: <Award size={18} />,
+    icon: <Award size={22} />,
     num: '02',
     title: 'You own everything.',
     desc: 'Once delivered and paid, the entire project is yours — code, files, domain, all of it. No monthly platform fees, no lock-in, no strings attached. Ever.',
   },
   {
-    icon: <Zap size={18} />,
+    icon: <Zap size={22} />,
     num: '03',
     title: 'Built to convert.',
     desc: 'A beautiful website that brings in zero customers is just expensive decoration. We design with one goal: turning visitors into calls, bookings, and sales.',
   },
   {
-    icon: <Users size={18} />,
+    icon: <Users size={22} />,
     num: '04',
     title: 'Fast and accountable.',
     desc: 'We move with urgency and communicate clearly at every step. You will never have to chase us. No ghosting, no delays without explanation, no excuses.',
@@ -56,26 +49,10 @@ const values = [
 ]
 
 const process = [
-  {
-    step: '01',
-    title: 'Discovery',
-    desc: 'We learn your business, your customers, and what you actually need online. No guessing — your input shapes every decision.',
-  },
-  {
-    step: '02',
-    title: 'Design',
-    desc: 'We present a direction built around your brand. You review, give feedback, and we refine until it\'s exactly right.',
-  },
-  {
-    step: '03',
-    title: 'Build',
-    desc: 'Every site is hand-coded from scratch — no templates, no page builders. Fast, clean, mobile-first, and built for performance.',
-  },
-  {
-    step: '04',
-    title: 'Launch',
-    desc: 'We handle everything: deployment, domain connection, final testing. You get a live site and a walkthrough of how it all works.',
-  },
+  { step: '01', title: 'Discovery', desc: 'We learn your business, your customers, and what you actually need online. No guessing — your input shapes every decision.' },
+  { step: '02', title: 'Design', desc: "We present a direction built around your brand. You review, give feedback, and we refine until it's exactly right." },
+  { step: '03', title: 'Build', desc: 'Every site is hand-coded from scratch — no templates, no page builders. Fast, clean, mobile-first, and built for performance.' },
+  { step: '04', title: 'Launch', desc: 'We handle everything: deployment, domain connection, final testing. You get a live site and a walkthrough of how it all works.' },
 ]
 
 const capabilities = [
@@ -94,7 +71,7 @@ const capabilities = [
 ]
 
 const traditionalNegatives = [
-  '$4,000–$20,000+ just to get started',
+  '$3k–$15k just to get started',
   '3–6 months before your site goes live',
   'Hidden fees that add up fast',
   'Limited support after launch',
@@ -118,13 +95,10 @@ export default function About() {
 
       {/* HERO */}
       <section className="relative min-h-screen flex items-center justify-center px-6 text-center">
-        <div
-          className="absolute bottom-0 left-0 right-0 h-48 pointer-events-none"
-          style={{ background: 'linear-gradient(to bottom, transparent, rgba(0,0,0,0.6))' }}
-        />
+        <div className="absolute bottom-0 left-0 right-0 h-48 pointer-events-none" style={{ background: 'linear-gradient(to bottom, transparent, rgba(0,0,0,0.6))' }} />
         <div className="relative z-10 max-w-4xl mx-auto">
           <motion.p
-            className="text-[11px] tracking-[0.35em] uppercase mb-6"
+            className="text-[12px] tracking-[0.35em] uppercase mb-7"
             style={{ color: 'rgba(147,197,253,0.9)' }}
             initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2, duration: 0.7 }}
           >
@@ -133,40 +107,34 @@ export default function About() {
           <div className="overflow-hidden mb-3">
             <motion.h1
               className="font-extrabold tracking-tight leading-none"
-              style={{ fontSize: 'clamp(52px, 11vw, 140px)', color: '#E1E0CC', letterSpacing: '-0.05em' }}
+              style={{ fontSize: 'clamp(56px, 12vw, 150px)', color: '#E1E0CC', letterSpacing: '-0.05em' }}
               initial={{ y: '100%' }} animate={{ y: 0 }}
               transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
             >
               Built for
             </motion.h1>
           </div>
-          <div className="overflow-hidden mb-8">
+          <div className="overflow-hidden mb-10">
             <motion.h1
               className="font-extrabold tracking-tight leading-none"
-              style={{ fontSize: 'clamp(52px, 11vw, 140px)', letterSpacing: '-0.05em' }}
+              style={{ fontSize: 'clamp(56px, 12vw, 150px)', letterSpacing: '-0.05em' }}
               initial={{ y: '100%' }} animate={{ y: 0 }}
               transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
             >
-              <span style={{
-                background: 'linear-gradient(90deg, #60a5fa 0%, #93c5fd 50%, #38bdf8 100%)',
-                WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
-              }}>businesses.</span>
+              <span style={{ background: 'linear-gradient(90deg, #60a5fa 0%, #93c5fd 50%, #38bdf8 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>businesses.</span>
             </motion.h1>
           </div>
           <motion.p
-            className="text-base md:text-xl max-w-2xl mx-auto mb-10 leading-relaxed"
+            className="text-lg md:text-2xl max-w-2xl mx-auto mb-12 leading-relaxed"
             style={{ color: 'rgba(225,224,204,0.65)' }}
             initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.55, duration: 0.7 }}
           >
             We design and build custom websites for brands that are serious about their presence — and serious about results.
           </motion.p>
-          <motion.div
-            className="flex justify-center"
-            initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.8, duration: 0.6 }}
-          >
+          <motion.div className="flex justify-center" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.8, duration: 0.6 }}>
             <button
               onClick={() => document.getElementById('our-story')?.scrollIntoView({ behavior: 'smooth' })}
-              className="text-sm font-medium transition-colors duration-200"
+              className="text-base font-medium transition-colors duration-200"
               style={{ color: 'rgba(225,224,204,0.4)' }}
               onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = '#E1E0CC')}
               onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = 'rgba(225,224,204,0.4)')}
@@ -175,45 +143,36 @@ export default function About() {
             </button>
           </motion.div>
         </div>
-        <motion.div className="absolute bottom-10 left-1/2 -translate-x-1/2"
-          initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.4 }}>
-          <div className="w-px h-10" style={{ background: 'linear-gradient(to bottom, rgba(96,165,250,0.8), transparent)' }} />
+        <motion.div className="absolute bottom-10 left-1/2 -translate-x-1/2" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.4 }}>
+          <div className="w-px h-12" style={{ background: 'linear-gradient(to bottom, rgba(96,165,250,0.8), transparent)' }} />
         </motion.div>
       </section>
 
       {/* WHO WE ARE */}
-      <section id="our-story" className="relative py-24 md:py-32 px-6 md:px-10">
+      <section id="our-story" className="relative py-28 md:py-36 px-6 md:px-12">
         <div className="max-w-5xl mx-auto">
           <motion.div
-            className="rounded-2xl md:rounded-3xl px-8 md:px-14 py-12 md:py-16"
-            style={{
-              background: 'rgba(5,8,20,0.8)',
-              backdropFilter: 'blur(28px)',
-              WebkitBackdropFilter: 'blur(28px)',
-              border: '1px solid rgba(255,255,255,0.08)',
-            }}
+            className="rounded-2xl md:rounded-3xl px-10 md:px-16 py-14 md:py-20"
+            style={{ background: 'rgba(5,8,20,0.8)', backdropFilter: 'blur(28px)', WebkitBackdropFilter: 'blur(28px)', border: '1px solid rgba(255,255,255,0.08)' }}
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: '-60px' }}
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           >
-            <p className="text-[10px] tracking-[0.32em] uppercase mb-6" style={{ color: 'rgba(96,165,250,0.7)' }}>Who We Are</p>
-            <h2
-              className="font-extrabold tracking-tight leading-tight mb-8"
-              style={{ fontSize: 'clamp(26px, 4vw, 48px)', color: '#E1E0CC', letterSpacing: '-0.03em' }}
-            >
+            <p className="text-[11px] tracking-[0.32em] uppercase mb-7" style={{ color: 'rgba(96,165,250,0.7)' }}>Who We Are</p>
+            <h2 className="font-extrabold tracking-tight leading-tight mb-10" style={{ fontSize: 'clamp(30px, 4.5vw, 56px)', color: '#E1E0CC', letterSpacing: '-0.03em' }}>
               We close the gap between
               <span style={{ color: '#60a5fa' }}> great businesses</span> and
               <span style={{ color: '#60a5fa' }}> great websites.</span>
             </h2>
-            <div className="flex flex-col gap-5 max-w-3xl">
-              <p className="text-base md:text-lg leading-relaxed" style={{ color: 'rgba(225,224,204,0.7)' }}>
+            <div className="flex flex-col gap-6 max-w-3xl">
+              <p className="text-lg md:text-xl leading-relaxed" style={{ color: 'rgba(225,224,204,0.7)' }}>
                 Visionary Web Studio is a boutique creative studio specializing in custom-built, high-performance websites for businesses that want to stand out. We work with restaurants, contractors, beauty studios, automotive brands, service companies, and entrepreneurs who know that their online presence is their first impression — and it needs to be a great one.
               </p>
-              <p className="text-base leading-relaxed" style={{ color: 'rgba(225,224,204,0.55)' }}>
+              <p className="text-base md:text-lg leading-relaxed" style={{ color: 'rgba(225,224,204,0.55)' }}>
                 Everything we build is hand-coded from scratch. No WordPress, no drag-and-drop builders, no templates pulled off a shelf. Every line of code is written for your project, which means faster load times, cleaner design, and a site that actually looks like it cost significantly more than it did.
               </p>
-              <p className="text-base leading-relaxed" style={{ color: 'rgba(225,224,204,0.55)' }}>
+              <p className="text-base md:text-lg leading-relaxed" style={{ color: 'rgba(225,224,204,0.55)' }}>
                 We started because we were tired of seeing talented, hardworking business owners stuck with websites that didn't represent them. The work they do is exceptional — their website should say the same. That's still the mission today, and it drives every project we take on.
               </p>
             </div>
@@ -221,115 +180,143 @@ export default function About() {
         </div>
       </section>
 
-      {/* ── DESIGN + SEO — left sidebar + content panels ── */}
-      {/*
-        Outer div clips the x-overflow so the sidebar starts hidden off-screen.
-        Inner flex: sidebar (full section height) | content panels (stacked).
-        No sticky, no overflow on flex parent — just a clean flex column sidebar.
-      */}
+      {/* THE VISIONARY DIFFERENCE */}
+      <section className="relative py-28 md:py-40 px-6 md:px-12">
+        <div className="max-w-6xl mx-auto">
+          <motion.div
+            className="text-center mb-18"
+            initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.7 }}
+          >
+            <div className="inline-flex items-center gap-2.5 rounded-full px-6 py-3 mb-8" style={{ background: 'rgba(37,99,235,0.15)', border: '1px solid rgba(96,165,250,0.25)' }}>
+              <Trophy size={15} style={{ color: '#60a5fa' }} />
+              <span className="text-[12px] tracking-[0.28em] uppercase font-bold" style={{ color: '#93c5fd' }}>Why Choose Us</span>
+            </div>
+            <h2 className="font-extrabold tracking-tight mb-6" style={{ fontSize: 'clamp(42px, 7.5vw, 96px)', color: '#E1E0CC', letterSpacing: '-0.04em' }}>
+              The Visionary <span style={{ color: '#60a5fa' }}>Difference</span>
+            </h2>
+            <p className="text-xl max-w-2xl mx-auto" style={{ color: 'rgba(225,224,204,0.5)' }}>
+              See why smart business owners choose Visionary over traditional agencies.
+            </p>
+          </motion.div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-14">
+            {/* Traditional Agencies */}
+            <motion.div
+              className="rounded-2xl p-10 md:p-14"
+              style={{ background: 'rgba(5,8,20,0.8)', backdropFilter: 'blur(24px)', WebkitBackdropFilter: 'blur(24px)', border: '1px solid rgba(255,255,255,0.07)' }}
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, margin: '-60px' }}
+              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+            >
+              <div className="flex items-center gap-4 mb-10">
+                <div className="w-14 h-14 rounded-full flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(239,68,68,0.15)', border: '1px solid rgba(239,68,68,0.25)' }}>
+                  <X size={22} style={{ color: '#f87171' }} />
+                </div>
+                <h3 className="font-bold text-2xl" style={{ color: '#E1E0CC' }}>Traditional Agencies</h3>
+              </div>
+              <ul className="flex flex-col gap-6">
+                {traditionalNegatives.map((item) => (
+                  <li key={item} className="flex items-start gap-4">
+                    <div className="w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5" style={{ background: 'rgba(239,68,68,0.12)', border: '1px solid rgba(239,68,68,0.2)' }}>
+                      <X size={12} style={{ color: '#f87171' }} />
+                    </div>
+                    <span className="text-lg leading-relaxed" style={{ color: 'rgba(225,224,204,0.5)' }}>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </motion.div>
+
+            {/* Visionary */}
+            <motion.div
+              className="rounded-2xl p-10 md:p-14 relative overflow-hidden"
+              style={{ background: 'rgba(10,20,50,0.85)', backdropFilter: 'blur(24px)', WebkitBackdropFilter: 'blur(24px)', border: '1px solid rgba(96,165,250,0.3)', boxShadow: '0 0 60px rgba(59,130,246,0.14)' }}
+              initial={{ opacity: 0, x: 30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, margin: '-60px' }}
+              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
+            >
+              <div className="absolute top-0 right-0 w-64 h-64 pointer-events-none" style={{ background: 'radial-gradient(circle at top right, rgba(96,165,250,0.16), transparent 70%)' }} />
+              <div className="flex items-center gap-4 mb-10">
+                <div className="w-14 h-14 rounded-full flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(37,99,235,0.25)', border: '1px solid rgba(96,165,250,0.35)' }}>
+                  <Check size={22} style={{ color: '#60a5fa' }} />
+                </div>
+                <h3 className="font-bold text-2xl" style={{ color: '#E1E0CC' }}>Visionary</h3>
+                <span className="ml-auto text-[11px] font-extrabold tracking-[0.2em] uppercase px-3 py-1.5 rounded-full" style={{ background: 'rgba(37,99,235,0.25)', border: '1px solid rgba(96,165,250,0.35)', color: '#93c5fd' }}>Best Choice</span>
+              </div>
+              <ul className="flex flex-col gap-6">
+                {visionaryPositives.map((item) => (
+                  <li key={item} className="flex items-start gap-4">
+                    <div className="w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5" style={{ background: 'rgba(37,99,235,0.2)', border: '1px solid rgba(96,165,250,0.3)' }}>
+                      <Check size={12} style={{ color: '#60a5fa' }} />
+                    </div>
+                    <span className="text-lg leading-relaxed font-medium" style={{ color: 'rgba(225,224,204,0.9)' }}>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </motion.div>
+          </div>
+
+          <motion.div
+            className="text-center mt-16"
+            initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.3 }}
+          >
+            <Link
+              to="/contact"
+              className="group inline-flex items-center gap-3 rounded-full font-bold px-10 py-5 transition-all duration-300"
+              style={{ background: '#3b82f6', color: '#fff', boxShadow: '0 0 36px rgba(59,130,246,0.45)', fontSize: '16px' }}
+              onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.boxShadow = '0 0 55px rgba(59,130,246,0.75)')}
+              onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.boxShadow = '0 0 36px rgba(59,130,246,0.45)')}
+            >
+              <span>Start Your Project Today</span>
+              <span className="flex items-center justify-center rounded-full bg-white/20 transition-transform duration-200 group-hover:scale-110" style={{ width: 36, height: 36 }}>
+                <ArrowRight size={16} />
+              </span>
+            </Link>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* ── DESIGN + SEO ── */}
       <div style={{ overflowX: 'hidden', borderTop: '1px solid rgba(255,255,255,0.06)', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
         <div className="flex">
-
-          {/* LEFT SIDEBAR — slides in from off-screen left when section enters view */}
           <motion.div
             className="flex-shrink-0 flex flex-col self-stretch"
-            style={{
-              width: '52px',
-              background: 'rgba(3,5,14,0.6)',
-              backdropFilter: 'blur(20px)',
-              WebkitBackdropFilter: 'blur(20px)',
-              borderRight: '1px solid rgba(255,255,255,0.07)',
-            }}
-            initial={{ x: -52, opacity: 0 }}
+            style={{ width: '56px', background: 'rgba(3,5,14,0.6)', backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)', borderRight: '1px solid rgba(255,255,255,0.07)' }}
+            initial={{ x: -56, opacity: 0 }}
             whileInView={{ x: 0, opacity: 1 }}
             viewport={{ once: true, margin: '-40px' }}
             transition={{ duration: 1.1, ease: [0.16, 1, 0.3, 1] }}
           >
-            {/* Design label — top half */}
-            <div
-              className="flex-1 flex items-center justify-center"
-              style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}
-            >
-              <span
-                style={{
-                  writingMode: 'vertical-rl',
-                  transform: 'rotate(180deg)',
-                  fontSize: '10px',
-                  fontWeight: 800,
-                  letterSpacing: '0.28em',
-                  textTransform: 'uppercase',
-                  color: 'rgba(96,165,250,0.65)',
-                  userSelect: 'none',
-                }}
-              >
-                Design
-              </span>
+            <div className="flex-1 flex items-center justify-center" style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
+              <span style={{ writingMode: 'vertical-rl', transform: 'rotate(180deg)', fontSize: '11px', fontWeight: 800, letterSpacing: '0.28em', textTransform: 'uppercase', color: 'rgba(96,165,250,0.65)', userSelect: 'none' }}>Design</span>
             </div>
-
-            {/* Center dot divider */}
-            <div className="flex items-center justify-center flex-shrink-0" style={{ paddingTop: '10px', paddingBottom: '10px' }}>
-              <div style={{ width: 5, height: 5, borderRadius: '50%', background: 'rgba(96,165,250,0.4)', boxShadow: '0 0 8px rgba(96,165,250,0.5)' }} />
+            <div className="flex items-center justify-center flex-shrink-0" style={{ paddingTop: '12px', paddingBottom: '12px' }}>
+              <div style={{ width: 6, height: 6, borderRadius: '50%', background: 'rgba(96,165,250,0.4)', boxShadow: '0 0 8px rgba(96,165,250,0.5)' }} />
             </div>
-
-            {/* SEO label — bottom half */}
             <div className="flex-1 flex items-center justify-center">
-              <span
-                style={{
-                  writingMode: 'vertical-rl',
-                  transform: 'rotate(180deg)',
-                  fontSize: '10px',
-                  fontWeight: 800,
-                  letterSpacing: '0.28em',
-                  textTransform: 'uppercase',
-                  color: 'rgba(96,165,250,0.65)',
-                  userSelect: 'none',
-                }}
-              >
-                SEO
-              </span>
+              <span style={{ writingMode: 'vertical-rl', transform: 'rotate(180deg)', fontSize: '11px', fontWeight: 800, letterSpacing: '0.28em', textTransform: 'uppercase', color: 'rgba(96,165,250,0.65)', userSelect: 'none' }}>SEO</span>
             </div>
           </motion.div>
 
-          {/* CONTENT PANELS — right side, stacked vertically */}
           <div className="flex-1">
             {capabilities.map((item, i) => (
               <motion.div
                 key={item.label}
-                className="py-20 px-8 md:px-16 lg:px-20"
-                style={{
-                  borderBottom: i < capabilities.length - 1 ? '1px solid rgba(255,255,255,0.05)' : 'none',
-                }}
+                className="py-24 px-10 md:px-18 lg:px-24"
+                style={{ borderBottom: i < capabilities.length - 1 ? '1px solid rgba(255,255,255,0.05)' : 'none' }}
                 initial={{ opacity: 0, x: 50 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true, margin: '-60px' }}
                 transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1], delay: 0.25 }}
               >
                 <div className="max-w-3xl">
-                  <h3
-                    className="font-extrabold tracking-tight mb-5"
-                    style={{ fontSize: 'clamp(22px, 3.5vw, 42px)', color: '#E1E0CC', letterSpacing: '-0.03em' }}
-                  >
-                    {item.heading}
-                  </h3>
-                  <p
-                    className="text-sm md:text-base leading-relaxed mb-7"
-                    style={{ color: 'rgba(225,224,204,0.52)' }}
-                  >
-                    {item.body}
-                  </p>
-                  <ul className="flex flex-wrap gap-2">
+                  <h3 className="font-extrabold tracking-tight mb-6" style={{ fontSize: 'clamp(26px, 4vw, 52px)', color: '#E1E0CC', letterSpacing: '-0.03em' }}>{item.heading}</h3>
+                  <p className="text-base md:text-lg leading-relaxed mb-8" style={{ color: 'rgba(225,224,204,0.52)' }}>{item.body}</p>
+                  <ul className="flex flex-wrap gap-3">
                     {item.points.map((pt) => (
-                      <li
-                        key={pt}
-                        className="flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-full"
-                        style={{
-                          background: 'rgba(37,99,235,0.12)',
-                          border: '1px solid rgba(96,165,250,0.18)',
-                          color: 'rgba(147,197,253,0.9)',
-                        }}
-                      >
-                        <Check size={10} />
-                        {pt}
+                      <li key={pt} className="flex items-center gap-2 text-sm px-4 py-2 rounded-full" style={{ background: 'rgba(37,99,235,0.12)', border: '1px solid rgba(96,165,250,0.18)', color: 'rgba(147,197,253,0.9)' }}>
+                        <Check size={11} />{pt}
                       </li>
                     ))}
                   </ul>
@@ -337,25 +324,20 @@ export default function About() {
               </motion.div>
             ))}
           </div>
-
         </div>
       </div>
 
       {/* VALUES */}
-      <section className="relative py-12 md:py-16 px-6 md:px-10">
+      <section className="relative py-16 md:py-24 px-6 md:px-12">
         <div className="max-w-5xl mx-auto">
-          <motion.p
-            className="text-[13px] tracking-[0.32em] uppercase mb-10"
-            style={{ color: 'rgba(96,165,250,0.7)' }}
-            initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ duration: 0.6 }}
-          >
+          <motion.p className="text-[13px] tracking-[0.32em] uppercase mb-12" style={{ color: 'rgba(96,165,250,0.7)' }} initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ duration: 0.6 }}>
             What We Stand For
           </motion.p>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
             {values.map((v, i) => (
               <motion.div
                 key={v.num}
-                className="rounded-2xl p-7 flex gap-5"
+                className="rounded-2xl p-8 flex gap-6"
                 style={{ background: 'rgba(5,8,20,0.75)', backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)', border: '1px solid rgba(255,255,255,0.07)' }}
                 initial={{ opacity: 0, y: 22 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -364,13 +346,11 @@ export default function About() {
                 whileHover={{ borderColor: 'rgba(96,165,250,0.2)' }}
               >
                 <div className="flex-shrink-0 mt-1">
-                  <div className="w-9 h-9 rounded-lg flex items-center justify-center" style={{ background: 'rgba(37,99,235,0.15)', border: '1px solid rgba(59,130,246,0.2)', color: '#60a5fa' }}>
-                    {v.icon}
-                  </div>
+                  <div className="w-11 h-11 rounded-xl flex items-center justify-center" style={{ background: 'rgba(37,99,235,0.15)', border: '1px solid rgba(59,130,246,0.2)', color: '#60a5fa' }}>{v.icon}</div>
                 </div>
                 <div>
-                  <p className="font-bold text-base mb-2" style={{ color: '#E1E0CC' }}>{v.title}</p>
-                  <p className="text-sm leading-relaxed" style={{ color: 'rgba(225,224,204,0.5)' }}>{v.desc}</p>
+                  <p className="font-bold text-lg mb-2.5" style={{ color: '#E1E0CC' }}>{v.title}</p>
+                  <p className="text-base leading-relaxed" style={{ color: 'rgba(225,224,204,0.5)' }}>{v.desc}</p>
                 </div>
               </motion.div>
             ))}
@@ -379,172 +359,52 @@ export default function About() {
       </section>
 
       {/* PROCESS */}
-      <section className="relative py-16 md:py-24 px-6 md:px-10">
+      <section className="relative py-20 md:py-28 px-6 md:px-12">
         <div className="max-w-5xl mx-auto">
-          <motion.div
-            className="mb-12"
-            initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.7 }}
-          >
-            <p className="text-[10px] tracking-[0.32em] uppercase mb-4" style={{ color: 'rgba(96,165,250,0.7)' }}>How It Works</p>
-            <h2
-              className="font-extrabold tracking-tight"
-              style={{ fontSize: 'clamp(28px, 5vw, 56px)', color: '#E1E0CC', letterSpacing: '-0.04em' }}
-            >
-              From idea to live site —<br />
-              <span style={{ color: '#60a5fa' }}>in days, not months.</span>
+          <motion.div className="mb-14" initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.7 }}>
+            <p className="text-[11px] tracking-[0.32em] uppercase mb-5" style={{ color: 'rgba(96,165,250,0.7)' }}>How It Works</p>
+            <h2 className="font-extrabold tracking-tight" style={{ fontSize: 'clamp(32px, 5.5vw, 64px)', color: '#E1E0CC', letterSpacing: '-0.04em' }}>
+              From idea to live site —<br /><span style={{ color: '#60a5fa' }}>in days, not months.</span>
             </h2>
           </motion.div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
             {process.map((p, i) => (
               <motion.div
                 key={p.step}
-                className="rounded-2xl p-6"
+                className="rounded-2xl p-8"
                 style={{ background: 'rgba(5,8,20,0.75)', backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)', border: '1px solid rgba(255,255,255,0.07)' }}
                 initial={{ opacity: 0, y: 24 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1], delay: i * 0.1 }}
               >
-                <p className="font-extrabold text-3xl mb-4" style={{ color: 'rgba(96,165,250,0.2)', letterSpacing: '-0.04em' }}>{p.step}</p>
-                <p className="font-bold text-base mb-2" style={{ color: '#E1E0CC' }}>{p.title}</p>
-                <p className="text-sm leading-relaxed" style={{ color: 'rgba(225,224,204,0.45)' }}>{p.desc}</p>
+                <p className="font-extrabold text-4xl mb-5" style={{ color: 'rgba(96,165,250,0.2)', letterSpacing: '-0.04em' }}>{p.step}</p>
+                <p className="font-bold text-lg mb-3" style={{ color: '#E1E0CC' }}>{p.title}</p>
+                <p className="text-base leading-relaxed" style={{ color: 'rgba(225,224,204,0.45)' }}>{p.desc}</p>
               </motion.div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* THE VISIONARY DIFFERENCE */}
-      <section className="relative py-20 md:py-28 px-6 md:px-10">
-        <div className="max-w-5xl mx-auto">
-          <motion.div
-            className="text-center mb-14"
-            initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.7 }}
-          >
-            <div className="inline-flex items-center gap-2 rounded-full px-4 py-2 mb-6" style={{ background: 'rgba(37,99,235,0.15)', border: '1px solid rgba(96,165,250,0.25)' }}>
-              <Trophy size={13} style={{ color: '#60a5fa' }} />
-              <span className="text-[11px] tracking-[0.28em] uppercase font-bold" style={{ color: '#93c5fd' }}>Why Choose Us</span>
-            </div>
-            <h2
-              className="font-extrabold tracking-tight mb-4"
-              style={{ fontSize: 'clamp(28px, 5vw, 56px)', color: '#E1E0CC', letterSpacing: '-0.04em' }}
-            >
-              The Visionary <span style={{ color: '#60a5fa' }}>Difference</span>
-            </h2>
-            <p className="text-base max-w-2xl mx-auto" style={{ color: 'rgba(225,224,204,0.5)' }}>
-              See why smart business owners choose Visionary over traditional agencies.
-            </p>
-          </motion.div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* Traditional Agencies — left card */}
-            <motion.div
-              className="rounded-2xl p-8"
-              style={{ background: 'rgba(5,8,20,0.8)', backdropFilter: 'blur(24px)', WebkitBackdropFilter: 'blur(24px)', border: '1px solid rgba(255,255,255,0.07)' }}
-              initial={{ opacity: 0, x: -30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true, margin: '-60px' }}
-              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-            >
-              <div className="flex items-center gap-3 mb-7">
-                <div className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(239,68,68,0.15)', border: '1px solid rgba(239,68,68,0.25)' }}>
-                  <X size={16} style={{ color: '#f87171' }} />
-                </div>
-                <h3 className="font-bold text-lg" style={{ color: '#E1E0CC' }}>Traditional Agencies</h3>
-              </div>
-              <ul className="flex flex-col gap-4">
-                {traditionalNegatives.map((item) => (
-                  <li key={item} className="flex items-start gap-3">
-                    <div className="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5" style={{ background: 'rgba(239,68,68,0.12)', border: '1px solid rgba(239,68,68,0.2)' }}>
-                      <X size={10} style={{ color: '#f87171' }} />
-                    </div>
-                    <span className="text-sm leading-relaxed" style={{ color: 'rgba(225,224,204,0.5)' }}>{item}</span>
-                  </li>
-                ))}
-              </ul>
-            </motion.div>
-
-            {/* Visionary — right card (highlighted) */}
-            <motion.div
-              className="rounded-2xl p-8 relative overflow-hidden"
-              style={{ background: 'rgba(10,20,50,0.85)', backdropFilter: 'blur(24px)', WebkitBackdropFilter: 'blur(24px)', border: '1px solid rgba(96,165,250,0.3)', boxShadow: '0 0 40px rgba(59,130,246,0.12)' }}
-              initial={{ opacity: 0, x: 30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true, margin: '-60px' }}
-              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
-            >
-              <div className="absolute top-0 right-0 w-40 h-40 pointer-events-none" style={{ background: 'radial-gradient(circle at top right, rgba(96,165,250,0.15), transparent 70%)' }} />
-              <div className="flex items-center gap-3 mb-7">
-                <div className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(37,99,235,0.25)', border: '1px solid rgba(96,165,250,0.35)' }}>
-                  <Check size={16} style={{ color: '#60a5fa' }} />
-                </div>
-                <h3 className="font-bold text-lg" style={{ color: '#E1E0CC' }}>Visionary</h3>
-                <span className="ml-auto text-[10px] font-extrabold tracking-[0.2em] uppercase px-2.5 py-1 rounded-full" style={{ background: 'rgba(37,99,235,0.25)', border: '1px solid rgba(96,165,250,0.35)', color: '#93c5fd' }}>Best Choice</span>
-              </div>
-              <ul className="flex flex-col gap-4">
-                {visionaryPositives.map((item) => (
-                  <li key={item} className="flex items-start gap-3">
-                    <div className="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5" style={{ background: 'rgba(37,99,235,0.2)', border: '1px solid rgba(96,165,250,0.3)' }}>
-                      <Check size={10} style={{ color: '#60a5fa' }} />
-                    </div>
-                    <span className="text-sm leading-relaxed font-medium" style={{ color: 'rgba(225,224,204,0.85)' }}>{item}</span>
-                  </li>
-                ))}
-              </ul>
-            </motion.div>
-          </div>
-
-          <motion.div
-            className="text-center mt-12"
-            initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.3 }}
-          >
-            <Link
-              to="/contact"
-              className="group inline-flex items-center gap-3 rounded-full font-bold text-sm px-8 py-4 transition-all duration-300"
-              style={{ background: '#3b82f6', color: '#fff', boxShadow: '0 0 36px rgba(59,130,246,0.45)' }}
-              onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.boxShadow = '0 0 55px rgba(59,130,246,0.75)')}
-              onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.boxShadow = '0 0 36px rgba(59,130,246,0.45)')}
-            >
-              <span>Start Your Project Today</span>
-              <span className="flex items-center justify-center rounded-full bg-white/20 transition-transform duration-200 group-hover:scale-110" style={{ width: 30, height: 30 }}>
-                <ArrowRight size={14} />
-              </span>
-            </Link>
-          </motion.div>
-        </div>
-      </section>
-
       {/* CTA */}
-      <section className="relative py-28 px-6 text-center">
-        <motion.div
-          initial={{ opacity: 0, y: 28 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-        >
-          <p className="text-[11px] tracking-[0.3em] uppercase mb-6" style={{ color: 'rgba(96,165,250,0.7)' }}>Ready to get started?</p>
-          <h2
-            className="font-extrabold tracking-tight leading-none mb-4"
-            style={{ fontSize: 'clamp(32px, 6vw, 80px)', color: '#E1E0CC', letterSpacing: '-0.04em' }}
-          >
-            Let's build something
-          </h2>
-          <h2
-            className="font-extrabold tracking-tight leading-none mb-10"
-            style={{ fontSize: 'clamp(32px, 6vw, 80px)', letterSpacing: '-0.04em' }}
-          >
+      <section className="relative py-32 px-6 text-center">
+        <motion.div initial={{ opacity: 0, y: 28 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}>
+          <p className="text-[12px] tracking-[0.3em] uppercase mb-7" style={{ color: 'rgba(96,165,250,0.7)' }}>Ready to get started?</p>
+          <h2 className="font-extrabold tracking-tight leading-none mb-5" style={{ fontSize: 'clamp(36px, 7vw, 96px)', color: '#E1E0CC', letterSpacing: '-0.04em' }}>Let's build something</h2>
+          <h2 className="font-extrabold tracking-tight leading-none mb-12" style={{ fontSize: 'clamp(36px, 7vw, 96px)', letterSpacing: '-0.04em' }}>
             <span style={{ color: '#60a5fa' }}>you're proud to share.</span>
           </h2>
           <Link
             to="/contact"
-            className="group inline-flex items-center gap-3 rounded-full font-bold text-sm px-8 py-4 transition-all duration-300"
-            style={{ background: '#3b82f6', color: '#fff', boxShadow: '0 0 36px rgba(59,130,246,0.5)' }}
+            className="group inline-flex items-center gap-3 rounded-full font-bold px-10 py-5 transition-all duration-300"
+            style={{ background: '#3b82f6', color: '#fff', boxShadow: '0 0 36px rgba(59,130,246,0.5)', fontSize: '16px' }}
             onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.boxShadow = '0 0 55px rgba(59,130,246,0.8)')}
             onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.boxShadow = '0 0 36px rgba(59,130,246,0.5)')}
           >
             <span>Start a Project</span>
-            <span className="flex items-center justify-center rounded-full bg-white/20 transition-transform duration-200 group-hover:scale-110" style={{ width: 30, height: 30 }}>
-              <ArrowRight size={14} />
+            <span className="flex items-center justify-center rounded-full bg-white/20 transition-transform duration-200 group-hover:scale-110" style={{ width: 36, height: 36 }}>
+              <ArrowRight size={16} />
             </span>
           </Link>
         </motion.div>
