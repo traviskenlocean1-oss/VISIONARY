@@ -17,10 +17,10 @@ const QUICK_LINKS = [
 ]
 
 const SERVICES = [
-  { label: 'Website Creation', to: '/services' },
-  { label: 'Website Redesign', to: '/services' },
-  { label: 'Website Maintenance', to: '/services' },
-  { label: 'Logo & Branding', to: '/services' },
+  { label: 'Website Creation', to: '/services#website-creation' },
+  { label: 'Website Redesign', to: '/services#website-redesign' },
+  { label: 'Website Maintenance', to: '/services#support' },
+  { label: 'Logo & Branding', to: '/services#logo-branding' },
   { label: 'Get a Quote', to: '/contact' },
 ]
 
