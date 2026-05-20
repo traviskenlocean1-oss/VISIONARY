@@ -1,7 +1,34 @@
-import { useRef } from 'react'
+import { useRef, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { motion, useInView } from 'framer-motion'
-import { Check, ArrowRight, Zap, TrendingUp } from 'lucide-react'
+import { Check, ArrowRight, Zap, TrendingUp, Globe, Wrench, Palette } from 'lucide-react'
+import Hls from 'hls.js'
+
+const HLS_SRC = 'https://stream.mux.com/4IMYGcL01xjs7ek5ANO17JC4VQVUTsojZlnw4fXzwSxc.m3u8'
+
+function HLSVideoBackground() {
+  const ref = useRef<HTMLVideoElement>(null)
+
+  useEffect(() => {
+    const video = ref.current
+    if (!video) return
+    if (Hls.isSupported()) {
+      const hls = new Hls()
+      hls.loadSource(HLS_SRC)
+      hls.attachMedia(video)
+      return () => hls.destroy()
+    } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+      video.src = HLS_SRC
+    }
+  }, [])
+
+  return (
+    <div className="fixed inset-0 -z-10 overflow-hidden">
+      <video ref={ref} autoPlay muted loop playsInline className="absolute inset-0 w-full h-full object-cover" />
+      <div className="absolute inset-0" style={{ background: 'rgba(3,5,10,0.58)' }} />
+    </div>
+  )
+}
 
 const plans = [
   {
@@ -105,6 +132,8 @@ function PageIn({ children }: { children: React.ReactNode }) {
 export default function Pricing() {
   return (
     <PageIn>
+      <HLSVideoBackground />
+
       {/* HERO */}
       <section className="relative pt-[130px] pb-16 px-6 md:px-10">
         <div className="max-w-4xl mx-auto text-center">
@@ -147,9 +176,100 @@ export default function Pricing() {
         </div>
       </section>
 
-      {/* PRICING CARDS */}
-      <section className="relative px-6 md:px-10 pb-8">
+      {/* WHAT WE OFFER */}
+      <section className="relative py-16 px-6 md:px-10 border-t" style={{ borderColor: 'rgba(255,255,255,0.06)' }}>
         <div className="max-w-6xl mx-auto">
+          <motion.div className="text-center mb-12" initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.7 }}>
+            <p className="text-[10px] tracking-[0.32em] uppercase mb-4" style={{ color: 'rgba(96,165,250,0.6)' }}>Services</p>
+            <h2 className="font-extrabold tracking-tight mb-4" style={{ fontSize: 'clamp(28px, 5vw, 56px)', color: '#E1E0CC', letterSpacing: '-0.04em' }}>What We Offer</h2>
+            <p className="text-base max-w-lg mx-auto" style={{ color: 'rgba(225,224,204,0.45)' }}>Everything your business needs to get online, stay competitive, and grow.</p>
+          </motion.div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+            {/* Custom Website */}
+            <motion.div
+              className="rounded-2xl p-8 flex flex-col"
+              style={{ background: 'rgba(5,8,20,0.65)', backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)', border: '1px solid rgba(255,255,255,0.08)' }}
+              initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
+              transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1], delay: 0 }}
+              whileHover={{ borderColor: 'rgba(96,165,250,0.25)' }}
+            >
+              <div className="w-14 h-14 rounded-2xl flex items-center justify-center mb-6" style={{ background: 'linear-gradient(135deg, rgba(37,99,235,0.5) 0%, rgba(96,165,250,0.35) 100%)', boxShadow: '0 0 24px rgba(59,130,246,0.2)' }}>
+                <Globe size={24} color="#fff" />
+              </div>
+              <p className="font-extrabold text-xl mb-2" style={{ color: '#E1E0CC' }}>Custom Website</p>
+              <p className="font-bold text-2xl mb-1" style={{ color: '#60a5fa', letterSpacing: '-0.02em' }}>$750 <span className="text-sm font-normal" style={{ color: 'rgba(225,224,204,0.35)' }}>starting</span></p>
+              <p className="text-xs mb-6" style={{ color: 'rgba(225,224,204,0.3)' }}>one-time fee</p>
+              <p className="text-sm leading-relaxed mb-6" style={{ color: 'rgba(225,224,204,0.5)' }}>Custom-designed websites that convert visitors into customers. Mobile-responsive, fast-loading, and built from scratch.</p>
+              <ul className="flex flex-col gap-3 mt-auto">
+                {['Custom Design & Development', 'Mobile-First Approach', 'SEO Optimization'].map((f) => (
+                  <li key={f} className="flex items-center gap-2.5 text-sm" style={{ color: 'rgba(225,224,204,0.65)' }}>
+                    <Check size={13} style={{ color: '#60a5fa', flexShrink: 0 }} />{f}
+                  </li>
+                ))}
+              </ul>
+            </motion.div>
+
+            {/* Website Maintenance */}
+            <motion.div
+              className="rounded-2xl p-8 flex flex-col relative overflow-hidden"
+              style={{ background: 'rgba(5,8,20,0.65)', backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)', border: '1px solid rgba(255,255,255,0.08)' }}
+              initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
+              transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
+              whileHover={{ borderColor: 'rgba(245,158,11,0.25)' }}
+            >
+              <div className="absolute top-4 right-4 text-[9px] font-extrabold tracking-[0.2em] uppercase px-2.5 py-1 rounded-full" style={{ background: 'rgba(245,158,11,0.15)', border: '1px solid rgba(245,158,11,0.3)', color: '#fbbf24' }}>Optional Add-On</div>
+              <div className="w-14 h-14 rounded-2xl flex items-center justify-center mb-6" style={{ background: 'linear-gradient(135deg, rgba(217,119,6,0.5) 0%, rgba(245,158,11,0.35) 100%)', boxShadow: '0 0 24px rgba(245,158,11,0.18)' }}>
+                <Wrench size={24} color="#fff" />
+              </div>
+              <p className="font-extrabold text-xl mb-2" style={{ color: '#E1E0CC' }}>Website Maintenance</p>
+              <p className="font-bold text-2xl mb-1" style={{ color: '#fbbf24', letterSpacing: '-0.02em' }}>$100 <span className="text-sm font-normal" style={{ color: 'rgba(225,224,204,0.35)' }}>/month</span></p>
+              <p className="text-xs mb-6" style={{ color: 'rgba(225,224,204,0.3)' }}>ongoing add-on</p>
+              <p className="text-sm leading-relaxed mb-6" style={{ color: 'rgba(225,224,204,0.5)' }}>Keep your website running flawlessly with regular updates, security monitoring, and performance optimization.</p>
+              <ul className="flex flex-col gap-3 mt-auto">
+                {['Regular Content Updates', 'Security Monitoring', 'Performance Optimization'].map((f) => (
+                  <li key={f} className="flex items-center gap-2.5 text-sm" style={{ color: 'rgba(225,224,204,0.65)' }}>
+                    <Check size={13} style={{ color: '#fbbf24', flexShrink: 0 }} />{f}
+                  </li>
+                ))}
+              </ul>
+            </motion.div>
+
+            {/* Logo & Branding */}
+            <motion.div
+              className="rounded-2xl p-8 flex flex-col"
+              style={{ background: 'rgba(5,8,20,0.65)', backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)', border: '1px solid rgba(255,255,255,0.08)' }}
+              initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
+              transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
+              whileHover={{ borderColor: 'rgba(52,211,153,0.25)' }}
+            >
+              <div className="w-14 h-14 rounded-2xl flex items-center justify-center mb-6" style={{ background: 'linear-gradient(135deg, rgba(5,150,105,0.5) 0%, rgba(52,211,153,0.35) 100%)', boxShadow: '0 0 24px rgba(52,211,153,0.18)' }}>
+                <Palette size={24} color="#fff" />
+              </div>
+              <p className="font-extrabold text-xl mb-2" style={{ color: '#E1E0CC' }}>Logo & Branding</p>
+              <p className="font-bold text-2xl mb-1" style={{ color: '#34d399', letterSpacing: '-0.02em' }}>Let's Talk</p>
+              <p className="text-xs mb-6" style={{ color: 'rgba(225,224,204,0.3)' }}>custom pricing</p>
+              <p className="text-sm leading-relaxed mb-6" style={{ color: 'rgba(225,224,204,0.5)' }}>Make a lasting first impression with a professional, custom logo that captures your brand's essence and stands out.</p>
+              <ul className="flex flex-col gap-3 mt-auto">
+                {['Custom Brand Identity', 'Multiple Design Concepts', 'Full Vector Files'].map((f) => (
+                  <li key={f} className="flex items-center gap-2.5 text-sm" style={{ color: 'rgba(225,224,204,0.65)' }}>
+                    <Check size={13} style={{ color: '#34d399', flexShrink: 0 }} />{f}
+                  </li>
+                ))}
+              </ul>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* PRICING CARDS */}
+      <section className="relative px-6 md:px-10 pb-8 border-t" style={{ borderColor: 'rgba(255,255,255,0.06)' }}>
+        <div className="max-w-6xl mx-auto pt-16">
+          <motion.div className="text-center mb-14" initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.7 }}>
+            <p className="text-[10px] tracking-[0.32em] uppercase mb-4" style={{ color: 'rgba(96,165,250,0.6)' }}>Choose Your Plan</p>
+            <h2 className="font-extrabold tracking-tight" style={{ fontSize: 'clamp(28px, 5vw, 56px)', color: '#E1E0CC', letterSpacing: '-0.04em' }}>Simple. Flat-rate. No surprises.</h2>
+            <p className="mt-4 text-base max-w-lg mx-auto" style={{ color: 'rgba(225,224,204,0.45)' }}>One-time payment. You own everything on day one.</p>
+          </motion.div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-5" style={{ perspective: '1000px' }}>
             {plans.map((plan, i) => <PricingCard key={plan.name} plan={plan} index={i} />)}
           </div>
