@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+﻿import { useEffect, useRef } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { Check, ArrowRight, Code2, Server, Headphones, Palette, Smartphone, Gauge, Search, Plug, FileCode, Globe, Lock, Mail, Cpu, Shield, Clock, RefreshCw, BarChart3, MessageSquare } from 'lucide-react'
@@ -59,7 +59,7 @@ function FeatureItem({ icon, title, desc }: { icon: React.ReactNode; title: stri
       </div>
       <div>
         <p className="font-semibold text-sm mb-1" style={{ color: '#E1E0CC' }}>{title}</p>
-        <p className="text-sm leading-relaxed" style={{ color: 'rgba(225,224,204,0.6)' }}>{desc}</p>
+        <p className="text-xs leading-relaxed" style={{ color: 'rgba(225,224,204,0.45)' }}>{desc}</p>
       </div>
     </motion.div>
   )
@@ -150,6 +150,153 @@ export default function Services() {
               </a>
             ))}
           </motion.div>
+        </div>
+      </section>
+
+      {/* ── RECENT WEBSITE CONCEPTS ── */}
+      <section className="relative py-24 px-6 md:px-10 border-t" style={{ borderColor: 'rgba(255,255,255,0.06)' }}>
+        <div className="max-w-6xl mx-auto">
+          <motion.div className="text-center mb-14" initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.7 }}>
+            <p className="text-[10px] tracking-[0.32em] uppercase mb-4" style={{ color: 'rgba(96,165,250,0.7)' }}>Recent Website Concepts</p>
+            <h2 className="font-extrabold tracking-tight mb-4" style={{ fontSize: 'clamp(28px, 5vw, 60px)', color: '#E1E0CC', letterSpacing: '-0.04em' }}>
+              See What Your Website Could Look Like
+            </h2>
+            <p className="text-base max-w-2xl mx-auto leading-relaxed" style={{ color: 'rgba(225,224,204,0.5)' }}>
+              These concept demos show how different service businesses can organize their services, photos, reviews, and contact options in one clean place. Every final website is customized around the business, offer, and customer journey.
+            </p>
+          </motion.div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mb-8">
+            {[
+              {
+                label: 'Home Services',
+                title: 'HVAC & Plumbing Website Concept',
+                desc: 'A multi-page service business concept with service pages, trust sections, emergency CTAs, and a request callback form.',
+                tags: ['HVAC', 'Plumbing', 'Contact Form', 'Service Areas'],
+                demo: 'https://hvac-plumbing-demo.traviskenlocean1.workers.dev/',
+              },
+              {
+                label: 'Automotive Services',
+                title: 'Mobile Detailing Website Concept',
+                desc: 'Designed to show packages, before-and-after photos, ceramic coating services, and booking/contact options.',
+                tags: ['Detailing', 'Packages', 'Photos', 'Booking CTA'],
+                demo: 'https://mobiledetail.traviskenlocean1.workers.dev/',
+              },
+              {
+                label: 'Contractor / Construction',
+                title: 'Concrete Contractor Website Concept',
+                desc: 'Built to show project work, services, trust, and strong call-to-action sections for a contractor-style business.',
+                tags: ['Construction', 'Projects', 'Reviews', 'Quote CTA'],
+                demo: 'https://contractor-demo.traviskenlocean1.workers.dev/',
+              },
+              {
+                label: 'Beauty & Wellness',
+                title: 'Hair Salon Website Concept',
+                desc: 'A clean, styled layout for a beauty business with service menus, gallery, team profiles, and booking options.',
+                tags: ['Salon', 'Services', 'Gallery', 'Booking CTA'],
+                demo: 'https://beauty.traviskenlocean1.workers.dev/',
+              },
+              {
+                label: 'Roofing Services',
+                title: 'Roofing Website Concept',
+                desc: 'Built around local trust — showcasing services, certifications, project photos, and a clear estimate request flow.',
+                tags: ['Roofing', 'Services', 'Reviews', 'Estimate CTA'],
+                demo: 'https://roofing-demo.traviskenlocean1.workers.dev/',
+              },
+              {
+                label: 'Food & Hospitality',
+                title: 'Bakery & Catering Website',
+                desc: 'A warm, inviting site for a bakery and catering business with menus, gallery, custom orders, and contact info.',
+                tags: ['Bakery', 'Catering', 'Menu', 'Contact Form'],
+                demo: 'https://www.lalasweetsandcakes.com/',
+              },
+              {
+                label: 'Financial Services',
+                title: 'Credit Repair & Business Funding',
+                desc: 'A trust-forward layout for a credit repair and business funding company with service breakdowns, process steps, and consultation CTAs.',
+                tags: ['Credit Repair', 'Funding', 'Process', 'Consultation CTA'],
+                demo: 'https://endeavor-evolution.vercel.app/',
+                img: '/endeavor-evolution.jpeg',
+              },
+            ].map((card, i) => (
+              <motion.div
+                key={card.title}
+                className="rounded-2xl overflow-hidden flex flex-col group"
+                style={{ background: 'rgba(5,8,20,0.65)', backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)', border: '1px solid rgba(255,255,255,0.08)' }}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1], delay: (i % 3) * 0.08 }}
+                whileHover={{ borderColor: 'rgba(96,165,250,0.35)', boxShadow: '0 0 40px rgba(59,130,246,0.12)' }}
+              >
+                {/* Preview — static image or live iframe */}
+                <a href={card.demo} target="_blank" rel="noopener noreferrer" className="block relative overflow-hidden" style={{ height: '220px', borderBottom: '1px solid rgba(255,255,255,0.06)', background: '#03050e' }}>
+                  {'img' in card && card.img ? (
+                    <img src={(card as { img: string }).img} alt={card.title} style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top' }} />
+                  ) : (
+                    <iframe
+                      src={card.demo}
+                      title={card.title}
+                      loading="lazy"
+                      scrolling="no"
+                      style={{
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                        width: '1280px',
+                        height: '900px',
+                        transform: 'scale(0.42)',
+                        transformOrigin: 'top left',
+                        pointerEvents: 'none',
+                        border: 'none',
+                      }}
+                    />
+                  )}
+                  <div
+                    className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center"
+                    style={{ background: 'rgba(3,5,14,0.55)' }}
+                  >
+                    <span className="inline-flex items-center gap-2 text-xs font-bold px-4 py-2 rounded-full" style={{ background: 'rgba(59,130,246,0.2)', border: '1px solid rgba(96,165,250,0.4)', color: '#93c5fd' }}>
+                      View Demo <ArrowRight size={11} />
+                    </span>
+                  </div>
+                </a>
+
+                {/* Card body */}
+                <div className="p-5 flex flex-col flex-1">
+                  <p className="text-[10px] font-bold tracking-[0.2em] uppercase mb-1.5" style={{ color: '#60a5fa' }}>{card.label}</p>
+                  <h3 className="font-bold text-sm mb-2 leading-snug" style={{ color: '#E1E0CC' }}>{card.title}</h3>
+                  <p className="text-xs leading-relaxed mb-3 flex-1" style={{ color: 'rgba(225,224,204,0.5)' }}>{card.desc}</p>
+                  <div className="flex flex-wrap gap-1.5 mb-4">
+                    {card.tags.map((tag) => (
+                      <span key={tag} className="text-[10px] px-2 py-0.5 rounded-full font-medium" style={{ background: 'rgba(37,99,235,0.12)', border: '1px solid rgba(96,165,250,0.18)', color: 'rgba(147,197,253,0.8)' }}>
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                  <a
+                    href={card.demo}
+                    className="inline-flex items-center gap-1.5 text-xs font-bold transition-colors duration-200"
+                    style={{ color: '#60a5fa' }}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = '#93c5fd')}
+                    onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = '#60a5fa')}
+                  >
+                    View Demo <ArrowRight size={11} />
+                  </a>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+
+          <motion.p
+            className="text-center text-xs leading-relaxed"
+            style={{ color: 'rgba(225,224,204,0.28)' }}
+            initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.3 }}
+          >
+            Concept demos are portfolio examples only. Final client websites are customized with the business's real services, photos, reviews, and branding.
+          </motion.p>
         </div>
       </section>
 
@@ -310,7 +457,7 @@ export default function Services() {
             initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}
           >
             <div>
-              <p className="text-[10px] tracking-[0.28em] uppercase mb-2" style={{ color: 'rgba(96,165,250,0.7)' }}>Optional Monthly Plan</p>
+              <p className="text-[10px] tracking-[0.28em] uppercase mb-2" style={{ color: 'rgba(96,165,250,0.7)' }}>Monthly Plan</p>
               <p className="font-extrabold text-2xl mb-1" style={{ color: '#E1E0CC', letterSpacing: '-0.03em' }}>
                 $100<span className="font-normal text-base" style={{ color: 'rgba(225,224,204,0.4)' }}>/month</span>
               </p>
@@ -508,3 +655,4 @@ export default function Services() {
     </PageIn>
   )
 }
+

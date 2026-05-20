@@ -51,7 +51,7 @@ const plans = [
     name: 'Full Build',
     price: '$1,000',
     desc: 'The complete package — every integration, every page, fully launched.',
-    features: ['Unlimited pages', 'Everything in Standard', 'All third-party integrations', 'Booking / e-commerce ready', 'Priority 7-day delivery', 'Unlimited revisions'],
+    features: ['Up to 8–10 pages', 'Everything in Standard', 'All third-party integrations', 'Booking / e-commerce ready', 'Priority 7-day delivery', 'Unlimited revisions'],
     cta: 'Get Full Build',
     featured: false,
   },
@@ -264,12 +264,7 @@ export default function Pricing() {
 
       {/* PRICING CARDS */}
       <section className="relative px-6 md:px-10 pb-8 border-t" style={{ borderColor: 'rgba(255,255,255,0.06)' }}>
-        <div className="max-w-6xl mx-auto pt-16">
-          <motion.div className="text-center mb-14" initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.7 }}>
-            <p className="text-[10px] tracking-[0.32em] uppercase mb-4" style={{ color: 'rgba(96,165,250,0.6)' }}>Choose Your Plan</p>
-            <h2 className="font-extrabold tracking-tight" style={{ fontSize: 'clamp(28px, 5vw, 56px)', color: '#E1E0CC', letterSpacing: '-0.04em' }}>Simple. Flat-rate. No surprises.</h2>
-            <p className="mt-4 text-base max-w-lg mx-auto" style={{ color: 'rgba(225,224,204,0.45)' }}>One-time payment. You own everything on day one.</p>
-          </motion.div>
+        <div className="max-w-6xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-5" style={{ perspective: '1000px' }}>
             {plans.map((plan, i) => <PricingCard key={plan.name} plan={plan} index={i} />)}
           </div>

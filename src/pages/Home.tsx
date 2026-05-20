@@ -60,7 +60,7 @@ const plans = [
     name: 'Full Build',
     price: '$1,000',
     desc: 'The complete package — every integration, every page, fully launched.',
-    features: ['Unlimited pages', 'Everything in Standard', 'All third-party integrations', 'Booking / e-commerce ready', 'Priority 7-day delivery', 'Unlimited revisions'],
+    features: ['Up to 8–10 pages', 'Everything in Standard', 'All third-party integrations', 'Booking / e-commerce ready', 'Priority 7-day delivery', 'Unlimited revisions'],
     cta: 'Get Premium',
     featured: false,
   },
@@ -189,18 +189,18 @@ export default function Home() {
             initial={{ opacity: 0, y: -16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2, duration: 0.7 }}
           >
             <div className="w-1.5 h-1.5 rounded-full" style={{ background: '#60a5fa', boxShadow: '0 0 6px #60a5fa' }} />
-            <span className="text-[11px] font-medium tracking-[0.18em] uppercase" style={{ color: '#93c5fd' }}>Custom websites for bold businesses</span>
+            <span className="text-[11px] font-medium tracking-[0.18em] uppercase" style={{ color: '#93c5fd' }}>for service businesses and local brands that want a cleaner online presence</span>
           </motion.div>
           <div className="overflow-hidden mb-4">
-            <motion.h1 className="font-extrabold tracking-tight leading-none" style={{ fontSize: 'clamp(48px, 10vw, 130px)', color: '#E1E0CC', letterSpacing: '-0.05em' }} initial={{ y: '100%' }} animate={{ y: 0 }} transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}>Your Vision.</motion.h1>
+            <motion.h1 className="font-extrabold tracking-tight leading-none" style={{ fontSize: 'clamp(38px, 8vw, 100px)', color: '#E1E0CC', letterSpacing: '-0.05em' }} initial={{ y: '100%' }} animate={{ y: 0 }} transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}>Websites Built to Turn</motion.h1>
           </div>
           <div className="overflow-hidden mb-8">
-            <motion.h1 className="font-extrabold tracking-tight leading-none" style={{ fontSize: 'clamp(48px, 10vw, 130px)', letterSpacing: '-0.05em' }} initial={{ y: '100%' }} animate={{ y: 0 }} transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1], delay: 0.22 }}>
-              <span style={{ background: 'linear-gradient(90deg, #60a5fa 0%, #93c5fd 50%, #38bdf8 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>Our Digital Reality.</span>
+            <motion.h1 className="font-extrabold tracking-tight leading-none" style={{ fontSize: 'clamp(38px, 8vw, 100px)', letterSpacing: '-0.05em' }} initial={{ y: '100%' }} animate={{ y: 0 }} transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1], delay: 0.22 }}>
+              <span style={{ background: 'linear-gradient(90deg, #60a5fa 0%, #93c5fd 50%, #38bdf8 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>Local Searches Into Calls</span>
             </motion.h1>
           </div>
           <motion.p className="text-base md:text-lg max-w-xl mb-10 leading-relaxed" style={{ color: 'rgba(225,224,204,0.55)' }} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.55, duration: 0.7 }}>
-            We build websites that turn attention into results — for businesses that refuse to blend in.
+            Visionary Web Studio builds clean, mobile-friendly websites for service businesses so customers can quickly see your services, photos, reviews, and contact you faster.
           </motion.p>
           <motion.div className="flex flex-col sm:flex-row gap-4 items-center" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.7, duration: 0.7 }}>
             <motion.div ref={btnRef} style={{ x: springX, y: springY, display: 'inline-flex' }} onMouseMove={handleBtnMouseMove} onMouseLeave={handleBtnMouseLeave}>
@@ -386,6 +386,7 @@ export default function Home() {
 
       {/* ── VALUE COMPARISON ── */}
       <section className="relative py-24 px-6 overflow-hidden border-t" style={{ borderColor: 'rgba(255,255,255,0.06)' }}>
+        {/* Blue side accent bars */}
         <div className="absolute left-0 top-0 bottom-0 w-3 md:w-6" style={{ background: 'linear-gradient(to bottom, #3b82f6, #1d4ed8, #3b82f6)' }} />
         <div className="absolute right-0 top-0 bottom-0 w-3 md:w-6" style={{ background: 'linear-gradient(to bottom, #3b82f6, #1d4ed8, #3b82f6)' }} />
 
@@ -400,9 +401,14 @@ export default function Home() {
             76% More Likely to Buy
           </motion.h2>
 
-          <motion.p className="text-base md:text-lg mb-10 leading-relaxed" style={{ color: 'rgba(225,224,204,0.55)' }} initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.2 }}>
+          <motion.p className="text-base md:text-lg mb-5 leading-relaxed" style={{ color: 'rgba(225,224,204,0.55)' }} initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.2 }}>
             With a professional website for your business, potential clients are{' '}
             <span style={{ color: '#60a5fa', fontWeight: 700 }}>76% more likely to buy from you.</span>
+          </motion.p>
+
+          <motion.p className="text-sm md:text-base mb-10 leading-relaxed" style={{ color: 'rgba(225,224,204,0.42)' }} initial={{ opacity: 0, y: 14 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.28 }}>
+            76% of consumers look at a company's online presence before physically visiting a business.{' '}
+            <span style={{ color: 'rgba(225,224,204,0.65)' }}>Your website is part of that first impression.</span>
           </motion.p>
 
           <div className="w-full h-px mb-10" style={{ background: 'rgba(255,255,255,0.08)' }} />
@@ -481,7 +487,9 @@ export default function Home() {
       </section>
 
       {/* ── READY TO LAUNCH ── */}
-      <section className="relative py-24 px-6 overflow-hidden border-t" style={{ background: '#03050e', borderColor: 'rgba(255,255,255,0.06)' }}>
+      <section className="relative py-24 px-6 overflow-hidden border-t" style={{ borderColor: 'rgba(255,255,255,0.06)' }}>
+        <div className="absolute inset-0 pointer-events-none" style={{ background: 'linear-gradient(135deg, rgba(37,99,235,0.12) 0%, rgba(29,78,216,0.08) 50%, rgba(3,5,10,0) 100%)' }} />
+        <div className="absolute inset-0 pointer-events-none" style={{ background: 'radial-gradient(ellipse at 50% 100%, rgba(59,130,246,0.15) 0%, transparent 65%)' }} />
         <div className="max-w-4xl mx-auto relative text-center">
           <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}>
             <p className="text-[10px] tracking-[0.32em] uppercase mb-5" style={{ color: 'rgba(96,165,250,0.6)' }}>Get Started Today</p>
