@@ -12,14 +12,14 @@ const QUICK_LINKS = [
   { label: 'Home', to: '/' },
   { label: 'About Us', to: '/about' },
   { label: 'Services', to: '/services' },
-  { label: 'Pricing', to: '/#pricing' },
+  { label: 'Pricing', to: '/pricing' },
   { label: 'Contact', to: '/contact' },
 ]
 
 const SERVICES = [
   { label: 'Website Creation', to: '/services#website-creation' },
   { label: 'Website Redesign', to: '/services#website-redesign' },
-  { label: 'Website Maintenance', to: '/services#support' },
+  { label: 'Website Maintenance', to: '/services#website-maintenance' },
   { label: 'Logo & Branding', to: '/services#logo-branding' },
   { label: 'Get a Quote', to: '/contact' },
 ]
