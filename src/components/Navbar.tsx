@@ -26,13 +26,6 @@ export default function Navbar() {
 
   useEffect(() => { setMobileOpen(false); setServicesOpen(false) }, [pathname])
 
-  function handlePricingClick(e: React.MouseEvent<HTMLAnchorElement>) {
-    if (pathname === '/') {
-      e.preventDefault()
-      document.getElementById('pricing')?.scrollIntoView({ behavior: 'smooth' })
-    }
-  }
-
   function handleLogoClick() {
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
@@ -131,14 +124,14 @@ export default function Navbar() {
             </div>
 
             <Link
-              to="/#pricing"
-              onClick={handlePricingClick}
+              to="/pricing"
               className="relative text-[11px] font-medium tracking-[0.2em] uppercase transition-colors duration-200"
-              style={{ color: 'rgba(225,224,204,0.45)' }}
+              style={{ color: pathname === '/pricing' ? '#E1E0CC' : 'rgba(225,224,204,0.45)' }}
               onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = '#E1E0CC')}
-              onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = 'rgba(225,224,204,0.45)')}
+              onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = pathname === '/pricing' ? '#E1E0CC' : 'rgba(225,224,204,0.45)')}
             >
               Pricing
+              {pathname === '/pricing' && <span className="absolute -bottom-[2px] left-0 right-0 h-px" style={{ background: '#60a5fa' }} />}
             </Link>
 
             <Link
@@ -218,7 +211,7 @@ export default function Navbar() {
                 </AnimatePresence>
               </div>
 
-              <Link to="/#pricing" className="text-sm font-medium tracking-[0.2em] uppercase py-3 border-b" style={{ color: 'rgba(225,224,204,0.55)', borderColor: 'rgba(255,255,255,0.05)' }}>Pricing</Link>
+              <Link to="/pricing" className="text-sm font-medium tracking-[0.2em] uppercase py-3 border-b" style={{ color: 'rgba(225,224,204,0.55)', borderColor: 'rgba(255,255,255,0.05)' }}>Pricing</Link>
               <Link to="/contact" className="text-sm font-medium tracking-[0.2em] uppercase py-3 border-b" style={{ color: 'rgba(225,224,204,0.55)', borderColor: 'rgba(255,255,255,0.05)' }}>Contact</Link>
               <Link to="/contact" className="mt-3 text-sm font-bold tracking-widest uppercase" style={{ color: '#60a5fa' }}>Start a Project →</Link>
             </div>
