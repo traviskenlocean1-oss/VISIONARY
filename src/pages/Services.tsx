@@ -1,10 +1,10 @@
-﻿import { useEffect, useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { Check, ArrowRight, Code2, Server, Headphones, Palette, Smartphone, Gauge, Search, Plug, FileCode, Globe, Lock, Mail, Cpu, Shield, Clock, RefreshCw, BarChart3, MessageSquare } from 'lucide-react'
 import Hls from 'hls.js'
 
-const SERVICES_HLS = 'https://stream.mux.com/Aa02T7oM1wH5Mk5EEVDYhbZ1ChcdhRsS2m1NYyx4Ua1g.m3u8'
+const SERVICES_HLS = 'https://stream.mux.com/4IMYGcL01xjs7ek5ANO17JC4VQVUTsojZlnw4fXzwSxc.m3u8'
 
 function HLSVideoBackground() {
   const ref = useRef<HTMLVideoElement>(null)
@@ -32,7 +32,7 @@ function HLSVideoBackground() {
         playsInline
         className="absolute inset-0 w-full h-full object-cover"
       />
-      <div className="absolute inset-0" style={{ background: 'rgba(0,0,0,0.08)' }} />
+      <div className="absolute inset-0" style={{ background: 'rgba(3,5,10,0.58)' }} />
     </div>
   )
 }
@@ -131,7 +131,7 @@ export default function Services() {
             {[
               { label: 'Website Development', href: '#web-development', icon: <Code2 size={13} /> },
               { label: 'Hosting & Domain', href: '#hosting', icon: <Server size={13} /> },
-              { label: 'Support', href: '#support', icon: <Headphones size={13} /> },
+              { label: 'Website Maintenance', href: '#website-maintenance', icon: <Headphones size={13} /> },
               { label: 'Website Creation', href: '#website-creation', icon: <Globe size={13} /> },
               { label: 'Website Redesign', href: '#website-redesign', icon: <RefreshCw size={13} /> },
               { label: 'Logo & Branding', href: '#logo-branding', icon: <Palette size={13} /> },
@@ -265,8 +265,8 @@ export default function Services() {
         </div>
       </section>
 
-      {/* ── SUPPORT ── */}
-      <section id="support" className="relative py-24 md:py-32 px-6 md:px-10 border-t" style={{ borderColor: 'rgba(255,255,255,0.06)' }}>
+      {/* ── WEBSITE MAINTENANCE ── */}
+      <section id="website-maintenance" className="relative py-24 md:py-32 px-6 md:px-10 border-t" style={{ borderColor: 'rgba(255,255,255,0.06)' }}>
         <div className="max-w-6xl mx-auto">
           <motion.div
             className="mb-14"
@@ -280,7 +280,7 @@ export default function Services() {
             </div>
             <h2 className="font-extrabold tracking-tight mb-4"
               style={{ fontSize: 'clamp(30px, 5.5vw, 68px)', color: '#E1E0CC', letterSpacing: '-0.04em' }}>
-              Support
+              Website Maintenance
             </h2>
             <p className="text-base md:text-lg max-w-2xl leading-relaxed" style={{ color: 'rgba(225,224,204,0.55)' }}>
               The work doesn't stop at launch. We stay available for updates, fixes, and improvements so your site keeps performing the way it should — and you never have to worry about it.
@@ -508,4 +508,3 @@ export default function Services() {
     </PageIn>
   )
 }
-
