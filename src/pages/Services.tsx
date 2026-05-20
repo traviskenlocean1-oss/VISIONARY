@@ -219,6 +219,14 @@ export default function Services() {
                 demo: 'https://endeavor-evolution.vercel.app/',
                 img: '/endeavor-evolution.jpeg',
               },
+              {
+                label: 'Demolition & Removal',
+                title: 'Willpower Solutions Website Concept',
+                desc: 'Built for a demolition and removal company — service breakdowns, project photos, emergency response sections, and a direct call CTA.',
+                tags: ['Demolition', 'Projects', 'Emergency Response', 'Call CTA'],
+                demo: 'https://contract.traviskenlocean1.workers.dev/',
+                img: '/willpower-solutions.jpeg',
+              },
             ].map((card, i) => (
               <motion.div
                 key={card.title}
