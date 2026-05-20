@@ -310,7 +310,7 @@ export default function Services() {
             initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}
           >
             <div>
-              <p className="text-[10px] tracking-[0.28em] uppercase mb-2" style={{ color: 'rgba(96,165,250,0.7)' }}>Monthly Plan</p>
+              <p className="text-[10px] tracking-[0.28em] uppercase mb-2" style={{ color: 'rgba(96,165,250,0.7)' }}>Optional Monthly Plan</p>
               <p className="font-extrabold text-2xl mb-1" style={{ color: '#E1E0CC', letterSpacing: '-0.03em' }}>
                 $100<span className="font-normal text-base" style={{ color: 'rgba(225,224,204,0.4)' }}>/month</span>
               </p>
