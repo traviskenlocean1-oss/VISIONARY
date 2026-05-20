@@ -181,6 +181,7 @@ export default function Services() {
                 desc: 'Designed to show packages, before-and-after photos, ceramic coating services, and booking/contact options.',
                 tags: ['Detailing', 'Packages', 'Photos', 'Booking CTA'],
                 demo: 'https://mobiledetail.traviskenlocean1.workers.dev/',
+                img: '/coolmint-detailing.jpeg',
               },
               {
                 label: 'Contractor / Construction',
