@@ -59,7 +59,7 @@ function FeatureItem({ icon, title, desc }: { icon: React.ReactNode; title: stri
       </div>
       <div>
         <p className="font-semibold text-sm mb-1" style={{ color: '#E1E0CC' }}>{title}</p>
-        <p className="text-xs leading-relaxed" style={{ color: 'rgba(225,224,204,0.45)' }}>{desc}</p>
+        <p className="text-sm leading-relaxed" style={{ color: 'rgba(225,224,204,0.6)' }}>{desc}</p>
       </div>
     </motion.div>
   )
