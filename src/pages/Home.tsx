@@ -488,8 +488,7 @@ export default function Home() {
 
       {/* ── READY TO LAUNCH ── */}
       <section className="relative py-24 px-6 overflow-hidden border-t" style={{ borderColor: 'rgba(255,255,255,0.06)' }}>
-        <div className="absolute inset-0 pointer-events-none" style={{ background: 'linear-gradient(135deg, rgba(37,99,235,0.12) 0%, rgba(29,78,216,0.08) 50%, rgba(3,5,10,0) 100%)' }} />
-        <div className="absolute inset-0 pointer-events-none" style={{ background: 'radial-gradient(ellipse at 50% 100%, rgba(59,130,246,0.15) 0%, transparent 65%)' }} />
+        <div className="absolute inset-0 pointer-events-none" style={{ background: 'radial-gradient(ellipse at 50% 80%, rgba(37,99,235,0.1) 0%, transparent 65%)' }} />
         <div className="max-w-4xl mx-auto relative text-center">
           <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}>
             <p className="text-[10px] tracking-[0.32em] uppercase mb-5" style={{ color: 'rgba(96,165,250,0.6)' }}>Get Started Today</p>
