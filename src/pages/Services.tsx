@@ -1,4 +1,4 @@
-﻿import { useEffect, useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { Check, ArrowRight, Code2, Server, Headphones, Palette, Smartphone, Gauge, Search, Plug, FileCode, Globe, Lock, Mail, Cpu, Shield, Clock, RefreshCw, BarChart3, MessageSquare } from 'lucide-react'
@@ -226,6 +226,13 @@ export default function Services() {
                 tags: ['Demolition', 'Projects', 'Emergency Response', 'Call CTA'],
                 demo: 'https://contract.traviskenlocean1.workers.dev/',
                 img: '/willpower-solutions.jpeg',
+              },
+              {
+                label: 'Junk Removal',
+                title: 'SwiftHaul Junk Removal Website',
+                desc: 'A full-service junk removal site with 8 dedicated service pages, a gallery, reviews, How It Works sections, FAQ accordions, and same-day booking CTAs.',
+                tags: ['Junk Removal', 'Service Pages', 'Same-Day', 'Contact Form'],
+                demo: 'https://junkrepo.traviskenlocean1.workers.dev',
               },
             ].map((card, i) => (
               <motion.div
