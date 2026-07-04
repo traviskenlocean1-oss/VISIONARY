@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Services | Visionary Web Studio</title>
+  <meta name="description" content="Web design, hosting, maintenance, logo & branding services for local service businesses in South Florida." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700;800;900&family=Barlow:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="page">
+
+<nav>
+  <a href="index.html" class="nav-logo">
+    <svg width="42" height="50" viewBox="0 0 42 50" fill="none">
+      <defs>
+        <linearGradient id="sg" x1="0" y1="0" x2="42" y2="50" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#5b9bd5"/><stop offset="55%" stop-color="#1d4ed8"/><stop offset="100%" stop-color="#0f2255"/></linearGradient>
+        <linearGradient id="sh" x1="0" y1="0" x2="42" y2="25" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="rgba(255,255,255,0.28)"/><stop offset="100%" stop-color="rgba(255,255,255,0)"/></linearGradient>
+      </defs>
+      <path d="M21 1L41 13V32L21 49L1 32V13L21 1Z" fill="url(#sg)" stroke="rgba(91,155,213,0.35)" stroke-width="0.5"/>
+      <path d="M21 1L41 13L21 25L1 13L21 1Z" fill="url(#sh)"/>
+      <path d="M10 19L21 39L32 19" stroke="white" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" fill="none" opacity="0.92"/>
+    </svg>
+    <div class="nav-logo-text"><span class="top">VISIONARY</span><span class="sub">WEB STUDIO</span></div>
+  </a>
+  <div class="nav-center">
+    <ul class="nav-links">
+      <li><a href="about.html">About</a></li>
+      <li class="nav-dropdown">
+        <a href="services.html" class="active">Services</a>
+        <div class="dropdown-menu">
+          <a href="#dev">Website Development</a>
+          <a href="#hosting">Hosting &amp; Domain</a>
+          <a href="#maintenance">Website Maintenance</a>
+          <a href="#creation">Website Creation</a>
+          <a href="#redesign">Website Redesign</a>
+          <a href="#branding">Logo &amp; Branding</a>
+        </div>
+      </li>
+      <li><a href="pricing.html">Pricing</a></li>
+      <li><a href="portfolio.html">Portfolio</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+  </div>
+  <div class="nav-right"><a href="contact.html" class="nav-cta">Start a Project</a></div>
+  <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+</nav>
+<div class="mobile-menu" id="mobile-menu">
+  <a href="about.html">About</a>
+  <a href="services.html" class="mob-svc-toggle active" id="mob-svc-toggle">Services</a>
+  <div class="mob-svc-sub" id="mob-svc-sub">
+    <a href="#dev">Website Development</a>
+    <a href="#hosting">Hosting &amp; Domain</a>
+    <a href="#maintenance">Website Maintenance</a>
+    <a href="#creation">Website Creation</a>
+    <a href="#redesign">Website Redesign</a>
+    <a href="#branding">Logo &amp; Branding</a>
+  </div>
+  <a href="pricing.html">Pricing</a>
+  <a href="portfolio.html">Portfolio</a>
+  <a href="contact.html">Contact</a>
+  <a href="contact.html" class="mob-cta">Start a Project</a>
+</div>
+
+<div class="page-hero">
+  <div class="page-hero-inner">
+    <div class="sec-eyebrow">What We Build</div>
+    <h1>Our Services</h1>
+    <p>Every service we offer is built around one goal: getting your business more calls. No fluff, no upsells you don't need — just exactly what it takes to win online in your market.</p>
+  </div>
+</div>
+
+<!-- SERVICE: WEBSITE DEVELOPMENT -->
+<section class="section" id="dev">
+  <div class="section-inner">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center">
+      <div>
+        <div class="sec-eyebrow">Service 01</div>
+        <h2 class="sec-title" style="color:#4080ff">Website Development</h2>
+        <p style="font-size:15px;color:var(--muted);line-height:1.8;margin-bottom:16px">Every site we build is hand-coded from scratch — no templates, no drag-and-drop builders, no bloated WordPress installs. We write clean HTML, CSS, and JavaScript that loads in under a second, ranks well in Google, and converts visitors into paying customers.</p>
+        <p style="font-size:15px;color:var(--muted);line-height:1.8;margin-bottom:20px">Your competitors are using $29 Squarespace templates that look the same as every other business in your area. A custom-built site tells your customers immediately that you're the professional option.</p>
+        <ul class="about-list">
+          <li>Custom design — unique to your brand, not a template</li>
+          <li>Lightning-fast load times — under 1 second on mobile</li>
+          <li>Mobile responsive — looks perfect on every device</li>
+          <li>SEO-ready — proper structure, schema, and meta tags</li>
+          <li>Contact forms wired directly to your email and phone</li>
+        </ul>
+      </div>
+      <div class="about-boxes">
+        <div class="about-box" style="border-color:rgba(64,128,255,0.3)">
+          <h4 style="color:#4080ff">Starter — $500</h4>
+          <p>Single-page site. Perfect for new businesses that need a professional presence fast.</p>
+        </div>
+        <div class="about-box" style="border-color:rgba(64,128,255,0.3)">
+          <h4 style="color:#4080ff">Standard — $750</h4>
+          <p>Up to 5 pages. Includes blog, services detail pages, and full SEO optimization.</p>
+        </div>
+        <div class="about-box" style="border-color:rgba(64,128,255,0.3)">
+          <h4 style="color:#4080ff">Full Build — $1,000</h4>
+          <p>Up to 10 pages with custom animations, portfolio, and unlimited revisions for 30 days.</p>
+        </div>
+        <a href="contact.html" class="btn-blue-lg" style="margin-top:6px">Get a Quote →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICE: HOSTING & DOMAIN -->
+<section class="section section-dark" id="hosting">
+  <div class="section-inner">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center">
+      <div class="about-boxes">
+        <div class="about-box" style="border-color:rgba(139,92,246,0.3)">
+          <h4>Domain Registration</h4>
+          <p>We handle your .com, DNS records, and nameservers — configured correctly from the start so your site actually shows up in searches.</p>
+        </div>
+        <div class="about-box" style="border-color:rgba(139,92,246,0.3)">
+          <h4>SSL Certificate</h4>
+          <p>Every site we host gets a free SSL certificate — the padlock icon that tells customers your site is safe and that Google requires to rank.</p>
+        </div>
+        <div class="about-box" style="border-color:rgba(139,92,246,0.3)">
+          <h4>Enterprise Hosting</h4>
+          <p>Your site runs on Cloudflare's global network — 99.9% uptime guaranteed, loads fast from any city in the US.</p>
+        </div>
+      </div>
+      <div>
+        <div class="sec-eyebrow">Service 02</div>
+        <h2 class="sec-title" style="color:#8b5cf6">Hosting &amp; Domain</h2>
+        <p style="font-size:15px;color:var(--muted);line-height:1.8;margin-bottom:16px">Getting online shouldn't require a tech degree. We handle your domain registration, DNS setup, SSL certificates, and hosting — all configured correctly from day one so you never deal with "site not found" errors or scary security warnings.</p>
+        <p style="font-size:15px;color:var(--muted);line-height:1.8;margin-bottom:20px">Most hosting plans we set up for clients run $5–$20/month at most. We point you to the right provider, set it all up, and hand you the keys.</p>
+        <a href="contact.html" class="btn-blue-lg">Get Set Up →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICE: MAINTENANCE -->
+<section class="section" id="maintenance">
+  <div class="section-inner">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center">
+      <div>
+        <div class="sec-eyebrow">Service 03</div>
+        <h2 class="sec-title" style="color:#f59e0b">Website Maintenance</h2>
+        <p style="font-size:15px;color:var(--muted);line-height:1.8;margin-bottom:16px">The work doesn't stop at launch. Prices change, photos get outdated, new services need to be added. We stay available for all of it — unlimited content updates, photo swaps, new pages, whatever your business needs.</p>
+        <p style="font-size:15px;color:var(--muted);line-height:1.8;margin-bottom:20px">Monthly maintenance clients get same-day turnaround on all requests. Think of it as having a web developer on your team for $100/month — without the $60K salary.</p>
+        <ul class="about-list">
+          <li>Unlimited content and text updates</li>
+          <li>Same-day response on all requests</li>
+          <li>Monthly performance and traffic reports</li>
+          <li>Security monitoring and uptime alerts</li>
+          <li>Priority access — you jump the queue every time</li>
+        </ul>
+        <br>
+        <a href="contact.html" class="btn-blue-lg">Start Maintenance Plan →</a>
+      </div>
+      <div class="about-boxes">
+        <div class="about-box" style="border-color:rgba(245,158,11,0.3)">
+          <h4 style="color:#f59e0b">$100 / Month</h4>
+          <p>Flat rate. No surprise charges. Cancel any time.</p>
+        </div>
+        <div class="about-box">
+          <h4>What's Included</h4>
+          <p>Unlimited small updates, monthly report, security monitoring, uptime alerts, and same-day communication.</p>
+        </div>
+        <div class="about-box">
+          <h4>Who It's For</h4>
+          <p>Businesses that launch new promos often, add seasonal services, or simply want a team keeping their site in perfect shape year-round.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICE: WEBSITE CREATION -->
+<section class="section section-dark" id="creation">
+  <div class="section-inner">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center">
+      <div class="about-boxes">
+        <div class="about-box" style="border-color:rgba(16,185,129,0.3)">
+          <h4>Domain + Email</h4>
+          <p>We register your domain and set up your professional email — yourname@yourbusiness.com from day one.</p>
+        </div>
+        <div class="about-box" style="border-color:rgba(16,185,129,0.3)">
+          <h4>Logo + Colors</h4>
+          <p>We design a clean, professional logo and establish your brand colors and typography — the foundation everything else builds on.</p>
+        </div>
+        <div class="about-box" style="border-color:rgba(16,185,129,0.3)">
+          <h4>Full Custom Website</h4>
+          <p>Hand-coded, mobile-first, SEO-ready website with all your services, photos, contact forms, and call-to-actions — done right from the start.</p>
+        </div>
+      </div>
+      <div>
+        <div class="sec-eyebrow">Service 04</div>
+        <h2 class="sec-title" style="color:#10b981">Website Creation</h2>
+        <p style="font-size:15px;color:var(--muted);line-height:1.8;margin-bottom:16px">Starting from zero? We build your entire online presence from the ground up — domain name, logo, color palette, copywriting, and a full custom website. Everything in one package, delivered in under a week.</p>
+        <p style="font-size:15px;color:var(--muted);line-height:1.8;margin-bottom:20px">Ideal for new businesses that need to look professional and established immediately. When you launch, you look like you've been doing this for years.</p>
+        <a href="contact.html" class="btn-blue-lg">Build From Scratch →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICE: REDESIGN -->
+<section class="section" id="redesign">
+  <div class="section-inner">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center">
+      <div>
+        <div class="sec-eyebrow">Service 05</div>
+        <h2 class="sec-title" style="color:#06b6d4">Website Redesign</h2>
+        <p style="font-size:15px;color:var(--muted);line-height:1.8;margin-bottom:16px">Already have a site but it's outdated, slow, or just not converting visitors into calls? We take what you have, strip it down to the foundation, and rebuild it the right way — faster, cleaner, and built to actually get you business.</p>
+        <p style="font-size:15px;color:var(--muted);line-height:1.8;margin-bottom:20px">Most redesigns outperform the original site immediately. Page speed improves by 3–5x. Bounce rate drops. Calls go up. And your competitors suddenly look behind the times compared to you.</p>
+        <ul class="about-list">
+          <li>Full design and code rebuild from scratch</li>
+          <li>Keep your existing domain and content</li>
+          <li>3–5x faster than your current site</li>
+          <li>Mobile-first — perfect on every screen</li>
+          <li>SEO audit included — fix what's killing your rankings</li>
+        </ul>
+        <br>
+        <a href="contact.html" class="btn-blue-lg">Redesign My Site →</a>
+      </div>
+      <div class="about-boxes">
+        <div class="about-box" style="border-color:rgba(6,182,212,0.3)">
+          <h4 style="color:#06b6d4">7-Day Launch</h4>
+          <p>From project start to live redesign in one week — guaranteed.</p>
+        </div>
+        <div class="about-box">
+          <h4>Before We Start</h4>
+          <p>We audit your current site — speed, SEO, conversion rate — and build your new site to fix every issue we find.</p>
+        </div>
+        <div class="about-box">
+          <h4>What Changes</h4>
+          <p>Design, code, speed, mobile layout, contact forms, SEO structure. What stays the same: your domain, your brand, your reputation.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICE: LOGO & BRANDING -->
+<section class="section section-dark" id="branding">
+  <div class="section-inner">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center">
+      <div class="about-boxes">
+        <div class="about-box" style="border-color:rgba(239,68,68,0.3)">
+          <h4 style="color:#ef4444">Primary Logo</h4>
+          <p>Full-color, dark, and light versions — formatted for web, print, and social media in every standard file type (PNG, SVG, PDF).</p>
+        </div>
+        <div class="about-box" style="border-color:rgba(239,68,68,0.3)">
+          <h4>Brand Colors + Fonts</h4>
+          <p>Your complete color palette and typography system — the rules that keep every piece of your brand looking consistent and professional.</p>
+        </div>
+        <div class="about-box" style="border-color:rgba(239,68,68,0.3)">
+          <h4>Brand Style Guide</h4>
+          <p>A one-page reference showing how to use your logo, colors, and fonts correctly — so everything you ever create looks on-brand.</p>
+        </div>
+      </div>
+      <div>
+        <div class="sec-eyebrow">Service 06</div>
+        <h2 class="sec-title" style="color:#ef4444">Logo &amp; Branding</h2>
+        <p style="font-size:15px;color:var(--muted);line-height:1.8;margin-bottom:16px">Your logo is the first thing customers see. It communicates whether you're professional or amateur before anyone reads a single word. We design bold, memorable logos and complete brand identity systems that make your business instantly recognizable.</p>
+        <p style="font-size:15px;color:var(--muted);line-height:1.8;margin-bottom:20px">Great branding is the difference between a business people trust immediately and one they scroll past. Every element — your colors, your fonts, your logo — tells a story about who you are.</p>
+        <a href="contact.html" class="btn-blue-lg">Start My Brand →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="cta-block">
+  <h2>Not Sure Which Service You Need?</h2>
+  <p>Reach out and describe your situation — we'll tell you exactly what makes sense and what it'll cost.</p>
+  <a href="contact.html" class="btn-blue-lg">Talk to Us →</a>
+</div>
+
+<footer>
+  <a href="index.html" class="footer-logo">
+    <svg width="28" height="34" viewBox="0 0 42 50" fill="none"><defs><linearGradient id="fg" x1="0" y1="0" x2="42" y2="50" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#5b9bd5"/><stop offset="100%" stop-color="#0f2255"/></linearGradient></defs><path d="M21 1L41 13V32L21 49L1 32V13L21 1Z" fill="url(#fg)"/><path d="M10 19L21 39L32 19" stroke="white" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+    <div><div class="top">VISIONARY</div><div class="sub">WEB STUDIO</div></div>
+  </a>
+  <div class="footer-links">
+    <a href="about.html">About</a><a href="services.html">Services</a><a href="pricing.html">Pricing</a><a href="portfolio.html">Portfolio</a><a href="contact.html">Contact</a>
+  </div>
+  <p>© 2026 Visionary Web Studio · (561) 889-0507</p>
+</footer>
+
+<script>
+const ham=document.getElementById('hamburger'),mob=document.getElementById('mobile-menu');
+ham.addEventListener('click',()=>{ham.classList.toggle('open');mob.classList.toggle('open')});
+const mst=document.getElementById('mob-svc-toggle'),mss=document.getElementById('mob-svc-sub');
+if(mst)mst.addEventListener('click',e=>{e.preventDefault();mst.classList.toggle('open');mss.classList.toggle('open')});
+mob.querySelectorAll('a').forEach(a=>{if(a!==mst)a.addEventListener('click',()=>{ham.classList.remove('open');mob.classList.remove('open')})});
+</script>
+</body>
+</html>
