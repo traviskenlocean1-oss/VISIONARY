@@ -727,6 +727,20 @@
       return /^\/services\/?$/.test(window.location.pathname);
     }
 
+    /* Unfreeze GSAP-frozen elements on any page — runs after every navigation */
+    function unfreezeAll() {
+      document.querySelectorAll('*').forEach(function(el) {
+        var s = el.getAttribute('style') || '';
+        var m = s.match(/(?:^|;)\s*opacity:\s*([\d.]+)/);
+        if (m && parseFloat(m[1]) === 0) {
+          el.style.opacity = '1';
+          if (s.indexOf('translateY') !== -1 || s.indexOf('translateX') !== -1 || s.indexOf('scale(0') !== -1) {
+            el.style.transform = 'none';
+          }
+        }
+      });
+    }
+
     function runAll() {
       var slug = getSlug();
       /* Clean up previous injections so switching service pages doesn't stack */
@@ -734,6 +748,10 @@
         var el = document.getElementById(id);
         if (el) el.remove ? el.remove() : el.parentNode.removeChild(el);
       });
+      /* Unfreeze GSAP on the new page — run immediately and after React renders */
+      unfreezeAll();
+      setTimeout(unfreezeAll, 400);
+      setTimeout(unfreezeAll, 900);
       if (slug) {
         runServiceDetail(slug);
       } else if (isServicesIndex()) {
