@@ -116,6 +116,22 @@
         if (chevron) chevron.style.transform = 'rotate(0deg)';
       });
 
+      /* 3. Logo click → smooth scroll to top, then SPA navigate home */
+      var logoA = document.querySelector('header a[href="/"]');
+      if (logoA && !logoA.getAttribute('data-vws-logo')) {
+        logoA.setAttribute('data-vws-logo', '1');
+        logoA.addEventListener('click', function(e) {
+          if (window.scrollY > 0) {
+            e.preventDefault();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            setTimeout(function() {
+              history.pushState({}, '', '/');
+              window.dispatchEvent(new PopStateEvent('popstate'));
+            }, 450);
+          }
+        });
+      }
+
       /* Kill any React-generated dropdown that appears in this wrapper dynamically */
       var reactDDObserver = new MutationObserver(function(mutations) {
         mutations.forEach(function(m) {
@@ -779,12 +795,12 @@
     /* ── /services listing page enhancer ── */
     function runServicesListing() {
       var ORDER = [
-        {slug:'website-development', color:'#1d4ed8', lt:'#60a5fa', tag:'Most Popular'},
-        {slug:'hosting-domain',      color:'#059669', lt:'#34d399', tag:'Included Free'},
-        {slug:'website-maintenance', color:'#d97706', lt:'#fbbf24', tag:'Keep It Sharp'},
-        {slug:'website-creation',    color:'#7c3aed', lt:'#a78bfa', tag:'Start Here'},
-        {slug:'website-redesign',    color:'#dc2626', lt:'#f87171', tag:'Transform It'},
-        {slug:'logo-branding',       color:'#b45309', lt:'#fcd34d', tag:'Look the Part'}
+        {slug:'website-development', color:'#1d4ed8', lt:'#60a5fa', crgb:'29,78,216',  tag:'Most Popular', rgb:null},
+        {slug:'hosting-domain',      color:'#059669', lt:'#34d399', crgb:'5,150,105',  tag:'Included Free', rgb:'99, 102, 241'},
+        {slug:'website-maintenance', color:'#d97706', lt:'#fbbf24', crgb:'217,119,6',  tag:'Keep It Sharp', rgb:'56, 189, 248'},
+        {slug:'website-creation',    color:'#7c3aed', lt:'#a78bfa', crgb:'124,58,237', tag:'Start Here',    rgb:'16, 185, 129'},
+        {slug:'website-redesign',    color:'#dc2626', lt:'#f87171', crgb:'220,38,38',  tag:'Transform It',  rgb:'129, 140, 248'},
+        {slug:'logo-branding',       color:'#b45309', lt:'#fcd34d', crgb:'180,83,9',   tag:'Look the Part', rgb:'167, 139, 250'}
       ];
 
       var listingPoll = 0;
@@ -806,9 +822,21 @@
           if (!document.getElementById('vws-listing-colors')) {
             var lStyle = document.createElement('style');
             lStyle.id = 'vws-listing-colors';
-            lStyle.textContent = ORDER.map(function(cfg){
-              return 'a[href="/services/'+cfg.slug+'"]{background:'+cfg.color+'!important;background-color:'+cfg.color+'!important;color:#fff!important;box-shadow:0 4px 20px '+cfg.color+'55!important}';
-            }).join('');
+            var lCss = '';
+            ORDER.forEach(function(cfg) {
+              /* LEARN MORE button */
+              lCss += 'a[href="/services/'+cfg.slug+'"]{background:'+cfg.color+'!important;background-color:'+cfg.color+'!important;color:#fff!important;box-shadow:0 4px 20px '+cfg.color+'55!important}';
+              /* Card accent colors — override React inline RGB styles with our service colors.
+                 CSS !important beats inline styles; :has() scopes each rule to its own card only. */
+              if (cfg.rgb) {
+                var sc = 'section.relative.border-t:has(a[href="/services/'+cfg.slug+'"])';
+                /* Text / icon / faint number — anything using the React service color as text */
+                lCss += sc+' [style*="color: rgb('+cfg.rgb+')"],'+sc+' [style*="color: rgba('+cfg.rgb+'"]'+'{color:'+cfg.lt+'!important}';
+                /* Background glow + icon box */
+                lCss += sc+' [style*="background: rgba('+cfg.rgb+'"],'+sc+' [style*="background:rgba('+cfg.rgb+'"]'+'{background:rgba('+cfg.crgb+',0.12)!important;border-color:rgba('+cfg.crgb+',0.4)!important}';
+              }
+            });
+            lStyle.textContent = lCss;
             document.head.appendChild(lStyle);
           }
 
