@@ -171,31 +171,31 @@
       ]
     },
     svc_biz: {
-      bot: "Service businesses are our specialty — we've built for detailers, cleaners, contractors, trainers, and more.\n\nMost service businesses go with our Standard package:\n\n💰 <b>$750 one-time</b> — up to 5 pages, full SEO, contact form, Google Maps, mobile-first.\n\nWant me to get Travis to reach out to you?",
+      bot: "Service businesses are our specialty — we've built for detailers, cleaners, contractors, trainers, and more.\n\nMost service businesses go with our Standard package:\n\n💰 <b>$750 one-time</b> — up to 5 pages, full SEO, contact form, Google Maps, mobile-first.\n\nWant our team to reach out to you?",
       replies: [
-        {label:"Yes, have Travis reach out", next:'capture'},
+        {label:"Yes, have the team reach out", next:'capture'},
         {label:'Tell me more about pricing',  next:'pricing'},
         {label:'What does it look like?',     next:'portfolio'}
       ]
     },
     retail: {
-      bot: "Retail and shop sites are great — product showcases, hours, location, trust-building design.\n\nOur Standard package ($750 one-time) covers everything a local shop needs to dominate Google.\n\nWant a quote? I'll get Travis to reach out.",
+      bot: "Retail and shop sites are great — product showcases, hours, location, trust-building design.\n\nOur Standard package ($750 one-time) covers everything a local shop needs to dominate Google.\n\nWant a quote? Our team will reach out.",
       replies: [
         {label:"Yes, get me a quote", next:'capture'},
         {label:'Show me pricing',     next:'pricing'}
       ]
     },
     pro: {
-      bot: "Professional services need a trust-first design — clear credentials, strong copy, easy contact.\n\nWe specialize in exactly that. Starting at $750 one-time with full ownership of your site.\n\nWant Travis to reach out with a proposal?",
+      bot: "Professional services need a trust-first design — clear credentials, strong copy, easy contact.\n\nWe specialize in exactly that. Starting at $750 one-time with full ownership of your site.\n\nWant our team to send you a proposal?",
       replies: [
         {label:"Yes, send a proposal", next:'capture'},
         {label:'See pricing first',    next:'pricing'}
       ]
     },
     other: {
-      bot: "No problem — we work with all types of businesses. Every site is built from scratch for your specific market.\n\nBest way forward is a quick call. Want Travis to reach out?",
+      bot: "No problem — we work with all types of businesses. Every site is built from scratch for your specific market.\n\nBest way forward is a quick call. Want our team to reach out?",
       replies: [
-        {label:"Yes, have Travis call me", next:'capture'},
+        {label:"Yes, have the team call me", next:'capture'},
         {label:'See pricing first',        next:'pricing'}
       ]
     },
@@ -216,7 +216,7 @@
       ]
     },
     redesign2: {
-      bot: "Perfect — we'll analyze your current site and rebuild what works, improve what doesn't, and make the whole thing faster and cleaner.\n\nStarting at $500, fully owned by you when done.\n\nWant Travis to put together a proposal?",
+      bot: "Perfect — we'll analyze your current site and rebuild what works, improve what doesn't, and make the whole thing faster and cleaner.\n\nStarting at $500, fully owned by you when done.\n\nWant our team to put together a proposal?",
       replies: [
         {label:"Yes, send a proposal", next:'capture'},
         {label:'See all pricing',      next:'pricing'}
@@ -238,7 +238,7 @@
       ]
     },
     maintenance: {
-      bot: "Maintenance is $100/month and includes:\n\n✅ Unlimited content updates\n✅ Same-day turnaround on changes\n✅ Monthly performance report\n✅ Security + uptime monitoring\n✅ Priority access to Travis\n\nCancel anytime. Most clients add it after launch.\n\nWant to get your site built first?",
+      bot: "Maintenance is $100/month and includes:\n\n✅ Unlimited content updates\n✅ Same-day turnaround on changes\n✅ Monthly performance report\n✅ Security + uptime monitoring\n✅ Priority support access\n\nCancel anytime. Most clients add it after launch.\n\nWant to get your site built first?",
       replies: [
         {label:"Yes, let's build the site", next:'capture'},
         {label:'See base pricing',          next:'pricing'}
@@ -267,13 +267,13 @@
       ]
     },
     capture: {
-      bot: "Great! What's your name and the best number to reach you?\n\n(Travis personally follows up within a few hours — usually same day.)",
+      bot: "Great! What's your name and the best number to reach you?\n\n(Our team follows up within a few hours — usually same day.)",
       replies: [],
       input: true,
       inputFields: ['name','phone']
     },
     done: {
-      bot: "Got it, {name}! 🎉\n\nTravis will reach out to {phone} shortly — usually within a few hours.\n\nYou can also call or text directly:\n📞 <a href=\"tel:+15618890507\" style=\"color:#60a5fa\">(561) 889-0507</a>",
+      bot: "Got it, {name}! 🎉\n\nOur team will reach out to {phone} shortly — usually within a few hours.\n\nYou can also call or text directly:\n📞 <a href=\"tel:+15618890507\" style=\"color:#60a5fa\">(561) 889-0507</a>",
       replies: [],
       final: true
     }
@@ -376,7 +376,7 @@
       '<div id="vws-form" style="display:none;padding:12px 14px;background:#060916;border-top:1px solid rgba(255,255,255,.05)">',
         '<input id="vws-fname" placeholder="Your name" style="width:100%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:7px;padding:9px 12px;font-size:13px;color:#e1e0cc;outline:none;margin-bottom:8px" />',
         '<input id="vws-fphone" placeholder="Your phone number" style="width:100%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:7px;padding:9px 12px;font-size:13px;color:#e1e0cc;outline:none;margin-bottom:10px" />',
-        '<button id="vws-fsub" style="width:100%;background:#1d4ed8;border:none;border-radius:7px;padding:10px;font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#fff;cursor:pointer">Send — Travis will call you →</button>',
+        '<button id="vws-fsub" style="width:100%;background:#1d4ed8;border:none;border-radius:7px;padding:10px;font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#fff;cursor:pointer">Send — We\'ll reach out →</button>',
       '</div>',
       /* Text input row */
       '<div id="vws-input-row" style="display:flex;align-items:center;gap:8px;padding:10px 14px;border-top:1px solid rgba(255,255,255,.05);background:#060916">',
@@ -522,7 +522,7 @@
       /* Clear quick replies while typing */
       document.getElementById('vws-qr').innerHTML = '';
       document.getElementById('vws-form').style.display = 'none';
-      setStatus('Travis is typing…');
+      setStatus('Assistant is typing…');
 
       showTyping();
       var delay = 900 + Math.min(node.bot.length * 12, 1400);
