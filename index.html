@@ -795,12 +795,12 @@
     /* ── /services listing page enhancer ── */
     function runServicesListing() {
       var ORDER = [
-        {slug:'website-development', color:'#1d4ed8', lt:'#60a5fa', crgb:'29,78,216',  tag:'Most Popular', rgb:null},
-        {slug:'hosting-domain',      color:'#059669', lt:'#34d399', crgb:'5,150,105',  tag:'Included Free', rgb:'99, 102, 241'},
-        {slug:'website-maintenance', color:'#d97706', lt:'#fbbf24', crgb:'217,119,6',  tag:'Keep It Sharp', rgb:'56, 189, 248'},
-        {slug:'website-creation',    color:'#7c3aed', lt:'#a78bfa', crgb:'124,58,237', tag:'Start Here',    rgb:'16, 185, 129'},
-        {slug:'website-redesign',    color:'#dc2626', lt:'#f87171', crgb:'220,38,38',  tag:'Transform It',  rgb:'129, 140, 248'},
-        {slug:'logo-branding',       color:'#b45309', lt:'#fcd34d', crgb:'180,83,9',   tag:'Look the Part', rgb:'167, 139, 250'}
+        {slug:'website-development', color:'#3B82F6', lt:'#93C5FD', crgb:'59,130,246',  tag:'Most Popular', rgb:null},
+        {slug:'hosting-domain',      color:'#0D9488', lt:'#2DD4BF', crgb:'13,148,136',  tag:'Included Free', rgb:'99, 102, 241'},
+        {slug:'website-maintenance', color:'#D97706', lt:'#FCD34D', crgb:'217,119,6',   tag:'Keep It Sharp', rgb:'56, 189, 248'},
+        {slug:'website-creation',    color:'#7C3AED', lt:'#A78BFA', crgb:'124,58,237',  tag:'Start Here',    rgb:'16, 185, 129'},
+        {slug:'website-redesign',    color:'#DC2626', lt:'#F87171', crgb:'220,38,38',   tag:'Transform It',  rgb:'129, 140, 248'},
+        {slug:'logo-branding',       color:'#CA8A04', lt:'#FDE047', crgb:'202,138,4',   tag:'Look the Part', rgb:'167, 139, 250'}
       ];
 
       var listingPoll = 0;
@@ -824,16 +824,24 @@
             lStyle.id = 'vws-listing-colors';
             var lCss = '';
             ORDER.forEach(function(cfg) {
-              /* LEARN MORE button */
+              /* LEARN MORE button — service accent color, beats React inline styles */
               lCss += 'a[href="/services/'+cfg.slug+'"]{background:'+cfg.color+'!important;background-color:'+cfg.color+'!important;color:#fff!important;box-shadow:0 4px 20px '+cfg.color+'55!important}';
               /* Card accent colors — override React inline RGB styles with our service colors.
                  CSS !important beats inline styles; :has() scopes each rule to its own card only. */
               if (cfg.rgb) {
                 var sc = 'section.relative.border-t:has(a[href="/services/'+cfg.slug+'"])';
-                /* Text / icon / faint number — anything using the React service color as text */
-                lCss += sc+' [style*="color: rgb('+cfg.rgb+')"],'+sc+' [style*="color: rgba('+cfg.rgb+'"]'+'{color:'+cfg.lt+'!important}';
-                /* Background glow + icon box */
-                lCss += sc+' [style*="background: rgba('+cfg.rgb+'"],'+sc+' [style*="background:rgba('+cfg.rgb+'"]'+'{background:rgba('+cfg.crgb+',0.12)!important;border-color:rgba('+cfg.crgb+',0.4)!important}';
+                var r = cfg.crgb;
+                /* Service label, checkmark SVGs, icon text — color override */
+                lCss += sc+' [style*="color: rgb('+cfg.rgb+')"],'+sc+' [style*="color: rgba('+cfg.rgb+', 0.8"]'+'{color:'+cfg.lt+'!important}';
+                /* Icon box — 80x80, service color bg, correct border */
+                lCss += sc+' [style*="background: rgba('+cfg.rgb+'"],'+sc+' [style*="background:rgba('+cfg.rgb+'"]'
+                  +'{background:rgba('+r+',0.15)!important;border-color:rgba('+r+',0.3)!important;width:80px!important;height:80px!important;border-radius:12px!important;display:flex!important;align-items:center!important;justify-content:center!important}';
+                /* SVG icon inside icon box — 36px, accent color */
+                lCss += sc+' [style*="background: rgba('+cfg.rgb+'"] svg,'+sc+' [style*="background:rgba('+cfg.rgb+'"] svg'
+                  +'{width:36px!important;height:36px!important;color:'+cfg.lt+'!important}';
+                /* Large faint background number — accent color + glow */
+                lCss += sc+' [style*="color: rgba('+cfg.rgb+', 0.094"],[style*="color: rgba('+cfg.rgb+', 0.09"]'
+                  +'{color:rgba('+r+',0.25)!important;text-shadow:0 0 40px rgba('+r+',0.4),0 0 80px rgba('+r+',0.2)!important}';
               }
             });
             lStyle.textContent = lCss;
@@ -891,63 +899,63 @@
 
     var C = {
       'website-development': {
-        color:'#1d4ed8', lt:'#60a5fa', glow:'rgba(29,78,216,0.35)', hue:'0deg',
+        color:'#3B82F6', lt:'#93C5FD', glow:'rgba(59,130,246,0.35)', hue:'0deg',
         stats:[{v:'48hr',l:'First Draft'},{v:'3–5x',l:'Faster Than WP'},{v:'0',l:'Templates Used'}],
-        gets:['Custom design built around YOUR brand — not a shared template','Mobile-first from the very first line of code','Full SEO setup: schema markup, meta tags, Google Maps embed','Contact form wired directly to your inbox','Fast cloud hosting included — zero config on your end','30 days unlimited revisions after launch'],
-        pitch:'Every site we build is hand-coded from scratch — no WordPress, no page builders, no template libraries. That means your site loads faster, ranks higher, and looks like nothing else in your market.',
+        gets:['Custom design built around your brand identity','Mobile-first, fully responsive on every screen','Conversion-focused layout and copywriting','Performance-optimized, under 2 second load time','SEO foundation built in from day one','You own every file from day one'],
+        pitch:'Every business is different. Your website should be too. We design and build fully custom websites around your brand, your customers, and your specific goals — with no templates, no recycled layouts, and no shortcuts. You get a site that looks like it cost ten times what you paid.',
         beforeBadge:'Template Site',beforeColor:'#991b1b',
         beforeItems:['Same template used by thousands of competitors','3–8 second load times killing your SEO','Contact form goes to a generic inbox','Plugins conflict, break, and need constant updates','$30–150/month in platform fees — forever'],
-        afterBadge:'Visionary Custom Build',afterColor:'#1d4ed8',
+        afterBadge:'Visionary Custom Build',afterColor:'#3B82F6',
         afterItems:['Unique to your brand — built from your goals','Sub-2s load time on mobile, every time','Form sends directly to your phone & email','Zero plugins — pure code that never breaks','One-time fee. You own it outright.']
       },
       'hosting-domain': {
-        color:'#059669', lt:'#34d399', glow:'rgba(5,150,105,0.35)', hue:'-60deg',
+        color:'#0D9488', lt:'#2DD4BF', glow:'rgba(13,148,136,0.35)', hue:'-60deg',
         stats:[{v:'99.9%',l:'Uptime SLA'},{v:'<1s',l:'Response Time'},{v:'Free',l:'SSL Included'}],
-        gets:['Domain registration, DNS config & setup — done for you','Free SSL certificate (https) on every property','Global CDN: fast load from Miami to LA to London','24/7 uptime monitoring — we alert before your client notices','Email forwarding tied to your domain (hello@yourbiz.com)','Annual domain renewal reminders & management'],
-        pitch:"Your hosting is the foundation everything else sits on. Slow hosting = slow site = lower rankings. We put every client on enterprise-grade infrastructure — the same kind Fortune 500 companies use — at a fraction of the cost.",
+        gets:['Domain registration and full DNS setup','Hosted on Cloudflare\'s global edge network','Free SSL certificate on every site','99.9% uptime reliability','Sub-second load times globally','30-day post-launch monitoring included'],
+        pitch:"Getting online shouldn't require a technical degree. We handle everything — domain registration, DNS configuration, SSL certificates, and deployment on fast, globally-distributed infrastructure. Your site loads in under a second for visitors anywhere in the world.",
         beforeBadge:'Self-Managed Hosting',beforeColor:'#991b1b',
         beforeItems:['Hours lost configuring servers and cPanel','Security patches you have to remember yourself','Downtime you only find out about from a client','Confusing invoices with hidden fees','No one to call when something breaks at 11pm'],
-        afterBadge:'Fully Managed by Us',afterColor:'#059669',
+        afterBadge:'Fully Managed by Us',afterColor:'#0D9488',
         afterItems:['We handle every technical detail, start to finish','Security updates applied automatically — always patched','Uptime monitored around the clock, issues fixed fast','One flat price, nothing hidden','We\'re your on-call team if anything ever goes wrong']
       },
       'website-maintenance': {
-        color:'#d97706', lt:'#fbbf24', glow:'rgba(217,119,6,0.35)', hue:'-165deg',
+        color:'#D97706', lt:'#FCD34D', glow:'rgba(217,119,6,0.35)', hue:'-165deg',
         stats:[{v:'Same',l:'Day Updates'},{v:'Unlim.',l:'Changes/Mo'},{v:'$100',l:'Per Month'}],
-        gets:['Unlimited content updates turned around same business day','Monthly SEO & performance audit with written report','Security scans and patches applied automatically','All dependencies kept current — never an outdated plugin','Priority support line — skip the queue','Annual design refresh consultation included'],
-        pitch:"A website that sits untouched for 6 months is a liability. Search engines deprioritize stale content, security holes compound, and outdated design loses trust instantly. Our maintenance plan keeps your site working as hard as you do — every single day.",
+        gets:['Content updates handled within 24 hours','Security monitoring and threat detection','Monthly performance audits and optimization','Broken link and error monitoring','Direct priority access to your builder','Monthly report showing everything done'],
+        pitch:"A website is not a one-time project. Software gets outdated, content becomes stale, and without someone watching, small problems become expensive ones. We handle everything your site needs month after month so you never have to think about it.",
         beforeBadge:'No Maintenance Plan',beforeColor:'#991b1b',
         beforeItems:['Outdated pricing and info drives clients away','Security vulnerabilities accumulate unnoticed','Site slows down as browsers and standards advance','Changes take weeks because nobody owns it','You have zero visibility into traffic or rankings'],
-        afterBadge:'Actively Maintained',afterColor:'#d97706',
+        afterBadge:'Actively Maintained',afterColor:'#D97706',
         afterItems:['Every page always reflects your current offers and pricing','Site locked down — scanned and patched continuously','Speed benchmarked and optimized monthly','Updates done the same day you message us','Monthly report: traffic, rankings, and next actions']
       },
       'website-creation': {
-        color:'#7c3aed', lt:'#a78bfa', glow:'rgba(124,58,237,0.35)', hue:'102deg',
+        color:'#7C3AED', lt:'#A78BFA', glow:'rgba(124,58,237,0.35)', hue:'102deg',
         stats:[{v:'Day 2',l:'First Draft'},{v:'5–10',l:'Pages Included'},{v:'100%',l:'You Own It'}],
-        gets:['Discovery call to map your goals, audience, and competitive landscape','Custom sitemap & information architecture planned before a pixel is designed','Professional copywriting guidance or full copy written for you','Mobile-first responsive build across all breakpoints','Google Search Console + Analytics setup and verified','Launch day: live, indexed, and submitted to Google in one session'],
-        pitch:"Starting from zero means we can do everything right — no bad architecture to work around, no old content to migrate, no SEO equity at risk. We plan it, design it, build it, and launch it as a complete unit optimized for one goal: getting you more customers.",
+        gets:['Complete new site built from scratch','Contact forms and booking integrations','Google Maps and social media connected','SEO-ready semantic HTML structure','Mobile-optimized on all screen sizes','Delivered in 5–10 business days'],
+        pitch:"Starting from zero? We build your entire online presence from the ground up. Custom design, clean code, all your integrations set up and connected, and a site that goes live in days — not months. You go from no website to a professional, conversion-ready site faster than you thought possible.",
         beforeBadge:'No Online Presence',beforeColor:'#991b1b',
         beforeItems:['Competitors are taking clients that could be yours','No way for customers to find you after hours','Looks unestablished — word of mouth has a ceiling','Invisible to Google Maps & local search results','Every new customer is a referral you had to earn manually'],
-        afterBadge:'Fully Live Custom Site',afterColor:'#7c3aed',
+        afterBadge:'Fully Live Custom Site',afterColor:'#7C3AED',
         afterItems:['Showing up in Google searches in your target city','Customers can find, research, and contact you 24/7','Professional presence that builds trust on first visit','Google Maps integration: show up when it counts most','New inbound leads working while you\'re on the job']
       },
       'website-redesign': {
-        color:'#dc2626', lt:'#f87171', glow:'rgba(220,38,38,0.4)', hue:'120deg',
+        color:'#DC2626', lt:'#F87171', glow:'rgba(220,38,38,0.4)', hue:'120deg',
         stats:[{v:'7 Days',l:'Full Relaunch'},{v:'Zero',l:'Downtime'},{v:'Same',l:'URL Preserved'}],
-        gets:['Full site audit: speed, SEO, UX, and conversion analysis before we touch anything','Every piece of existing content migrated — nothing gets lost','All SEO equity preserved: same URLs, proper 301 redirects where needed','Completely new visual design built around your current brand or an upgraded one','3–5x faster load time — guaranteed or we fix it','30 days unlimited revisions after relaunch'],
-        pitch:"A bad website is actively costing you money. Visitors land, see something slow or outdated, and leave to your competitor in under 3 seconds. We rebuild from the ground up — same URL, zero downtime — and turn your site into the sales tool it was always supposed to be.",
+        gets:['Complete visual rebuild from scratch','Performance and speed overhaul','SEO structure preserved and improved','All existing content reviewed and upgraded','Zero downtime during the switch','Before and after performance report'],
+        pitch:"If your current site is slow, outdated, or simply not converting visitors into customers — it is costing you money every day it stays live. We rebuild it completely from scratch while keeping your URL and preserving your SEO equity. Same address. Completely new everything else.",
         beforeBadge:'Current Site (Before)',beforeColor:'#991b1b',
         beforeItems:['Loads in 4–8 seconds — Google penalizes anything over 2.5s','Outdated design erodes trust with every visit','Mobile experience broken or cramped on smaller screens','SEO stagnant: no new rankings, traffic flat or declining','Contact form generates few or no leads'],
-        afterBadge:'After Redesign',afterColor:'#dc2626',
+        afterBadge:'After Redesign',afterColor:'#DC2626',
         afterItems:['Under 2 seconds on mobile — consistently','Modern, credibility-first design that commands authority','Flawless mobile-first experience across all devices','SEO improved: better structure, faster speeds, fresh signals','Clear CTA above the fold → more calls and form fills']
       },
       'logo-branding': {
-        color:'#b45309', lt:'#fcd34d', glow:'rgba(180,83,9,0.35)', hue:'131deg',
+        color:'#CA8A04', lt:'#FDE047', glow:'rgba(202,138,4,0.35)', hue:'131deg',
         stats:[{v:'3',l:'Concepts Delivered'},{v:'SVG',l:'Scalable Format'},{v:'100%',l:'Full Ownership'}],
-        gets:['3 distinct logo concepts — you pick the direction and we refine it to perfect','Full brand guidelines PDF: colors, fonts, spacing, do\'s and don\'ts','SVG + PNG + PDF files in every variant (light, dark, icon-only, full lockup)','Color palette with hex, RGB, and CMYK codes for print and digital','Favicon and browser tab icon optimized at all sizes','Social media kit: profile images and banner templates for all major platforms'],
-        pitch:"Your logo is the first thing every client sees. A professional mark communicates competency, trust, and price point before a word is read. A generic or DIY brand actively undermines the quality of the work you actually do — and losing a client to a competitor with a better-looking brand is a painful and preventable loss.",
+        gets:['Custom logo designed from scratch','Full vector files in every format (SVG, PNG, PDF)','Color palette with exact hex codes','Typography system with font recommendations','Brand guidelines document included','Unlimited revisions until you\'re satisfied'],
+        pitch:"Your logo is the first thing people see and the last thing they remember. If it looks amateur, so does your business. We design logos and complete brand identities that make the right first impression — professional, memorable, and built to work across every platform and format you need.",
         beforeBadge:'No Brand Identity',beforeColor:'#991b1b',
         beforeItems:['Generic or inconsistent look across every platform','Different fonts and colors every time — no recognition','Low-resolution files that pixelate on large screens or print','No guidelines means contractors and partners get it wrong','Clients can\'t remember or recommend your brand easily'],
-        afterBadge:'Full Brand Identity',afterColor:'#b45309',
+        afterBadge:'Full Brand Identity',afterColor:'#CA8A04',
         afterItems:['A unique mark that is unmistakably and exclusively yours','Consistent, professional across web, print, vehicles, and uniforms','Vector files scale to billboard size without losing a pixel','Brand guidelines keep every use case on-brand — forever','Memorable, distinctive, and built to grow with your business']
       }
     };
@@ -1258,23 +1266,23 @@
           +'<div style="background:rgba(180,83,9,0.08);border:1px solid rgba(180,83,9,0.28);border-radius:14px;padding:17px">'
           +'<div style="font-size:8.5px;font-weight:700;color:#fcd34d;letter-spacing:0.12em;margin-bottom:14px">BRAND IDENTITY SYSTEM</div>'
           +'<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px">'
-          +'<div style="background:#fff;border-radius:10px;padding:14px;display:flex;flex-direction:column;align-items:center;gap:5px"><div style="width:32px;height:32px;background:linear-gradient(135deg,#b45309,#fcd34d);border-radius:7px;display:flex;align-items:center;justify-content:center"><span style="font-size:16px;font-weight:900;color:#fff">B</span></div><div style="font-size:6.5px;font-weight:700;color:#1e1e1e;letter-spacing:0.1em">YOUR BRAND</div><div style="font-size:5.5px;color:#999">Light BG</div></div>'
-          +'<div style="background:#060916;border:1px solid rgba(255,255,255,0.1);border-radius:10px;padding:14px;display:flex;flex-direction:column;align-items:center;gap:5px"><div style="width:32px;height:32px;background:linear-gradient(135deg,#b45309,#fcd34d);border-radius:7px;display:flex;align-items:center;justify-content:center"><span style="font-size:16px;font-weight:900;color:#fff">B</span></div><div style="font-size:6.5px;font-weight:700;color:#fff;letter-spacing:0.1em">YOUR BRAND</div><div style="font-size:5.5px;color:rgba(255,255,255,0.4)">Dark BG</div></div>'
-          +'<div style="background:linear-gradient(135deg,#b45309,#d97706);border-radius:10px;padding:14px;display:flex;flex-direction:column;align-items:center;gap:5px"><div style="width:32px;height:32px;background:rgba(255,255,255,0.2);border:1px solid rgba(255,255,255,0.4);border-radius:7px;display:flex;align-items:center;justify-content:center"><span style="font-size:16px;font-weight:900;color:#fff">B</span></div><div style="font-size:6.5px;font-weight:700;color:#fff;letter-spacing:0.1em">ICON ONLY</div><div style="font-size:5.5px;color:rgba(255,255,255,0.7)">Favicon/App</div></div>'
+          +'<div style="background:#fff;border-radius:10px;padding:14px;display:flex;flex-direction:column;align-items:center;gap:5px"><div style="width:32px;height:32px;background:linear-gradient(135deg,#CA8A04,#FDE047);border-radius:7px;display:flex;align-items:center;justify-content:center"><span style="font-size:16px;font-weight:900;color:#fff">B</span></div><div style="font-size:6.5px;font-weight:700;color:#1e1e1e;letter-spacing:0.1em">YOUR BRAND</div><div style="font-size:5.5px;color:#999">Light BG</div></div>'
+          +'<div style="background:#060916;border:1px solid rgba(255,255,255,0.1);border-radius:10px;padding:14px;display:flex;flex-direction:column;align-items:center;gap:5px"><div style="width:32px;height:32px;background:linear-gradient(135deg,#CA8A04,#FDE047);border-radius:7px;display:flex;align-items:center;justify-content:center"><span style="font-size:16px;font-weight:900;color:#fff">B</span></div><div style="font-size:6.5px;font-weight:700;color:#fff;letter-spacing:0.1em">YOUR BRAND</div><div style="font-size:5.5px;color:rgba(255,255,255,0.4)">Dark BG</div></div>'
+          +'<div style="background:linear-gradient(135deg,#CA8A04,#D97706);border-radius:10px;padding:14px;display:flex;flex-direction:column;align-items:center;gap:5px"><div style="width:32px;height:32px;background:rgba(255,255,255,0.2);border:1px solid rgba(255,255,255,0.4);border-radius:7px;display:flex;align-items:center;justify-content:center"><span style="font-size:16px;font-weight:900;color:#fff">B</span></div><div style="font-size:6.5px;font-weight:700;color:#fff;letter-spacing:0.1em">ICON ONLY</div><div style="font-size:5.5px;color:rgba(255,255,255,0.7)">Favicon/App</div></div>'
           +'</div>'
           +'<div style="font-size:8px;color:rgba(255,255,255,0.4);letter-spacing:0.1em;margin-bottom:7px">BRAND PALETTE</div>'
           +'<div style="display:flex;border-radius:8px;overflow:hidden">'
-          +[['#1a0a00','32'],['#b45309','32'],['#d97706','32'],['#fcd34d','32'],['#ffffff','8']].map(function(c){return '<div style="flex:'+c[1]+';height:28px;background:'+c[0]+'"></div>';}).join('')
+          +[['#1a0a00','32'],['#CA8A04','32'],['#D97706','32'],['#FDE047','32'],['#ffffff','8']].map(function(c){return '<div style="flex:'+c[1]+';height:28px;background:'+c[0]+'"></div>';}).join('')
           +'</div>'
           +'<div style="display:flex;margin-top:3px">'
-          +[['#1a0a00','32'],['#b45309','32'],['#d97706','32'],['#fcd34d','32'],['#ffffff','8']].map(function(c){return '<div style="flex:'+c[1]+';text-align:center;font-size:5.5px;color:rgba(255,255,255,0.3);font-family:monospace;overflow:hidden">'+c[0]+'</div>';}).join('')
+          +[['#1a0a00','32'],['#CA8A04','32'],['#D97706','32'],['#FDE047','32'],['#ffffff','8']].map(function(c){return '<div style="flex:'+c[1]+';text-align:center;font-size:5.5px;color:rgba(255,255,255,0.3);font-family:monospace;overflow:hidden">'+c[0]+'</div>';}).join('')
           +'</div></div>'
           +'<div style="background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.07);border-radius:12px;padding:14px">'
           +'<div style="font-size:8.5px;font-weight:700;color:rgba(255,255,255,0.4);letter-spacing:0.1em;margin-bottom:10px">TYPOGRAPHY SYSTEM</div>'
           +'<div style="margin-bottom:8px"><div style="font-size:22px;font-weight:900;color:#fff;line-height:1;letter-spacing:-0.01em">Aa Bb Cc</div>'
-          +'<div style="font-size:8px;color:#fcd34d;margin-top:3px">HEADING — Barlow Condensed Black 900</div></div>'
+          +'<div style="font-size:8px;color:#FDE047;margin-top:3px">HEADING — Barlow Condensed Black 900</div></div>'
           +'<div><div style="font-size:11px;color:rgba(255,255,255,0.6);line-height:1.6">The quick brown fox jumps over the lazy dog.</div>'
-          +'<div style="font-size:8px;color:#fcd34d;margin-top:3px">BODY — Barlow Regular 400</div></div>'
+          +'<div style="font-size:8px;color:#FDE047;margin-top:3px">BODY — Barlow Regular 400</div></div>'
           +'</div></div>';
       }
 
