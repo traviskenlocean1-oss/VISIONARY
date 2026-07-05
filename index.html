@@ -902,19 +902,21 @@
       }
     };
 
-    var svc = C[SLUG];
+    /* Normalize URL slug aliases (React uses /hosting not /hosting-domain) */
+    var SLUG_KEY = SLUG === 'hosting' ? 'hosting-domain' : SLUG;
+    var svc = C[SLUG_KEY];
     if (!svc) return;
 
-    /* ── 1. Color theme injection ── */
+    /* ── 1. Color theme injection (CSS layer) ── */
     var themeStyle = document.createElement('style');
     themeStyle.id = 'vws-svc-theme';
     themeStyle.textContent = [
-      /* Override blue buttons/accents with service color */
-      'a[class*="bg-blue"],button[class*="bg-blue"]{background:'+svc.color+'!important}',
-      '[class*="text-blue-4"],[class*="text-blue-5"],[class*="text-blue-6"]{color:'+svc.lt+'!important}',
+      '[class*="text-blue"]{color:'+svc.lt+'!important}',
+      '[class*="bg-blue"]{background-color:'+svc.color+'!important}',
       '[class*="border-blue"]{border-color:'+svc.color+'!important}',
-      /* "SERVICE 0X" label color */
-      '.text-blue-400{color:'+svc.lt+'!important}',
+      '.text-blue-400,.text-blue-500,.text-blue-600{color:'+svc.lt+'!important}',
+      '.bg-blue-600,.bg-blue-700,.bg-blue-800,.bg-blue-500{background-color:'+svc.color+'!important}',
+      'button[class*="bg-blue"],a[class*="bg-blue"]{box-shadow:0 4px 20px '+svc.glow+'!important}',
     ].join('');
     document.head.appendChild(themeStyle);
 
@@ -1026,118 +1028,330 @@
       }).join('');
     }
 
-    /* ── 3. Main enhance function ── */
+    /* ── 3. Illustration builder — premium visual for each service ── */
+    function buildIllustration(slug, svc) {
+      var c = svc.color, lt = svc.lt, glow = svc.glow;
+
+      if (slug === 'website-redesign') {
+        return '<div style="width:100%;max-width:440px;display:flex;flex-direction:column;gap:14px;font-family:Barlow,system-ui,sans-serif">'
+          +'<div style="background:rgba(220,38,38,0.07);border:1px solid rgba(220,38,38,0.22);border-radius:14px;padding:18px;position:relative;overflow:hidden">'
+          +'<div style="position:absolute;inset:0;background:radial-gradient(circle at 80% 20%,rgba(220,38,38,0.13),transparent 65%);pointer-events:none"></div>'
+          +'<div style="font-size:8.5px;font-weight:700;color:#f87171;letter-spacing:0.15em;margin-bottom:12px">● BEFORE REDESIGN</div>'
+          +'<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:12px">'
+          +'<div style="background:rgba(239,68,68,0.12);border:1px solid rgba(239,68,68,0.3);border-radius:9px;padding:10px;text-align:center"><div style="font-size:22px;font-weight:900;color:#dc2626;line-height:1">F</div><div style="font-size:7.5px;color:rgba(255,255,255,0.35);margin-top:3px">PageSpeed</div></div>'
+          +'<div style="background:rgba(239,68,68,0.12);border:1px solid rgba(239,68,68,0.3);border-radius:9px;padding:10px;text-align:center"><div style="font-size:19px;font-weight:900;color:#f87171;line-height:1">7.2s</div><div style="font-size:7.5px;color:rgba(255,255,255,0.35);margin-top:3px">Load Time</div></div>'
+          +'<div style="background:rgba(239,68,68,0.12);border:1px solid rgba(239,68,68,0.3);border-radius:9px;padding:10px;text-align:center"><div style="font-size:19px;font-weight:900;color:#f87171;line-height:1">74%</div><div style="font-size:7.5px;color:rgba(255,255,255,0.35);margin-top:3px">Bounce Rate</div></div>'
+          +'</div>'
+          +'<div style="height:5px;background:rgba(255,255,255,0.06);border-radius:3px;overflow:hidden"><div style="width:89%;height:100%;background:linear-gradient(90deg,#dc2626,#f87171)"></div></div>'
+          +'<div style="font-size:7.5px;color:#f87171;text-align:right;margin-top:4px">Critical Performance Issues</div>'
+          +'</div>'
+          +'<div style="text-align:center">'
+          +'<div style="display:inline-flex;align-items:center;gap:8px;background:rgba(220,38,38,0.12);border:1px solid rgba(220,38,38,0.3);border-radius:8px;padding:8px 18px">'
+          +'<div style="width:20px;height:20px;border-radius:50%;background:#dc2626;display:flex;align-items:center;justify-content:center;flex-shrink:0">'
+          +'<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M12 5v14M5 12l7 7 7-7"/></svg></div>'
+          +'<span style="font-size:9px;font-weight:700;color:#dc2626;letter-spacing:0.06em">REBUILT BY VISIONARY</span>'
+          +'</div></div>'
+          +'<div style="background:rgba(220,38,38,0.12);border:1px solid rgba(220,38,38,0.4);border-radius:14px;padding:18px;position:relative;overflow:hidden;box-shadow:0 0 40px rgba(220,38,38,0.12)">'
+          +'<div style="position:absolute;inset:0;background:radial-gradient(circle at 80% 20%,rgba(220,38,38,0.2),transparent 65%);pointer-events:none"></div>'
+          +'<div style="font-size:8.5px;font-weight:700;color:#4ade80;letter-spacing:0.15em;margin-bottom:12px">● AFTER REDESIGN</div>'
+          +'<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:12px">'
+          +'<div style="background:rgba(74,222,128,0.1);border:1px solid rgba(74,222,128,0.3);border-radius:9px;padding:10px;text-align:center"><div style="font-size:22px;font-weight:900;color:#4ade80;line-height:1">A+</div><div style="font-size:7.5px;color:rgba(255,255,255,0.35);margin-top:3px">PageSpeed</div></div>'
+          +'<div style="background:rgba(74,222,128,0.1);border:1px solid rgba(74,222,128,0.3);border-radius:9px;padding:10px;text-align:center"><div style="font-size:19px;font-weight:900;color:#4ade80;line-height:1">0.8s</div><div style="font-size:7.5px;color:rgba(255,255,255,0.35);margin-top:3px">Load Time</div></div>'
+          +'<div style="background:rgba(74,222,128,0.1);border:1px solid rgba(74,222,128,0.3);border-radius:9px;padding:10px;text-align:center"><div style="font-size:19px;font-weight:900;color:#4ade80;line-height:1">28%</div><div style="font-size:7.5px;color:rgba(255,255,255,0.35);margin-top:3px">Bounce Rate</div></div>'
+          +'</div>'
+          +'<div style="height:5px;background:rgba(255,255,255,0.06);border-radius:3px;overflow:hidden"><div style="width:10%;height:100%;background:linear-gradient(90deg,#4ade80,#22c55e);box-shadow:0 0 8px rgba(74,222,128,0.5)"></div></div>'
+          +'<div style="font-size:7.5px;color:#4ade80;text-align:right;margin-top:4px">Optimized — Top 1% Performance</div>'
+          +'</div></div>';
+      }
+
+      if (slug === 'website-development') {
+        var lines = [
+          {c:'#7dd3fc',t:'&lt;html lang="en"&gt;'},
+          {c:'rgba(255,255,255,.22)',t:'&nbsp;&nbsp;&lt;head&gt;'},
+          {c:'#86efac',t:'&nbsp;&nbsp;&nbsp;&nbsp;&lt;title&gt;Your Business — Miami FL&lt;/title&gt;'},
+          {c:'#fbbf24',t:'&nbsp;&nbsp;&nbsp;&nbsp;&lt;meta name="description" content="..."&gt;'},
+          {c:'#c084fc',t:'&nbsp;&nbsp;&nbsp;&nbsp;&lt;link rel="canonical" href="yourbiz.com"&gt;'},
+          {c:'rgba(255,255,255,.22)',t:'&nbsp;&nbsp;&lt;/head&gt;'},
+          {c:'rgba(255,255,255,.22)',t:'&nbsp;&nbsp;&lt;body&gt;'},
+          {c:'#7dd3fc',t:'&nbsp;&nbsp;&nbsp;&nbsp;&lt;nav class="fixed w-full z-50"&gt;'},
+          {c:'#86efac',t:'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;a href="/"&gt;Your Brand&lt;/a&gt;'},
+          {c:'#fbbf24',t:'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;button class="cta"&gt;Get Started →&lt;/button&gt;'},
+          {c:'rgba(255,255,255,.22)',t:'&nbsp;&nbsp;&nbsp;&nbsp;&lt;/nav&gt;'},
+        ];
+        return '<div style="width:100%;max-width:440px;font-family:Barlow,system-ui,sans-serif">'
+          +'<div style="background:#0d1117;border-radius:14px;overflow:hidden;border:1px solid rgba(255,255,255,0.08);box-shadow:0 20px 60px rgba(0,0,0,0.6)">'
+          +'<div style="background:#161b22;padding:0 14px;display:flex;align-items:center;gap:0;border-bottom:1px solid rgba(255,255,255,0.07)">'
+          +'<div style="display:flex;gap:0;padding:10px 0 0;margin-right:auto">'
+          +'<div style="background:#0d1117;border:1px solid rgba(255,255,255,0.1);border-bottom:1px solid #0d1117;border-radius:6px 6px 0 0;padding:5px 14px;font-size:9px;color:#60a5fa;font-family:monospace">index.html</div>'
+          +'<div style="padding:5px 14px;font-size:9px;color:rgba(255,255,255,0.28);font-family:monospace">style.css</div>'
+          +'<div style="padding:5px 14px;font-size:9px;color:rgba(255,255,255,0.28);font-family:monospace">main.js</div>'
+          +'</div>'
+          +'<div style="display:flex;gap:5px;padding:8px 0">'
+          +'<div style="width:10px;height:10px;border-radius:50%;background:#ff5f57"></div>'
+          +'<div style="width:10px;height:10px;border-radius:50%;background:#febc2e"></div>'
+          +'<div style="width:10px;height:10px;border-radius:50%;background:#28c840"></div>'
+          +'</div></div>'
+          +'<div style="padding:14px;display:flex;gap:14px">'
+          +'<div style="display:flex;flex-direction:column">'
+          +lines.map(function(_,i){return '<div style="font-size:9px;color:rgba(255,255,255,0.18);font-family:monospace;line-height:2;text-align:right;min-width:16px">'+(i+1)+'</div>';}).join('')
+          +'</div>'
+          +'<div style="flex:1;overflow:hidden;display:flex;flex-direction:column">'
+          +lines.map(function(l){return '<div style="font-size:9px;color:'+l.c+';font-family:monospace;line-height:2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+l.t+'</div>';}).join('')
+          +'</div></div>'
+          +'<div style="background:#161b22;border-top:1px solid rgba(255,255,255,0.07);padding:7px 14px;display:flex;align-items:center;justify-content:space-between">'
+          +'<span style="font-size:7.5px;color:#60a5fa;font-family:monospace">● Hand-coded by Visionary</span>'
+          +'<span style="font-size:7.5px;color:rgba(255,255,255,0.28);font-family:monospace">HTML5 · UTF-8 · A+ Score</span>'
+          +'</div></div></div>';
+      }
+
+      if (slug === 'hosting' || slug === 'hosting-domain') {
+        var bars = '';
+        for (var u=0;u<30;u++){var h=(u<4&&u>1)?10:28;bars+='<div style="flex:1;height:'+h+'px;background:'+(h<15?'rgba(239,68,68,0.55)':'rgba(52,211,153,0.72)')+';border-radius:2px;align-self:flex-end"></div>';}
+        return '<div style="width:100%;max-width:440px;display:flex;flex-direction:column;gap:12px;font-family:Barlow,system-ui,sans-serif">'
+          +'<div style="background:rgba(5,150,105,0.08);border:1px solid rgba(5,150,105,0.28);border-radius:14px;padding:17px">'
+          +'<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">'
+          +'<div><div style="font-size:8.5px;font-weight:700;color:#34d399;letter-spacing:0.12em;margin-bottom:3px">● ALL SYSTEMS OPERATIONAL</div>'
+          +'<div style="font-size:10px;color:rgba(255,255,255,0.35)">Last checked: 12 seconds ago</div></div>'
+          +'<div style="background:rgba(5,150,105,0.15);border:1px solid rgba(5,150,105,0.35);border-radius:8px;padding:7px 14px;text-align:center">'
+          +'<div style="font-size:16px;font-weight:900;color:#34d399;line-height:1">99.9%</div>'
+          +'<div style="font-size:7.5px;color:rgba(255,255,255,0.4);margin-top:2px">Uptime SLA</div></div></div>'
+          +'<div style="display:flex;gap:2px;align-items:flex-end;height:32px;margin-bottom:7px">'+bars+'</div>'
+          +'<div style="display:flex;justify-content:space-between"><span style="font-size:7.5px;color:rgba(255,255,255,0.25)">90 days ago</span><span style="font-size:7.5px;color:#34d399;font-weight:700">100% this month</span><span style="font-size:7.5px;color:rgba(255,255,255,0.25)">today</span></div>'
+          +'</div>'
+          +'<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px">'
+          +'<div style="background:rgba(5,150,105,0.1);border:1px solid rgba(5,150,105,0.25);border-radius:12px;padding:13px;text-align:center"><div style="font-size:19px;font-weight:900;color:#34d399;line-height:1">0.8s</div><div style="font-size:8px;color:rgba(255,255,255,0.4);margin-top:4px">Response</div></div>'
+          +'<div style="background:rgba(5,150,105,0.1);border:1px solid rgba(5,150,105,0.25);border-radius:12px;padding:13px;text-align:center"><div style="font-size:19px;font-weight:900;color:#34d399;line-height:1">SSL</div><div style="font-size:8px;color:rgba(255,255,255,0.4);margin-top:4px">Encrypted</div></div>'
+          +'<div style="background:rgba(5,150,105,0.1);border:1px solid rgba(5,150,105,0.25);border-radius:12px;padding:13px;text-align:center"><div style="font-size:19px;font-weight:900;color:#34d399;line-height:1">CDN</div><div style="font-size:8px;color:rgba(255,255,255,0.4);margin-top:4px">Global Edge</div></div>'
+          +'</div>'
+          +'<div style="background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.07);border-radius:12px;padding:14px">'
+          +'<div style="font-size:8.5px;font-weight:700;color:rgba(255,255,255,0.4);letter-spacing:0.1em;margin-bottom:10px">EDGE NODES ACTIVE</div>'
+          +'<div style="display:flex;flex-direction:column;gap:8px">'
+          +[['Miami, FL','Primary ★'],['New York, NY','Active'],['Los Angeles, CA','Active'],['London, UK','Active']].map(function(loc){
+            return '<div style="display:flex;align-items:center;justify-content:space-between">'
+            +'<div style="display:flex;align-items:center;gap:8px"><div style="width:7px;height:7px;border-radius:50%;background:#34d399;box-shadow:0 0 8px rgba(52,211,153,0.7)"></div>'
+            +'<span style="font-size:10px;color:rgba(255,255,255,0.7)">'+loc[0]+'</span></div>'
+            +'<span style="font-size:8.5px;color:#34d399;font-weight:700">'+loc[1]+'</span></div>';
+          }).join('')
+          +'</div></div></div>';
+      }
+
+      if (slug === 'website-maintenance') {
+        return '<div style="width:100%;max-width:440px;display:flex;flex-direction:column;gap:12px;font-family:Barlow,system-ui,sans-serif">'
+          +'<div style="background:rgba(217,119,6,0.08);border:1px solid rgba(217,119,6,0.28);border-radius:14px;padding:17px">'
+          +'<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">'
+          +'<div><div style="font-size:8.5px;font-weight:700;color:#fbbf24;letter-spacing:0.1em;margin-bottom:2px">MONTHLY REPORT</div>'
+          +'<div style="font-size:15px;font-weight:800;color:#fff">July 2026</div></div>'
+          +'<div style="background:rgba(217,119,6,0.15);border:1px solid rgba(217,119,6,0.35);border-radius:8px;padding:8px 14px;text-align:center">'
+          +'<div style="font-size:18px;font-weight:900;color:#fbbf24;line-height:1">A</div>'
+          +'<div style="font-size:7.5px;color:rgba(255,255,255,0.4);margin-top:2px">Health Score</div>'
+          +'</div></div>'
+          +[['Page Speed','96'],['SEO Score','94'],['Security','100']].map(function(item){
+            return '<div style="margin-bottom:10px">'
+            +'<div style="display:flex;justify-content:space-between;margin-bottom:4px">'
+            +'<span style="font-size:9px;color:rgba(255,255,255,0.6)">'+item[0]+'</span>'
+            +'<span style="font-size:9px;font-weight:700;color:#fbbf24">'+item[1]+'/100</span>'
+            +'</div>'
+            +'<div style="height:5px;background:rgba(255,255,255,0.06);border-radius:3px;overflow:hidden">'
+            +'<div style="width:'+item[1]+'%;height:100%;background:linear-gradient(90deg,#d97706,#fbbf24);border-radius:3px"></div>'
+            +'</div></div>';
+          }).join('')
+          +'</div>'
+          +'<div style="background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.07);border-radius:12px;padding:14px">'
+          +'<div style="font-size:8.5px;font-weight:700;color:rgba(255,255,255,0.4);letter-spacing:0.1em;margin-bottom:10px">THIS MONTH\'S UPDATES</div>'
+          +'<div style="display:flex;flex-direction:column;gap:9px">'
+          +[['Content updated — 3 new services added','July 28'],['Security patch — v2.4.1 applied','July 21'],['Page speed improved: 94 → 96/100','July 14'],['SEO audit: +14 ranking positions','July 1']].map(function(item){
+            return '<div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px">'
+            +'<div style="display:flex;align-items:flex-start;gap:8px">'
+            +'<div style="width:6px;height:6px;border-radius:50%;background:#fbbf24;margin-top:4px;flex-shrink:0"></div>'
+            +'<span style="font-size:9.5px;color:rgba(255,255,255,0.65);line-height:1.4">'+item[0]+'</span>'
+            +'</div>'
+            +'<span style="font-size:8px;color:rgba(255,255,255,0.28);flex-shrink:0;white-space:nowrap">'+item[1]+'</span>'
+            +'</div>';
+          }).join('')
+          +'</div></div></div>';
+      }
+
+      if (slug === 'website-creation') {
+        return '<div style="width:100%;max-width:440px;display:flex;flex-direction:column;gap:12px;font-family:Barlow,system-ui,sans-serif">'
+          +'<div style="background:rgba(124,58,237,0.08);border:1px solid rgba(124,58,237,0.28);border-radius:14px;padding:17px">'
+          +'<div style="font-size:8.5px;font-weight:700;color:#a78bfa;letter-spacing:0.12em;margin-bottom:4px">PROJECT LAUNCH</div>'
+          +'<div style="font-size:15px;font-weight:800;color:#fff;margin-bottom:16px">yourbusiness.com</div>'
+          +'<div style="display:flex;flex-direction:column;gap:8px">'
+          +[
+            {done:true,label:'Discovery call — goals & audience mapped'},
+            {done:true,label:'Sitemap & information architecture planned'},
+            {done:true,label:'Design concepts delivered & approved'},
+            {done:true,label:'Pages built: Home, About, Services, Contact'},
+            {done:false,label:'Launch day — going live now...',active:true},
+          ].map(function(step,i){
+            var dot = step.done
+              ? '<div style="width:20px;height:20px;border-radius:50%;background:#a78bfa;flex-shrink:0;display:flex;align-items:center;justify-content:center"><svg width="10" height="10" viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></div>'
+              : (step.active ? '<div style="width:20px;height:20px;border-radius:50%;background:rgba(167,139,250,0.15);border:2px solid #a78bfa;flex-shrink:0;display:flex;align-items:center;justify-content:center"><div style="width:8px;height:8px;border-radius:50%;background:#a78bfa"></div></div>'
+              : '<div style="width:20px;height:20px;border-radius:50%;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.15);flex-shrink:0"></div>');
+            return '<div style="display:flex;align-items:center;gap:12px">'
+              +dot+'<span style="font-size:10px;color:'+(step.done?'rgba(255,255,255,0.8)':step.active?'#a78bfa':'rgba(255,255,255,0.35)')+';'+(step.active?'font-weight:700':'')+'">'+step.label+'</span></div>'
+              +(i<4?'<div style="margin-left:9px;border-left:1px dashed rgba(167,139,250,0.2);height:8px"></div>':'');
+          }).join('')
+          +'</div></div>'
+          +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">'
+          +'<div style="background:rgba(124,58,237,0.1);border:1px solid rgba(124,58,237,0.25);border-radius:12px;padding:14px;text-align:center"><div style="font-size:22px;font-weight:900;color:#a78bfa;line-height:1">Day 2</div><div style="font-size:8px;color:rgba(255,255,255,0.4);margin-top:4px">First Design Draft</div></div>'
+          +'<div style="background:rgba(124,58,237,0.1);border:1px solid rgba(124,58,237,0.25);border-radius:12px;padding:14px;text-align:center"><div style="font-size:22px;font-weight:900;color:#a78bfa;line-height:1">100%</div><div style="font-size:8px;color:rgba(255,255,255,0.4);margin-top:4px">You Own It</div></div>'
+          +'</div></div>';
+      }
+
+      if (slug === 'logo-branding') {
+        return '<div style="width:100%;max-width:440px;display:flex;flex-direction:column;gap:12px;font-family:Barlow,system-ui,sans-serif">'
+          +'<div style="background:rgba(180,83,9,0.08);border:1px solid rgba(180,83,9,0.28);border-radius:14px;padding:17px">'
+          +'<div style="font-size:8.5px;font-weight:700;color:#fcd34d;letter-spacing:0.12em;margin-bottom:14px">BRAND IDENTITY SYSTEM</div>'
+          +'<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px">'
+          +'<div style="background:#fff;border-radius:10px;padding:14px;display:flex;flex-direction:column;align-items:center;gap:5px"><div style="width:32px;height:32px;background:linear-gradient(135deg,#b45309,#fcd34d);border-radius:7px;display:flex;align-items:center;justify-content:center"><span style="font-size:16px;font-weight:900;color:#fff">B</span></div><div style="font-size:6.5px;font-weight:700;color:#1e1e1e;letter-spacing:0.1em">YOUR BRAND</div><div style="font-size:5.5px;color:#999">Light BG</div></div>'
+          +'<div style="background:#060916;border:1px solid rgba(255,255,255,0.1);border-radius:10px;padding:14px;display:flex;flex-direction:column;align-items:center;gap:5px"><div style="width:32px;height:32px;background:linear-gradient(135deg,#b45309,#fcd34d);border-radius:7px;display:flex;align-items:center;justify-content:center"><span style="font-size:16px;font-weight:900;color:#fff">B</span></div><div style="font-size:6.5px;font-weight:700;color:#fff;letter-spacing:0.1em">YOUR BRAND</div><div style="font-size:5.5px;color:rgba(255,255,255,0.4)">Dark BG</div></div>'
+          +'<div style="background:linear-gradient(135deg,#b45309,#d97706);border-radius:10px;padding:14px;display:flex;flex-direction:column;align-items:center;gap:5px"><div style="width:32px;height:32px;background:rgba(255,255,255,0.2);border:1px solid rgba(255,255,255,0.4);border-radius:7px;display:flex;align-items:center;justify-content:center"><span style="font-size:16px;font-weight:900;color:#fff">B</span></div><div style="font-size:6.5px;font-weight:700;color:#fff;letter-spacing:0.1em">ICON ONLY</div><div style="font-size:5.5px;color:rgba(255,255,255,0.7)">Favicon/App</div></div>'
+          +'</div>'
+          +'<div style="font-size:8px;color:rgba(255,255,255,0.4);letter-spacing:0.1em;margin-bottom:7px">BRAND PALETTE</div>'
+          +'<div style="display:flex;border-radius:8px;overflow:hidden">'
+          +[['#1a0a00','32'],['#b45309','32'],['#d97706','32'],['#fcd34d','32'],['#ffffff','8']].map(function(c){return '<div style="flex:'+c[1]+';height:28px;background:'+c[0]+'"></div>';}).join('')
+          +'</div>'
+          +'<div style="display:flex;margin-top:3px">'
+          +[['#1a0a00','32'],['#b45309','32'],['#d97706','32'],['#fcd34d','32'],['#ffffff','8']].map(function(c){return '<div style="flex:'+c[1]+';text-align:center;font-size:5.5px;color:rgba(255,255,255,0.3);font-family:monospace;overflow:hidden">'+c[0]+'</div>';}).join('')
+          +'</div></div>'
+          +'<div style="background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.07);border-radius:12px;padding:14px">'
+          +'<div style="font-size:8.5px;font-weight:700;color:rgba(255,255,255,0.4);letter-spacing:0.1em;margin-bottom:10px">TYPOGRAPHY SYSTEM</div>'
+          +'<div style="margin-bottom:8px"><div style="font-size:22px;font-weight:900;color:#fff;line-height:1;letter-spacing:-0.01em">Aa Bb Cc</div>'
+          +'<div style="font-size:8px;color:#fcd34d;margin-top:3px">HEADING — Barlow Condensed Black 900</div></div>'
+          +'<div><div style="font-size:11px;color:rgba(255,255,255,0.6);line-height:1.6">The quick brown fox jumps over the lazy dog.</div>'
+          +'<div style="font-size:8px;color:#fcd34d;margin-top:3px">BODY — Barlow Regular 400</div></div>'
+          +'</div></div>';
+      }
+
+      return '<div style="width:100%;max-width:440px;font-family:Barlow,system-ui,sans-serif"><div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:40px;text-align:center"><div style="width:56px;height:56px;border-radius:14px;background:'+c+';margin:0 auto 16px;display:flex;align-items:center;justify-content:center"><div style="width:24px;height:24px;border-radius:50%;background:rgba(255,255,255,0.3)"></div></div><div style="font-size:16px;font-weight:800;color:#fff;margin-bottom:8px">Visionary Web Studio</div><div style="font-size:12px;color:rgba(255,255,255,0.45);line-height:1.6">Premium digital services for local businesses.</div></div></div>';
+    }
+
+    /* ── 4. Inject illustration into the left column of the page layout ── */
+    function injectIllustration(svc) {
+      if (document.getElementById('vws-ill-wrap')) return;
+
+      /* Find "What's Involved" heading */
+      var heading = null;
+      var all = Array.from(document.querySelectorAll('*'));
+      for (var i=0;i<all.length;i++) {
+        var el=all[i];
+        if (el.children.length<=2 && /what.{0,8}involved/i.test(el.textContent.trim())) { heading=el; break; }
+      }
+      if (!heading) return;
+
+      /* Walk up to the flex/grid 2-column parent */
+      var branch = heading;
+      var twoCol = null, rightBranch = null;
+      for (var w=0;w<10;w++) {
+        var par = branch.parentElement;
+        if (!par) break;
+        if (par.children.length >= 2 && /flex|grid/.test(window.getComputedStyle(par).display)) {
+          twoCol = par; rightBranch = branch; break;
+        }
+        branch = par;
+      }
+      if (!twoCol || !rightBranch) return;
+
+      /* Find the left column — the child NOT containing our heading */
+      var leftCol = null;
+      for (var ci=0;ci<twoCol.children.length;ci++) {
+        var ch = twoCol.children[ci];
+        if (!ch.contains(heading) && ch !== rightBranch) { leftCol=ch; break; }
+      }
+      if (!leftCol) return;
+
+      var wrap = document.createElement('div');
+      wrap.id = 'vws-ill-wrap';
+      wrap.style.cssText = 'display:flex;align-items:center;justify-content:center;width:100%;padding:24px 16px;box-sizing:border-box;min-height:400px';
+      wrap.innerHTML = buildIllustration(SLUG, svc);
+
+      leftCol.innerHTML = '';
+      leftCol.style.overflow = 'visible';
+      leftCol.appendChild(wrap);
+    }
+
+    /* ── 5. Main enhance function ── */
     function enhance() {
-      /* Override button/accent colors in React-rendered elements */
-      Array.from(document.querySelectorAll('a, button')).forEach(function(el) {
-        var bg = window.getComputedStyle(el).backgroundColor;
-        if (/37,\s*99,\s*235|29,\s*78,\s*216|30,\s*58,\s*138/.test(bg)) {
-          el.style.background = svc.color;
-          el.style.boxShadow = '0 4px 20px '+svc.glow;
+      /* JS color override — targets computed blue colors and replaces with service color */
+      var blueRx = /rgb\(29,\s*78,\s*216\)|rgb\(37,\s*99,\s*235\)|rgb\(59,\s*130,\s*246\)|rgb\(96,\s*165,\s*250\)|rgb\(147,\s*197,\s*253\)/;
+      var blueBgRx = /rgb\(29,\s*78,\s*216\)|rgb\(37,\s*99,\s*235\)|rgb\(30,\s*58,\s*138\)/;
+      Array.from(document.querySelectorAll('a,button,span,p,h1,h2,h3,h4,li')).forEach(function(el) {
+        var cs = window.getComputedStyle(el);
+        if (blueRx.test(cs.color)) el.style.setProperty('color', svc.lt, 'important');
+        if (blueBgRx.test(cs.backgroundColor)) {
+          el.style.setProperty('background-color', svc.color, 'important');
+          el.style.setProperty('box-shadow', '0 4px 20px '+svc.glow, 'important');
         }
       });
-      /* Service label color (SERVICE 05 etc.) */
-      Array.from(document.querySelectorAll('*')).forEach(function(el) {
-        if (el.children.length === 0) {
-          var txt = el.textContent.trim();
-          if (/^SERVICE\s+\d+$/.test(txt)) {
-            el.style.color = svc.lt;
+
+      /* Inject the illustration into the empty left column */
+      injectIllustration(svc);
+
+      /* ── Before/after section replacement (only if React rendered BEFORE/AFTER text) ── */
+      if (!document.getElementById('vws-ba-injected')) {
+        var beforeEl = Array.from(document.querySelectorAll('*')).find(function(el){
+          return el.children.length === 0 && el.textContent.trim() === 'BEFORE';
+        });
+        if (beforeEl) {
+          var container = beforeEl;
+          for (var i=0;i<8;i++) {
+            container = container.parentElement;
+            if (!container) break;
+            if (container.textContent.includes('AFTER') && container.textContent.includes('BEFORE')) break;
+          }
+          if (container) {
+            container.id = 'vws-ba-injected';
+            container.innerHTML = [
+              '<div style="padding:0 0 48px">',
+                '<div style="text-align:center;margin-bottom:32px">',
+                  '<div style="font-size:10px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:'+svc.lt+';margin-bottom:10px">The Difference Is Visual</div>',
+                  '<div style="font-size:26px;font-weight:900;color:#fff;line-height:1.2">What Your Site Looks Like<br>Before and After Visionary</div>',
+                '</div>',
+                '<div style="display:grid;grid-template-columns:1fr 48px 1fr;gap:0;align-items:center">',
+                  '<div><div style="text-align:center;margin-bottom:12px"><span style="display:inline-block;background:rgba(153,27,27,0.2);border:1px solid rgba(239,68,68,0.4);border-radius:20px;padding:4px 14px;font-size:10px;font-weight:700;color:#f87171;letter-spacing:0.1em">'+svc.beforeBadge.toUpperCase()+'</span></div>'+badSite(svc)+'</div>',
+                  '<div style="text-align:center"><div style="width:40px;height:40px;border-radius:50%;background:'+svc.color+';display:flex;align-items:center;justify-content:center;margin:0 auto;box-shadow:0 0 24px '+svc.glow+'"><svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M5 12h14M12 5l7 7-7 7" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></div></div>',
+                  '<div><div style="text-align:center;margin-bottom:12px"><span style="display:inline-block;background:rgba(255,255,255,0.05);border:1px solid '+svc.lt+';border-radius:20px;padding:4px 14px;font-size:10px;font-weight:700;color:'+svc.lt+';letter-spacing:0.1em">'+svc.afterBadge.toUpperCase()+'</span></div>'+goodSite(svc)+'</div>',
+                '</div>',
+                '<div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:28px">',
+                  '<div style="background:rgba(153,27,27,0.07);border:1px solid rgba(239,68,68,0.15);border-radius:12px;padding:20px"><div style="font-size:11px;font-weight:700;color:#f87171;letter-spacing:0.1em;margin-bottom:10px">PROBLEMS YOU HAVE NOW</div><ul style="list-style:none;padding:0;margin:0">'+buildBullets(svc.beforeItems,'#f87171')+'</ul></div>',
+                  '<div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.12);border-radius:12px;padding:20px"><div style="font-size:11px;font-weight:700;color:'+svc.lt+';letter-spacing:0.1em;margin-bottom:10px">WHAT YOU GET INSTEAD</div><ul style="list-style:none;padding:0;margin:0">'+buildGoodBullets(svc.afterItems,svc.lt)+'</ul></div>',
+                '</div>',
+              '</div>'
+            ].join('');
           }
         }
-      });
-
-      /* ── Replace before/after section ── */
-      if (document.getElementById('vws-ba-injected')) return;
-      var beforeEl = Array.from(document.querySelectorAll('*')).find(function(el){
-        return el.children.length === 0 && el.textContent.trim() === 'BEFORE';
-      });
-      if (!beforeEl) return;
-
-      /* Walk up to container holding both BEFORE and AFTER */
-      var container = beforeEl;
-      for (var i = 0; i < 8; i++) {
-        container = container.parentElement;
-        if (!container) break;
-        if (container.textContent.includes('AFTER') && container.textContent.includes('BEFORE')) break;
       }
-      if (!container) return;
-      container.id = 'vws-ba-injected';
 
-      container.innerHTML = [
-        '<div style="padding:0 0 48px">',
-          /* Header */
-          '<div style="text-align:center;margin-bottom:32px">',
-            '<div style="font-size:10px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:'+svc.lt+';margin-bottom:10px">The Difference Is Visual</div>',
-            '<div style="font-size:26px;font-weight:900;color:#fff;line-height:1.2">What Your Site Looks Like<br>Before and After Visionary</div>',
+      /* ── Deep-dive section — ALWAYS inject, regardless of BEFORE/AFTER presence ── */
+      if (!document.getElementById('vws-deepdive')) {
+        var deepdive = document.createElement('section');
+        deepdive.id = 'vws-deepdive';
+        deepdive.style.cssText = 'background:#060916;padding:0 0 80px;font-family:Barlow,system-ui,sans-serif';
+        deepdive.innerHTML = [
+          '<div style="max-width:900px;margin:0 auto 60px;display:grid;grid-template-columns:repeat(3,1fr);background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);border-radius:16px;overflow:hidden">',
+            buildStats(svc),
           '</div>',
-          /* Two mockups side by side */
-          '<div style="display:grid;grid-template-columns:1fr 48px 1fr;gap:0;align-items:center">',
-            /* Bad site */
+          '<div style="max-width:900px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start">',
             '<div>',
-              '<div style="text-align:center;margin-bottom:12px">',
-                '<span style="display:inline-block;background:rgba(153,27,27,0.2);border:1px solid rgba(239,68,68,0.4);border-radius:20px;padding:4px 14px;font-size:10px;font-weight:700;color:#f87171;letter-spacing:0.1em">'+svc.beforeBadge.toUpperCase()+'</span>',
-              '</div>',
-              badSite(svc),
+              '<div style="font-size:10px;font-weight:700;color:'+svc.lt+';letter-spacing:0.2em;text-transform:uppercase;margin-bottom:12px">Why It Matters</div>',
+              '<div style="font-size:22px;font-weight:900;color:#fff;line-height:1.3;margin-bottom:16px">The Standard Is Higher Than You Think</div>',
+              '<div style="font-size:14px;color:rgba(225,224,204,0.6);line-height:1.7">'+svc.pitch+'</div>',
+              '<div style="margin-top:24px"><a href="/contact" style="display:inline-block;background:'+svc.color+';color:#fff;font-size:12px;font-weight:800;letter-spacing:0.1em;padding:13px 28px;border-radius:8px;text-decoration:none;text-transform:uppercase;box-shadow:0 8px 30px '+svc.glow+'">Start Your Project →</a></div>',
             '</div>',
-            /* Arrow */
-            '<div style="text-align:center">',
-              '<div style="width:40px;height:40px;border-radius:50%;background:'+svc.color+';display:flex;align-items:center;justify-content:center;margin:0 auto;box-shadow:0 0 24px '+svc.glow+'">',
-                '<svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M5 12h14M12 5l7 7-7 7" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>',
-              '</div>',
-            '</div>',
-            /* Good site */
             '<div>',
-              '<div style="text-align:center;margin-bottom:12px">',
-                '<span style="display:inline-block;background:rgba('+svc.color.replace('#','')+',0.15);border:1px solid '+svc.lt+';border-radius:20px;padding:4px 14px;font-size:10px;font-weight:700;color:'+svc.lt+';letter-spacing:0.1em">'+svc.afterBadge.toUpperCase()+'</span>',
-              '</div>',
-              goodSite(svc),
+              '<div style="font-size:10px;font-weight:700;color:'+svc.lt+';letter-spacing:0.2em;text-transform:uppercase;margin-bottom:16px">Everything Included</div>',
+              '<ul style="list-style:none;padding:0;margin:0">'+buildGets(svc)+'</ul>',
             '</div>',
           '</div>',
-          /* Bullet breakdown */
-          '<div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:28px">',
-            '<div style="background:rgba(153,27,27,0.07);border:1px solid rgba(239,68,68,0.15);border-radius:12px;padding:20px">',
-              '<div style="font-size:11px;font-weight:700;color:#f87171;letter-spacing:0.1em;margin-bottom:10px">PROBLEMS YOU HAVE NOW</div>',
-              '<ul style="list-style:none;padding:0;margin:0">'+buildBullets(svc.beforeItems,'#f87171')+'</ul>',
-            '</div>',
-            '<div style="background:rgba('+svc.color.slice(1)+',0.07);border:1px solid rgba('+svc.color.slice(1)+',0.25);border-radius:12px;padding:20px">',
-              '<div style="font-size:11px;font-weight:700;color:'+svc.lt+';letter-spacing:0.1em;margin-bottom:10px">WHAT YOU GET INSTEAD</div>',
-              '<ul style="list-style:none;padding:0;margin:0">'+buildGoodBullets(svc.afterItems,svc.lt)+'</ul>',
-            '</div>',
-          '</div>',
-        '</div>'
-      ].join('');
+        ].join('');
 
-      /* ── Inject stats bar + deep dive after React main content ── */
-      if (document.getElementById('vws-deepdive')) return;
-      var deepdive = document.createElement('section');
-      deepdive.id = 'vws-deepdive';
-      deepdive.style.cssText = 'background:#060916;padding:0 0 80px;font-family:Barlow,system-ui,sans-serif';
-      deepdive.innerHTML = [
-        /* Stats bar */
-        '<div style="max-width:900px;margin:0 auto 60px;display:grid;grid-template-columns:repeat(3,1fr);background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);border-radius:16px;overflow:hidden">',
-          buildStats(svc),
-        '</div>',
-        /* Pitch + what you get */
-        '<div style="max-width:900px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start">',
-          '<div>',
-            '<div style="font-size:10px;font-weight:700;color:'+svc.lt+';letter-spacing:0.2em;text-transform:uppercase;margin-bottom:12px">Why It Matters</div>',
-            '<div style="font-size:22px;font-weight:900;color:#fff;line-height:1.3;margin-bottom:16px">The Standard Is Higher Than You Think</div>',
-            '<div style="font-size:14px;color:rgba(225,224,204,0.6);line-height:1.7">'+svc.pitch+'</div>',
-            '<div style="margin-top:24px"><a href="/contact" style="display:inline-block;background:'+svc.color+';color:#fff;font-size:12px;font-weight:800;letter-spacing:0.1em;padding:13px 28px;border-radius:8px;text-decoration:none;text-transform:uppercase;box-shadow:0 8px 30px '+svc.glow+'">Start Your Project →</a></div>',
-          '</div>',
-          '<div>',
-            '<div style="font-size:10px;font-weight:700;color:'+svc.lt+';letter-spacing:0.2em;text-transform:uppercase;margin-bottom:16px">Everything Included</div>',
-            '<ul style="list-style:none;padding:0;margin:0">'+buildGets(svc)+'</ul>',
-          '</div>',
-        '</div>',
-      ].join('');
-
-      /* Insert after root or append to body */
-      var root = document.getElementById('root');
-      if (root && root.parentElement) {
-        root.parentElement.insertBefore(deepdive, root.nextSibling);
-      } else {
-        document.body.appendChild(deepdive);
+        var root = document.getElementById('root');
+        if (root && root.parentElement) {
+          root.parentElement.insertBefore(deepdive, root.nextSibling);
+        } else {
+          document.body.appendChild(deepdive);
+        }
       }
     }
 
@@ -1148,7 +1362,8 @@
         if (document.querySelectorAll('section').length > 0 || svcAttempts > 100) {
           clearInterval(svcPoll);
           enhance();
-          setTimeout(enhance, 1000);
+          setTimeout(enhance, 800);
+          setTimeout(enhance, 2200);
         }
       }, 150);
     } /* end runServiceDetail */
