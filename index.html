@@ -707,6 +707,12 @@
   </script>
   <!-- ── SERVICE PAGE ENHANCER ──────────────────────────────── -->
   <script>
+  /* Apply background hue-rotate immediately on initial page load (no flash/transition) */
+  (function(){
+    var HUE={'hosting-domain':'-60deg','hosting':'-60deg','website-maintenance':'-165deg','website-creation':'102deg','website-redesign':'120deg','logo-branding':'131deg'};
+    var sl=(location.pathname.match(/\/services\/([^\/]+)/)||[])[1];
+    if(sl&&HUE[sl]){var se=document.createElement('style');se.id='vws-early-hue';se.textContent='[class~="-z-10"]{filter:hue-rotate('+HUE[sl]+') saturate(1.4)!important}';document.head.appendChild(se);}
+  })();
   (function(){
     /* ── Intercept React Router so enhancer re-runs on every SPA navigation ── */
     function patchHistory(method) {
@@ -744,7 +750,7 @@
     function runAll() {
       var slug = getSlug();
       /* Clean up previous injections so switching service pages doesn't stack */
-      ['vws-ba-injected','vws-deepdive','vws-svc-theme','vws-svc-listing','vws-ill-wrap'].forEach(function(id){
+      ['vws-ba-injected','vws-deepdive','vws-svc-theme','vws-svc-listing','vws-listing-colors','vws-early-hue','vws-ill-wrap'].forEach(function(id){
         var el = document.getElementById(id);
         if (el) el.remove ? el.remove() : el.parentNode.removeChild(el);
       });
@@ -791,15 +797,20 @@
         if (learnBtns.length >= 1 || listingPoll > 60) {
           clearInterval(listingTimer);
 
-          /* Color each LEARN MORE button by its service order */
+          /* Set hrefs, then override colors via CSS !important (beats React inline styles) */
           learnBtns.forEach(function(btn, i){
             var cfg = ORDER[i];
             if (!cfg) return;
-            btn.style.background = cfg.color;
-            btn.style.boxShadow = '0 4px 20px ' + cfg.color + '55';
-            btn.style.color = '#fff';
             btn.href = '/services/' + cfg.slug;
           });
+          if (!document.getElementById('vws-listing-colors')) {
+            var lStyle = document.createElement('style');
+            lStyle.id = 'vws-listing-colors';
+            lStyle.textContent = ORDER.map(function(cfg){
+              return 'a[href="/services/'+cfg.slug+'"]{background:'+cfg.color+'!important;background-color:'+cfg.color+'!important;color:#fff!important;box-shadow:0 4px 20px '+cfg.color+'55!important}';
+            }).join('');
+            document.head.appendChild(lStyle);
+          }
 
           /* Color each "SERVICE 0X" label */
           var labels = Array.from(document.querySelectorAll('*')).filter(function(el){
@@ -862,7 +873,7 @@
         afterItems:['Unique to your brand — built from your goals','Sub-2s load time on mobile, every time','Form sends directly to your phone & email','Zero plugins — pure code that never breaks','One-time fee. You own it outright.']
       },
       'hosting-domain': {
-        color:'#059669', lt:'#34d399', glow:'rgba(5,150,105,0.35)', hue:'-100deg',
+        color:'#059669', lt:'#34d399', glow:'rgba(5,150,105,0.35)', hue:'-60deg',
         stats:[{v:'99.9%',l:'Uptime SLA'},{v:'<1s',l:'Response Time'},{v:'Free',l:'SSL Included'}],
         gets:['Domain registration, DNS config & setup — done for you','Free SSL certificate (https) on every property','Global CDN: fast load from Miami to LA to London','24/7 uptime monitoring — we alert before your client notices','Email forwarding tied to your domain (hello@yourbiz.com)','Annual domain renewal reminders & management'],
         pitch:"Your hosting is the foundation everything else sits on. Slow hosting = slow site = lower rankings. We put every client on enterprise-grade infrastructure — the same kind Fortune 500 companies use — at a fraction of the cost.",
@@ -872,7 +883,7 @@
         afterItems:['We handle every technical detail, start to finish','Security updates applied automatically — always patched','Uptime monitored around the clock, issues fixed fast','One flat price, nothing hidden','We\'re your on-call team if anything ever goes wrong']
       },
       'website-maintenance': {
-        color:'#d97706', lt:'#fbbf24', glow:'rgba(217,119,6,0.35)', hue:'170deg',
+        color:'#d97706', lt:'#fbbf24', glow:'rgba(217,119,6,0.35)', hue:'-165deg',
         stats:[{v:'Same',l:'Day Updates'},{v:'Unlim.',l:'Changes/Mo'},{v:'$100',l:'Per Month'}],
         gets:['Unlimited content updates turned around same business day','Monthly SEO & performance audit with written report','Security scans and patches applied automatically','All dependencies kept current — never an outdated plugin','Priority support line — skip the queue','Annual design refresh consultation included'],
         pitch:"A website that sits untouched for 6 months is a liability. Search engines deprioritize stale content, security holes compound, and outdated design loses trust instantly. Our maintenance plan keeps your site working as hard as you do — every single day.",
@@ -882,7 +893,7 @@
         afterItems:['Every page always reflects your current offers and pricing','Site locked down — scanned and patched continuously','Speed benchmarked and optimized monthly','Updates done the same day you message us','Monthly report: traffic, rankings, and next actions']
       },
       'website-creation': {
-        color:'#7c3aed', lt:'#a78bfa', glow:'rgba(124,58,237,0.35)', hue:'40deg',
+        color:'#7c3aed', lt:'#a78bfa', glow:'rgba(124,58,237,0.35)', hue:'102deg',
         stats:[{v:'Day 2',l:'First Draft'},{v:'5–10',l:'Pages Included'},{v:'100%',l:'You Own It'}],
         gets:['Discovery call to map your goals, audience, and competitive landscape','Custom sitemap & information architecture planned before a pixel is designed','Professional copywriting guidance or full copy written for you','Mobile-first responsive build across all breakpoints','Google Search Console + Analytics setup and verified','Launch day: live, indexed, and submitted to Google in one session'],
         pitch:"Starting from zero means we can do everything right — no bad architecture to work around, no old content to migrate, no SEO equity at risk. We plan it, design it, build it, and launch it as a complete unit optimized for one goal: getting you more customers.",
@@ -892,7 +903,7 @@
         afterItems:['Showing up in Google searches in your target city','Customers can find, research, and contact you 24/7','Professional presence that builds trust on first visit','Google Maps integration: show up when it counts most','New inbound leads working while you\'re on the job']
       },
       'website-redesign': {
-        color:'#dc2626', lt:'#f87171', glow:'rgba(220,38,38,0.4)', hue:'130deg',
+        color:'#dc2626', lt:'#f87171', glow:'rgba(220,38,38,0.4)', hue:'120deg',
         stats:[{v:'7 Days',l:'Full Relaunch'},{v:'Zero',l:'Downtime'},{v:'Same',l:'URL Preserved'}],
         gets:['Full site audit: speed, SEO, UX, and conversion analysis before we touch anything','Every piece of existing content migrated — nothing gets lost','All SEO equity preserved: same URLs, proper 301 redirects where needed','Completely new visual design built around your current brand or an upgraded one','3–5x faster load time — guaranteed or we fix it','30 days unlimited revisions after relaunch'],
         pitch:"A bad website is actively costing you money. Visitors land, see something slow or outdated, and leave to your competitor in under 3 seconds. We rebuild from the ground up — same URL, zero downtime — and turn your site into the sales tool it was always supposed to be.",
@@ -902,7 +913,7 @@
         afterItems:['Under 2 seconds on mobile — consistently','Modern, credibility-first design that commands authority','Flawless mobile-first experience across all devices','SEO improved: better structure, faster speeds, fresh signals','Clear CTA above the fold → more calls and form fills']
       },
       'logo-branding': {
-        color:'#b45309', lt:'#fcd34d', glow:'rgba(180,83,9,0.35)', hue:'175deg',
+        color:'#b45309', lt:'#fcd34d', glow:'rgba(180,83,9,0.35)', hue:'131deg',
         stats:[{v:'3',l:'Concepts Delivered'},{v:'SVG',l:'Scalable Format'},{v:'100%',l:'Full Ownership'}],
         gets:['3 distinct logo concepts — you pick the direction and we refine it to perfect','Full brand guidelines PDF: colors, fonts, spacing, do\'s and don\'ts','SVG + PNG + PDF files in every variant (light, dark, icon-only, full lockup)','Color palette with hex, RGB, and CMYK codes for print and digital','Favicon and browser tab icon optimized at all sizes','Social media kit: profile images and banner templates for all major platforms'],
         pitch:"Your logo is the first thing every client sees. A professional mark communicates competency, trust, and price point before a word is read. A generic or DIY brand actively undermines the quality of the work you actually do — and losing a client to a competitor with a better-looking brand is a painful and preventable loss.",
@@ -930,6 +941,8 @@
       '[data-vws-page="'+SLUG_KEY+'"] main [class*="bg-blue"]{background:'+svc.color+'!important;box-shadow:0 4px 20px '+svc.glow+'!important}',
       '[data-vws-page="'+SLUG_KEY+'"] main [class*="border-blue"]{border-color:'+svc.color+'!important}',
       '[data-vws-page="'+SLUG_KEY+'"] main svg[class*="text-blue"],[data-vws-page="'+SLUG_KEY+'"] main svg[class*="stroke-blue"]{color:'+svc.lt+'!important;stroke:'+svc.lt+'!important}',
+      /* Keep header fully opaque so service background color doesn't bleed through */
+      '[data-vws-page="'+SLUG_KEY+'"] header{background:rgba(6,9,22,0.99)!important}',
     ].join('');
     document.head.appendChild(themeStyle);
 
@@ -1281,16 +1294,13 @@
 
     /* ── 5. Main enhance function ── */
     function enhance() {
-      /* Tint the animated background by applying hue-rotate (tracked for cleanup) */
-      if (svc.hue !== '0deg') {
-        Array.from(document.querySelectorAll('*')).some(function(el) {
-          var cs = window.getComputedStyle(el);
-          if ((cs.position === 'fixed' || cs.position === 'absolute') && parseInt(cs.zIndex) < 0) {
-            el.setAttribute('data-vws-colored', '1');
-            el.style.setProperty('filter', 'hue-rotate('+svc.hue+') saturate(1.4)', 'important');
-            return true;
-          }
-        });
+      /* Tint background via CSS — targets the React bundle's fixed -z-10 background container.
+         CSS !important + class~= selector works even after React re-renders. */
+      if (svc.hue !== '0deg' && !document.getElementById('vws-early-hue')) {
+        var bgStyle = document.createElement('style');
+        bgStyle.id = 'vws-early-hue';
+        bgStyle.textContent = '[class~="-z-10"]{filter:hue-rotate('+svc.hue+') saturate(1.4)!important}';
+        document.head.appendChild(bgStyle);
       }
 
       /* SERVICE 0X label — targeted, tracked for cleanup */
