@@ -705,5 +705,324 @@
   }, 150);
   })();
   </script>
+  <!-- ── SERVICE PAGE ENHANCER ──────────────────────────────── -->
+  <script>
+  (function(){
+    var SLUG = (window.location.pathname.match(/\/services\/([^\/]+)/) || [])[1];
+    if (!SLUG) return;
+
+    var C = {
+      'website-development': {
+        color:'#1d4ed8', lt:'#60a5fa', glow:'rgba(29,78,216,0.35)',
+        stats:[{v:'48hr',l:'First Draft'},{v:'3–5x',l:'Faster Than WP'},{v:'0',l:'Templates Used'}],
+        gets:['Custom design built around YOUR brand — not a shared template','Mobile-first from the very first line of code','Full SEO setup: schema markup, meta tags, Google Maps embed','Contact form wired directly to your inbox','Fast cloud hosting included — zero config on your end','30 days unlimited revisions after launch'],
+        pitch:'Every site we build is hand-coded from scratch — no WordPress, no page builders, no template libraries. That means your site loads faster, ranks higher, and looks like nothing else in your market.',
+        beforeBadge:'Template Site',beforeColor:'#991b1b',
+        beforeItems:['Same template used by thousands of competitors','3–8 second load times killing your SEO','Contact form goes to a generic inbox','Plugins conflict, break, and need constant updates','$30–150/month in platform fees — forever'],
+        afterBadge:'Visionary Custom Build',afterColor:'#1d4ed8',
+        afterItems:['Unique to your brand — built from your goals','Sub-2s load time on mobile, every time','Form sends directly to your phone & email','Zero plugins — pure code that never breaks','One-time fee. You own it outright.']
+      },
+      'hosting-domain': {
+        color:'#059669', lt:'#34d399', glow:'rgba(5,150,105,0.35)',
+        stats:[{v:'99.9%',l:'Uptime SLA'},{v:'<1s',l:'Response Time'},{v:'Free',l:'SSL Included'}],
+        gets:['Domain registration, DNS config & setup — done for you','Free SSL certificate (https) on every property','Global CDN: fast load from Miami to LA to London','24/7 uptime monitoring — we alert before your client notices','Email forwarding tied to your domain (hello@yourbiz.com)','Annual domain renewal reminders & management'],
+        pitch:"Your hosting is the foundation everything else sits on. Slow hosting = slow site = lower rankings. We put every client on enterprise-grade infrastructure — the same kind Fortune 500 companies use — at a fraction of the cost.",
+        beforeBadge:'Self-Managed Hosting',beforeColor:'#991b1b',
+        beforeItems:['Hours lost configuring servers and cPanel','Security patches you have to remember yourself','Downtime you only find out about from a client','Confusing invoices with hidden fees','No one to call when something breaks at 11pm'],
+        afterBadge:'Fully Managed by Us',afterColor:'#059669',
+        afterItems:['We handle every technical detail, start to finish','Security updates applied automatically — always patched','Uptime monitored around the clock, issues fixed fast','One flat price, nothing hidden','We\'re your on-call team if anything ever goes wrong']
+      },
+      'website-maintenance': {
+        color:'#d97706', lt:'#fbbf24', glow:'rgba(217,119,6,0.35)',
+        stats:[{v:'Same',l:'Day Updates'},{v:'Unlim.',l:'Changes/Mo'},{v:'$100',l:'Per Month'}],
+        gets:['Unlimited content updates turned around same business day','Monthly SEO & performance audit with written report','Security scans and patches applied automatically','All dependencies kept current — never an outdated plugin','Priority support line — skip the queue','Annual design refresh consultation included'],
+        pitch:"A website that sits untouched for 6 months is a liability. Search engines deprioritize stale content, security holes compound, and outdated design loses trust instantly. Our maintenance plan keeps your site working as hard as you do — every single day.",
+        beforeBadge:'No Maintenance Plan',beforeColor:'#991b1b',
+        beforeItems:['Outdated pricing and info drives clients away','Security vulnerabilities accumulate unnoticed','Site slows down as browsers and standards advance','Changes take weeks because nobody owns it','You have zero visibility into traffic or rankings'],
+        afterBadge:'Actively Maintained',afterColor:'#d97706',
+        afterItems:['Every page always reflects your current offers and pricing','Site locked down — scanned and patched continuously','Speed benchmarked and optimized monthly','Updates done the same day you message us','Monthly report: traffic, rankings, and next actions']
+      },
+      'website-creation': {
+        color:'#7c3aed', lt:'#a78bfa', glow:'rgba(124,58,237,0.35)',
+        stats:[{v:'Day 2',l:'First Draft'},{v:'5–10',l:'Pages Included'},{v:'100%',l:'You Own It'}],
+        gets:['Discovery call to map your goals, audience, and competitive landscape','Custom sitemap & information architecture planned before a pixel is designed','Professional copywriting guidance or full copy written for you','Mobile-first responsive build across all breakpoints','Google Search Console + Analytics setup and verified','Launch day: live, indexed, and submitted to Google in one session'],
+        pitch:"Starting from zero means we can do everything right — no bad architecture to work around, no old content to migrate, no SEO equity at risk. We plan it, design it, build it, and launch it as a complete unit optimized for one goal: getting you more customers.",
+        beforeBadge:'No Online Presence',beforeColor:'#991b1b',
+        beforeItems:['Competitors are taking clients that could be yours','No way for customers to find you after hours','Looks unestablished — word of mouth has a ceiling','Invisible to Google Maps & local search results','Every new customer is a referral you had to earn manually'],
+        afterBadge:'Fully Live Custom Site',afterColor:'#7c3aed',
+        afterItems:['Showing up in Google searches in your target city','Customers can find, research, and contact you 24/7','Professional presence that builds trust on first visit','Google Maps integration: show up when it counts most','New inbound leads working while you\'re on the job']
+      },
+      'website-redesign': {
+        color:'#dc2626', lt:'#f87171', glow:'rgba(220,38,38,0.4)',
+        stats:[{v:'7 Days',l:'Full Relaunch'},{v:'Zero',l:'Downtime'},{v:'Same',l:'URL Preserved'}],
+        gets:['Full site audit: speed, SEO, UX, and conversion analysis before we touch anything','Every piece of existing content migrated — nothing gets lost','All SEO equity preserved: same URLs, proper 301 redirects where needed','Completely new visual design built around your current brand or an upgraded one','3–5x faster load time — guaranteed or we fix it','30 days unlimited revisions after relaunch'],
+        pitch:"A bad website is actively costing you money. Visitors land, see something slow or outdated, and leave to your competitor in under 3 seconds. We rebuild from the ground up — same URL, zero downtime — and turn your site into the sales tool it was always supposed to be.",
+        beforeBadge:'Current Site (Before)',beforeColor:'#991b1b',
+        beforeItems:['Loads in 4–8 seconds — Google penalizes anything over 2.5s','Outdated design erodes trust with every visit','Mobile experience broken or cramped on smaller screens','SEO stagnant: no new rankings, traffic flat or declining','Contact form generates few or no leads'],
+        afterBadge:'After Redesign',afterColor:'#dc2626',
+        afterItems:['Under 2 seconds on mobile — consistently','Modern, credibility-first design that commands authority','Flawless mobile-first experience across all devices','SEO improved: better structure, faster speeds, fresh signals','Clear CTA above the fold → more calls and form fills']
+      },
+      'logo-branding': {
+        color:'#b45309', lt:'#fcd34d', glow:'rgba(180,83,9,0.35)',
+        stats:[{v:'3',l:'Concepts Delivered'},{v:'SVG',l:'Scalable Format'},{v:'100%',l:'Full Ownership'}],
+        gets:['3 distinct logo concepts — you pick the direction and we refine it to perfect','Full brand guidelines PDF: colors, fonts, spacing, do\'s and don\'ts','SVG + PNG + PDF files in every variant (light, dark, icon-only, full lockup)','Color palette with hex, RGB, and CMYK codes for print and digital','Favicon and browser tab icon optimized at all sizes','Social media kit: profile images and banner templates for all major platforms'],
+        pitch:"Your logo is the first thing every client sees. A professional mark communicates competency, trust, and price point before a word is read. A generic or DIY brand actively undermines the quality of the work you actually do — and losing a client to a competitor with a better-looking brand is a painful and preventable loss.",
+        beforeBadge:'No Brand Identity',beforeColor:'#991b1b',
+        beforeItems:['Generic or inconsistent look across every platform','Different fonts and colors every time — no recognition','Low-resolution files that pixelate on large screens or print','No guidelines means contractors and partners get it wrong','Clients can\'t remember or recommend your brand easily'],
+        afterBadge:'Full Brand Identity',afterColor:'#b45309',
+        afterItems:['A unique mark that is unmistakably and exclusively yours','Consistent, professional across web, print, vehicles, and uniforms','Vector files scale to billboard size without losing a pixel','Brand guidelines keep every use case on-brand — forever','Memorable, distinctive, and built to grow with your business']
+      }
+    };
+
+    var svc = C[SLUG];
+    if (!svc) return;
+
+    /* ── 1. Color theme injection ── */
+    var themeStyle = document.createElement('style');
+    themeStyle.textContent = [
+      /* Override blue buttons/accents with service color */
+      'a[class*="bg-blue"],button[class*="bg-blue"]{background:'+svc.color+'!important}',
+      '[class*="text-blue-4"],[class*="text-blue-5"],[class*="text-blue-6"]{color:'+svc.lt+'!important}',
+      '[class*="border-blue"]{border-color:'+svc.color+'!important}',
+      /* "SERVICE 0X" label color */
+      '.text-blue-400{color:'+svc.lt+'!important}',
+    ].join('');
+    document.head.appendChild(themeStyle);
+
+    /* ── 2. HTML builders ── */
+    function badSite(svc) {
+      return '<div style="border-radius:10px;overflow:hidden;box-shadow:0 12px 40px rgba(0,0,0,0.5);border:1px solid rgba(255,255,255,0.05)">'
+        +'<div style="background:#1e1e1e;padding:7px 10px;display:flex;align-items:center;gap:5px">'
+        +'<span style="width:8px;height:8px;border-radius:50%;background:#ff5f57;display:inline-block"></span>'
+        +'<span style="width:8px;height:8px;border-radius:50%;background:#febc2e;display:inline-block"></span>'
+        +'<span style="width:8px;height:8px;border-radius:50%;background:#28c840;display:inline-block"></span>'
+        +'<div style="flex:1;background:#333;border-radius:3px;height:16px;margin-left:6px;display:flex;align-items:center;padding:0 7px">'
+        +'<span style="font-size:8.5px;color:#888;font-family:monospace">oldsite.wixsite.com/mycompany</span></div></div>'
+        +'<div style="background:#f0ece4">'
+        /* bad nav */
+        +'<div style="background:#8b0000;padding:5px 10px;display:flex;align-items:center;flex-wrap:wrap;gap:5px">'
+        +'<span style="font-size:9px;font-family:\'Times New Roman\',serif;color:#fff;font-weight:bold;margin-right:auto">ACME PRO SERVICES LLC</span>'
+        +'<span style="font-size:7.5px;color:rgba(255,255,255,.7)">HOME</span><span style="font-size:7.5px;color:rgba(255,255,255,.7)">ABOUT</span>'
+        +'<span style="font-size:7.5px;color:rgba(255,255,255,.7)">SERVICES</span><span style="font-size:7.5px;color:rgba(255,255,255,.7)">FAQ</span>'
+        +'<span style="font-size:7.5px;color:rgba(255,255,255,.7)">REVIEWS</span><span style="font-size:7.5px;color:rgba(255,255,255,.7)">GALLERY</span>'
+        +'<span style="font-size:7.5px;color:rgba(255,255,255,.7)">CONTACT US</span></div>'
+        /* bad hero */
+        +'<div style="background:#fff3c4;border-bottom:3px solid #8b0000;padding:8px 10px">'
+        +'<div style="font-size:12px;font-family:\'Times New Roman\',serif;color:#8b0000;font-weight:bold;margin-bottom:3px">WELCOME TO OUR WEBSITE!!</div>'
+        +'<div style="font-size:7.5px;color:#555;line-height:1.5;margin-bottom:6px">We provide the BEST services in the area. We\'ve been in business for over 20 years serving the tri-county region and all surrounding areas. Call us today for a FREE estimate!</div>'
+        +'<div style="display:flex;gap:5px;flex-wrap:wrap">'
+        +'<span style="background:#8b0000;color:#fff;font-size:7.5px;padding:3px 7px;border-radius:2px">CLICK HERE!!</span>'
+        +'<span style="background:#ff9900;color:#fff;font-size:7.5px;padding:3px 7px;border-radius:2px">GET QUOTE</span>'
+        +'<span style="background:#006699;color:#fff;font-size:7.5px;padding:3px 7px;border-radius:2px">LEARN MORE</span>'
+        +'<span style="background:#339900;color:#fff;font-size:7.5px;padding:3px 7px;border-radius:2px">SPECIAL OFFER</span>'
+        +'</div></div>'
+        /* bad content */
+        +'<div style="padding:7px 10px">'
+        +'<div style="font-size:8px;color:#cc0000;font-weight:bold;margin-bottom:3px">📢 LIMITED TIME OFFER — ACT NOW!</div>'
+        +'<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:4px">'
+        +'<div style="background:#e5e5e5;border:1px solid #ccc;padding:5px;border-radius:2px"><div style="width:100%;height:24px;background:#bbb;margin-bottom:3px"></div><div style="font-size:7px;font-weight:bold;color:#333">Our Service</div><div style="font-size:6.5px;color:#666">Click here to learn more about the services we provide for you</div></div>'
+        +'<div style="background:#e5e5e5;border:1px solid #ccc;padding:5px;border-radius:2px"><div style="width:100%;height:24px;background:#bbb;margin-bottom:3px"></div><div style="font-size:7px;font-weight:bold;color:#333">Another Thing</div><div style="font-size:6.5px;color:#666">We also do this too so please contact us for more information ok</div></div>'
+        +'<div style="background:#e5e5e5;border:1px solid #ccc;padding:5px;border-radius:2px"><div style="width:100%;height:24px;background:#bbb;margin-bottom:3px"></div><div style="font-size:7px;font-weight:bold;color:#333">One More Thing</div><div style="font-size:6.5px;color:#666">This is another service please see our services page for full list</div></div>'
+        +'</div></div></div></div>';
+    }
+
+    function goodSite(svc) {
+      return '<div style="border-radius:10px;overflow:hidden;box-shadow:0 12px 40px rgba(0,0,0,0.7);border:1px solid rgba(255,255,255,0.1)">'
+        +'<div style="background:#0d1117;padding:7px 10px;display:flex;align-items:center;gap:5px">'
+        +'<span style="width:8px;height:8px;border-radius:50%;background:#ff5f57;display:inline-block"></span>'
+        +'<span style="width:8px;height:8px;border-radius:50%;background:#febc2e;display:inline-block"></span>'
+        +'<span style="width:8px;height:8px;border-radius:50%;background:#28c840;display:inline-block"></span>'
+        +'<div style="flex:1;background:#1a1f2e;border-radius:3px;height:16px;margin-left:6px;display:flex;align-items:center;padding:0 7px">'
+        +'<span style="font-size:8.5px;color:'+svc.lt+';font-family:monospace">yourbusiness.com</span></div></div>'
+        +'<div style="background:#060916">'
+        /* clean nav */
+        +'<div style="background:rgba(6,9,22,0.97);padding:7px 12px;display:flex;align-items:center;border-bottom:1px solid rgba(255,255,255,0.06)">'
+        +'<div style="display:flex;align-items:center;gap:5px">'
+        +'<div style="width:16px;height:16px;background:linear-gradient(135deg,'+svc.color+','+svc.lt+');border-radius:3px;display:flex;align-items:center;justify-content:center">'
+        +'<span style="font-size:9px;font-weight:900;color:#fff">V</span></div>'
+        +'<span style="font-size:7.5px;font-weight:800;color:#fff;letter-spacing:0.1em">YOUR BRAND</span></div>'
+        +'<div style="margin-left:auto;display:flex;gap:8px;align-items:center">'
+        +'<span style="font-size:7px;color:rgba(255,255,255,0.5)">About</span>'
+        +'<span style="font-size:7px;color:rgba(255,255,255,0.5)">Services</span>'
+        +'<span style="font-size:7px;color:rgba(255,255,255,0.5)">Pricing</span>'
+        +'<div style="background:'+svc.color+';border-radius:4px;padding:3px 8px">'
+        +'<span style="font-size:7px;color:#fff;font-weight:700">Start Now</span></div></div></div>'
+        /* clean hero */
+        +'<div style="padding:12px;position:relative;overflow:hidden">'
+        +'<div style="position:absolute;top:0;right:0;width:60%;height:100%;background:radial-gradient(at 80% 40%,'+svc.glow+',transparent 70%);pointer-events:none"></div>'
+        +'<div style="font-size:7.5px;color:'+svc.lt+';font-weight:700;letter-spacing:0.15em;text-transform:uppercase;margin-bottom:4px">Serving Miami, FL</div>'
+        +'<div style="font-size:15px;font-weight:900;color:#fff;line-height:1.15;margin-bottom:5px">We Fix Roofs.<br><span style="color:'+svc.lt+'">Fast & Right.</span></div>'
+        +'<div style="font-size:7px;color:rgba(255,255,255,0.55);line-height:1.5;margin-bottom:7px;max-width:56%">Licensed, insured. Most jobs same week. Free same-day estimate — no pressure, no hidden fees.</div>'
+        +'<div style="display:flex;gap:6px;align-items:center">'
+        +'<div style="background:'+svc.color+';border-radius:5px;padding:5px 10px"><span style="font-size:8px;font-weight:800;color:#fff">Get Free Estimate →</span></div>'
+        +'<div style="font-size:7px;color:rgba(255,255,255,0.4)">or call <span style="color:'+svc.lt+'">(561) 555-0123</span></div></div></div>'
+        /* social proof */
+        +'<div style="background:rgba(255,255,255,0.02);border-top:1px solid rgba(255,255,255,0.05);padding:6px 12px;display:flex;gap:14px">'
+        +'<div><div style="font-size:11px;font-weight:800;color:#fff">200+</div><div style="font-size:6.5px;color:rgba(255,255,255,0.35)">Jobs Done</div></div>'
+        +'<div><div style="font-size:11px;font-weight:800;color:#4ade80">★★★★★</div><div style="font-size:6.5px;color:rgba(255,255,255,0.35)">Google Rating</div></div>'
+        +'<div><div style="font-size:11px;font-weight:800;color:#fff">24hr</div><div style="font-size:6.5px;color:rgba(255,255,255,0.35)">Response</div></div>'
+        +'</div></div></div>';
+    }
+
+    function buildStats(svc) {
+      return svc.stats.map(function(s){
+        return '<div style="text-align:center;padding:24px 20px;border-right:1px solid rgba(255,255,255,0.06)">'
+          +'<div style="font-size:32px;font-weight:900;color:'+svc.lt+';letter-spacing:-0.02em;line-height:1">'+s.v+'</div>'
+          +'<div style="font-size:11px;color:rgba(255,255,255,0.45);margin-top:5px;letter-spacing:0.05em">'+s.l+'</div>'
+          +'</div>';
+      }).join('');
+    }
+
+    function buildGets(svc) {
+      return svc.gets.map(function(g){
+        return '<li style="display:flex;gap:10px;align-items:flex-start;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.05)">'
+          +'<span style="width:18px;height:18px;border-radius:50%;background:'+svc.color+';flex-shrink:0;display:flex;align-items:center;justify-content:center;margin-top:1px">'
+          +'<svg width="9" height="9" viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></span>'
+          +'<span style="font-size:13px;color:rgba(225,224,204,0.85);line-height:1.5">'+g+'</span>'
+          +'</li>';
+      }).join('');
+    }
+
+    function buildBullets(items, color) {
+      return items.map(function(i){
+        return '<li style="font-size:11.5px;color:rgba(255,255,255,0.65);line-height:1.5;padding:5px 0;border-bottom:1px solid rgba(255,255,255,0.04);display:flex;gap:7px;align-items:flex-start">'
+          +'<span style="color:'+color+';flex-shrink:0;font-size:13px;line-height:1.4">✗</span>'+i+'</li>';
+      }).join('');
+    }
+
+    function buildGoodBullets(items, color) {
+      return items.map(function(i){
+        return '<li style="font-size:11.5px;color:rgba(255,255,255,0.8);line-height:1.5;padding:5px 0;border-bottom:1px solid rgba(255,255,255,0.04);display:flex;gap:7px;align-items:flex-start">'
+          +'<span style="color:'+color+';flex-shrink:0;font-size:13px;line-height:1.4">✓</span>'+i+'</li>';
+      }).join('');
+    }
+
+    /* ── 3. Main enhance function ── */
+    function enhance() {
+      /* Override button/accent colors in React-rendered elements */
+      Array.from(document.querySelectorAll('a, button')).forEach(function(el) {
+        var bg = window.getComputedStyle(el).backgroundColor;
+        if (/37,\s*99,\s*235|29,\s*78,\s*216|30,\s*58,\s*138/.test(bg)) {
+          el.style.background = svc.color;
+          el.style.boxShadow = '0 4px 20px '+svc.glow;
+        }
+      });
+      /* Service label color (SERVICE 05 etc.) */
+      Array.from(document.querySelectorAll('*')).forEach(function(el) {
+        if (el.children.length === 0) {
+          var txt = el.textContent.trim();
+          if (/^SERVICE\s+\d+$/.test(txt)) {
+            el.style.color = svc.lt;
+          }
+        }
+      });
+
+      /* ── Replace before/after section ── */
+      if (document.getElementById('vws-ba-injected')) return;
+      var beforeEl = Array.from(document.querySelectorAll('*')).find(function(el){
+        return el.children.length === 0 && el.textContent.trim() === 'BEFORE';
+      });
+      if (!beforeEl) return;
+
+      /* Walk up to container holding both BEFORE and AFTER */
+      var container = beforeEl;
+      for (var i = 0; i < 8; i++) {
+        container = container.parentElement;
+        if (!container) break;
+        if (container.textContent.includes('AFTER') && container.textContent.includes('BEFORE')) break;
+      }
+      if (!container) return;
+      container.id = 'vws-ba-injected';
+
+      container.innerHTML = [
+        '<div style="padding:0 0 48px">',
+          /* Header */
+          '<div style="text-align:center;margin-bottom:32px">',
+            '<div style="font-size:10px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:'+svc.lt+';margin-bottom:10px">The Difference Is Visual</div>',
+            '<div style="font-size:26px;font-weight:900;color:#fff;line-height:1.2">What Your Site Looks Like<br>Before and After Visionary</div>',
+          '</div>',
+          /* Two mockups side by side */
+          '<div style="display:grid;grid-template-columns:1fr 48px 1fr;gap:0;align-items:center">',
+            /* Bad site */
+            '<div>',
+              '<div style="text-align:center;margin-bottom:12px">',
+                '<span style="display:inline-block;background:rgba(153,27,27,0.2);border:1px solid rgba(239,68,68,0.4);border-radius:20px;padding:4px 14px;font-size:10px;font-weight:700;color:#f87171;letter-spacing:0.1em">'+svc.beforeBadge.toUpperCase()+'</span>',
+              '</div>',
+              badSite(svc),
+            '</div>',
+            /* Arrow */
+            '<div style="text-align:center">',
+              '<div style="width:40px;height:40px;border-radius:50%;background:'+svc.color+';display:flex;align-items:center;justify-content:center;margin:0 auto;box-shadow:0 0 24px '+svc.glow+'">',
+                '<svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M5 12h14M12 5l7 7-7 7" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>',
+              '</div>',
+            '</div>',
+            /* Good site */
+            '<div>',
+              '<div style="text-align:center;margin-bottom:12px">',
+                '<span style="display:inline-block;background:rgba('+svc.color.replace('#','')+',0.15);border:1px solid '+svc.lt+';border-radius:20px;padding:4px 14px;font-size:10px;font-weight:700;color:'+svc.lt+';letter-spacing:0.1em">'+svc.afterBadge.toUpperCase()+'</span>',
+              '</div>',
+              goodSite(svc),
+            '</div>',
+          '</div>',
+          /* Bullet breakdown */
+          '<div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:28px">',
+            '<div style="background:rgba(153,27,27,0.07);border:1px solid rgba(239,68,68,0.15);border-radius:12px;padding:20px">',
+              '<div style="font-size:11px;font-weight:700;color:#f87171;letter-spacing:0.1em;margin-bottom:10px">PROBLEMS YOU HAVE NOW</div>',
+              '<ul style="list-style:none;padding:0;margin:0">'+buildBullets(svc.beforeItems,'#f87171')+'</ul>',
+            '</div>',
+            '<div style="background:rgba('+svc.color.slice(1)+',0.07);border:1px solid rgba('+svc.color.slice(1)+',0.25);border-radius:12px;padding:20px">',
+              '<div style="font-size:11px;font-weight:700;color:'+svc.lt+';letter-spacing:0.1em;margin-bottom:10px">WHAT YOU GET INSTEAD</div>',
+              '<ul style="list-style:none;padding:0;margin:0">'+buildGoodBullets(svc.afterItems,svc.lt)+'</ul>',
+            '</div>',
+          '</div>',
+        '</div>'
+      ].join('');
+
+      /* ── Inject stats bar + deep dive after React main content ── */
+      if (document.getElementById('vws-deepdive')) return;
+      var deepdive = document.createElement('section');
+      deepdive.id = 'vws-deepdive';
+      deepdive.style.cssText = 'background:#060916;padding:0 0 80px;font-family:Barlow,system-ui,sans-serif';
+      deepdive.innerHTML = [
+        /* Stats bar */
+        '<div style="max-width:900px;margin:0 auto 60px;display:grid;grid-template-columns:repeat(3,1fr);background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);border-radius:16px;overflow:hidden">',
+          buildStats(svc),
+        '</div>',
+        /* Pitch + what you get */
+        '<div style="max-width:900px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start">',
+          '<div>',
+            '<div style="font-size:10px;font-weight:700;color:'+svc.lt+';letter-spacing:0.2em;text-transform:uppercase;margin-bottom:12px">Why It Matters</div>',
+            '<div style="font-size:22px;font-weight:900;color:#fff;line-height:1.3;margin-bottom:16px">The Standard Is Higher Than You Think</div>',
+            '<div style="font-size:14px;color:rgba(225,224,204,0.6);line-height:1.7">'+svc.pitch+'</div>',
+            '<div style="margin-top:24px"><a href="/contact" style="display:inline-block;background:'+svc.color+';color:#fff;font-size:12px;font-weight:800;letter-spacing:0.1em;padding:13px 28px;border-radius:8px;text-decoration:none;text-transform:uppercase;box-shadow:0 8px 30px '+svc.glow+'">Start Your Project →</a></div>',
+          '</div>',
+          '<div>',
+            '<div style="font-size:10px;font-weight:700;color:'+svc.lt+';letter-spacing:0.2em;text-transform:uppercase;margin-bottom:16px">Everything Included</div>',
+            '<ul style="list-style:none;padding:0;margin:0">'+buildGets(svc)+'</ul>',
+          '</div>',
+        '</div>',
+      ].join('');
+
+      /* Insert after root or append to body */
+      var root = document.getElementById('root');
+      if (root && root.parentElement) {
+        root.parentElement.insertBefore(deepdive, root.nextSibling);
+      } else {
+        document.body.appendChild(deepdive);
+      }
+    }
+
+    /* ── Poll for React render ── */
+    var svcAttempts = 0;
+    var svcPoll = setInterval(function(){
+      svcAttempts++;
+      if (document.querySelectorAll('section').length > 0 || svcAttempts > 100) {
+        clearInterval(svcPoll);
+        enhance();
+        setTimeout(enhance, 1000);
+      }
+    }, 150);
+  })();
+  </script>
   </body>
 </html>
