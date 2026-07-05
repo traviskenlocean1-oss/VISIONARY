@@ -46,12 +46,12 @@
       wrapper.style.position = 'relative';
 
       var items = [
-        'Website Development',
-        'Hosting & Domain',
-        'Website Maintenance',
-        'Website Creation',
-        'Website Redesign',
-        'Logo & Branding'
+        { label: 'Website Development',  href: '/services/website-development' },
+        { label: 'Hosting & Domain',     href: '/services/hosting-domain' },
+        { label: 'Website Maintenance',  href: '/services/website-maintenance' },
+        { label: 'Website Creation',     href: '/services/website-creation' },
+        { label: 'Website Redesign',     href: '/services/website-redesign' },
+        { label: 'Logo & Branding',      href: '/services/logo-branding' }
       ];
 
       var dd = document.createElement('div');
@@ -75,8 +75,8 @@
 
       items.forEach(function(svc) {
         var a = document.createElement('a');
-        a.href = '/services';
-        a.textContent = svc;
+        a.href = svc.href;
+        a.textContent = svc.label;
         a.style.cssText = [
           'display:block',
           'padding:10px 16px',
@@ -102,9 +102,7 @@
 
       wrapper.appendChild(dd);
 
-      /* prevent navigating on Services click — open dropdown instead */
-      servicesLink.addEventListener('click', function(e) { e.preventDefault(); });
-
+      /* Services link itself navigates to /services — dropdown shows on hover only */
       wrapper.addEventListener('mouseenter', function() {
         dd.style.opacity = '1';
         dd.style.visibility = 'visible';
@@ -117,6 +115,18 @@
         var chevron = servicesLink.querySelector('svg');
         if (chevron) chevron.style.transform = 'rotate(0deg)';
       });
+
+      /* Kill any React-generated dropdown that appears in this wrapper dynamically */
+      var reactDDObserver = new MutationObserver(function(mutations) {
+        mutations.forEach(function(m) {
+          m.addedNodes.forEach(function(node) {
+            if (node.nodeType === 1 && !node.getAttribute('data-vws-dd')) {
+              node.style.cssText += ';display:none!important;visibility:hidden!important';
+            }
+          });
+        });
+      });
+      reactDDObserver.observe(wrapper, { childList: true });
     }
 
     /* Fix the GSAP mouse-track glow: reposition it to hero center so blue glow is visible */
