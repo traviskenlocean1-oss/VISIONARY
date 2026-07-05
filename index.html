@@ -126,10 +126,525 @@
       if (document.querySelectorAll('section').length > 1 || attempts > 60) {
         clearInterval(poll);
         fixSite();
-        /* Re-run once more after a short delay in case GSAP fires late */
         setTimeout(fixSite, 800);
       }
     }, 100);
+  })();
+  </script>
+
+  <!-- ── UPGRADED CHAT WIDGET ───────────────────────────── -->
+  <style>
+  #vws-chat-root *{box-sizing:border-box;font-family:'Barlow',system-ui,sans-serif}
+  @keyframes vws-slidein{from{opacity:0;transform:translateY(18px) scale(.97)}to{opacity:1;transform:translateY(0) scale(1)}}
+  @keyframes vws-dot{0%,80%,100%{transform:scale(0.6);opacity:.4}40%{transform:scale(1);opacity:1}}
+  @keyframes vws-pulse{0%,100%{box-shadow:0 0 0 0 rgba(59,130,246,.45)}70%{box-shadow:0 0 0 10px rgba(59,130,246,0)}}
+  @keyframes vws-badge{from{transform:scale(0)}to{transform:scale(1)}}
+  .vws-dot-1{animation:vws-dot 1.2s infinite .0s}
+  .vws-dot-2{animation:vws-dot 1.2s infinite .2s}
+  .vws-dot-3{animation:vws-dot 1.2s infinite .4s}
+  </style>
+
+  <script>
+  (function(){
+  /* ── 1. Session memory: track dismiss ── */
+  var DISMISSED_KEY = 'vws_chat_dismissed';
+  var OPENED_KEY    = 'vws_chat_opened';
+
+  /* ── 2. Conversation tree ── */
+  var TREE = {
+    start: {
+      bot: "Hey! 👋 Welcome to Visionary Web Studio.\nWe build custom websites that actually get you calls — for any type of local business.\n\nWhat brings you in today?",
+      replies: [
+        {label:'I need a brand new website', next:'new'},
+        {label:'Redesign my existing site',  next:'redesign'},
+        {label:'I want to see pricing',       next:'pricing'},
+        {label:'Just browsing for now',       next:'browse'}
+      ]
+    },
+    new: {
+      bot: "Building from scratch is always the cleanest approach. 💪\n\nWe hand-code everything — no templates, no WordPress — and deliver your first draft in 48 hours.\n\nWhat type of business do you run?",
+      replies: [
+        {label:'Service business (contractor, detailing, etc.)', next:'svc_biz'},
+        {label:'Retail or local shop',   next:'retail'},
+        {label:'Professional services',  next:'pro'},
+        {label:'Something else',         next:'other'}
+      ]
+    },
+    svc_biz: {
+      bot: "Service businesses are our specialty — we've built for detailers, cleaners, contractors, trainers, and more.\n\nMost service businesses go with our Standard package:\n\n💰 <b>$750 one-time</b> — up to 5 pages, full SEO, contact form, Google Maps, mobile-first.\n\nWant me to get Travis to reach out to you?",
+      replies: [
+        {label:"Yes, have Travis reach out", next:'capture'},
+        {label:'Tell me more about pricing',  next:'pricing'},
+        {label:'What does it look like?',     next:'portfolio'}
+      ]
+    },
+    retail: {
+      bot: "Retail and shop sites are great — product showcases, hours, location, trust-building design.\n\nOur Standard package ($750 one-time) covers everything a local shop needs to dominate Google.\n\nWant a quote? I'll get Travis to reach out.",
+      replies: [
+        {label:"Yes, get me a quote", next:'capture'},
+        {label:'Show me pricing',     next:'pricing'}
+      ]
+    },
+    pro: {
+      bot: "Professional services need a trust-first design — clear credentials, strong copy, easy contact.\n\nWe specialize in exactly that. Starting at $750 one-time with full ownership of your site.\n\nWant Travis to reach out with a proposal?",
+      replies: [
+        {label:"Yes, send a proposal", next:'capture'},
+        {label:'See pricing first',    next:'pricing'}
+      ]
+    },
+    other: {
+      bot: "No problem — we work with all types of businesses. Every site is built from scratch for your specific market.\n\nBest way forward is a quick call. Want Travis to reach out?",
+      replies: [
+        {label:"Yes, have Travis call me", next:'capture'},
+        {label:'See pricing first',        next:'pricing'}
+      ]
+    },
+    redesign: {
+      bot: "Got it — we do a lot of redesigns. Most launch in under 7 days.\n\nWhat platform is your current site on?",
+      replies: [
+        {label:'WordPress',            next:'wp'},
+        {label:'Wix / Squarespace',    next:'wp'},
+        {label:'Custom / HTML',        next:'redesign2'},
+        {label:"Not sure",             next:'redesign2'}
+      ]
+    },
+    wp: {
+      bot: "WordPress and Wix sites are usually slow, bloated, and a pain to maintain.\n\nWe strip it all out and hand-code a clean, fast replacement — usually 3–5x faster than your current site.\n\nWant a quote to rebuild it right?",
+      replies: [
+        {label:"Yes, get me a quote", next:'capture'},
+        {label:'What will it cost?',  next:'pricing'}
+      ]
+    },
+    redesign2: {
+      bot: "Perfect — we'll analyze your current site and rebuild what works, improve what doesn't, and make the whole thing faster and cleaner.\n\nStarting at $500, fully owned by you when done.\n\nWant Travis to put together a proposal?",
+      replies: [
+        {label:"Yes, send a proposal", next:'capture'},
+        {label:'See all pricing',      next:'pricing'}
+      ]
+    },
+    pricing: {
+      bot: "Here's the quick breakdown:\n\n💰 <b>Starter — $500</b> · Single page, perfect for getting online fast\n💰 <b>Standard — $750</b> · Up to 5 pages, most popular for service businesses\n💰 <b>Full Build — $1,000</b> · Up to 10 pages, blog, advanced SEO\n🔧 <b>Maintenance — $100/mo</b> · Unlimited updates, same-day turnaround\n\nAll plans are one-time fees. You own the site outright.\n\nAny of these stand out for you?",
+      replies: [
+        {label:'Standard sounds right — $750', next:'capture'},
+        {label:'Tell me about Full Build',      next:'fullbuild'},
+        {label:'What about maintenance?',       next:'maintenance'}
+      ]
+    },
+    fullbuild: {
+      bot: "Full Build at $1,000 gets you:\n\n✅ Up to 10 custom pages\n✅ Custom animations\n✅ Blog or portfolio section\n✅ Advanced SEO + schema markup\n✅ Logo design included\n✅ Unlimited revisions for 30 days\n\nBest value if you want the full treatment.\n\nWant to get started?",
+      replies: [
+        {label:"Yes, I want Full Build", next:'capture'},
+        {label:"Back to pricing",        next:'pricing'}
+      ]
+    },
+    maintenance: {
+      bot: "Maintenance is $100/month and includes:\n\n✅ Unlimited content updates\n✅ Same-day turnaround on changes\n✅ Monthly performance report\n✅ Security + uptime monitoring\n✅ Priority access to Travis\n\nCancel anytime. Most clients add it after launch.\n\nWant to get your site built first?",
+      replies: [
+        {label:"Yes, let's build the site", next:'capture'},
+        {label:'See base pricing',          next:'pricing'}
+      ]
+    },
+    portfolio: {
+      bot: "We've built for auto detailers, fitness trainers, professional services, and more.\n\nScroll down to the portfolio section on this page to see some of our work. 👇\n\nReady to get a quote?",
+      replies: [
+        {label:"Yes, get me a quote", next:'capture'},
+        {label:'See pricing first',   next:'pricing'}
+      ]
+    },
+    browse: {
+      bot: "No worries at all! Take a look around. 😊\n\nIf you have any questions while you're browsing — pricing, timelines, what we can build — just ask. I'm right here.",
+      replies: [
+        {label:'What does it cost?',          next:'pricing'},
+        {label:'How fast is the turnaround?', next:'timeline'},
+        {label:'Can I see some examples?',    next:'portfolio'}
+      ]
+    },
+    timeline: {
+      bot: "Most projects go like this:\n\n⚡ <b>48 hours</b> — first draft ready for review\n✏️ <b>Day 3–4</b> — revisions based on your feedback\n🚀 <b>Day 5–7</b> — live and indexed on Google\n\nSome simple sites go live in 48 hours flat.\n\nReady to get started?",
+      replies: [
+        {label:"Let's do it", next:'capture'},
+        {label:'See pricing', next:'pricing'}
+      ]
+    },
+    capture: {
+      bot: "Great! What's your name and the best number to reach you?\n\n(Travis personally follows up within a few hours — usually same day.)",
+      replies: [],
+      input: true,
+      inputFields: ['name','phone']
+    },
+    done: {
+      bot: "Got it, {name}! 🎉\n\nTravis will reach out to {phone} shortly — usually within a few hours.\n\nYou can also call or text directly:\n📞 <a href=\"tel:+15618890507\" style=\"color:#60a5fa\">(561) 889-0507</a>",
+      replies: [],
+      final: true
+    }
+  };
+
+  /* ── 3. Build the widget DOM ── */
+  function buildChat() {
+    if (document.getElementById('vws-chat-root')) return;
+
+    /* Hide original React chat widget */
+    var reactChat = Array.from(document.querySelectorAll('*')).find(function(el) {
+      var s = window.getComputedStyle(el);
+      return s.position === 'fixed' && s.bottom === '24px' && s.right === '24px' && s.zIndex === '8990';
+    });
+    if (reactChat) reactChat.style.display = 'none';
+    /* Also hide the React chat launcher button if separate */
+    var reactBtn = Array.from(document.querySelectorAll('*')).find(function(el){
+      var s = window.getComputedStyle(el);
+      return s.position==='fixed' && parseInt(s.bottom)<80 && parseInt(s.right)<80 && s.zIndex==='8990' && el!==reactChat;
+    });
+    if(reactBtn) reactBtn.style.display='none';
+
+    /* Root container */
+    var root = document.createElement('div');
+    root.id = 'vws-chat-root';
+    root.style.cssText = 'position:fixed;bottom:24px;right:24px;z-index:10000;display:flex;flex-direction:column;align-items:flex-end;gap:10px';
+    document.body.appendChild(root);
+
+    /* ── Chat window ── */
+    var win = document.createElement('div');
+    win.id = 'vws-chat-win';
+    win.style.cssText = [
+      'width:360px',
+      'max-width:calc(100vw - 32px)',
+      'border-radius:14px',
+      'overflow:hidden',
+      'box-shadow:rgba(0,0,0,0.65) 0px 24px 80px,rgba(255,255,255,0.08) 0px 0px 0px 1px',
+      'display:flex',
+      'flex-direction:column',
+      'background:#060916',
+      'animation:vws-slidein 0.28s cubic-bezier(.22,.68,0,1.2) both',
+      'display:none'
+    ].join(';');
+
+    /* Header */
+    win.innerHTML = [
+      '<div id="vws-ch" style="background:linear-gradient(135deg,#1e3a8a 0%,#1d4ed8 100%);padding:12px 14px 0;flex-shrink:0;position:relative;overflow:hidden">',
+        '<div style="display:flex;align-items:flex-start;justify-content:space-between">',
+          '<div>',
+            '<p style="font-size:13px;font-weight:700;color:#fff;line-height:1.2">Visionary Web Studio</p>',
+            '<p id="vws-status" style="font-size:10px;color:rgba(255,255,255,.6);margin-top:2px;display:flex;align-items:center;gap:5px">',
+              '<span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:#4ade80"></span>',
+              'Live Chat · Online now',
+            '</p>',
+          '</div>',
+          '<div style="display:flex;gap:4px;flex-shrink:0">',
+            '<button id="vws-min" title="Minimize" style="background:rgba(255,255,255,.12);border:none;border-radius:4px;width:28px;height:28px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#fff;font-size:16px;line-height:1">−</button>',
+            '<button id="vws-cls" title="Close" style="background:rgba(255,255,255,.12);border:none;border-radius:4px;width:28px;height:28px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#fff;font-size:16px;line-height:1">×</button>',
+          '</div>',
+        '</div>',
+        /* Avatar SVG */
+        '<div style="display:flex;justify-content:center;margin-top:-4px">',
+          '<svg viewBox="0 0 80 90" fill="none" xmlns="http://www.w3.org/2000/svg" width="72" height="72" style="flex-shrink:0">',
+            '<ellipse cx="40" cy="72" rx="30" ry="20" fill="#1e40af" opacity="0.6"/>',
+            '<path d="M24 62 Q26 72 40 74 Q54 72 56 62 Q52 56 40 55 Q28 56 24 62Z" fill="#dc2626"/>',
+            '<path d="M36 55 L40 61 L44 55" fill="#fff" opacity="0.9"/>',
+            '<rect x="36" y="48" width="8" height="9" rx="3" fill="#f5c5a3"/>',
+            '<ellipse cx="40" cy="36" rx="14" ry="15" fill="#f5c5a3"/>',
+            '<ellipse cx="40" cy="23" rx="12" ry="7" fill="#5c3a1e"/>',
+            '<path d="M26 34 Q27 22 40 21 Q53 22 54 34 Q51 22 40 22 Q29 22 26 34Z" fill="#5c3a1e"/>',
+            '<ellipse cx="34.5" cy="36" rx="2" ry="2.2" fill="#1a0a00"/>',
+            '<ellipse cx="45.5" cy="36" rx="2" ry="2.2" fill="#1a0a00"/>',
+            '<circle cx="35.3" cy="35.1" r="0.7" fill="#fff"/>',
+            '<circle cx="46.3" cy="35.1" r="0.7" fill="#fff"/>',
+            '<path d="M35 43 Q40 47 45 43" stroke="#c97b50" stroke-width="1.3" stroke-linecap="round" fill="none"/>',
+            '<rect x="20" y="68" width="40" height="5" rx="2" fill="#1e293b"/>',
+            '<rect x="22" y="61" width="36" height="8" rx="2" fill="#334155"/>',
+            '<rect x="23" y="62" width="34" height="6" rx="1" fill="#0f172a"/>',
+            '<rect x="25" y="63.5" width="20" height="1.2" rx="0.6" fill="#3b82f6" opacity="0.7"/>',
+            '<rect x="25" y="65.5" width="14" height="1.2" rx="0.6" fill="#3b82f6" opacity="0.4"/>',
+            '<path d="M24 63 Q18 68 22 72" stroke="#f5c5a3" stroke-width="4.5" stroke-linecap="round" fill="none"/>',
+            '<path d="M56 63 Q62 68 58 72" stroke="#f5c5a3" stroke-width="4.5" stroke-linecap="round" fill="none"/>',
+            '<ellipse cx="22" cy="72" rx="3" ry="2" fill="#f5c5a3"/>',
+            '<ellipse cx="58" cy="72" rx="3" ry="2" fill="#f5c5a3"/>',
+            '<path d="M28 73 Q26 80 30 82" stroke="#1e40af" stroke-width="5" stroke-linecap="round" fill="none"/>',
+            '<path d="M52 73 Q54 80 50 82" stroke="#1e40af" stroke-width="5" stroke-linecap="round" fill="none"/>',
+            '<ellipse cx="30" cy="83" rx="5" ry="2.5" fill="#1e293b"/>',
+            '<ellipse cx="50" cy="83" rx="5" ry="2.5" fill="#1e293b"/>',
+          '</svg>',
+        '</div>',
+      '</div>',
+      /* Messages */
+      '<div id="vws-msgs" style="height:300px;overflow-y:auto;background:#060916;padding:14px 0 6px;display:flex;flex-direction:column;gap:10px;scroll-behavior:smooth">',
+        '<p style="text-align:center;font-size:10px;color:rgba(225,224,204,.28);padding:0 16px">Live Chat joined</p>',
+        '<p style="text-align:center;font-size:10px;color:rgba(225,224,204,.28);padding:0 16px">Chat started</p>',
+      '</div>',
+      /* Quick replies */
+      '<div id="vws-qr" style="padding:8px 12px 10px;display:flex;flex-wrap:wrap;gap:6px;background:#060916;border-top:1px solid rgba(255,255,255,.05)"></div>',
+      /* Lead capture form (hidden by default) */
+      '<div id="vws-form" style="display:none;padding:12px 14px;background:#060916;border-top:1px solid rgba(255,255,255,.05)">',
+        '<input id="vws-fname" placeholder="Your name" style="width:100%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:7px;padding:9px 12px;font-size:13px;color:#e1e0cc;outline:none;margin-bottom:8px" />',
+        '<input id="vws-fphone" placeholder="Your phone number" style="width:100%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:7px;padding:9px 12px;font-size:13px;color:#e1e0cc;outline:none;margin-bottom:10px" />',
+        '<button id="vws-fsub" style="width:100%;background:#1d4ed8;border:none;border-radius:7px;padding:10px;font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#fff;cursor:pointer">Send — Travis will call you →</button>',
+      '</div>',
+      /* Text input row */
+      '<div id="vws-input-row" style="display:flex;align-items:center;gap:8px;padding:10px 14px;border-top:1px solid rgba(255,255,255,.05);background:#060916">',
+        '<input id="vws-input" placeholder="Type a message here..." style="flex:1;background:transparent;border:none;font-size:13px;color:rgba(225,224,204,.7);outline:none" />',
+        '<button id="vws-send" style="background:#1d4ed8;border:none;border-radius:7px;width:34px;height:34px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0">',
+          '<svg width="14" height="14" viewBox="0 0 24 24" fill="#fff"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>',
+        '</button>',
+      '</div>',
+      /* Footer */
+      '<div style="padding:7px 14px;border-top:1px solid rgba(255,255,255,.04);background:#040710;text-align:center">',
+        '<a href="tel:+15618890507" style="font-size:11px;color:rgba(225,224,204,.35);text-decoration:none">Visionary Web Studio · (561) 889-0507</a>',
+      '</div>'
+    ].join('');
+
+    root.appendChild(win);
+
+    /* ── Chat button ── */
+    var btn = document.createElement('button');
+    btn.id = 'vws-chat-btn';
+    btn.title = 'Chat with us';
+    btn.style.cssText = [
+      'width:58px','height:58px','border-radius:50%',
+      'background:linear-gradient(135deg,#1e40af,#2563eb)',
+      'border:none','cursor:pointer',
+      'display:flex','align-items:center','justify-content:center',
+      'box-shadow:0 4px 24px rgba(37,99,235,.5)',
+      'transition:transform .18s,box-shadow .18s',
+      'position:relative',
+      'animation:vws-pulse 3s 4s ease-in-out 3'
+    ].join(';');
+    btn.innerHTML = [
+      '<svg width="26" height="26" viewBox="0 0 24 24" fill="#fff">',
+        '<path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H5.17L4 17.17V4h16v12z"/>',
+      '</svg>',
+      '<span id="vws-badge" style="position:absolute;top:-2px;right:-2px;background:#ef4444;color:#fff;font-size:10px;font-weight:700;width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;border:2px solid #040710;animation:vws-badge .25s cubic-bezier(.22,.68,0,1.4) both;display:none">1</span>'
+    ].join('');
+    btn.addEventListener('mouseenter', function(){ btn.style.transform='scale(1.08)'; btn.style.boxShadow='0 6px 30px rgba(37,99,235,.7)'; });
+    btn.addEventListener('mouseleave', function(){ btn.style.transform=''; btn.style.boxShadow='0 4px 24px rgba(37,99,235,.5)'; });
+    root.appendChild(btn);
+
+    /* ── State ── */
+    var isOpen = false;
+    var unread = 0;
+    var userData = {};
+    var currentNode = 'start';
+    var chatStarted = false;
+
+    function openChat() {
+      isOpen = true;
+      win.style.display = 'flex';
+      win.style.animation = 'vws-slidein 0.28s cubic-bezier(.22,.68,0,1.2) both';
+      hideBadge();
+      if (!chatStarted) { chatStarted = true; setTimeout(function(){ botSay(currentNode); }, 350); }
+    }
+    function closeChat() {
+      isOpen = false;
+      win.style.display = 'none';
+      sessionStorage.setItem(DISMISSED_KEY, '1');
+    }
+
+    btn.addEventListener('click', function(){ isOpen ? closeChat() : openChat(); });
+    document.getElementById('vws-min').addEventListener('click', closeChat);
+    document.getElementById('vws-cls').addEventListener('click', closeChat);
+
+    /* ── Badge ── */
+    function showBadge(n) {
+      var b = document.getElementById('vws-badge');
+      b.textContent = n || '1';
+      b.style.display = 'flex';
+      b.style.animation = 'vws-badge .25s cubic-bezier(.22,.68,0,1.4) both';
+    }
+    function hideBadge() { unread = 0; document.getElementById('vws-badge').style.display = 'none'; }
+
+    /* ── Messaging ── */
+    function addMsg(html, isUser, time) {
+      var msgs = document.getElementById('vws-msgs');
+      var wrap = document.createElement('div');
+      wrap.style.cssText = 'padding:0 14px;display:flex;gap:8px;align-items:flex-end' + (isUser ? ';flex-direction:row-reverse' : '');
+
+      var bubble = document.createElement('div');
+      bubble.style.cssText = isUser
+        ? 'background:#1d4ed8;border-radius:14px 14px 2px 14px;padding:10px 13px;font-size:13px;color:#fff;line-height:1.55;max-width:82%'
+        : 'background:#0e1525;border:1px solid rgba(255,255,255,.06);border-radius:14px 14px 14px 2px;padding:10px 13px;font-size:13px;color:rgba(225,224,204,.88);line-height:1.55;max-width:82%';
+      bubble.innerHTML = html.replace(/\n/g, '<br>');
+
+      if (time) {
+        var ts = document.createElement('div');
+        ts.style.cssText = 'font-size:9px;color:rgba(225,224,204,.25);margin-top:4px;text-align:' + (isUser ? 'right' : 'left');
+        ts.textContent = time;
+        var col = document.createElement('div');
+        col.style.cssText = 'display:flex;flex-direction:column;max-width:82%';
+        col.appendChild(bubble);
+        col.appendChild(ts);
+        wrap.appendChild(col);
+      } else {
+        wrap.appendChild(bubble);
+      }
+
+      msgs.appendChild(wrap);
+      setTimeout(function(){ msgs.scrollTop = msgs.scrollHeight; }, 50);
+
+      if (!isUser && !isOpen) { unread++; showBadge(unread); }
+    }
+
+    function showTyping() {
+      var msgs = document.getElementById('vws-msgs');
+      var d = document.createElement('div');
+      d.id = 'vws-typing';
+      d.style.cssText = 'padding:0 14px;display:flex;gap:8px;align-items:center';
+      d.innerHTML = '<div style="width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#1e3a8a,#1d4ed8);flex-shrink:0"></div>' +
+        '<div style="background:#0e1525;border:1px solid rgba(255,255,255,.06);border-radius:14px 14px 14px 2px;padding:10px 14px;display:flex;gap:5px;align-items:center">' +
+        '<span class="vws-dot-1" style="width:7px;height:7px;border-radius:50%;background:rgba(225,224,204,.5);display:inline-block"></span>' +
+        '<span class="vws-dot-2" style="width:7px;height:7px;border-radius:50%;background:rgba(225,224,204,.5);display:inline-block"></span>' +
+        '<span class="vws-dot-3" style="width:7px;height:7px;border-radius:50%;background:rgba(225,224,204,.5);display:inline-block"></span>' +
+        '</div>';
+      msgs.appendChild(d);
+      msgs.scrollTop = msgs.scrollHeight;
+    }
+
+    function hideTyping() {
+      var t = document.getElementById('vws-typing');
+      if (t) t.remove();
+    }
+
+    function now() {
+      var d = new Date();
+      var h = d.getHours(), m = d.getMinutes();
+      var ampm = h >= 12 ? 'PM' : 'AM';
+      h = h % 12 || 12;
+      return h + ':' + (m < 10 ? '0' + m : m) + ' ' + ampm;
+    }
+
+    function setStatus(text) {
+      document.getElementById('vws-status').innerHTML =
+        '<span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:#4ade80;margin-right:5px"></span>' + text;
+    }
+
+    function botSay(nodeKey, replacements) {
+      var node = TREE[nodeKey];
+      if (!node) return;
+      currentNode = nodeKey;
+
+      /* Clear quick replies while typing */
+      document.getElementById('vws-qr').innerHTML = '';
+      document.getElementById('vws-form').style.display = 'none';
+      setStatus('Travis is typing…');
+
+      showTyping();
+      var delay = 900 + Math.min(node.bot.length * 12, 1400);
+
+      setTimeout(function() {
+        hideTyping();
+        setStatus('Live Chat · Online now');
+        var text = node.bot;
+        if (replacements) {
+          Object.keys(replacements).forEach(function(k){
+            text = text.replace(new RegExp('{' + k + '}', 'g'), replacements[k]);
+          });
+        }
+        addMsg(text, false, now());
+
+        if (node.input) {
+          /* Show lead capture form */
+          document.getElementById('vws-form').style.display = 'block';
+          setTimeout(function(){ document.getElementById('vws-fname').focus(); }, 100);
+        } else if (node.final) {
+          /* Done — no further interaction needed */
+        } else {
+          /* Show quick replies */
+          var qr = document.getElementById('vws-qr');
+          (node.replies || []).forEach(function(r) {
+            var b = document.createElement('button');
+            b.textContent = r.label;
+            b.style.cssText = 'background:#0e1525;border:1px solid rgba(255,255,255,.1);border-radius:100px;padding:7px 13px;font-size:11px;font-weight:600;color:rgba(225,224,204,.75);cursor:pointer;transition:background .15s,color .15s,border-color .15s;white-space:nowrap';
+            b.addEventListener('mouseenter', function(){ b.style.background='rgba(29,78,216,.25)'; b.style.borderColor='rgba(29,78,216,.6)'; b.style.color='rgba(225,224,204,1)'; });
+            b.addEventListener('mouseleave', function(){ b.style.background='#0e1525'; b.style.borderColor='rgba(255,255,255,.1)'; b.style.color='rgba(225,224,204,.75)'; });
+            b.addEventListener('click', function() {
+              addMsg(r.label, true, now());
+              document.getElementById('vws-qr').innerHTML = '';
+              setTimeout(function(){ botSay(r.next); }, 300);
+            });
+            qr.appendChild(b);
+          });
+        }
+      }, delay);
+    }
+
+    /* ── Lead form submit ── */
+    document.getElementById('vws-fsub').addEventListener('click', function() {
+      var name  = document.getElementById('vws-fname').value.trim();
+      var phone = document.getElementById('vws-fphone').value.trim();
+      if (!name || !phone) {
+        document.getElementById('vws-fname').style.borderColor = name ? 'rgba(255,255,255,.1)' : '#ef4444';
+        document.getElementById('vws-fphone').style.borderColor = phone ? 'rgba(255,255,255,.1)' : '#ef4444';
+        return;
+      }
+      userData = { name: name, phone: phone };
+      addMsg('Name: ' + name + '\nPhone: ' + phone, true, now());
+      document.getElementById('vws-form').style.display = 'none';
+      setTimeout(function(){ botSay('done', userData); }, 400);
+    });
+
+    /* ── Free-text input ── */
+    var freeResponses = [
+      "Great question! Fill out the quick form above and Travis will answer that personally. 🙌",
+      "I'll make sure Travis sees this. Want to leave your number so he can call you?",
+      "For specific questions like that, it's fastest to call Travis directly: <a href='tel:+15618890507' style='color:#60a5fa'>(561) 889-0507</a>",
+      "Happy to help! Most answers depend on your specific situation — want Travis to reach out?",
+      "That's a good one. Travis can give you a definitive answer — want him to call you?"
+    ];
+    var freeIdx = 0;
+    function sendFreeText() {
+      var inp = document.getElementById('vws-input');
+      var text = inp.value.trim();
+      if (!text) return;
+      addMsg(text, true, now());
+      inp.value = '';
+      document.getElementById('vws-qr').innerHTML = '';
+      setTimeout(function(){
+        showTyping();
+        setTimeout(function(){
+          hideTyping();
+          addMsg(freeResponses[freeIdx % freeResponses.length], false, now());
+          freeIdx++;
+          var qr = document.getElementById('vws-qr');
+          ['Yes, have him reach out','See pricing','Just browsing'].forEach(function(label, i){
+            var b = document.createElement('button');
+            b.textContent = label;
+            b.style.cssText = 'background:#0e1525;border:1px solid rgba(255,255,255,.1);border-radius:100px;padding:7px 13px;font-size:11px;font-weight:600;color:rgba(225,224,204,.75);cursor:pointer';
+            b.addEventListener('click', function(){
+              addMsg(label, true, now());
+              qr.innerHTML='';
+              botSay(i===0?'capture':i===1?'pricing':'browse');
+            });
+            qr.appendChild(b);
+          });
+        }, 1000);
+      }, 200);
+    }
+    document.getElementById('vws-send').addEventListener('click', sendFreeText);
+    document.getElementById('vws-input').addEventListener('keydown', function(e){ if(e.key==='Enter') sendFreeText(); });
+
+    /* ── Auto-open after 8s (if not dismissed this session) ── */
+    if (!sessionStorage.getItem(DISMISSED_KEY)) {
+      setTimeout(function(){
+        if (!isOpen && !sessionStorage.getItem(OPENED_KEY)) {
+          sessionStorage.setItem(OPENED_KEY, '1');
+          /* Show badge first for 2s, then open */
+          showBadge(1);
+          setTimeout(function(){ if (!isOpen) openChat(); }, 2000);
+        }
+      }, 8000);
+    }
+  }
+
+  /* ── Wait for React to mount then inject ── */
+  var chatAttempts = 0;
+  var chatPoll = setInterval(function(){
+    chatAttempts++;
+    var reactChat = Array.from(document.querySelectorAll('*')).find(function(el){
+      var s = window.getComputedStyle(el);
+      return s.position==='fixed' && s.bottom==='24px' && s.right==='24px';
+    });
+    if (reactChat || chatAttempts > 80) {
+      clearInterval(chatPoll);
+      buildChat();
+    }
+  }, 150);
   })();
   </script>
   </body>
