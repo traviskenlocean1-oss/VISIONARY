@@ -307,10 +307,13 @@
   function buildChat() {
     if (document.getElementById('vws-chat-root')) return;
 
-    /* ── Kill ALL fixed bottom-right elements from React (chat window + button) ── */
+    /* ── Kill React chat widget (fixed bottom-right, positive z-index only) ── */
     Array.from(document.querySelectorAll('*')).forEach(function(el) {
       var s = window.getComputedStyle(el);
       var b = parseInt(s.bottom), r = parseInt(s.right);
+      var zi = parseInt(s.zIndex);
+      /* Skip full-screen background layers (negative z-index like -z-10) */
+      if (isNaN(zi) || zi < 0) return;
       if (s.position === 'fixed' && b >= 0 && b <= 120 && r >= 0 && r <= 120) {
         el.style.cssText += ';display:none!important;visibility:hidden!important;opacity:0!important;pointer-events:none!important';
       }
