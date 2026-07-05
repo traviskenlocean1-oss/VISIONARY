@@ -708,8 +708,118 @@
   <!-- ── SERVICE PAGE ENHANCER ──────────────────────────────── -->
   <script>
   (function(){
-    var SLUG = (window.location.pathname.match(/\/services\/([^\/]+)/) || [])[1];
-    if (!SLUG) return;
+    /* ── Intercept React Router so enhancer re-runs on every SPA navigation ── */
+    function patchHistory(method) {
+      var orig = history[method];
+      history[method] = function() {
+        orig.apply(this, arguments);
+        setTimeout(runAll, 300);
+      };
+    }
+    patchHistory('pushState');
+    patchHistory('replaceState');
+    window.addEventListener('popstate', function(){ setTimeout(runAll, 300); });
+
+    function getSlug() {
+      return (window.location.pathname.match(/\/services\/([^\/]+)/) || [])[1];
+    }
+    function isServicesIndex() {
+      return /^\/services\/?$/.test(window.location.pathname);
+    }
+
+    function runAll() {
+      var slug = getSlug();
+      /* Clean up previous injections so switching service pages doesn't stack */
+      ['vws-ba-injected','vws-deepdive','vws-svc-theme','vws-svc-listing'].forEach(function(id){
+        var el = document.getElementById(id);
+        if (el) el.remove ? el.remove() : el.parentNode.removeChild(el);
+      });
+      if (slug) {
+        runServiceDetail(slug);
+      } else if (isServicesIndex()) {
+        runServicesListing();
+      }
+    }
+
+    /* ── /services listing page enhancer ── */
+    function runServicesListing() {
+      var ORDER = [
+        {slug:'website-development', color:'#1d4ed8', lt:'#60a5fa', tag:'Most Popular'},
+        {slug:'hosting-domain',      color:'#059669', lt:'#34d399', tag:'Included Free'},
+        {slug:'website-maintenance', color:'#d97706', lt:'#fbbf24', tag:'Keep It Sharp'},
+        {slug:'website-creation',    color:'#7c3aed', lt:'#a78bfa', tag:'Start Here'},
+        {slug:'website-redesign',    color:'#dc2626', lt:'#f87171', tag:'Transform It'},
+        {slug:'logo-branding',       color:'#b45309', lt:'#fcd34d', tag:'Look the Part'}
+      ];
+
+      var listingPoll = 0;
+      var listingTimer = setInterval(function(){
+        listingPoll++;
+        /* Find all LEARN MORE buttons in the services listing */
+        var learnBtns = Array.from(document.querySelectorAll('a')).filter(function(a){
+          return /learn more/i.test(a.textContent);
+        });
+        if (learnBtns.length >= 1 || listingPoll > 60) {
+          clearInterval(listingTimer);
+
+          /* Color each LEARN MORE button by its service order */
+          learnBtns.forEach(function(btn, i){
+            var cfg = ORDER[i];
+            if (!cfg) return;
+            btn.style.background = cfg.color;
+            btn.style.boxShadow = '0 4px 20px ' + cfg.color + '55';
+            btn.style.color = '#fff';
+            btn.href = '/services/' + cfg.slug;
+          });
+
+          /* Color each "SERVICE 0X" label */
+          var labels = Array.from(document.querySelectorAll('*')).filter(function(el){
+            return el.children.length === 0 && /^SERVICE\s+\d+$/.test(el.textContent.trim());
+          });
+          labels.forEach(function(el, i){
+            if (ORDER[i]) el.style.color = ORDER[i].lt;
+          });
+
+          /* Inject the services overview grid below the listing */
+          if (document.getElementById('vws-svc-listing')) return;
+          var grid = document.createElement('section');
+          grid.id = 'vws-svc-listing';
+          grid.style.cssText = 'background:#060916;padding:60px 24px 80px;font-family:Barlow,system-ui,sans-serif';
+          grid.innerHTML = '<div style="max-width:960px;margin:0 auto">'
+            +'<div style="text-align:center;margin-bottom:40px">'
+            +'<div style="font-size:10px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:#60a5fa;margin-bottom:10px">Everything We Do</div>'
+            +'<div style="font-size:28px;font-weight:900;color:#fff;line-height:1.25">Six Ways We Help Local Businesses<br>Win Online</div>'
+            +'</div>'
+            +'<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px">'
+            + ORDER.map(function(cfg){
+                var label = cfg.slug.replace(/-/g,' ').replace(/\b\w/g,function(c){return c.toUpperCase();});
+                return '<a href="/services/'+cfg.slug+'" style="display:block;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.07);border-radius:12px;padding:22px;text-decoration:none;transition:border-color .2s,background .2s" '
+                  +'onmouseover="this.style.borderColor=\''+cfg.lt+'\';this.style.background=\'rgba(255,255,255,0.04)\'" '
+                  +'onmouseout="this.style.borderColor=\'rgba(255,255,255,0.07)\';this.style.background=\'rgba(255,255,255,0.02)\'">'
+                  +'<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">'
+                  +'<div style="width:36px;height:36px;border-radius:8px;background:'+cfg.color+'22;border:1px solid '+cfg.color+'55;display:flex;align-items:center;justify-content:center">'
+                  +'<div style="width:14px;height:14px;border-radius:50%;background:'+cfg.color+'"></div></div>'
+                  +'<span style="font-size:9px;font-weight:700;letter-spacing:0.1em;color:'+cfg.lt+';background:'+cfg.color+'22;border:1px solid '+cfg.color+'44;border-radius:20px;padding:3px 9px">'+cfg.tag.toUpperCase()+'</span>'
+                  +'</div>'
+                  +'<div style="font-size:14px;font-weight:800;color:#fff;margin-bottom:6px">'+label+'</div>'
+                  +'<div style="font-size:11.5px;color:rgba(255,255,255,0.45);line-height:1.5;margin-bottom:14px">Click to see full details, pricing, and the before/after comparison.</div>'
+                  +'<div style="font-size:11px;font-weight:700;color:'+cfg.lt+';display:flex;align-items:center;gap:5px">'
+                  +'View Details <span style="font-size:14px">→</span></div>'
+                  +'</a>';
+              }).join('')
+            +'</div>'
+            +'<div style="margin-top:40px;text-align:center"><a href="/contact" style="display:inline-block;background:linear-gradient(135deg,#1d4ed8,#2563eb);color:#fff;font-size:13px;font-weight:800;letter-spacing:0.1em;padding:14px 36px;border-radius:8px;text-decoration:none;text-transform:uppercase;box-shadow:0 8px 30px rgba(29,78,216,0.4)">Start a Project — Free Consultation →</a></div>'
+            +'</div>';
+
+          var root = document.getElementById('root');
+          if (root && root.parentNode) root.parentNode.insertBefore(grid, root.nextSibling);
+          else document.body.appendChild(grid);
+        }
+      }, 150);
+    }
+
+    /* Detail page slug — rest of logic below */
+    function runServiceDetail(SLUG) {
 
     var C = {
       'website-development': {
@@ -779,6 +889,7 @@
 
     /* ── 1. Color theme injection ── */
     var themeStyle = document.createElement('style');
+    themeStyle.id = 'vws-svc-theme';
     themeStyle.textContent = [
       /* Override blue buttons/accents with service color */
       'a[class*="bg-blue"],button[class*="bg-blue"]{background:'+svc.color+'!important}',
@@ -1012,16 +1123,20 @@
       }
     }
 
-    /* ── Poll for React render ── */
-    var svcAttempts = 0;
-    var svcPoll = setInterval(function(){
-      svcAttempts++;
-      if (document.querySelectorAll('section').length > 0 || svcAttempts > 100) {
-        clearInterval(svcPoll);
-        enhance();
-        setTimeout(enhance, 1000);
-      }
-    }, 150);
+      /* ── Poll for React render on this service page ── */
+      var svcAttempts = 0;
+      var svcPoll = setInterval(function(){
+        svcAttempts++;
+        if (document.querySelectorAll('section').length > 0 || svcAttempts > 100) {
+          clearInterval(svcPoll);
+          enhance();
+          setTimeout(enhance, 1000);
+        }
+      }, 150);
+    } /* end runServiceDetail */
+
+    /* ── Kick off on initial load ── */
+    setTimeout(runAll, 400);
   })();
   </script>
   </body>
