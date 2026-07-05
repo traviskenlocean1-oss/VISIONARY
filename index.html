@@ -766,7 +766,7 @@
     function runAll() {
       var slug = getSlug();
       /* Clean up previous injections so switching service pages doesn't stack */
-      ['vws-ba-injected','vws-deepdive','vws-svc-theme','vws-svc-listing','vws-listing-colors','vws-early-hue','vws-ill-wrap'].forEach(function(id){
+      ['vws-ba-injected','vws-deepdive','vws-svc-theme','vws-svc-listing','vws-listing-colors','vws-early-hue','vws-ill-wrap','vws-problem'].forEach(function(id){
         var el = document.getElementById(id);
         if (el) el.remove ? el.remove() : el.parentNode.removeChild(el);
       });
@@ -899,7 +899,7 @@
 
     var C = {
       'website-development': {
-        color:'#3B82F6', lt:'#93C5FD', glow:'rgba(59,130,246,0.35)', hue:'0deg',
+        color:'#3B82F6', lt:'#93C5FD', glow:'rgba(59,130,246,0.35)', hue:'0deg', reactRgb:null, reactCrgb:null,
         stats:[{v:'48hr',l:'First Draft'},{v:'3–5x',l:'Faster Than WP'},{v:'0',l:'Templates Used'}],
         gets:['Custom design built around your brand identity','Mobile-first, fully responsive on every screen','Conversion-focused layout and copywriting','Performance-optimized, under 2 second load time','SEO foundation built in from day one','You own every file from day one'],
         pitch:'Every business is different. Your website should be too. We design and build fully custom websites around your brand, your customers, and your specific goals — with no templates, no recycled layouts, and no shortcuts. You get a site that looks like it cost ten times what you paid.',
@@ -909,7 +909,7 @@
         afterItems:['Unique to your brand — built from your goals','Sub-2s load time on mobile, every time','Form sends directly to your phone & email','Zero plugins — pure code that never breaks','One-time fee. You own it outright.']
       },
       'hosting-domain': {
-        color:'#0D9488', lt:'#2DD4BF', glow:'rgba(13,148,136,0.35)', hue:'-60deg',
+        color:'#0D9488', lt:'#2DD4BF', glow:'rgba(13,148,136,0.35)', hue:'-60deg', reactRgb:'99, 102, 241', reactCrgb:'99,102,241',
         stats:[{v:'99.9%',l:'Uptime SLA'},{v:'<1s',l:'Response Time'},{v:'Free',l:'SSL Included'}],
         gets:['Domain registration and full DNS setup','Hosted on Cloudflare\'s global edge network','Free SSL certificate on every site','99.9% uptime reliability','Sub-second load times globally','30-day post-launch monitoring included'],
         pitch:"Getting online shouldn't require a technical degree. We handle everything — domain registration, DNS configuration, SSL certificates, and deployment on fast, globally-distributed infrastructure. Your site loads in under a second for visitors anywhere in the world.",
@@ -919,7 +919,7 @@
         afterItems:['We handle every technical detail, start to finish','Security updates applied automatically — always patched','Uptime monitored around the clock, issues fixed fast','One flat price, nothing hidden','We\'re your on-call team if anything ever goes wrong']
       },
       'website-maintenance': {
-        color:'#D97706', lt:'#FCD34D', glow:'rgba(217,119,6,0.35)', hue:'-165deg',
+        color:'#D97706', lt:'#FCD34D', glow:'rgba(217,119,6,0.35)', hue:'-165deg', reactRgb:'56, 189, 248', reactCrgb:'56,189,248',
         stats:[{v:'Same',l:'Day Updates'},{v:'Unlim.',l:'Changes/Mo'},{v:'$100',l:'Per Month'}],
         gets:['Content updates handled within 24 hours','Security monitoring and threat detection','Monthly performance audits and optimization','Broken link and error monitoring','Direct priority access to your builder','Monthly report showing everything done'],
         pitch:"A website is not a one-time project. Software gets outdated, content becomes stale, and without someone watching, small problems become expensive ones. We handle everything your site needs month after month so you never have to think about it.",
@@ -929,7 +929,7 @@
         afterItems:['Every page always reflects your current offers and pricing','Site locked down — scanned and patched continuously','Speed benchmarked and optimized monthly','Updates done the same day you message us','Monthly report: traffic, rankings, and next actions']
       },
       'website-creation': {
-        color:'#7C3AED', lt:'#A78BFA', glow:'rgba(124,58,237,0.35)', hue:'102deg',
+        color:'#7C3AED', lt:'#A78BFA', glow:'rgba(124,58,237,0.35)', hue:'102deg', reactRgb:'16, 185, 129', reactCrgb:'16,185,129',
         stats:[{v:'Day 2',l:'First Draft'},{v:'5–10',l:'Pages Included'},{v:'100%',l:'You Own It'}],
         gets:['Complete new site built from scratch','Contact forms and booking integrations','Google Maps and social media connected','SEO-ready semantic HTML structure','Mobile-optimized on all screen sizes','Delivered in 5–10 business days'],
         pitch:"Starting from zero? We build your entire online presence from the ground up. Custom design, clean code, all your integrations set up and connected, and a site that goes live in days — not months. You go from no website to a professional, conversion-ready site faster than you thought possible.",
@@ -939,7 +939,7 @@
         afterItems:['Showing up in Google searches in your target city','Customers can find, research, and contact you 24/7','Professional presence that builds trust on first visit','Google Maps integration: show up when it counts most','New inbound leads working while you\'re on the job']
       },
       'website-redesign': {
-        color:'#DC2626', lt:'#F87171', glow:'rgba(220,38,38,0.4)', hue:'120deg',
+        color:'#DC2626', lt:'#F87171', glow:'rgba(220,38,38,0.4)', hue:'120deg', reactRgb:'129, 140, 248', reactCrgb:'129,140,248',
         stats:[{v:'7 Days',l:'Full Relaunch'},{v:'Zero',l:'Downtime'},{v:'Same',l:'URL Preserved'}],
         gets:['Complete visual rebuild from scratch','Performance and speed overhaul','SEO structure preserved and improved','All existing content reviewed and upgraded','Zero downtime during the switch','Before and after performance report'],
         pitch:"If your current site is slow, outdated, or simply not converting visitors into customers — it is costing you money every day it stays live. We rebuild it completely from scratch while keeping your URL and preserving your SEO equity. Same address. Completely new everything else.",
@@ -949,7 +949,7 @@
         afterItems:['Under 2 seconds on mobile — consistently','Modern, credibility-first design that commands authority','Flawless mobile-first experience across all devices','SEO improved: better structure, faster speeds, fresh signals','Clear CTA above the fold → more calls and form fills']
       },
       'logo-branding': {
-        color:'#CA8A04', lt:'#FDE047', glow:'rgba(202,138,4,0.35)', hue:'131deg',
+        color:'#CA8A04', lt:'#FDE047', glow:'rgba(202,138,4,0.35)', hue:'131deg', reactRgb:'167, 139, 250', reactCrgb:'167,139,250',
         stats:[{v:'3',l:'Concepts Delivered'},{v:'SVG',l:'Scalable Format'},{v:'100%',l:'Full Ownership'}],
         gets:['Custom logo designed from scratch','Full vector files in every format (SVG, PNG, PDF)','Color palette with exact hex codes','Typography system with font recommendations','Brand guidelines document included','Unlimited revisions until you\'re satisfied'],
         pitch:"Your logo is the first thing people see and the last thing they remember. If it looks amateur, so does your business. We design logos and complete brand identities that make the right first impression — professional, memorable, and built to work across every platform and format you need.",
@@ -958,6 +958,74 @@
         afterBadge:'Full Brand Identity',afterColor:'#CA8A04',
         afterItems:['A unique mark that is unmistakably and exclusively yours','Consistent, professional across web, print, vehicles, and uniforms','Vector files scale to billboard size without losing a pixel','Brand guidelines keep every use case on-brand — forever','Memorable, distinctive, and built to grow with your business']
       }
+    };
+
+    /* ── Per-service problem cards (Bug 6 — Section 2) ── */
+    var PROBLEMS = {
+      'website-development':[
+        {h:'You\'re Invisible Online',p:'Competitors with professionally built sites rank higher in Google and look more credible on arrival. Without a custom site, you lose every comparison before the conversation even starts.'},
+        {h:'Template Sites Cost More Over Time',p:'Monthly platform fees, plugin licenses, and endless maintenance add up to thousands per year — for a site you don\'t even own. You\'re renting a generic look forever.'},
+        {h:'Slow Sites Lose Customers',p:'53% of visitors abandon a site that takes more than 3 seconds to load. Template sites are bloated by design — plugins, trackers, and framework overhead you never asked for.'}
+      ],
+      'hosting-domain':[
+        {h:'Downtime Costs Real Revenue',p:'Every hour your site is offline is an hour customers hit an error and move on. Self-managed hosting fails silently — you only find out when a client tells you.'},
+        {h:'SSL Gaps Destroy Trust Instantly',p:'A browser security warning drives away virtually every visitor. Most self-managed sites let SSL certificates lapse unnoticed — and Google punishes the ones that do.'},
+        {h:'Slow Servers Tank Your Rankings',p:'Google uses server response time as a direct ranking signal. Budget hosting means shared servers, slower responses, and lower search positions every single day.'}
+      ],
+      'website-maintenance':[
+        {h:'Stale Sites Lose Clients',p:'Outdated pricing, wrong hours, and dead links tell every visitor your business doesn\'t pay attention to detail. First impressions don\'t give second chances.'},
+        {h:'Security Gaps Compound Silently',p:'Unpatched vulnerabilities don\'t announce themselves. By the time you notice the breach, the damage — lost data, lost trust, lost rankings — is already done.'},
+        {h:'You Can\'t Track What You Don\'t Monitor',p:'Without monthly performance monitoring, you have no visibility into whether your traffic is growing or collapsing. What you don\'t measure, you can\'t fix.'}
+      ],
+      'website-creation':[
+        {h:'Competitors Are Taking Your Leads',p:'Every day without a website, every Google search for your service sends potential customers to someone else. They never find you because you aren\'t there to find.'},
+        {h:'Word of Mouth Has a Hard Ceiling',p:'Referrals are great until they stop. A website makes your business findable around the clock by people who\'ve never heard of you before.'},
+        {h:'You Have No Credibility Online',p:'81% of customers research a business online before making a purchase decision. No website means no credibility for the majority of buyers considering you.'}
+      ],
+      'website-redesign':[
+        {h:'Visitors Leave Immediately',p:'If your site takes more than 3 seconds to load, 53% of visitors are gone before they see anything. A slow site is an invisible business regardless of how good your work actually is.'},
+        {h:'You Look Outdated',p:'Customers judge your credibility in under 3 seconds. An outdated website tells them your business doesn\'t keep up — and neither does your work.'},
+        {h:'You\'re Losing to Competitors',p:'Every competitor with a faster, cleaner website is taking customers you should be getting. A bad site doesn\'t just fail to help — it actively costs you revenue every day.'}
+      ],
+      'logo-branding':[
+        {h:'Amateur Branding Signals Amateur Work',p:'Customers make snap judgments about your price point and quality based on how your brand looks before they read a single word. A weak logo signals cheap work.'},
+        {h:'Inconsistency Kills Recognition',p:'Different colors, fonts, and logos across your website, truck, business cards, and social media means nobody remembers who you are. Brand equity compounds — or it doesn\'t.'},
+        {h:'You Can\'t Scale Without Real Brand Files',p:'Proposals, partnerships, signage, and merch all require professional vector files. DIY logos pixelate and break the moment you need them at any real scale.'}
+      ]
+    };
+
+    /* ── Per-service result stat cards (Bug 6 — Section 5) ── */
+    var RESULTS = {
+      'website-development':[
+        {v:'<2s',l:'Page Load Time',d:'Hand-coded sites have zero bloat — they load fast on every device, every time.'},
+        {v:'3×',l:'More Leads vs Templates',d:'Custom sites convert at higher rates because they\'re built around your specific customer.'},
+        {v:'A+',l:'Google PageSpeed Score',d:'Performance-optimized from the first line of code — not patched on afterward.'}
+      ],
+      'hosting-domain':[
+        {v:'99.9%',l:'Uptime Guaranteed',d:'Enterprise-grade infrastructure means your site is up when customers go looking for you.'},
+        {v:'<0.8s',l:'Global Response Time',d:'Cloudflare edge nodes deliver your site fast from anywhere in the world.'},
+        {v:'Free',l:'SSL on Every Site',d:'HTTPS configured, monitored, and renewed automatically — zero effort on your end.'}
+      ],
+      'website-maintenance':[
+        {v:'24hr',l:'Update Turnaround',d:'Every change request is handled the same business day — no waiting, no back-and-forth.'},
+        {v:'0',l:'Missed Security Patches',d:'Continuous monitoring means threats are patched before they become incidents.'},
+        {v:'Monthly',l:'Performance Reports',d:'You see exactly what changed, what improved, and what\'s coming next — every month.'}
+      ],
+      'website-creation':[
+        {v:'Day 2',l:'First Draft Delivered',d:'Your first complete design is ready for review within 48 hours of kickoff.'},
+        {v:'5–7',l:'Days to Go Live',d:'From zero to a fully live, Google-indexed website in less than a week.'},
+        {v:'100%',l:'Yours From Day One',d:'No platform lock-in. You own every file, every asset, every line of code outright.'}
+      ],
+      'website-redesign':[
+        {v:'53%',l:'Avg. Bounce Rate Reduction',d:'Visitors stay longer when the experience is fast, clean, and built to guide them.'},
+        {v:'3×',l:'Faster Page Load Speed',d:'Hand-coded rebuilds consistently deliver sub-2s load times vs 6–8 second originals.'},
+        {v:'41%',l:'Increase in Form Submissions',d:'Conversion-focused CTAs and clear information architecture drive more contact completions.'}
+      ],
+      'logo-branding':[
+        {v:'3',l:'Concepts Delivered',d:'Three distinct directions — you choose the one that fits, we refine it to perfect.'},
+        {v:'∞',l:'Scalable Formats',d:'SVG vector files scale from business card to billboard without losing a single pixel.'},
+        {v:'100%',l:'Full Ownership',d:'Every file, in every format, delivered to you with no licensing or ongoing fees.'}
+      ]
     };
 
     /* Normalize URL slug aliases (React uses /hosting not /hosting-domain) */
@@ -971,16 +1039,89 @@
     /* ── 1. Color theme injection — scoped to [data-vws-page] so it never bleeds ── */
     var themeStyle = document.createElement('style');
     themeStyle.id = 'vws-svc-theme';
-    themeStyle.textContent = [
-      /* Only affects elements inside main content — nav/header excluded by the main selector */
-      '[data-vws-page="'+SLUG_KEY+'"] main [class*="text-blue"]{color:'+svc.lt+'!important}',
-      '[data-vws-page="'+SLUG_KEY+'"] main [class*="bg-blue"]{background:'+svc.color+'!important;box-shadow:0 4px 20px '+svc.glow+'!important}',
-      '[data-vws-page="'+SLUG_KEY+'"] main [class*="border-blue"]{border-color:'+svc.color+'!important}',
-      '[data-vws-page="'+SLUG_KEY+'"] main svg[class*="text-blue"],[data-vws-page="'+SLUG_KEY+'"] main svg[class*="stroke-blue"]{color:'+svc.lt+'!important;stroke:'+svc.lt+'!important}',
-      /* Keep header fully opaque so service background color doesn't bleed through */
-      '[data-vws-page="'+SLUG_KEY+'"] header{background:rgba(6,9,22,0.99)!important}',
-    ].join('');
+    var P = SLUG_KEY, sc = svc.color, sl = svc.lt, sg = svc.glow;
+    var rules = [
+      '[data-vws-page="'+P+'"] main [class*="text-blue"]{color:'+sl+'!important}',
+      '[data-vws-page="'+P+'"] main [class*="bg-blue"]{background:'+sc+'!important;box-shadow:0 4px 20px '+sg+'!important}',
+      '[data-vws-page="'+P+'"] main [class*="border-blue"]{border-color:'+sc+'!important}',
+      '[data-vws-page="'+P+'"] main svg[class*="text-blue"],[data-vws-page="'+P+'"] main svg[class*="stroke-blue"]{color:'+sl+'!important;stroke:'+sl+'!important}',
+      /* Header opaque — no bleed */
+      '[data-vws-page="'+P+'"] header{background:rgba(6,9,22,0.99)!important}',
+      /* Bug 5 — prevent horizontal overflow scroll past footer */
+      'html{overflow-x:hidden!important}',
+      /* Bug 1/3 — non-hero sections get solid dark bg so hue-rotate doesn't show through */
+      '[data-vws-page="'+P+'"] main section:not(:first-child){background:#080c14!important}',
+      /* Bug 4 — footer anchor buttons must not inherit service color */
+      '[data-vws-page="'+P+'"] footer a[href="/contact"],[data-vws-page="'+P+'"] footer a[href*="contact"]{background:transparent!important;color:rgba(255,255,255,0.7)!important;box-shadow:none!important}',
+    ];
+    /* Bug 2/7 — neutralize React inline-style color bleeds per service */
+    if (svc.reactRgb) {
+      var rr = svc.reactRgb, rc = svc.reactCrgb;
+      rules.push('[data-vws-page="'+P+'"] [style*="color: rgb('+rr+')"],'
+        +'[data-vws-page="'+P+'"] [style*="color:rgb('+rr+')"]{color:'+sc+'!important}');
+      rules.push('[data-vws-page="'+P+'"] [style*="background: rgba('+rr+'"],'
+        +'[data-vws-page="'+P+'"] [style*="background:rgba('+rr+'"]{background:rgba('+rc+',0.15)!important;border-color:rgba('+rc+',0.3)!important}');
+      rules.push('[data-vws-page="'+P+'"] [style*="color: rgba('+rr+', 0.09"],'
+        +'[data-vws-page="'+P+'"] [style*="color: rgba('+rr+', 0.094"]{color:rgba('+rc+',0.25)!important;text-shadow:0 0 40px rgba('+rc+',0.4),0 0 80px rgba('+rc+',0.2)!important}');
+    }
+    themeStyle.textContent = rules.join('');
     document.head.appendChild(themeStyle);
+
+    /* ── 1b. Problem + Results builders (Bug 6) ── */
+    function buildProblems(svc, slug) {
+      var items = PROBLEMS[slug] || [];
+      if (!items.length) return '';
+      var icons = [
+        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="width:28px;height:28px"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>',
+        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="width:28px;height:28px"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>',
+        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="width:28px;height:28px"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>',
+      ];
+      var cards = items.map(function(item, i) {
+        return '<div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:14px;padding:32px;flex:1;min-width:260px">'
+          +'<div style="width:52px;height:52px;border-radius:12px;background:rgba(220,38,38,0.12);border:1px solid rgba(220,38,38,0.2);display:flex;align-items:center;justify-content:center;color:#F87171;margin-bottom:20px">'
+          +icons[i]+'</div>'
+          +'<h3 style="font-size:1.1rem;font-weight:700;color:#fff;margin:0 0 10px">'+item.h+'</h3>'
+          +'<p style="font-size:0.9rem;color:rgba(255,255,255,0.55);line-height:1.7;margin:0">'+item.p+'</p>'
+          +'</div>';
+      }).join('');
+      return '<section id="vws-problem" style="padding:80px 24px;background:#080c14">'
+        +'<div style="max-width:1100px;margin:0 auto">'
+        +'<p style="font-size:0.75rem;letter-spacing:0.15em;text-transform:uppercase;color:rgba(220,38,38,0.8);font-weight:600;margin:0 0 12px">The Problem</p>'
+        +'<h2 style="font-size:clamp(1.8rem,4vw,2.8rem);font-weight:800;color:#fff;margin:0 0 48px;line-height:1.15">Why businesses like yours <span style="color:#F87171">struggle</span> without the right solution</h2>'
+        +'<div style="display:flex;gap:24px;flex-wrap:wrap">'+cards+'</div>'
+        +'</div></section>';
+    }
+
+    function buildResults(svc, slug) {
+      var items = RESULTS[slug] || [];
+      if (!items.length) return '';
+      var cards = items.map(function(item) {
+        return '<div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:14px;padding:36px;flex:1;min-width:220px;text-align:center">'
+          +'<div style="font-size:clamp(2.5rem,6vw,3.5rem);font-weight:900;color:'+svc.color+';line-height:1;margin-bottom:10px;letter-spacing:-0.02em">'+item.v+'</div>'
+          +'<div style="font-size:0.85rem;font-weight:700;color:#fff;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:10px">'+item.l+'</div>'
+          +'<p style="font-size:0.85rem;color:rgba(255,255,255,0.5);line-height:1.6;margin:0">'+item.d+'</p>'
+          +'</div>';
+      }).join('');
+      return '<div style="margin-top:60px">'
+        +'<p style="font-size:0.75rem;letter-spacing:0.15em;text-transform:uppercase;color:'+svc.lt+';font-weight:600;margin:0 0 12px">The Results</p>'
+        +'<h3 style="font-size:clamp(1.5rem,3vw,2rem);font-weight:800;color:#fff;margin:0 0 36px;line-height:1.2">What clients see after working with us</h3>'
+        +'<div style="display:flex;gap:24px;flex-wrap:wrap">'+cards+'</div>'
+        +'</div>';
+    }
+
+    function injectProblem(svc, slug) {
+      var html = buildProblems(svc, slug);
+      if (!html) return;
+      var main = document.querySelector('main');
+      if (!main) return;
+      var sections = main.querySelectorAll('section');
+      var hero = sections[0];
+      if (!hero) return;
+      var wrap = document.createElement('div');
+      wrap.innerHTML = html;
+      var problemEl = wrap.firstElementChild;
+      hero.parentNode.insertBefore(problemEl, hero.nextSibling);
+    }
 
     /* ── 2. HTML builders ── */
     function badSite(svc) {
@@ -1349,7 +1490,7 @@
 
       /* GET STARTED button inside the service section — EXCLUDE nav and header */
       var allBtns = Array.from(document.querySelectorAll('a[href="/contact"],a[href*="contact"]')).filter(function(btn) {
-        return !btn.closest('nav') && !btn.closest('header') && !btn.closest('[id^="vws-"]');
+        return !btn.closest('nav') && !btn.closest('header') && !btn.closest('footer') && !btn.closest('[id^="vws-"]');
       });
       allBtns.forEach(function(btn) {
         btn.setAttribute('data-vws-colored', '1');
@@ -1418,13 +1559,43 @@
               '<ul style="list-style:none;padding:0;margin:0">'+buildGets(svc)+'</ul>',
             '</div>',
           '</div>',
+          /* Bug 6 — Results section inside deepdive */
+          '<div style="max-width:900px;margin:40px auto 0;padding:0 24px">'+buildResults(svc, SLUG_KEY)+'</div>',
         ].join('');
 
-        var root = document.getElementById('root');
-        if (root && root.parentElement) {
-          root.parentElement.insertBefore(deepdive, root.nextSibling);
+        /* Bug 5 — insert BEFORE footer so no content renders below it */
+        var footer = document.querySelector('footer');
+        if (footer && footer.parentNode) {
+          footer.parentNode.insertBefore(deepdive, footer);
         } else {
-          document.body.appendChild(deepdive);
+          var root = document.getElementById('root');
+          if (root && root.parentElement) {
+            root.parentElement.insertBefore(deepdive, root.nextSibling);
+          } else {
+            document.body.appendChild(deepdive);
+          }
+        }
+      }
+
+      /* Bug 6 — inject problem section after hero on first enhance pass */
+      injectProblem(svc, SLUG_KEY);
+
+      /* Bug 2 — override React step number badge colors (inline style targeted) */
+      Array.from(document.querySelectorAll('*')).forEach(function(el) {
+        if (el.children.length === 0 && /^0[1-4]$/.test(el.textContent.trim())) {
+          el.style.setProperty('color', svc.color, 'important');
+          if (el.parentElement) {
+            el.parentElement.style.setProperty('color', svc.color, 'important');
+          }
+        }
+      });
+
+      /* Bug 1/3 — force solid dark background on every non-hero section in main */
+      var mainEl = document.querySelector('main');
+      if (mainEl) {
+        var allSections = mainEl.querySelectorAll('section');
+        for (var si = 1; si < allSections.length; si++) {
+          allSections[si].style.setProperty('background', '#080c14', 'important');
         }
       }
     }
