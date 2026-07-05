@@ -16,6 +16,121 @@
     <link rel="stylesheet" crossorigin href="/assets/index-B7NQdH4D.css">
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root"></div>
+  <script>
+  /* ── PATCH: fix frozen GSAP scroll animations + Services dropdown ── */
+  (function() {
+    function fixSite() {
+      /* 1. Unfreeze every section element stuck at opacity:0 by GSAP */
+      document.querySelectorAll('section *').forEach(function(el) {
+        var s = el.getAttribute('style') || '';
+        var m = s.match(/(?:^|;)\s*opacity:\s*([\d.]+)/);
+        if (m && parseFloat(m[1]) === 0) {
+          el.style.opacity = '1';
+          if (s.indexOf('translateY') !== -1 || s.indexOf('translateX') !== -1) {
+            el.style.transform = 'none';
+          }
+          if (s.indexOf('scale(0') !== -1) {
+            el.style.transform = 'none';
+          }
+        }
+      });
+
+      /* 2. Build Services dropdown if the nav is rendered and dropdown not yet injected */
+      var servicesLink = Array.from(document.querySelectorAll('nav a')).find(function(a) {
+        return a.textContent.trim() === 'Services';
+      });
+      if (!servicesLink || servicesLink.parentElement.querySelector('[data-vws-dd]')) return;
+
+      var wrapper = servicesLink.parentElement;
+      wrapper.style.position = 'relative';
+
+      var items = [
+        'Website Development',
+        'Hosting & Domain',
+        'Website Maintenance',
+        'Website Creation',
+        'Website Redesign',
+        'Logo & Branding'
+      ];
+
+      var dd = document.createElement('div');
+      dd.setAttribute('data-vws-dd', '1');
+      dd.style.cssText = [
+        'position:absolute',
+        'top:calc(100% + 10px)',
+        'left:50%',
+        'transform:translateX(-50%)',
+        'background:#080d1c',
+        'border:1px solid rgba(225,224,204,0.1)',
+        'border-radius:10px',
+        'min-width:230px',
+        'padding:6px',
+        'opacity:0',
+        'visibility:hidden',
+        'transition:opacity 0.18s,visibility 0.18s',
+        'z-index:9999',
+        'box-shadow:0 20px 60px rgba(0,0,0,0.6)'
+      ].join(';');
+
+      items.forEach(function(svc) {
+        var a = document.createElement('a');
+        a.href = '/services';
+        a.textContent = svc;
+        a.style.cssText = [
+          'display:block',
+          'padding:10px 16px',
+          'color:rgba(225,224,204,0.55)',
+          'font-size:10px',
+          'font-weight:700',
+          'letter-spacing:0.18em',
+          'text-transform:uppercase',
+          'text-decoration:none',
+          'border-radius:6px',
+          'transition:background 0.15s,color 0.15s'
+        ].join(';');
+        a.addEventListener('mouseenter', function() {
+          a.style.background = 'rgba(255,255,255,0.05)';
+          a.style.color = 'rgba(225,224,204,1)';
+        });
+        a.addEventListener('mouseleave', function() {
+          a.style.background = '';
+          a.style.color = 'rgba(225,224,204,0.55)';
+        });
+        dd.appendChild(a);
+      });
+
+      wrapper.appendChild(dd);
+
+      /* prevent navigating on Services click — open dropdown instead */
+      servicesLink.addEventListener('click', function(e) { e.preventDefault(); });
+
+      wrapper.addEventListener('mouseenter', function() {
+        dd.style.opacity = '1';
+        dd.style.visibility = 'visible';
+        var chevron = servicesLink.querySelector('svg');
+        if (chevron) chevron.style.transform = 'rotate(180deg)';
+      });
+      wrapper.addEventListener('mouseleave', function() {
+        dd.style.opacity = '0';
+        dd.style.visibility = 'hidden';
+        var chevron = servicesLink.querySelector('svg');
+        if (chevron) chevron.style.transform = 'rotate(0deg)';
+      });
+    }
+
+    /* Run once React has mounted — poll until sections exist */
+    var attempts = 0;
+    var poll = setInterval(function() {
+      attempts++;
+      if (document.querySelectorAll('section').length > 1 || attempts > 60) {
+        clearInterval(poll);
+        fixSite();
+        /* Re-run once more after a short delay in case GSAP fires late */
+        setTimeout(fixSite, 800);
+      }
+    }, 100);
+  })();
+  </script>
   </body>
 </html>
