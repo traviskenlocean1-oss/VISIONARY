@@ -544,14 +544,58 @@
     });
 
     /* ── Free-text input ── */
-    var freeResponses = [
-      "Great question! Fill out the quick form above and Travis will answer that personally. 🙌",
-      "I'll make sure Travis sees this. Want to leave your number so he can call you?",
-      "For specific questions like that, it's fastest to call Travis directly: <a href='tel:+15618890507' style='color:#60a5fa'>(561) 889-0507</a>",
-      "Happy to help! Most answers depend on your specific situation — want Travis to reach out?",
-      "That's a good one. Travis can give you a definitive answer — want him to call you?"
-    ];
-    var freeIdx = 0;
+    function getFreeReply(text) {
+      var t = text.toLowerCase();
+      /* Keyword routing — give a real answer then steer back */
+      if (/\b(price|cost|how much|charge|fee|rate|afford|cheap|expensive|budget)\b/.test(t)) {
+        return { msg: "Great question on pricing! Here's a quick breakdown:\n\n💰 <b>Starter — $500</b> · Single page\n💰 <b>Standard — $750</b> · Up to 5 pages (most popular)\n💰 <b>Full Build — $1,000</b> · Up to 10 pages + blog\n🔧 <b>Maintenance — $100/mo</b> · Unlimited updates\n\nAll one-time fees — you own the site outright.", next: 'pricing' };
+      }
+      if (/\b(how long|timeline|fast|quick|days|week|turnaround|when|deadline)\b/.test(t)) {
+        return { msg: "Turnaround is fast! ⚡\n\n⚡ <b>48 hours</b> — first draft ready\n✏️ <b>Day 3–4</b> — revisions\n🚀 <b>Day 5–7</b> — live on Google\n\nSome simple sites launch in 48 hours flat. Ready to get on the schedule?", next: 'capture' };
+      }
+      if (/\b(portfolio|example|sample|see|work|show|previous|past|client)\b/.test(t)) {
+        return { msg: "We've built for auto detailers, contractors, fitness trainers, professional services, and more.\n\nScroll down to the portfolio section on this page to see some examples. 👇\n\nWant to get a quote for your business?", next: 'capture' };
+      }
+      if (/\b(contact|call|phone|reach|talk|speak|number|email)\b/.test(t)) {
+        return { msg: "You can reach our team directly:\n\n📞 <a href='tel:+15618890507' style='color:#60a5fa'>(561) 889-0507</a> — call or text\n📧 visionarywebstudio6@gmail.com\n\nOr drop your info below and we'll follow up within a few hours.", next: 'capture' };
+      }
+      if (/\b(seo|google|rank|search|traffic|found|map|local)\b/.test(t)) {
+        return { msg: "Every site we build comes with full SEO out of the box — schema markup, meta tags, Google Maps integration, fast load times, and mobile-first design.\n\nLocal businesses using our sites typically start showing up in Google within a few weeks of launch. Want a quote?", next: 'capture' };
+      }
+      if (/\b(wordpress|wix|squarespace|template|theme|shopify)\b/.test(t)) {
+        return { msg: "We hand-code everything from scratch — no WordPress, no Wix, no templates.\n\nThat means your site is 3–5x faster, easier to maintain, and doesn't come with bloated plugins or monthly platform fees.\n\nWant us to rebuild your current site the right way?", next: 'capture' };
+      }
+      if (/\b(host|domain|server|deploy|ssl|https|cloud)\b/.test(t)) {
+        return { msg: "We handle hosting and domain setup as part of every project — no technical headaches on your end.\n\nAll sites go live on fast, secure cloud hosting. Domains typically run $10–15/yr and we set everything up for you.\n\nWant to get started?", next: 'capture' };
+      }
+      /* Off-topic — friendly answer + steer back */
+      var offTopic = [
+        "Ha, that's outside our lane — we're website people! 😄\n\nBut here's what we <i>are</i> experts in: building clean, fast websites that get local businesses more calls. Want to see what we can do for you?",
+        "Good question, though that's a bit beyond our expertise! We stick to one thing and do it really well — custom websites that actually bring in business.\n\nAnything we can help you with on that front?",
+        "That one's a bit outside our wheelhouse! 😄 We're pretty focused on one thing — building websites that make local businesses look legit and rank on Google.\n\nWant to know what that looks like for your business?",
+        "Love the curiosity! We're not experts on that, but we ARE experts at getting local businesses online and generating calls. Can we help with that?",
+        "Not exactly our department — but if you ever need a website that actually converts visitors into customers, that's exactly what we do. Interested?"
+      ];
+      var pick = offTopic[Math.floor(Math.random() * offTopic.length)];
+      return { msg: pick, next: 'browse' };
+    }
+
+    function makeQR(qr, items) {
+      items.forEach(function(item) {
+        var b = document.createElement('button');
+        b.textContent = item.label;
+        b.style.cssText = 'background:#0e1525;border:1px solid rgba(255,255,255,.1);border-radius:100px;padding:7px 13px;font-size:11px;font-weight:600;color:rgba(225,224,204,.75);cursor:pointer;transition:background .15s,color .15s,border-color .15s';
+        b.addEventListener('mouseenter', function(){ b.style.background='rgba(29,78,216,.25)'; b.style.borderColor='rgba(29,78,216,.6)'; b.style.color='rgba(225,224,204,1)'; });
+        b.addEventListener('mouseleave', function(){ b.style.background='#0e1525'; b.style.borderColor='rgba(255,255,255,.1)'; b.style.color='rgba(225,224,204,.75)'; });
+        b.addEventListener('click', function(){
+          addMsg(item.label, true, now());
+          qr.innerHTML = '';
+          botSay(item.next);
+        });
+        qr.appendChild(b);
+      });
+    }
+
     function sendFreeText() {
       var inp = document.getElementById('vws-input');
       var text = inp.value.trim();
@@ -561,22 +605,16 @@
       document.getElementById('vws-qr').innerHTML = '';
       setTimeout(function(){
         showTyping();
+        var reply = getFreeReply(text);
         setTimeout(function(){
           hideTyping();
-          addMsg(freeResponses[freeIdx % freeResponses.length], false, now());
-          freeIdx++;
+          addMsg(reply.msg, false, now());
           var qr = document.getElementById('vws-qr');
-          ['Yes, have him reach out','See pricing','Just browsing'].forEach(function(label, i){
-            var b = document.createElement('button');
-            b.textContent = label;
-            b.style.cssText = 'background:#0e1525;border:1px solid rgba(255,255,255,.1);border-radius:100px;padding:7px 13px;font-size:11px;font-weight:600;color:rgba(225,224,204,.75);cursor:pointer';
-            b.addEventListener('click', function(){
-              addMsg(label, true, now());
-              qr.innerHTML='';
-              botSay(i===0?'capture':i===1?'pricing':'browse');
-            });
-            qr.appendChild(b);
-          });
+          makeQR(qr, [
+            {label:'Yes, have the team reach out', next:'capture'},
+            {label:'See pricing',                  next:'pricing'},
+            {label:'Just browsing',                next:'browse'}
+          ]);
         }, 1000);
       }, 200);
     }
