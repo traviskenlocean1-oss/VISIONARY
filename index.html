@@ -565,38 +565,65 @@
     /* ── Free-text input ── */
     function getFreeReply(text) {
       var t = text.toLowerCase();
-      /* Keyword routing — give a real answer then steer back */
-      if (/\b(price|cost|how much|charge|fee|rate|afford|cheap|expensive|budget)\b/.test(t)) {
-        return { msg: "Great question on pricing! Here's a quick breakdown:\n\n💰 <b>Starter — $500</b> · Single page\n💰 <b>Standard — $750</b> · Up to 5 pages (most popular)\n💰 <b>Full Build — $1,000</b> · Up to 10 pages + blog\n🔧 <b>Maintenance — $100/mo</b> · Unlimited updates\n\nAll one-time fees — you own the site outright.", next: 'pricing' };
+
+      /* "how can you help / what do you do / tell me about you" — lead with value prop */
+      if (/\b(help|what do you|what can you|what you do|tell me about|about you|who are you|what is this|what's this)\b/.test(t)) {
+        return { msg: "Great question — here's exactly what we do:\n\n✅ <b>Custom websites built from scratch</b> — no templates, no WordPress bloat\n✅ <b>First draft in 48 hours</b> — seriously\n✅ <b>Full SEO included</b> — so customers find you on Google\n✅ <b>Mobile-first</b> — looks perfect on every device\n✅ <b>You own it outright</b> — no ongoing platform fees\n\nWe specialize in local service businesses — contractors, detailers, trainers, professionals. Sites that rank <i>and</i> actually get you calls.\n\nStarting at $500 one-time. Want to see what we can build for you?", next: 'capture' };
       }
-      if (/\b(how long|timeline|fast|quick|days|week|turnaround|when|deadline)\b/.test(t)) {
-        return { msg: "Turnaround is fast! ⚡\n\n⚡ <b>48 hours</b> — first draft ready\n✏️ <b>Day 3–4</b> — revisions\n🚀 <b>Day 5–7</b> — live on Google\n\nSome simple sites launch in 48 hours flat. Ready to get on the schedule?", next: 'capture' };
+
+      /* Why choose us / are you good / best / number one */
+      if (/\b(why|best|number one|#1|top|better|worth it|legit|trusted|proven|real|guarantee|results)\b/.test(t)) {
+        return { msg: "Here's why clients choose us:\n\n🏆 <b>Hand-coded, not templated</b> — every site is built from scratch for your business\n⚡ <b>3–5x faster</b> than WordPress or Wix sites\n📍 <b>Local SEO experts</b> — we know how to get you found in your city\n🔧 <b>Ongoing support</b> — we don't disappear after launch\n💯 <b>Unlimited revisions</b> for 30 days — you approve every detail\n\nWe've helped dozens of local businesses go from invisible to booked out.\n\nWant to see our work or get a quote?", next: 'capture' };
       }
-      if (/\b(portfolio|example|sample|see|work|show|previous|past|client)\b/.test(t)) {
-        return { msg: "We've built for auto detailers, contractors, fitness trainers, professional services, and more.\n\nScroll down to the portfolio section on this page to see some examples. 👇\n\nWant to get a quote for your business?", next: 'capture' };
+
+      /* Price / cost */
+      if (/\b(price|cost|how much|charge|fee|rate|afford|cheap|expensive|budget|pay|payment)\b/.test(t)) {
+        return { msg: "Here's the pricing breakdown:\n\n💰 <b>Starter — $500</b> · 1 page, fast launch\n💰 <b>Standard — $750</b> · Up to 5 pages, most popular for service businesses\n💰 <b>Full Build — $1,000</b> · Up to 10 pages, blog, advanced SEO, logo included\n🔧 <b>Maintenance — $100/mo</b> · Unlimited updates, same-day turnaround\n\nOne-time fees. You own the site outright — no subscriptions, no platform lock-in.\n\nWhich package sounds right for you?", next: 'pricing' };
       }
-      if (/\b(contact|call|phone|reach|talk|speak|number|email)\b/.test(t)) {
-        return { msg: "You can reach our team directly:\n\n📞 <a href='tel:+15618890507' style='color:#60a5fa'>(561) 889-0507</a> — call or text\n📧 visionarywebstudio6@gmail.com\n\nOr drop your info below and we'll follow up within a few hours.", next: 'capture' };
+
+      /* Timeline / turnaround */
+      if (/\b(how long|timeline|fast|quick|days|week|turnaround|when|deadline|launch|ready)\b/.test(t)) {
+        return { msg: "We move fast:\n\n⚡ <b>48 hours</b> — your first draft is ready for review\n✏️ <b>Day 3–4</b> — revisions based on your feedback\n🚀 <b>Day 5–7</b> — live on Google and indexed\n\nSome simple sites go live in 48 hours flat. No waiting weeks.\n\nReady to get on the schedule?", next: 'capture' };
       }
-      if (/\b(seo|google|rank|search|traffic|found|map|local)\b/.test(t)) {
-        return { msg: "Every site we build comes with full SEO out of the box — schema markup, meta tags, Google Maps integration, fast load times, and mobile-first design.\n\nLocal businesses using our sites typically start showing up in Google within a few weeks of launch. Want a quote?", next: 'capture' };
+
+      /* Portfolio / examples */
+      if (/\b(portfolio|example|sample|see|work|show|previous|past|client|done before|built|made)\b/.test(t)) {
+        return { msg: "We've built sites for:\n\n🔧 Auto detailers & car care businesses\n🏋️ Fitness trainers & gyms\n🏠 Contractors & home service pros\n⚖️ Attorneys & professional services\n🛍️ Local retail & shops\n\nScroll down to the portfolio section on this page to see examples. 👇\n\nEvery site is custom — built around <i>your</i> business. Want a quote?", next: 'capture' };
       }
-      if (/\b(wordpress|wix|squarespace|template|theme|shopify)\b/.test(t)) {
-        return { msg: "We hand-code everything from scratch — no WordPress, no Wix, no templates.\n\nThat means your site is 3–5x faster, easier to maintain, and doesn't come with bloated plugins or monthly platform fees.\n\nWant us to rebuild your current site the right way?", next: 'capture' };
+
+      /* Contact / reach us */
+      if (/\b(contact|call|phone|reach|talk|speak|number|email|text|message)\b/.test(t)) {
+        return { msg: "You can reach our team anytime:\n\n📞 <a href='tel:+15618890507' style='color:#60a5fa'>(561) 889-0507</a> — call or text\n📧 visionarywebstudio6@gmail.com\n\nOr drop your name and number here and we'll follow up within a few hours — usually same day.", next: 'capture' };
       }
-      if (/\b(host|domain|server|deploy|ssl|https|cloud)\b/.test(t)) {
-        return { msg: "We handle hosting and domain setup as part of every project — no technical headaches on your end.\n\nAll sites go live on fast, secure cloud hosting. Domains typically run $10–15/yr and we set everything up for you.\n\nWant to get started?", next: 'capture' };
+
+      /* SEO / Google / ranking */
+      if (/\b(seo|google|rank|search|traffic|found|map|local|listing|keywords)\b/.test(t)) {
+        return { msg: "SEO is baked into every build — not an afterthought:\n\n📍 Google Maps integration\n🏷️ Schema markup so Google understands your business\n🔍 Meta tags, page titles, and keyword optimization\n📱 Mobile-first (Google ranks mobile speed first)\n⚡ Fast load times — under 2 seconds on average\n\nMost clients start ranking locally within a few weeks of launch.\n\nWant us to get your business found?", next: 'capture' };
       }
-      /* Off-topic — friendly answer + steer back */
-      var offTopic = [
-        "Ha, that's outside our lane — we're website people! 😄\n\nBut here's what we <i>are</i> experts in: building clean, fast websites that get local businesses more calls. Want to see what we can do for you?",
-        "Good question, though that's a bit beyond our expertise! We stick to one thing and do it really well — custom websites that actually bring in business.\n\nAnything we can help you with on that front?",
-        "That one's a bit outside our wheelhouse! 😄 We're pretty focused on one thing — building websites that make local businesses look legit and rank on Google.\n\nWant to know what that looks like for your business?",
-        "Love the curiosity! We're not experts on that, but we ARE experts at getting local businesses online and generating calls. Can we help with that?",
-        "Not exactly our department — but if you ever need a website that actually converts visitors into customers, that's exactly what we do. Interested?"
+
+      /* WordPress / platform comparison */
+      if (/\b(wordpress|wix|squarespace|template|theme|shopify|godaddy|weebly|drag and drop)\b/.test(t)) {
+        return { msg: "Compared to WordPress and Wix, here's the difference:\n\n❌ Templates look generic — everyone has the same site\n❌ Plugins slow your site down (bad for SEO)\n❌ Monthly fees add up ($30–150/mo forever)\n\n✅ We hand-code from scratch — unique to your brand\n✅ 3–5x faster load times\n✅ One-time fee — you own it, no ongoing costs\n\nReady to upgrade from a template?", next: 'capture' };
+      }
+
+      /* Hosting / domain */
+      if (/\b(host|domain|server|deploy|ssl|https|cloud|where|live)\b/.test(t)) {
+        return { msg: "We handle everything on the technical side:\n\n🌐 Domain setup (if you need one — ~$10–15/yr)\n🔒 SSL certificate included (https)\n⚡ Fast cloud hosting — globally distributed\n🛡️ Uptime monitoring included\n\nYou don't touch any of it. We set it all up and hand you the keys.\n\nWant to get your site live?", next: 'capture' };
+      }
+
+      /* Maintenance / updates */
+      if (/\b(update|change|maintain|support|after|ongoing|broken|fix|edit)\b/.test(t)) {
+        return { msg: "After your site launches:\n\n✅ <b>30 days of unlimited free revisions</b> included with every build\n🔧 <b>Maintenance plan — $100/mo</b> for ongoing updates\n   · Unlimited content changes\n   · Same-day turnaround\n   · Monthly performance reports\n   · Priority support\n\nYou'll never be stuck with an outdated site. We handle it.\n\nWant to get started?", next: 'maintenance' };
+      }
+
+      /* Truly off-topic — pivot with professionalism, not deflection */
+      var pivot = [
+        "Appreciate you asking! We're a web studio — so while that's a bit outside our world, what we <i>are</i> experts at is making local businesses look professional online and get more calls.\n\nHere's what sets us apart:\n✅ Custom-coded, not templated\n✅ SEO built in from day one\n✅ You own the site outright\n\nWant to see what we can build for you?",
+        "Ha, that's one for another day! 😄 What we <i>do</i> know inside and out is building websites that rank on Google and convert visitors into real customers.\n\nWe've done it for contractors, detailers, trainers, and dozens of local businesses. Want to see how we can do it for yours?",
+        "Outside our wheelhouse — but here's what's very much <i>in</i> our wheelhouse:\n\n🏆 #1 thing we do: custom websites that actually get local businesses found and called.\n\nFast turnaround, full SEO, you own it outright. Starting at $500.\n\nInterested in learning more?"
       ];
-      var pick = offTopic[Math.floor(Math.random() * offTopic.length)];
-      return { msg: pick, next: 'browse' };
+      var pick = pivot[Math.floor(Math.random() * pivot.length)];
+      return { msg: pick, next: 'capture' };
     }
 
     function makeQR(qr, items) {
