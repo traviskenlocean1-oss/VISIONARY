@@ -1028,8 +1028,9 @@
       ]
     };
 
-    /* Normalize URL slug aliases (React uses /hosting not /hosting-domain) */
-    var SLUG_KEY = SLUG === 'hosting' ? 'hosting-domain' : SLUG;
+    /* Normalize URL slug aliases — React uses shorter route slugs than our C config keys */
+    var SLUG_ALIAS = { 'hosting': 'hosting-domain', 'web-development': 'website-development' };
+    var SLUG_KEY = SLUG_ALIAS[SLUG] || SLUG;
     var svc = C[SLUG_KEY];
     if (!svc) return;
 
@@ -1049,8 +1050,8 @@
       '[data-vws-page="'+P+'"] header{background:rgba(6,9,22,0.99)!important}',
       /* Bug 5 — prevent horizontal overflow scroll past footer */
       'html{overflow-x:hidden!important}',
-      /* Bug 1/3 — non-hero sections get solid dark bg so hue-rotate doesn't show through */
-      '[data-vws-page="'+P+'"] main section:not(:first-child){background:#080c14!important}',
+      /* Bug 1/3 — no <main> in React's output; scope by data-vws-page on html element */
+      '[data-vws-page="'+P+'"] section:not(:first-child){background:#080c14!important}',
       /* Bug 4 — footer anchor buttons must not inherit service color */
       '[data-vws-page="'+P+'"] footer a[href="/contact"],[data-vws-page="'+P+'"] footer a[href*="contact"]{background:transparent!important;color:rgba(255,255,255,0.7)!important;box-shadow:none!important}',
     ];
@@ -1110,13 +1111,12 @@
     }
 
     function injectProblem(svc, slug) {
+      if (document.getElementById('vws-problem')) return;
       var html = buildProblems(svc, slug);
       if (!html) return;
-      var main = document.querySelector('main');
-      if (!main) return;
-      var sections = main.querySelectorAll('section');
-      var hero = sections[0];
-      if (!hero) return;
+      /* React renders no <main> — find the first <section> (hero) globally */
+      var hero = document.querySelector('section');
+      if (!hero || !hero.parentNode) return;
       var wrap = document.createElement('div');
       wrap.innerHTML = html;
       var problemEl = wrap.firstElementChild;
@@ -1590,13 +1590,12 @@
         }
       });
 
-      /* Bug 1/3 — force solid dark background on every non-hero section in main */
-      var mainEl = document.querySelector('main');
-      if (mainEl) {
-        var allSections = mainEl.querySelectorAll('section');
-        for (var si = 1; si < allSections.length; si++) {
-          allSections[si].style.setProperty('background', '#080c14', 'important');
-        }
+      /* Bug 1/3 — force solid dark bg on non-hero sections (React has no <main> wrapper) */
+      var allSections = document.querySelectorAll('section');
+      for (var si = 1; si < allSections.length; si++) {
+        var sec = allSections[si];
+        if (!sec.id || sec.id === 'vws-deepdive') continue;
+        sec.style.setProperty('background', '#080c14', 'important');
       }
     }
 
