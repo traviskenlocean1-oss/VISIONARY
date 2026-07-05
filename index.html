@@ -744,9 +744,17 @@
     function runAll() {
       var slug = getSlug();
       /* Clean up previous injections so switching service pages doesn't stack */
-      ['vws-ba-injected','vws-deepdive','vws-svc-theme','vws-svc-listing'].forEach(function(id){
+      ['vws-ba-injected','vws-deepdive','vws-svc-theme','vws-svc-listing','vws-ill-wrap'].forEach(function(id){
         var el = document.getElementById(id);
         if (el) el.remove ? el.remove() : el.parentNode.removeChild(el);
+      });
+      /* Restore inline styles we previously set so they don't bleed to other pages */
+      Array.from(document.querySelectorAll('[data-vws-colored]')).forEach(function(el) {
+        el.style.removeProperty('color');
+        el.style.removeProperty('background');
+        el.style.removeProperty('background-color');
+        el.style.removeProperty('box-shadow');
+        el.removeAttribute('data-vws-colored');
       });
       /* Unfreeze GSAP on the new page — run immediately and after React renders */
       unfreezeAll();
@@ -910,14 +918,8 @@
     /* ── 1. Color theme injection (CSS layer) ── */
     var themeStyle = document.createElement('style');
     themeStyle.id = 'vws-svc-theme';
-    themeStyle.textContent = [
-      '[class*="text-blue"]{color:'+svc.lt+'!important}',
-      '[class*="bg-blue"]{background-color:'+svc.color+'!important}',
-      '[class*="border-blue"]{border-color:'+svc.color+'!important}',
-      '.text-blue-400,.text-blue-500,.text-blue-600{color:'+svc.lt+'!important}',
-      '.bg-blue-600,.bg-blue-700,.bg-blue-800,.bg-blue-500{background-color:'+svc.color+'!important}',
-      'button[class*="bg-blue"],a[class*="bg-blue"]{box-shadow:0 4px 20px '+svc.glow+'!important}',
-    ].join('');
+    /* No CSS class overrides — they bleed across SPA navigation; use JS targeting only */
+    themeStyle.textContent = '';
     document.head.appendChild(themeStyle);
 
     /* ── 2. HTML builders ── */
@@ -1227,65 +1229,68 @@
       return '<div style="width:100%;max-width:440px;font-family:Barlow,system-ui,sans-serif"><div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:40px;text-align:center"><div style="width:56px;height:56px;border-radius:14px;background:'+c+';margin:0 auto 16px;display:flex;align-items:center;justify-content:center"><div style="width:24px;height:24px;border-radius:50%;background:rgba(255,255,255,0.3)"></div></div><div style="font-size:16px;font-weight:800;color:#fff;margin-bottom:8px">Visionary Web Studio</div><div style="font-size:12px;color:rgba(255,255,255,0.45);line-height:1.6">Premium digital services for local businesses.</div></div></div>';
     }
 
-    /* ── 4. Inject illustration into the left column of the page layout ── */
+    /* ── 4. Inject illustration into the left column — section-based search ── */
     function injectIllustration(svc) {
       if (document.getElementById('vws-ill-wrap')) return;
 
-      /* Find "What's Involved" heading */
-      var heading = null;
-      var all = Array.from(document.querySelectorAll('*'));
-      for (var i=0;i<all.length;i++) {
-        var el=all[i];
-        if (el.children.length<=2 && /what.{0,8}involved/i.test(el.textContent.trim())) { heading=el; break; }
-      }
-      if (!heading) return;
+      /* Find the section containing "What's Involved" */
+      var whatsInvSection = null;
+      Array.from(document.querySelectorAll('section')).forEach(function(s) {
+        if (!whatsInvSection && /what.{0,8}involved/i.test(s.textContent)) whatsInvSection = s;
+      });
+      if (!whatsInvSection) return;
 
-      /* Walk up to the flex/grid 2-column parent */
-      var branch = heading;
-      var twoCol = null, rightBranch = null;
-      for (var w=0;w<10;w++) {
-        var par = branch.parentElement;
-        if (!par) break;
-        if (par.children.length >= 2 && /flex|grid/.test(window.getComputedStyle(par).display)) {
-          twoCol = par; rightBranch = branch; break;
+      /* Within that section, find the first flex/grid element with 2+ children */
+      var twoCol = null;
+      Array.from(whatsInvSection.querySelectorAll('*')).some(function(el) {
+        if (el.children.length >= 2 && /flex|grid/.test(window.getComputedStyle(el).display)) {
+          twoCol = el; return true;
         }
-        branch = par;
-      }
-      if (!twoCol || !rightBranch) return;
+      });
+      if (!twoCol) return;
 
-      /* Find the left column — the child NOT containing our heading */
+      /* The left column = the child that does NOT contain "What's Involved" text */
       var leftCol = null;
       for (var ci=0;ci<twoCol.children.length;ci++) {
-        var ch = twoCol.children[ci];
-        if (!ch.contains(heading) && ch !== rightBranch) { leftCol=ch; break; }
+        if (!/what.{0,8}involved/i.test(twoCol.children[ci].textContent)) {
+          leftCol = twoCol.children[ci]; break;
+        }
       }
       if (!leftCol) return;
 
+      /* Inject our illustration — replace whatever was there */
+      leftCol.innerHTML = '';
+      leftCol.style.cssText += ';display:flex!important;align-items:center!important;justify-content:center!important;overflow:visible!important;position:relative!important';
       var wrap = document.createElement('div');
       wrap.id = 'vws-ill-wrap';
       wrap.style.cssText = 'display:flex;align-items:center;justify-content:center;width:100%;padding:24px 16px;box-sizing:border-box;min-height:400px';
       wrap.innerHTML = buildIllustration(SLUG, svc);
-
-      leftCol.innerHTML = '';
-      leftCol.style.overflow = 'visible';
       leftCol.appendChild(wrap);
     }
 
     /* ── 5. Main enhance function ── */
     function enhance() {
-      /* JS color override — targets computed blue colors and replaces with service color */
-      var blueRx = /rgb\(29,\s*78,\s*216\)|rgb\(37,\s*99,\s*235\)|rgb\(59,\s*130,\s*246\)|rgb\(96,\s*165,\s*250\)|rgb\(147,\s*197,\s*253\)/;
-      var blueBgRx = /rgb\(29,\s*78,\s*216\)|rgb\(37,\s*99,\s*235\)|rgb\(30,\s*58,\s*138\)/;
-      Array.from(document.querySelectorAll('a,button,span,p,h1,h2,h3,h4,li')).forEach(function(el) {
-        var cs = window.getComputedStyle(el);
-        if (blueRx.test(cs.color)) el.style.setProperty('color', svc.lt, 'important');
-        if (blueBgRx.test(cs.backgroundColor)) {
-          el.style.setProperty('background-color', svc.color, 'important');
-          el.style.setProperty('box-shadow', '0 4px 20px '+svc.glow, 'important');
+      /* Targeted color overrides only — tracked with data-vws-colored for cleanup on navigation */
+      /* SERVICE 0X label */
+      Array.from(document.querySelectorAll('*')).forEach(function(el) {
+        if (el.children.length === 0 && /^SERVICE\s+\d+$/.test(el.textContent.trim())) {
+          el.setAttribute('data-vws-colored', '1');
+          el.style.setProperty('color', svc.lt, 'important');
+        }
+      });
+      /* GET STARTED / CTA button inside the React service section (not our injected ones) */
+      var allBtns = Array.from(document.querySelectorAll('a[href="/contact"],a[href*="contact"]'));
+      allBtns.forEach(function(btn) {
+        if (!btn.closest('[id^="vws-"]')) {
+          btn.setAttribute('data-vws-colored', '1');
+          btn.style.setProperty('background', svc.color, 'important');
+          btn.style.setProperty('background-color', svc.color, 'important');
+          btn.style.setProperty('box-shadow', '0 8px 30px '+svc.glow, 'important');
+          btn.style.setProperty('color', '#fff', 'important');
         }
       });
 
-      /* Inject the illustration into the empty left column */
+      /* Inject the illustration into the left column */
       injectIllustration(svc);
 
       /* ── Before/after section replacement (only if React rendered BEFORE/AFTER text) ── */
