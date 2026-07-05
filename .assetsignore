@@ -1,0 +1,13 @@
+node_modules/
+.wrangler/
+.git/
+package.json
+package-lock.json
+wrangler.jsonc
+*.md
+*.log
+recovered-index.html
+.gitignore
+.assetsignore
+.dev.vars*
+.env*
