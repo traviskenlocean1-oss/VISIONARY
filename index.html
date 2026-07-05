@@ -135,13 +135,19 @@
   <!-- ── UPGRADED CHAT WIDGET ───────────────────────────── -->
   <style>
   #vws-chat-root *{box-sizing:border-box;font-family:'Barlow',system-ui,sans-serif}
-  @keyframes vws-slidein{from{opacity:0;transform:translateY(18px) scale(.97)}to{opacity:1;transform:translateY(0) scale(1)}}
-  @keyframes vws-dot{0%,80%,100%{transform:scale(0.6);opacity:.4}40%{transform:scale(1);opacity:1}}
-  @keyframes vws-pulse{0%,100%{box-shadow:0 0 0 0 rgba(59,130,246,.45)}70%{box-shadow:0 0 0 10px rgba(59,130,246,0)}}
+  @keyframes vws-slidein{from{opacity:0;transform:translateY(16px) scale(.96)}to{opacity:1;transform:translateY(0) scale(1)}}
+  @keyframes vws-dot{0%,80%,100%{transform:scale(0.55);opacity:.35}40%{transform:scale(1);opacity:1}}
+  @keyframes vws-pulse{0%,100%{box-shadow:0 0 0 0 rgba(59,130,246,.5)}70%{box-shadow:0 0 0 12px rgba(59,130,246,0)}}
   @keyframes vws-badge{from{transform:scale(0)}to{transform:scale(1)}}
-  .vws-dot-1{animation:vws-dot 1.2s infinite .0s}
-  .vws-dot-2{animation:vws-dot 1.2s infinite .2s}
-  .vws-dot-3{animation:vws-dot 1.2s infinite .4s}
+  @keyframes vws-msgpop{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+  .vws-dot-1{animation:vws-dot 1.3s ease-in-out infinite 0s}
+  .vws-dot-2{animation:vws-dot 1.3s ease-in-out infinite .22s}
+  .vws-dot-3{animation:vws-dot 1.3s ease-in-out infinite .44s}
+  .vws-msg-anim{animation:vws-msgpop .22s ease both}
+  #vws-msgs::-webkit-scrollbar{width:3px}
+  #vws-msgs::-webkit-scrollbar-track{background:transparent}
+  #vws-msgs::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1);border-radius:3px}
+  #vws-fname:focus,#vws-fphone:focus,#vws-input:focus{border-color:rgba(59,130,246,.6)!important;box-shadow:0 0 0 3px rgba(59,130,246,.12)!important}
   </style>
 
   <script>
@@ -283,138 +289,93 @@
   function buildChat() {
     if (document.getElementById('vws-chat-root')) return;
 
-    /* Hide original React chat widget */
-    var reactChat = Array.from(document.querySelectorAll('*')).find(function(el) {
+    /* ── Kill ALL fixed bottom-right elements from React (chat window + button) ── */
+    Array.from(document.querySelectorAll('*')).forEach(function(el) {
       var s = window.getComputedStyle(el);
-      return s.position === 'fixed' && s.bottom === '24px' && s.right === '24px' && s.zIndex === '8990';
+      var b = parseInt(s.bottom), r = parseInt(s.right);
+      if (s.position === 'fixed' && b >= 0 && b <= 120 && r >= 0 && r <= 120) {
+        el.style.cssText += ';display:none!important;visibility:hidden!important;opacity:0!important;pointer-events:none!important';
+      }
     });
-    if (reactChat) reactChat.style.display = 'none';
-    /* Also hide the React chat launcher button if separate */
-    var reactBtn = Array.from(document.querySelectorAll('*')).find(function(el){
-      var s = window.getComputedStyle(el);
-      return s.position==='fixed' && parseInt(s.bottom)<80 && parseInt(s.right)<80 && s.zIndex==='8990' && el!==reactChat;
-    });
-    if(reactBtn) reactBtn.style.display='none';
 
-    /* Root container */
+    /* Root */
     var root = document.createElement('div');
     root.id = 'vws-chat-root';
-    root.style.cssText = 'position:fixed;bottom:24px;right:24px;z-index:10000;display:flex;flex-direction:column;align-items:flex-end;gap:10px';
+    root.style.cssText = 'position:fixed;bottom:24px;right:24px;z-index:10000;display:flex;flex-direction:column;align-items:flex-end;gap:12px';
     document.body.appendChild(root);
 
-    /* ── Chat window ── */
+    /* ── Chat window (agency redesign) ── */
     var win = document.createElement('div');
     win.id = 'vws-chat-win';
-    win.style.cssText = [
-      'width:360px',
-      'max-width:calc(100vw - 32px)',
-      'border-radius:14px',
-      'overflow:hidden',
-      'box-shadow:rgba(0,0,0,0.65) 0px 24px 80px,rgba(255,255,255,0.08) 0px 0px 0px 1px',
-      'display:flex',
-      'flex-direction:column',
-      'background:#060916',
-      'animation:vws-slidein 0.28s cubic-bezier(.22,.68,0,1.2) both',
-      'display:none'
-    ].join(';');
+    win.style.cssText = 'width:368px;max-width:calc(100vw - 28px);border-radius:16px;overflow:hidden;display:none;flex-direction:column;background:#07091a;box-shadow:0 32px 80px rgba(0,0,0,.7),0 0 0 1px rgba(255,255,255,.07);animation:vws-slidein .26s cubic-bezier(.22,.68,0,1.2) both';
 
-    /* Header */
     win.innerHTML = [
-      '<div id="vws-ch" style="background:linear-gradient(135deg,#1e3a8a 0%,#1d4ed8 100%);padding:12px 14px 0;flex-shrink:0;position:relative;overflow:hidden">',
-        '<div style="display:flex;align-items:flex-start;justify-content:space-between">',
-          '<div>',
-            '<p style="font-size:13px;font-weight:700;color:#fff;line-height:1.2">Visionary Web Studio</p>',
-            '<p id="vws-status" style="font-size:10px;color:rgba(255,255,255,.6);margin-top:2px;display:flex;align-items:center;gap:5px">',
-              '<span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:#4ade80"></span>',
-              'Live Chat · Online now',
+      /* ── Header ── */
+      '<div style="background:linear-gradient(135deg,#0f1f5c 0%,#1a3da8 60%,#1d4ed8 100%);padding:18px 16px 16px;flex-shrink:0;position:relative;overflow:hidden">',
+        /* Top accent line */
+        '<div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,#60a5fa,#818cf8,#60a5fa)"></div>',
+        /* Brand row */
+        '<div style="display:flex;align-items:center;gap:12px">',
+          /* V shield icon */
+          '<div style="width:38px;height:38px;flex-shrink:0;border-radius:10px;background:rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;border:1px solid rgba(255,255,255,.15)">',
+            '<svg width="22" height="26" viewBox="0 0 40 48" fill="none">',
+              '<path d="M20 1L39 12V30L20 47L1 30V12L20 1Z" fill="rgba(255,255,255,0.15)" stroke="rgba(255,255,255,0.3)" stroke-width="0.5"/>',
+              '<path d="M9 18L20 38L31 18" stroke="white" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>',
+            '</svg>',
+          '</div>',
+          '<div style="flex:1;min-width:0">',
+            '<p style="font-size:14px;font-weight:800;color:#fff;letter-spacing:.02em;margin-bottom:3px">Visionary Web Studio</p>',
+            '<p id="vws-status" style="font-size:11px;color:rgba(255,255,255,.6);display:flex;align-items:center;gap:5px">',
+              '<span style="width:7px;height:7px;border-radius:50%;background:#4ade80;display:inline-block;flex-shrink:0;box-shadow:0 0 6px rgba(74,222,128,.6)"></span>',
+              'Online now · Replies in minutes',
             '</p>',
           '</div>',
-          '<div style="display:flex;gap:4px;flex-shrink:0">',
-            '<button id="vws-min" title="Minimize" style="background:rgba(255,255,255,.12);border:none;border-radius:4px;width:28px;height:28px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#fff;font-size:16px;line-height:1">−</button>',
-            '<button id="vws-cls" title="Close" style="background:rgba(255,255,255,.12);border:none;border-radius:4px;width:28px;height:28px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#fff;font-size:16px;line-height:1">×</button>',
+          /* Controls */
+          '<div style="display:flex;gap:6px;flex-shrink:0">',
+            '<button id="vws-min" title="Minimize" style="background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);border-radius:6px;width:28px;height:28px;cursor:pointer;color:rgba(255,255,255,.8);font-size:15px;line-height:1;display:flex;align-items:center;justify-content:center;transition:background .15s">−</button>',
+            '<button id="vws-cls" title="Close"    style="background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);border-radius:6px;width:28px;height:28px;cursor:pointer;color:rgba(255,255,255,.8);font-size:15px;line-height:1;display:flex;align-items:center;justify-content:center;transition:background .15s">×</button>',
           '</div>',
         '</div>',
-        /* Avatar SVG */
-        '<div style="display:flex;justify-content:center;margin-top:-4px">',
-          '<svg viewBox="0 0 80 90" fill="none" xmlns="http://www.w3.org/2000/svg" width="72" height="72" style="flex-shrink:0">',
-            '<ellipse cx="40" cy="72" rx="30" ry="20" fill="#1e40af" opacity="0.6"/>',
-            '<path d="M24 62 Q26 72 40 74 Q54 72 56 62 Q52 56 40 55 Q28 56 24 62Z" fill="#dc2626"/>',
-            '<path d="M36 55 L40 61 L44 55" fill="#fff" opacity="0.9"/>',
-            '<rect x="36" y="48" width="8" height="9" rx="3" fill="#f5c5a3"/>',
-            '<ellipse cx="40" cy="36" rx="14" ry="15" fill="#f5c5a3"/>',
-            '<ellipse cx="40" cy="23" rx="12" ry="7" fill="#5c3a1e"/>',
-            '<path d="M26 34 Q27 22 40 21 Q53 22 54 34 Q51 22 40 22 Q29 22 26 34Z" fill="#5c3a1e"/>',
-            '<ellipse cx="34.5" cy="36" rx="2" ry="2.2" fill="#1a0a00"/>',
-            '<ellipse cx="45.5" cy="36" rx="2" ry="2.2" fill="#1a0a00"/>',
-            '<circle cx="35.3" cy="35.1" r="0.7" fill="#fff"/>',
-            '<circle cx="46.3" cy="35.1" r="0.7" fill="#fff"/>',
-            '<path d="M35 43 Q40 47 45 43" stroke="#c97b50" stroke-width="1.3" stroke-linecap="round" fill="none"/>',
-            '<rect x="20" y="68" width="40" height="5" rx="2" fill="#1e293b"/>',
-            '<rect x="22" y="61" width="36" height="8" rx="2" fill="#334155"/>',
-            '<rect x="23" y="62" width="34" height="6" rx="1" fill="#0f172a"/>',
-            '<rect x="25" y="63.5" width="20" height="1.2" rx="0.6" fill="#3b82f6" opacity="0.7"/>',
-            '<rect x="25" y="65.5" width="14" height="1.2" rx="0.6" fill="#3b82f6" opacity="0.4"/>',
-            '<path d="M24 63 Q18 68 22 72" stroke="#f5c5a3" stroke-width="4.5" stroke-linecap="round" fill="none"/>',
-            '<path d="M56 63 Q62 68 58 72" stroke="#f5c5a3" stroke-width="4.5" stroke-linecap="round" fill="none"/>',
-            '<ellipse cx="22" cy="72" rx="3" ry="2" fill="#f5c5a3"/>',
-            '<ellipse cx="58" cy="72" rx="3" ry="2" fill="#f5c5a3"/>',
-            '<path d="M28 73 Q26 80 30 82" stroke="#1e40af" stroke-width="5" stroke-linecap="round" fill="none"/>',
-            '<path d="M52 73 Q54 80 50 82" stroke="#1e40af" stroke-width="5" stroke-linecap="round" fill="none"/>',
-            '<ellipse cx="30" cy="83" rx="5" ry="2.5" fill="#1e293b"/>',
-            '<ellipse cx="50" cy="83" rx="5" ry="2.5" fill="#1e293b"/>',
-          '</svg>',
-        '</div>',
       '</div>',
-      /* Messages */
-      '<div id="vws-msgs" style="height:300px;overflow-y:auto;background:#060916;padding:14px 0 6px;display:flex;flex-direction:column;gap:10px;scroll-behavior:smooth">',
-        '<p style="text-align:center;font-size:10px;color:rgba(225,224,204,.28);padding:0 16px">Live Chat joined</p>',
-        '<p style="text-align:center;font-size:10px;color:rgba(225,224,204,.28);padding:0 16px">Chat started</p>',
+      /* ── Messages ── */
+      '<div id="vws-msgs" style="height:290px;overflow-y:auto;background:#07091a;padding:16px 0 8px;display:flex;flex-direction:column;gap:10px;scroll-behavior:smooth">',
+        '<p style="text-align:center;font-size:10px;color:rgba(255,255,255,.18);padding:0 16px;letter-spacing:.05em">— Chat started —</p>',
       '</div>',
-      /* Quick replies */
-      '<div id="vws-qr" style="padding:8px 12px 10px;display:flex;flex-wrap:wrap;gap:6px;background:#060916;border-top:1px solid rgba(255,255,255,.05)"></div>',
-      /* Lead capture form (hidden by default) */
-      '<div id="vws-form" style="display:none;padding:12px 14px;background:#060916;border-top:1px solid rgba(255,255,255,.05)">',
-        '<input id="vws-fname" placeholder="Your name" style="width:100%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:7px;padding:9px 12px;font-size:13px;color:#e1e0cc;outline:none;margin-bottom:8px" />',
-        '<input id="vws-fphone" placeholder="Your phone number" style="width:100%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:7px;padding:9px 12px;font-size:13px;color:#e1e0cc;outline:none;margin-bottom:10px" />',
-        '<button id="vws-fsub" style="width:100%;background:#1d4ed8;border:none;border-radius:7px;padding:10px;font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#fff;cursor:pointer">Send — We\'ll reach out →</button>',
+      /* ── Quick replies ── */
+      '<div id="vws-qr" style="padding:10px 14px 12px;display:flex;flex-wrap:wrap;gap:7px;background:#07091a;border-top:1px solid rgba(255,255,255,.05);min-height:20px"></div>',
+      /* ── Lead form ── */
+      '<div id="vws-form" style="display:none;padding:14px;background:#07091a;border-top:1px solid rgba(255,255,255,.05)">',
+        '<input id="vws-fname"  placeholder="Your name"         style="width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:10px 13px;font-size:13px;color:#e1e0cc;outline:none;margin-bottom:9px;transition:border-color .2s,box-shadow .2s"/>',
+        '<input id="vws-fphone" placeholder="Your phone number" style="width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:10px 13px;font-size:13px;color:#e1e0cc;outline:none;margin-bottom:12px;transition:border-color .2s,box-shadow .2s"/>',
+        '<button id="vws-fsub" style="width:100%;background:linear-gradient(135deg,#1d4ed8,#2563eb);border:none;border-radius:8px;padding:11px;font-size:12px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#fff;cursor:pointer">Send — We\'ll Reach Out →</button>',
       '</div>',
-      /* Text input row */
-      '<div id="vws-input-row" style="display:flex;align-items:center;gap:8px;padding:10px 14px;border-top:1px solid rgba(255,255,255,.05);background:#060916">',
-        '<input id="vws-input" placeholder="Type a message here..." style="flex:1;background:transparent;border:none;font-size:13px;color:rgba(225,224,204,.7);outline:none" />',
-        '<button id="vws-send" style="background:#1d4ed8;border:none;border-radius:7px;width:34px;height:34px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0">',
+      /* ── Input row ── */
+      '<div style="display:flex;align-items:center;gap:10px;padding:11px 14px 12px;border-top:1px solid rgba(255,255,255,.05);background:#07091a">',
+        '<input id="vws-input" placeholder="Type a message..." style="flex:1;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:8px;padding:9px 12px;font-size:13px;color:rgba(225,224,204,.8);outline:none;transition:border-color .2s"/>',
+        '<button id="vws-send" style="background:linear-gradient(135deg,#1d4ed8,#2563eb);border:none;border-radius:8px;width:36px;height:36px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:opacity .15s">',
           '<svg width="14" height="14" viewBox="0 0 24 24" fill="#fff"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>',
         '</button>',
       '</div>',
-      /* Footer */
-      '<div style="padding:7px 14px;border-top:1px solid rgba(255,255,255,.04);background:#040710;text-align:center">',
-        '<a href="tel:+15618890507" style="font-size:11px;color:rgba(225,224,204,.35);text-decoration:none">Visionary Web Studio · (561) 889-0507</a>',
-      '</div>'
+      /* ── Footer ── */
+      '<div style="padding:7px 14px 9px;background:#040610;text-align:center;border-top:1px solid rgba(255,255,255,.04)">',
+        '<a href="tel:+15618890507" style="font-size:10px;color:rgba(255,255,255,.25);text-decoration:none;letter-spacing:.04em">Visionary Web Studio · (561) 889-0507</a>',
+      '</div>',
     ].join('');
 
     root.appendChild(win);
 
-    /* ── Chat button ── */
+    /* ── Chat button (premium pill) ── */
     var btn = document.createElement('button');
     btn.id = 'vws-chat-btn';
     btn.title = 'Chat with us';
-    btn.style.cssText = [
-      'width:58px','height:58px','border-radius:50%',
-      'background:linear-gradient(135deg,#1e40af,#2563eb)',
-      'border:none','cursor:pointer',
-      'display:flex','align-items:center','justify-content:center',
-      'box-shadow:0 4px 24px rgba(37,99,235,.5)',
-      'transition:transform .18s,box-shadow .18s',
-      'position:relative',
-      'animation:vws-pulse 3s 4s ease-in-out 3'
-    ].join(';');
+    btn.style.cssText = 'height:52px;padding:0 20px 0 16px;border-radius:100px;background:linear-gradient(135deg,#0f1f5c,#1d4ed8);border:1px solid rgba(255,255,255,.15);cursor:pointer;display:flex;align-items:center;gap:10px;box-shadow:0 8px 32px rgba(29,78,216,.5),0 2px 8px rgba(0,0,0,.4);transition:transform .18s,box-shadow .18s;position:relative;animation:vws-pulse 3s 4s ease-in-out 3';
     btn.innerHTML = [
-      '<svg width="26" height="26" viewBox="0 0 24 24" fill="#fff">',
-        '<path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H5.17L4 17.17V4h16v12z"/>',
-      '</svg>',
-      '<span id="vws-badge" style="position:absolute;top:-2px;right:-2px;background:#ef4444;color:#fff;font-size:10px;font-weight:700;width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;border:2px solid #040710;animation:vws-badge .25s cubic-bezier(.22,.68,0,1.4) both;display:none">1</span>'
+      '<span style="width:9px;height:9px;border-radius:50%;background:#4ade80;flex-shrink:0;box-shadow:0 0 6px rgba(74,222,128,.7)"></span>',
+      '<span style="font-size:13px;font-weight:700;color:#fff;letter-spacing:.02em;white-space:nowrap">Chat with us</span>',
+      '<span id="vws-badge" style="position:absolute;top:-5px;right:-5px;background:#ef4444;color:#fff;font-size:10px;font-weight:700;min-width:18px;height:18px;border-radius:100px;padding:0 5px;display:none;align-items:center;justify-content:center;border:2px solid #060916">1</span>'
     ].join('');
-    btn.addEventListener('mouseenter', function(){ btn.style.transform='scale(1.08)'; btn.style.boxShadow='0 6px 30px rgba(37,99,235,.7)'; });
-    btn.addEventListener('mouseleave', function(){ btn.style.transform=''; btn.style.boxShadow='0 4px 24px rgba(37,99,235,.5)'; });
+    btn.addEventListener('mouseenter', function(){ btn.style.transform='translateY(-2px)'; btn.style.boxShadow='0 12px 40px rgba(29,78,216,.65),0 2px 8px rgba(0,0,0,.4)'; });
+    btn.addEventListener('mouseleave', function(){ btn.style.transform=''; btn.style.boxShadow='0 8px 32px rgba(29,78,216,.5),0 2px 8px rgba(0,0,0,.4)'; });
     root.appendChild(btn);
 
     /* ── State ── */
@@ -457,9 +418,10 @@
       wrap.style.cssText = 'padding:0 14px;display:flex;gap:8px;align-items:flex-end' + (isUser ? ';flex-direction:row-reverse' : '');
 
       var bubble = document.createElement('div');
+      bubble.className = 'vws-msg-anim';
       bubble.style.cssText = isUser
-        ? 'background:#1d4ed8;border-radius:14px 14px 2px 14px;padding:10px 13px;font-size:13px;color:#fff;line-height:1.55;max-width:82%'
-        : 'background:#0e1525;border:1px solid rgba(255,255,255,.06);border-radius:14px 14px 14px 2px;padding:10px 13px;font-size:13px;color:rgba(225,224,204,.88);line-height:1.55;max-width:82%';
+        ? 'background:linear-gradient(135deg,#1d4ed8,#2563eb);border-radius:14px 14px 2px 14px;padding:10px 14px;font-size:13px;color:#fff;line-height:1.6;max-width:84%'
+        : 'background:#0d1228;border:1px solid rgba(255,255,255,.07);border-radius:14px 14px 14px 2px;padding:10px 14px;font-size:13px;color:rgba(225,224,204,.9);line-height:1.6;max-width:84%';
       bubble.innerHTML = html.replace(/\n/g, '<br>');
 
       if (time) {
