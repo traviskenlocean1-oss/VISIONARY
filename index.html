@@ -1138,6 +1138,49 @@
           obs.observe(compSec);
         })();
 
+        /* ── NEW TASK 5: "What We Stand For" — convert vertical list to 2×2 bordered card grid ── */
+        (function() {
+          var sec3 = document.querySelectorAll('section')[3];
+          if (!sec3) return;
+          var container = sec3.querySelector('.border-t');
+          if (!container || container.children.length < 4) return;
+          /* Convert the border-divider list to a 2×2 grid */
+          container.style.display = 'grid';
+          container.style.gridTemplateColumns = 'repeat(2, 1fr)';
+          container.style.gap = '1.25rem';
+          container.style.borderTop = 'none';
+          container.setAttribute('data-vws-enh', '1');
+          /* Style each value item as a bordered card */
+          Array.from(container.children).forEach(function(item) {
+            item.style.border = '1px solid rgba(59,130,246,0.18)';
+            item.style.borderBottom = '1px solid rgba(59,130,246,0.18)';
+            item.style.borderRadius = '14px';
+            item.style.padding = '2rem';
+            item.style.background = 'rgba(59,130,246,0.04)';
+            item.style.overflow = 'visible';
+            item.setAttribute('data-vws-enh', '1');
+          });
+        })();
+
+        /* ── NEW TASK 6: "How It Works" — give each step its own card boundary ── */
+        (function() {
+          var sec4 = document.querySelectorAll('section')[4];
+          if (!sec4) return;
+          var grid = sec4.querySelector('.grid');
+          if (!grid || grid.children.length < 4) return;
+          /* Add gap between step cards */
+          grid.style.gap = '1.25rem';
+          grid.setAttribute('data-vws-enh', '1');
+          /* Style each step as a self-contained card */
+          Array.from(grid.children).forEach(function(step) {
+            step.style.border = '1px solid rgba(59,130,246,0.2)';
+            step.style.borderRadius = '12px';
+            step.style.background = 'rgba(59,130,246,0.04)';
+            step.style.overflow = 'visible';
+            step.setAttribute('data-vws-enh', '1');
+          });
+        })();
+
         /* ── TASK 2b: Pill tag stagger — React lazy-renders these on scroll, use MutationObserver ── */
         (function() {
           if (window._vwsPillMutObs) { window._vwsPillMutObs.disconnect(); window._vwsPillMutObs = null; }
