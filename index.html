@@ -766,9 +766,13 @@
     function runAll() {
       var slug = getSlug();
       /* Clean up previous injections so switching service pages doesn't stack */
-      ['vws-ba-injected','vws-deepdive','vws-svc-theme','vws-svc-listing','vws-listing-colors','vws-early-hue','vws-ill-wrap','vws-problem','vws-steps','vws-included','vws-results','vws-faq','vws-cta'].forEach(function(id){
+      ['vws-ba-injected','vws-deepdive','vws-svc-theme','vws-svc-listing','vws-listing-colors','vws-early-hue','vws-ill-wrap','vws-hero','vws-problem','vws-steps','vws-included','vws-results','vws-faq','vws-cta'].forEach(function(id){
         var el = document.getElementById(id);
         if (el) el.remove ? el.remove() : el.parentNode.removeChild(el);
+      });
+      /* Restore any React sections we previously hid */
+      document.querySelectorAll('section[style]').forEach(function(s) {
+        s.style.removeProperty('display');
       });
       /* Remove page-level color attribute (used for scoped CSS overrides) */
       document.documentElement.removeAttribute('data-vws-page');
@@ -1342,12 +1346,14 @@
         +'</div></section>';
     }
 
-    /* ── Main rebuild — replaces React's hero, hides React middle sections, injects spec ── */
+    /* ── Main rebuild — injects spec hero + all sections, hides ALL React sections ── */
     var rebuilt = false;
     function rebuild() {
       if (rebuilt) return;
-      var heroSection = document.querySelector('section');
-      if (!heroSection) return;
+      var firstSection = document.querySelector('section');
+      if (!firstSection) return;
+      var footer = document.querySelector('footer');
+      if (!footer) return;
       rebuilt = true;
 
       /* Hue-rotate the fixed background for non-blue services */
@@ -1358,28 +1364,30 @@
         document.head.appendChild(bgStyle);
       }
 
-      /* Replace hero section with spec-compliant layout */
-      heroSection.style.cssText = [
-        'background:radial-gradient(ellipse at top left,rgba('+hexToRgb(svc.color)+',0.4) 0%,transparent 60%) #0a0a0a',
-        'min-height:85vh',
-        'display:flex',
-        'align-items:center',
-        'position:relative',
-        'overflow:hidden',
-        'padding:120px 0 80px'
-      ].join(';');
-      heroSection.innerHTML = buildHeroHTML(SLUG_KEY, svc);
-
-      /* Hide React's non-hero sections (middle process/includes content) */
+      /* Hide ALL React sections — we inject our own hero instead of mutating theirs */
       var allReactSecs = document.querySelectorAll('section:not([id^="vws"])');
-      for (var i = 1; i < allReactSecs.length; i++) {
-        allReactSecs[i].style.setProperty('display','none','important');
+      for (var j = 0; j < allReactSecs.length; j++) {
+        allReactSecs[j].style.setProperty('display','none','important');
       }
 
-      /* Inject spec sections before footer */
-      var footer = document.querySelector('footer');
-      if (!footer) { rebuilt = false; return; }
+      /* Inject spec hero before first React section (idempotent) */
+      if (!document.getElementById('vws-hero')) {
+        var heroEl = document.createElement('section');
+        heroEl.id = 'vws-hero';
+        heroEl.style.cssText = [
+          'background:radial-gradient(ellipse at top left,rgba('+hexToRgb(svc.color)+',0.4) 0%,transparent 60%) #0a0a0a',
+          'min-height:85vh',
+          'display:flex',
+          'align-items:center',
+          'position:relative',
+          'overflow:hidden',
+          'padding:120px 0 80px'
+        ].join(';');
+        heroEl.innerHTML = buildHeroHTML(SLUG_KEY, svc);
+        firstSection.parentNode.insertBefore(heroEl, firstSection);
+      }
 
+      /* Inject remaining spec sections before footer (idempotent) */
       function ins(html, id) {
         if (document.getElementById(id)) return;
         var tmp = document.createElement('div');
@@ -1396,14 +1404,20 @@
       ins(buildCTA(SLUG_KEY, svc), 'vws-cta');
     }
 
-    /* ── Poll until React renders, then rebuild ── */
+    /* ── Poll until React renders, then rebuild. Second pass re-hides any React re-renders. ── */
     var svcAttempts = 0;
     var svcPoll = setInterval(function(){
       svcAttempts++;
       if (document.querySelectorAll('section').length > 0 || svcAttempts > 100) {
         clearInterval(svcPoll);
         rebuild();
-        setTimeout(function(){ rebuilt = false; rebuild(); }, 800);
+        setTimeout(function(){
+          /* Re-hide any sections React re-rendered after our first pass */
+          var reSecs = document.querySelectorAll('section:not([id^="vws"])');
+          for (var k = 0; k < reSecs.length; k++) {
+            reSecs[k].style.setProperty('display','none','important');
+          }
+        }, 900);
       }
     }, 150);
     } /* end runServiceDetail */
