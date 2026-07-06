@@ -822,6 +822,8 @@
       /* Kill any About-page MutationObservers still watching */
       if (window._vwsPillMutObs) { window._vwsPillMutObs.disconnect(); window._vwsPillMutObs = null; }
       if (window._vwsDesignCardMutObs) { window._vwsDesignCardMutObs.disconnect(); window._vwsDesignCardMutObs = null; }
+      if (window._vwsStandForObs) { window._vwsStandForObs.disconnect(); window._vwsStandForObs = null; }
+      if (window._vwsStepsObs) { window._vwsStepsObs.disconnect(); window._vwsStepsObs = null; }
       /* Remove about-page body class and any inline overrides on React sections */
       document.body.classList.remove('vws-about');
       document.querySelectorAll('[data-vws-enh]').forEach(function(el) {
@@ -1138,47 +1140,164 @@
           obs.observe(compSec);
         })();
 
-        /* ── NEW TASK 5: "What We Stand For" — convert vertical list to 2×2 bordered card grid ── */
+        /* ── NEW TASK 2: Design section — replace pill badges with 2×2 icon-card grid ── */
         (function() {
-          var sec3 = document.querySelectorAll('section')[3];
-          if (!sec3) return;
-          var container = sec3.querySelector('.border-t');
-          if (!container || container.children.length < 4) return;
-          /* Convert the border-divider list to a 2×2 grid */
-          container.style.display = 'grid';
-          container.style.gridTemplateColumns = 'repeat(2, 1fr)';
-          container.style.gap = '1.25rem';
-          container.style.borderTop = 'none';
-          container.setAttribute('data-vws-enh', '1');
-          /* Style each value item as a bordered card */
-          Array.from(container.children).forEach(function(item) {
-            item.style.border = '1px solid rgba(59,130,246,0.18)';
-            item.style.borderBottom = '1px solid rgba(59,130,246,0.18)';
-            item.style.borderRadius = '14px';
-            item.style.padding = '2rem';
-            item.style.background = 'rgba(59,130,246,0.04)';
-            item.style.overflow = 'visible';
-            item.setAttribute('data-vws-enh', '1');
-          });
+          if (window._vwsDesignCardMutObs) { window._vwsDesignCardMutObs.disconnect(); window._vwsDesignCardMutObs = null; }
+          var injected = false;
+
+          var CARDS = [
+            {
+              icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="width:28px;height:28px;color:#60a5fa"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M3 9h18M9 21V9"/></svg>',
+              title: 'Custom Layouts',
+              desc: 'Every section built for your content — no template constraints'
+            },
+            {
+              icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="width:28px;height:28px;color:#60a5fa"><circle cx="12" cy="12" r="9"/><path d="M12 3v9l4 2"/></svg>',
+              title: 'Brand-Matched Color',
+              desc: 'Palette, typography, and tone that reflect your brand identity'
+            },
+            {
+              icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="width:28px;height:28px;color:#60a5fa"><path d="M5 12h14M12 5l7 7-7 7"/></svg>',
+              title: 'Scroll Animations',
+              desc: 'Smooth, purposeful motion that guides attention without distraction'
+            },
+            {
+              icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="width:28px;height:28px;color:#60a5fa"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M12 18h.01"/></svg>',
+              title: 'Mobile-First',
+              desc: 'Designed for thumbs first — flawless on every screen size'
+            }
+          ];
+
+          function buildDesignCards() {
+            if (injected) return;
+            var designH = Array.from(document.querySelectorAll('h2,h3')).find(function(h) {
+              return h.textContent && h.textContent.indexOf('cost twice as much') !== -1;
+            });
+            if (!designH) return;
+
+            /* Walk up to find the section-level wrapper containing this heading */
+            var sec = designH;
+            while (sec && sec.tagName !== 'SECTION') sec = sec.parentElement;
+            if (!sec) return;
+
+            /* Find the pill UL inside this section — hide it */
+            var pillUl = sec.querySelector('ul');
+            if (!pillUl) return;
+            pillUl.style.display = 'none';
+            pillUl.setAttribute('data-vws-enh', '1');
+
+            injected = true;
+            if (window._vwsDesignCardMutObs) { window._vwsDesignCardMutObs.disconnect(); window._vwsDesignCardMutObs = null; }
+
+            /* Build grid container */
+            var grid = document.createElement('div');
+            grid.id = 'vws-design-cards';
+            grid.style.cssText = 'display:grid;grid-template-columns:repeat(2,1fr);gap:1rem;margin-top:2rem;max-width:640px';
+
+            CARDS.forEach(function(card) {
+              var c = document.createElement('div');
+              c.style.cssText = [
+                'border:1px solid rgba(59,130,246,0.22)',
+                'border-radius:14px',
+                'padding:1.5rem',
+                'background:rgba(59,130,246,0.05)',
+                'display:flex',
+                'flex-direction:column',
+                'gap:0.625rem',
+                'transition:border-color 0.2s ease, background 0.2s ease',
+                'cursor:default'
+              ].join(';');
+              c.addEventListener('mouseenter', function() {
+                c.style.borderColor = 'rgba(59,130,246,0.5)';
+                c.style.background = 'rgba(59,130,246,0.09)';
+              });
+              c.addEventListener('mouseleave', function() {
+                c.style.borderColor = 'rgba(59,130,246,0.22)';
+                c.style.background = 'rgba(59,130,246,0.05)';
+              });
+              c.innerHTML = card.icon +
+                '<div style="font-weight:700;font-size:0.9rem;color:#e1e0cc;letter-spacing:0.01em">' + card.title + '</div>' +
+                '<div style="font-size:0.78rem;color:rgba(225,224,204,0.5);line-height:1.45">' + card.desc + '</div>';
+              grid.appendChild(c);
+            });
+
+            pillUl.parentNode.insertBefore(grid, pillUl);
+          }
+
+          buildDesignCards();
+          if (!injected) {
+            window._vwsDesignCardMutObs = new MutationObserver(function() { buildDesignCards(); });
+            window._vwsDesignCardMutObs.observe(document.getElementById('root') || document.body, { childList: true, subtree: true });
+            setTimeout(function() { if (window._vwsDesignCardMutObs) { window._vwsDesignCardMutObs.disconnect(); window._vwsDesignCardMutObs = null; } }, 60000);
+          }
         })();
 
-        /* ── NEW TASK 6: "How It Works" — give each step its own card boundary ── */
+        /* ── NEW TASK 5: "What We Stand For" — 2×2 bordered card grid (MutationObserver-backed) ── */
         (function() {
-          var sec4 = document.querySelectorAll('section')[4];
-          if (!sec4) return;
-          var grid = sec4.querySelector('.grid');
-          if (!grid || grid.children.length < 4) return;
-          /* Add gap between step cards */
-          grid.style.gap = '1.25rem';
-          grid.setAttribute('data-vws-enh', '1');
-          /* Style each step as a self-contained card */
-          Array.from(grid.children).forEach(function(step) {
-            step.style.border = '1px solid rgba(59,130,246,0.2)';
-            step.style.borderRadius = '12px';
-            step.style.background = 'rgba(59,130,246,0.04)';
-            step.style.overflow = 'visible';
-            step.setAttribute('data-vws-enh', '1');
-          });
+          if (window._vwsStandForObs) { window._vwsStandForObs.disconnect(); window._vwsStandForObs = null; }
+          var done = false;
+
+          function applyStandFor() {
+            if (done) return;
+            var sec3 = document.querySelectorAll('section')[3];
+            if (!sec3) return;
+            var container = sec3.querySelector('.border-t');
+            if (!container || container.children.length < 4) return;
+            done = true;
+            if (window._vwsStandForObs) { window._vwsStandForObs.disconnect(); window._vwsStandForObs = null; }
+            container.style.display = 'grid';
+            container.style.gridTemplateColumns = 'repeat(2, 1fr)';
+            container.style.gap = '1.25rem';
+            container.style.borderTop = 'none';
+            container.setAttribute('data-vws-enh', '1');
+            Array.from(container.children).forEach(function(item) {
+              item.style.border = '1px solid rgba(59,130,246,0.18)';
+              item.style.borderRadius = '14px';
+              item.style.padding = '2rem';
+              item.style.background = 'rgba(59,130,246,0.04)';
+              item.style.overflow = 'visible';
+              item.setAttribute('data-vws-enh', '1');
+            });
+          }
+
+          applyStandFor();
+          if (!done) {
+            window._vwsStandForObs = new MutationObserver(function() { applyStandFor(); });
+            window._vwsStandForObs.observe(document.getElementById('root') || document.body, { childList: true, subtree: true });
+            setTimeout(function() { if (window._vwsStandForObs) { window._vwsStandForObs.disconnect(); window._vwsStandForObs = null; } }, 60000);
+          }
+        })();
+
+        /* ── NEW TASK 6: "How It Works" — step cards (MutationObserver-backed) ── */
+        (function() {
+          if (window._vwsStepsObs) { window._vwsStepsObs.disconnect(); window._vwsStepsObs = null; }
+          var done = false;
+
+          function applyStepCards() {
+            if (done) return;
+            var sec4 = document.querySelectorAll('section')[4];
+            if (!sec4) return;
+            var grid = sec4.querySelector('.grid');
+            if (!grid || grid.children.length < 4) return;
+            done = true;
+            if (window._vwsStepsObs) { window._vwsStepsObs.disconnect(); window._vwsStepsObs = null; }
+            grid.style.gap = '1.25rem';
+            grid.setAttribute('data-vws-enh', '1');
+            Array.from(grid.children).forEach(function(step) {
+              step.style.border = '1px solid rgba(59,130,246,0.2)';
+              step.style.borderRadius = '12px';
+              step.style.background = 'rgba(59,130,246,0.04)';
+              step.style.overflow = 'visible';
+              step.setAttribute('data-vws-enh', '1');
+            });
+          }
+
+          applyStepCards();
+          if (!done) {
+            window._vwsStepsObs = new MutationObserver(function() { applyStepCards(); });
+            window._vwsStepsObs.observe(document.getElementById('root') || document.body, { childList: true, subtree: true });
+            setTimeout(function() { if (window._vwsStepsObs) { window._vwsStepsObs.disconnect(); window._vwsStepsObs = null; } }, 60000);
+          }
         })();
 
         /* ── TASK 2b: Pill tag stagger — React lazy-renders these on scroll, use MutationObserver ── */
