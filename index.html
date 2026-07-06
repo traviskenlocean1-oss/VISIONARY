@@ -949,6 +949,35 @@
         tmp.innerHTML = html;
         footer.parentNode.insertBefore(tmp.firstElementChild, footer);
 
+        /* ── TASK 5: Spacious padding on hero, comparison, CTA sections ── */
+        (function() {
+          var sections = document.querySelectorAll('section');
+          /* Hero — already min-h-screen; add breathing room to inner content div */
+          var heroSec = sections[0];
+          if (heroSec) {
+            var heroInner = heroSec.querySelector('.relative.z-10');
+            if (heroInner) {
+              heroInner.style.paddingTop    = '96px';
+              heroInner.style.paddingBottom = '96px';
+              heroInner.setAttribute('data-vws-enh', '1');
+            }
+          }
+          /* Comparison — was py-28/py-40, increase ~45% */
+          var compSec = sections[2];
+          if (compSec) {
+            compSec.style.paddingTop    = '10rem';  /* ~160px from py-40; new: ~225px */
+            compSec.style.paddingBottom = '10rem';
+            compSec.setAttribute('data-vws-enh', '1');
+          }
+          /* CTA — was py-32 (128px); increase to ~190px */
+          var ctaSec = sections[5];
+          if (ctaSec) {
+            ctaSec.style.paddingTop    = '12rem';
+            ctaSec.style.paddingBottom = '12rem';
+            ctaSec.setAttribute('data-vws-enh', '1');
+          }
+        })();
+
         /* ── TASK 4: Animated draw-in step progress lines ── */
         (function() {
           var stepSec = document.querySelectorAll('section')[4];
