@@ -815,12 +815,13 @@
     function runAll() {
       var slug = getSlug();
       /* Clean up previous injections so switching service pages doesn't stack */
-      ['vws-ba-injected','vws-deepdive','vws-svc-theme','vws-svc-listing','vws-listing-colors','vws-early-hue','vws-ill-wrap','vws-hero','vws-problem','vws-steps','vws-included','vws-results','vws-faq','vws-cta','vws-about-diff','vws-about-styles'].forEach(function(id){
+      ['vws-ba-injected','vws-deepdive','vws-svc-theme','vws-svc-listing','vws-listing-colors','vws-early-hue','vws-ill-wrap','vws-hero','vws-problem','vws-steps','vws-included','vws-results','vws-faq','vws-cta','vws-about-diff','vws-about-styles','vws-design-cards','vws-seo-code'].forEach(function(id){
         var el = document.getElementById(id);
         if (el) el.remove ? el.remove() : el.parentNode.removeChild(el);
       });
-      /* Kill pill MutationObserver if still watching (user navigated before scrolling to pills) */
+      /* Kill any About-page MutationObservers still watching */
       if (window._vwsPillMutObs) { window._vwsPillMutObs.disconnect(); window._vwsPillMutObs = null; }
+      if (window._vwsDesignCardMutObs) { window._vwsDesignCardMutObs.disconnect(); window._vwsDesignCardMutObs = null; }
       /* Remove about-page body class and any inline overrides on React sections */
       document.body.classList.remove('vws-about');
       document.querySelectorAll('[data-vws-enh]').forEach(function(el) {
@@ -832,6 +833,18 @@
         el.style.removeProperty('padding-bottom');
         el.style.removeProperty('opacity');
         el.style.removeProperty('transition');
+        el.style.removeProperty('background-color');
+        el.style.removeProperty('background');
+        el.style.removeProperty('display');
+        el.style.removeProperty('grid-template-columns');
+        el.style.removeProperty('gap');
+        el.style.removeProperty('border-radius');
+        el.style.removeProperty('overflow');
+        el.style.removeProperty('filter');
+        el.style.removeProperty('border-top');
+        el.style.removeProperty('border-bottom');
+        el.style.removeProperty('border-left');
+        el.style.removeProperty('border-right');
       });
       /* Restore any React sections we previously hid */
       document.querySelectorAll('section[style]').forEach(function(s) {
@@ -980,6 +993,60 @@
             ctaSec.style.paddingBottom = '12rem';
             ctaSec.setAttribute('data-vws-enh', '1');
           }
+        })();
+
+        /* ── NEW TASK 1: Alternating section backgrounds ── */
+        (function() {
+          var BLACK = '#000000';
+          var NAVY  = '#0a0e1a';
+
+          function getFullWidthEl(heading) {
+            var el = heading;
+            while (el) {
+              el = el.parentElement;
+              if (!el || el.tagName === 'BODY' || el.tagName === 'SECTION') break;
+              if (el.getBoundingClientRect().width >= 1250) return el;
+            }
+            return null;
+          }
+          function getInnerEl(heading) {
+            var el = heading;
+            while (el) {
+              el = el.parentElement;
+              if (!el || el.tagName === 'BODY' || el.tagName === 'SECTION') break;
+              if (el.className && typeof el.className === 'string' && el.className.indexOf('py-24') !== -1) return el;
+            }
+            return null;
+          }
+
+          var designH = Array.from(document.querySelectorAll('h2,h3')).find(function(h) {
+            return h.textContent && h.textContent.indexOf('cost twice as much') !== -1;
+          });
+          var seoH = Array.from(document.querySelectorAll('h2,h3')).find(function(h) {
+            return h.textContent && h.textContent.indexOf('Built to be found') !== -1;
+          });
+
+          var sectionEls = Array.from(document.querySelectorAll('section'));
+          var blocks = sectionEls.map(function(s) {
+            return { el: s, top: s.getBoundingClientRect().top + window.scrollY };
+          });
+
+          var designEl = designH ? getFullWidthEl(designH) : null;
+          var seoEl    = seoH    ? getFullWidthEl(seoH)    : null;
+          if (designEl && seoEl && designEl === seoEl) {
+            designEl = designH ? getInnerEl(designH) : null;
+            seoEl    = seoH    ? getInnerEl(seoH)    : null;
+          }
+
+          if (designEl) blocks.push({ el: designEl, top: designEl.getBoundingClientRect().top + window.scrollY });
+          if (seoEl && seoEl !== designEl) blocks.push({ el: seoEl, top: seoEl.getBoundingClientRect().top + window.scrollY });
+
+          blocks.sort(function(a, b) { return a.top - b.top; });
+
+          blocks.forEach(function(block, i) {
+            block.el.style.backgroundColor = i % 2 === 0 ? BLACK : NAVY;
+            block.el.setAttribute('data-vws-enh', '1');
+          });
         })();
 
         /* ── TASK 4: Animated draw-in step progress lines ── */
