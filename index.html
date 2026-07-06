@@ -1354,13 +1354,17 @@
 
     function buildCTA(slug, svc) {
       var rgb = hexToRgb(svc.color);
-      return '<section id="vws-cta" style="padding:100px 40px;background:linear-gradient(rgba('+rgb+',0.08),rgba('+rgb+',0.08)) #0a0a0a;border-top:1px solid rgba('+rgb+',0.2);'+FF+'">'
-        +'<div style="max-width:640px;margin:0 auto;text-align:center">'
+      /* Transparent so the animated -z-10 background shows through, same as hero */
+      var tint = '<div style="position:absolute;inset:0;background:radial-gradient(ellipse at bottom center,rgba('+rgb+',0.25) 0%,transparent 70%);pointer-events:none;z-index:0"></div>';
+      var border = '<div style="position:absolute;top:0;left:40px;right:40px;height:1px;background:rgba('+rgb+',0.25);z-index:0"></div>';
+      var content = '<div style="position:relative;z-index:1;max-width:640px;margin:0 auto;text-align:center">'
         +'<h2 style="font-size:clamp(32px,5vw,52px);font-weight:800;color:#fff;margin:0 0 16px;line-height:1.1">Ready to get started?</h2>'
         +'<p style="font-size:18px;color:rgba(255,255,255,0.55);margin:0 0 40px;line-height:1.6">Tell us about your project and we\'ll get back to you within 24 hours.</p>'
         +'<a href="/contact" style="display:inline-block;background:'+svc.color+';color:#fff;font-size:17px;font-weight:700;padding:18px 48px;border-radius:8px;text-decoration:none;box-shadow:0 8px 40px '+svc.glow+'">Start Your Project →</a>'
         +'<p style="font-size:15px;color:rgba(255,255,255,0.4);margin:24px 0 0">Or call us directly → <a href="tel:5618890507" style="color:rgba(255,255,255,0.4);text-decoration:none">(561) 889-0507</a></p>'
-        +'</div></section>';
+        +'</div>';
+      return '<section id="vws-cta" style="padding:100px 40px;background:transparent;position:relative;overflow:hidden;'+FF+'">'
+        +tint+border+content+'</section>';
     }
 
     /* ── Main rebuild — injects all spec sections before footer (outside React tree), hides React sections ── */
