@@ -332,6 +332,35 @@
   /* ── LEAD WEBHOOK — paste your Make.com webhook URL here ── */
   var LEAD_WEBHOOK = 'https://hook.us2.make.com/jx5k1lnskcxy17o9lcb71hvxg6563xig';
 
+  /* ── Intercept ALL site forms (hero, contact, etc.) and notify via webhook ── */
+  document.addEventListener('submit', function(e) {
+    var form = e.target;
+    var nameEl  = form.querySelector('[name="name"]');
+    var emailEl = form.querySelector('[name="email"]');
+    var phoneEl = form.querySelector('[name="phone"]');
+    var msgEl   = form.querySelector('[name="message"]');
+    var name    = nameEl  ? nameEl.value.trim()  : '';
+    var email   = emailEl ? emailEl.value.trim() : '';
+    var phone   = phoneEl ? phoneEl.value.trim() : '';
+    var msg     = msgEl   ? msgEl.value.trim()   : '';
+    if (!name && !phone && !email) return;
+    if (LEAD_WEBHOOK && LEAD_WEBHOOK !== 'YOUR_MAKE_WEBHOOK_URL') {
+      fetch(LEAD_WEBHOOK, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: name,
+          email: email,
+          phone: phone,
+          message: msg,
+          source: 'Contact Form',
+          page: window.location.href,
+          time: new Date().toLocaleString('en-US', { timeZone: 'America/New_York' })
+        })
+      }).catch(function(){});
+    }
+  }, true);
+
   /* ── 3. Build the widget DOM ── */
   function buildChat() {
     if (document.getElementById('vws-chat-root')) return;
