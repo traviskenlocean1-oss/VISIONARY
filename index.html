@@ -1175,13 +1175,14 @@
             });
             if (!designH) return;
 
-            /* Walk up to find the section-level wrapper containing this heading */
-            var sec = designH;
-            while (sec && sec.tagName !== 'SECTION') sec = sec.parentElement;
-            if (!sec) return;
-
-            /* Find the pill UL inside this section — hide it */
-            var pillUl = sec.querySelector('ul');
+            /* Walk up from heading until we find a wrapper that contains the pill UL */
+            var el = designH;
+            var pillUl = null;
+            while (el && el.tagName !== 'BODY') {
+              var found = el.querySelector('ul');
+              if (found && found.querySelector('li')) { pillUl = found; break; }
+              el = el.parentElement;
+            }
             if (!pillUl) return;
             pillUl.style.display = 'none';
             pillUl.setAttribute('data-vws-enh', '1');
