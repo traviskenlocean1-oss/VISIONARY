@@ -815,9 +815,19 @@
     function runAll() {
       var slug = getSlug();
       /* Clean up previous injections so switching service pages doesn't stack */
-      ['vws-ba-injected','vws-deepdive','vws-svc-theme','vws-svc-listing','vws-listing-colors','vws-early-hue','vws-ill-wrap','vws-hero','vws-problem','vws-steps','vws-included','vws-results','vws-faq','vws-cta','vws-about-diff'].forEach(function(id){
+      ['vws-ba-injected','vws-deepdive','vws-svc-theme','vws-svc-listing','vws-listing-colors','vws-early-hue','vws-ill-wrap','vws-hero','vws-problem','vws-steps','vws-included','vws-results','vws-faq','vws-cta','vws-about-diff','vws-about-styles'].forEach(function(id){
         var el = document.getElementById(id);
         if (el) el.remove ? el.remove() : el.parentNode.removeChild(el);
+      });
+      /* Remove about-page body class and any inline overrides on React sections */
+      document.body.classList.remove('vws-about');
+      document.querySelectorAll('section[data-vws-enh]').forEach(function(s) {
+        s.removeAttribute('data-vws-enh');
+        s.style.removeProperty('transform');
+        s.style.removeProperty('box-shadow');
+        s.style.removeProperty('border');
+        s.style.removeProperty('padding-top');
+        s.style.removeProperty('padding-bottom');
       });
       /* Restore any React sections we previously hid */
       document.querySelectorAll('section[style]').forEach(function(s) {
@@ -856,6 +866,30 @@
         if (!footer || poll > 80) { clearInterval(t); return; }
         clearInterval(t);
         if (document.getElementById('vws-about-diff')) return;
+
+        /* ── TASK 1: Body class + per-section background glow variation ── */
+        document.body.classList.add('vws-about');
+        if (!document.getElementById('vws-about-styles')) {
+          var bgStyle = document.createElement('style');
+          bgStyle.id = 'vws-about-styles';
+          bgStyle.textContent = [
+            /* Shared base for all section ::before glows */
+            'body.vws-about section::before{content:"";position:absolute;border-radius:50%;pointer-events:none;z-index:0}',
+            /* Hero — large glow bottom-left, rotated outward */
+            'body.vws-about section.min-h-screen::before{width:620px;height:620px;bottom:-80px;left:-70px;background:radial-gradient(circle,rgba(59,130,246,0.08) 0%,transparent 68%);transform:rotate(-18deg) scale(0.92);opacity:0.72}',
+            /* Our Story — medium glow top-right, tilted right */
+            'body.vws-about section#our-story::before{width:440px;height:440px;top:30px;right:-90px;background:radial-gradient(circle,rgba(99,102,241,0.07) 0%,transparent 70%);transform:rotate(13deg) scale(1.08);opacity:0.55}',
+            /* Comparison — left-side glow, compressed & rotated */
+            'body.vws-about section.py-28:not(#our-story)::before{width:520px;height:520px;top:15%;left:-80px;background:radial-gradient(circle,rgba(37,99,235,0.07) 0%,transparent 66%);transform:rotate(6deg) scale(0.8);opacity:0.42}',
+            /* Values — bottom-right glow, pushed out and angled */
+            'body.vws-about section.py-16::before{width:380px;height:380px;bottom:40px;right:20px;background:radial-gradient(circle,rgba(59,130,246,0.065) 0%,transparent 70%);transform:rotate(-11deg) scale(1.16);opacity:0.38}',
+            /* How It Works — centered-top glow, wide rotation */
+            'body.vws-about section.border-t::before{width:500px;height:500px;top:-50px;left:28%;background:radial-gradient(circle,rgba(59,130,246,0.06) 0%,transparent 64%);transform:rotate(31deg) scale(0.87);opacity:0.32}',
+            /* CTA — bottom-right glow, scaled large */
+            'body.vws-about section.py-32::before{width:560px;height:560px;bottom:-90px;right:-50px;background:radial-gradient(circle,rgba(59,130,246,0.09) 0%,transparent 70%);transform:rotate(-9deg) scale(1.2);opacity:0.52}'
+          ].join('');
+          document.head.appendChild(bgStyle);
+        }
 
         var ITEMS = [
           {
