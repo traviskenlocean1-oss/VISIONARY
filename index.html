@@ -947,6 +947,46 @@
         tmp.innerHTML = html;
         footer.parentNode.insertBefore(tmp.firstElementChild, footer);
 
+        /* ── TASK 2: Stagger-in animation + hover on comparison card list rows ── */
+        (function() {
+          var compSec = document.querySelectorAll('section')[2];
+          if (!compSec) return;
+          var allLi = Array.from(compSec.querySelectorAll('li'));
+          allLi.forEach(function(li) {
+            li.style.opacity = '0';
+            li.style.transform = 'translateY(10px)';
+            li.style.transition = 'opacity 0.42s ease, transform 0.42s ease, background 0.2s ease';
+            li.style.borderRadius = '8px';
+            li.style.padding = '4px 6px';
+            li.style.margin = '-4px -6px';
+            li.addEventListener('mouseenter', function() {
+              li.style.background = 'rgba(255,255,255,0.03)';
+              li.style.transform = 'translateY(0) scale(1.018)';
+              var icon = li.querySelector('[class*="rounded-full"]');
+              if (icon) { icon.style.borderColor = 'rgba(96,165,250,0.65)'; icon.style.transition = 'border-color 0.2s ease'; }
+            });
+            li.addEventListener('mouseleave', function() {
+              li.style.background = '';
+              li.style.transform = 'translateY(0) scale(1)';
+              var icon = li.querySelector('[class*="rounded-full"]');
+              if (icon) icon.style.borderColor = '';
+            });
+          });
+          var triggered = false;
+          var obs = new IntersectionObserver(function(entries) {
+            if (!entries[0].isIntersecting || triggered) return;
+            triggered = true;
+            obs.disconnect();
+            allLi.forEach(function(li, i) {
+              setTimeout(function() {
+                li.style.opacity = '1';
+                li.style.transform = 'translateY(0)';
+              }, i * 88);
+            });
+          }, { rootMargin: '0px 0px -60px 0px', threshold: 0.1 });
+          obs.observe(compSec);
+        })();
+
         /* ── Accordion init — collapse all, wire click handlers ── */
         var section = document.getElementById('vws-about-diff');
         section.querySelectorAll('[data-acc="1"]').forEach(function(item) {
