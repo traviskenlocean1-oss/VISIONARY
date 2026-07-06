@@ -824,6 +824,7 @@
       if (window._vwsDesignCardMutObs) { window._vwsDesignCardMutObs.disconnect(); window._vwsDesignCardMutObs = null; }
       if (window._vwsStandForObs) { window._vwsStandForObs.disconnect(); window._vwsStandForObs = null; }
       if (window._vwsStepsObs) { window._vwsStepsObs.disconnect(); window._vwsStepsObs = null; }
+      if (window._vwsSeoCodeObs) { window._vwsSeoCodeObs.disconnect(); window._vwsSeoCodeObs = null; }
       /* Remove about-page body class and any inline overrides on React sections */
       document.body.classList.remove('vws-about');
       document.querySelectorAll('[data-vws-enh]').forEach(function(el) {
@@ -1356,6 +1357,104 @@
             });
             window._vwsPillMutObs.observe(document.getElementById('root') || document.body, { childList: true, subtree: true });
             setTimeout(function() { if (window._vwsPillMutObs) { window._vwsPillMutObs.disconnect(); window._vwsPillMutObs = null; } }, 60000);
+          }
+        })();
+
+        /* ── TASK 3: SEO section — two-column layout with editor code card (MutationObserver-backed) ── */
+        (function() {
+          if (window._vwsSeoCodeObs) { window._vwsSeoCodeObs.disconnect(); window._vwsSeoCodeObs = null; }
+          var done = false;
+
+          function applySeoCode() {
+            if (done) return;
+            if (document.getElementById('vws-seo-code')) { done = true; return; }
+            var seoH = Array.from(document.querySelectorAll('h2,h3')).find(function(h) {
+              return h.textContent && h.textContent.indexOf('Built to be found') !== -1;
+            });
+            if (!seoH) return;
+
+            /* Walk up to find the max-w container holding the heading + pills */
+            var el = seoH;
+            while (el && el.tagName !== 'BODY') {
+              if (el.className && typeof el.className === 'string' && el.className.indexOf('max-w') !== -1) break;
+              el = el.parentElement;
+            }
+            if (!el || el.tagName === 'BODY') return;
+            var leftCol = el;
+
+            /* Walk up one more level to get the row wrapper */
+            var rowWrap = leftCol.parentElement;
+            if (!rowWrap) return;
+
+            done = true;
+            if (window._vwsSeoCodeObs) { window._vwsSeoCodeObs.disconnect(); window._vwsSeoCodeObs = null; }
+
+            /* Turn the row into a two-column flex layout */
+            rowWrap.style.display = 'flex';
+            rowWrap.style.alignItems = 'flex-start';
+            rowWrap.style.gap = '3rem';
+            rowWrap.setAttribute('data-vws-enh', '1');
+            leftCol.style.flex = '1 1 0';
+            leftCol.style.minWidth = '0';
+            leftCol.setAttribute('data-vws-enh', '1');
+
+            /* Build the editor code card */
+            var card = document.createElement('div');
+            card.id = 'vws-seo-code';
+            card.style.cssText = [
+              'flex:0 0 380px',
+              'border:1px solid rgba(59,130,246,0.25)',
+              'border-radius:14px',
+              'overflow:hidden',
+              'font-family:ui-monospace,SFMono-Regular,Menlo,monospace',
+              'font-size:12px',
+              'line-height:1.6',
+              'background:#0d1117',
+              'box-shadow:0 24px 60px rgba(0,0,0,0.7)',
+              'align-self:flex-start',
+              'position:sticky',
+              'top:100px'
+            ].join(';');
+
+            card.innerHTML = [
+              /* Title bar */
+              '<div style="background:#161b22;padding:10px 14px;display:flex;align-items:center;gap:6px;border-bottom:1px solid rgba(255,255,255,0.07)">',
+              '  <span style="width:10px;height:10px;border-radius:50%;background:#ff5f57;display:inline-block"></span>',
+              '  <span style="width:10px;height:10px;border-radius:50%;background:#febc2e;display:inline-block"></span>',
+              '  <span style="width:10px;height:10px;border-radius:50%;background:#28c840;display:inline-block"></span>',
+              '  <span style="margin-left:8px;color:rgba(255,255,255,0.3);font-size:11px">schema.json</span>',
+              '</div>',
+              /* Code body */
+              '<div style="padding:18px 20px;color:#e6edf3">',
+              '<span style="color:#79c0ff">{</span><br>',
+              '  <span style="color:#ff7b72">"@context"</span><span style="color:#e6edf3">: </span><span style="color:#a5d6ff">"https://schema.org"</span><span style="color:#e6edf3">,</span><br>',
+              '  <span style="color:#ff7b72">"@type"</span><span style="color:#e6edf3">: </span><span style="color:#a5d6ff">"LocalBusiness"</span><span style="color:#e6edf3">,</span><br>',
+              '  <span style="color:#ff7b72">"name"</span><span style="color:#e6edf3">: </span><span style="color:#a5d6ff">"Your Business"</span><span style="color:#e6edf3">,</span><br>',
+              '  <span style="color:#ff7b72">"description"</span><span style="color:#e6edf3">: </span><span style="color:#a5d6ff">"..."</span><span style="color:#e6edf3">,</span><br>',
+              '  <span style="color:#ff7b72">"url"</span><span style="color:#e6edf3">: </span><span style="color:#a5d6ff">"https://yourdomain.com"</span><span style="color:#e6edf3">,</span><br>',
+              '  <span style="color:#ff7b72">"telephone"</span><span style="color:#e6edf3">: </span><span style="color:#a5d6ff">"+1-555-000-0000"</span><span style="color:#e6edf3">,</span><br>',
+              '  <span style="color:#ff7b72">"address"</span><span style="color:#e6edf3">: </span><span style="color:#79c0ff">{</span><br>',
+              '    <span style="color:#ff7b72">"@type"</span><span style="color:#e6edf3">: </span><span style="color:#a5d6ff">"PostalAddress"</span><span style="color:#e6edf3">,</span><br>',
+              '    <span style="color:#ff7b72">"addressLocality"</span><span style="color:#e6edf3">: </span><span style="color:#a5d6ff">"Your City"</span><span style="color:#e6edf3">,</span><br>',
+              '    <span style="color:#ff7b72">"addressRegion"</span><span style="color:#e6edf3">: </span><span style="color:#a5d6ff">"FL"</span><br>',
+              '  <span style="color:#79c0ff">}</span><br>',
+              '<span style="color:#79c0ff">}</span>',
+              '</div>',
+              /* Footer badge */
+              '<div style="background:#161b22;padding:8px 14px;border-top:1px solid rgba(255,255,255,0.07);display:flex;align-items:center;gap:6px">',
+              '  <span style="width:6px;height:6px;border-radius:50%;background:#28c840;display:inline-block"></span>',
+              '  <span style="color:rgba(255,255,255,0.35);font-size:10px;letter-spacing:0.05em">JSON-LD · Ships with every site</span>',
+              '</div>'
+            ].join('');
+
+            rowWrap.appendChild(card);
+          }
+
+          applySeoCode();
+          if (!done) {
+            window._vwsSeoCodeObs = new MutationObserver(function() { applySeoCode(); });
+            window._vwsSeoCodeObs.observe(document.getElementById('root') || document.body, { childList: true, subtree: true });
+            setTimeout(function() { if (window._vwsSeoCodeObs) { window._vwsSeoCodeObs.disconnect(); window._vwsSeoCodeObs = null; } }, 60000);
           }
         })();
 
