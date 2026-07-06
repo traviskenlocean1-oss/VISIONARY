@@ -819,6 +819,8 @@
         var el = document.getElementById(id);
         if (el) el.remove ? el.remove() : el.parentNode.removeChild(el);
       });
+      /* Kill pill MutationObserver if still watching (user navigated before scrolling to pills) */
+      if (window._vwsPillMutObs) { window._vwsPillMutObs.disconnect(); window._vwsPillMutObs = null; }
       /* Remove about-page body class and any inline overrides on React sections */
       document.body.classList.remove('vws-about');
       document.querySelectorAll('[data-vws-enh]').forEach(function(el) {
@@ -875,6 +877,8 @@
           var bgStyle = document.createElement('style');
           bgStyle.id = 'vws-about-styles';
           bgStyle.textContent = [
+            /* Prevent glow ::before blobs from causing horizontal scroll on mobile */
+            'body.vws-about{overflow-x:hidden}',
             /* Shared base for all section ::before glows */
             'body.vws-about section::before{content:"";position:absolute;border-radius:50%;pointer-events:none;z-index:0}',
             /* Hero — large glow bottom-left, rotated outward */
@@ -1064,6 +1068,66 @@
             });
           }, { rootMargin: '0px 0px -60px 0px', threshold: 0.1 });
           obs.observe(compSec);
+        })();
+
+        /* ── TASK 2b: Pill tag stagger — React lazy-renders these on scroll, use MutationObserver ── */
+        (function() {
+          if (window._vwsPillMutObs) { window._vwsPillMutObs.disconnect(); window._vwsPillMutObs = null; }
+          var decorated = false;
+
+          function decoratePills() {
+            if (decorated) return;
+            var pillUls = Array.from(document.querySelectorAll('ul')).filter(function(ul) {
+              if (!ul.className || typeof ul.className !== 'string') return false;
+              if (ul.className.indexOf('flex-wrap') === -1 || ul.className.indexOf('gap-3') === -1) return false;
+              var firstLi = ul.querySelector('li');
+              return firstLi && firstLi.className && typeof firstLi.className === 'string' && firstLi.className.indexOf('rounded-full') !== -1;
+            });
+            if (!pillUls.length) return;
+            decorated = true;
+            if (window._vwsPillMutObs) { window._vwsPillMutObs.disconnect(); window._vwsPillMutObs = null; }
+
+            pillUls.forEach(function(ul) {
+              var pills = Array.from(ul.querySelectorAll('li'));
+              pills.forEach(function(li) {
+                li.style.opacity = '0';
+                li.style.transform = 'translateY(10px)';
+                li.style.transition = 'opacity 0.38s ease, transform 0.38s ease, border-color 0.2s ease';
+              });
+              var triggered = false;
+              var obs = new IntersectionObserver(function(entries) {
+                if (!entries[0].isIntersecting || triggered) return;
+                triggered = true;
+                obs.disconnect();
+                pills.forEach(function(li, i) {
+                  setTimeout(function() {
+                    li.style.opacity = '1';
+                    li.style.transform = 'translateY(0)';
+                    li.addEventListener('mouseenter', function() {
+                      li.style.transform = 'scale(1.03)';
+                      li.style.borderColor = 'rgba(147,197,253,0.6)';
+                    });
+                    li.addEventListener('mouseleave', function() {
+                      li.style.transform = '';
+                      li.style.borderColor = '';
+                    });
+                  }, i * 92);
+                });
+              }, { rootMargin: '0px 0px -40px 0px', threshold: 0.1 });
+              obs.observe(ul);
+            });
+          }
+
+          decoratePills();
+          if (!decorated) {
+            var mutTimer = null;
+            window._vwsPillMutObs = new MutationObserver(function() {
+              clearTimeout(mutTimer);
+              mutTimer = setTimeout(decoratePills, 80);
+            });
+            window._vwsPillMutObs.observe(document.getElementById('root') || document.body, { childList: true, subtree: true });
+            setTimeout(function() { if (window._vwsPillMutObs) { window._vwsPillMutObs.disconnect(); window._vwsPillMutObs = null; } }, 60000);
+          }
         })();
 
         /* ── Accordion init — collapse all, wire click handlers ── */
