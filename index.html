@@ -821,13 +821,15 @@
       });
       /* Remove about-page body class and any inline overrides on React sections */
       document.body.classList.remove('vws-about');
-      document.querySelectorAll('section[data-vws-enh]').forEach(function(s) {
-        s.removeAttribute('data-vws-enh');
-        s.style.removeProperty('transform');
-        s.style.removeProperty('box-shadow');
-        s.style.removeProperty('border');
-        s.style.removeProperty('padding-top');
-        s.style.removeProperty('padding-bottom');
+      document.querySelectorAll('[data-vws-enh]').forEach(function(el) {
+        el.removeAttribute('data-vws-enh');
+        el.style.removeProperty('transform');
+        el.style.removeProperty('box-shadow');
+        el.style.removeProperty('border');
+        el.style.removeProperty('padding-top');
+        el.style.removeProperty('padding-bottom');
+        el.style.removeProperty('opacity');
+        el.style.removeProperty('transition');
       });
       /* Restore any React sections we previously hid */
       document.querySelectorAll('section[style]').forEach(function(s) {
@@ -946,6 +948,24 @@
         var tmp = document.createElement('div');
         tmp.innerHTML = html;
         footer.parentNode.insertBefore(tmp.firstElementChild, footer);
+
+        /* ── TASK 3: Visionary card dominance — scale, glow, stronger border ── */
+        (function() {
+          var compSec = document.querySelectorAll('section')[2];
+          if (!compSec) return;
+          var grid = compSec.querySelector('.grid.grid-cols-1');
+          if (!grid || grid.children.length < 2) return;
+          var tradCard = grid.children[0];
+          var visCard  = grid.children[1];
+          tradCard.style.opacity   = '0.78';
+          tradCard.style.transform = 'scale(0.98)';
+          tradCard.setAttribute('data-vws-enh', '1');
+          visCard.style.transform  = 'scale(1.04)';
+          visCard.style.boxShadow  = '0 0 60px rgba(59,130,246,0.28), 0 24px 64px rgba(0,0,0,0.55), inset 0 0 0 1px rgba(96,165,250,0.5)';
+          visCard.style.border     = '1px solid rgba(96,165,250,0.5)';
+          visCard.style.transition = 'box-shadow 0.3s ease, transform 0.3s ease';
+          visCard.setAttribute('data-vws-enh', '1');
+        })();
 
         /* ── TASK 2: Stagger-in animation + hover on comparison card list rows ── */
         (function() {
