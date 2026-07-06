@@ -1120,10 +1120,8 @@
 
           decoratePills();
           if (!decorated) {
-            var mutTimer = null;
             window._vwsPillMutObs = new MutationObserver(function() {
-              clearTimeout(mutTimer);
-              mutTimer = setTimeout(decoratePills, 80);
+              decoratePills();
             });
             window._vwsPillMutObs.observe(document.getElementById('root') || document.body, { childList: true, subtree: true });
             setTimeout(function() { if (window._vwsPillMutObs) { window._vwsPillMutObs.disconnect(); window._vwsPillMutObs = null; } }, 60000);
