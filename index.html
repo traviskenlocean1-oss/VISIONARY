@@ -949,6 +949,36 @@
         tmp.innerHTML = html;
         footer.parentNode.insertBefore(tmp.firstElementChild, footer);
 
+        /* ── TASK 4: Animated draw-in step progress lines ── */
+        (function() {
+          var stepSec = document.querySelectorAll('section')[4];
+          if (!stepSec) return;
+          var stepGrid = stepSec.querySelector('.grid.grid-cols-1');
+          if (!stepGrid) return;
+          /* Find the colored top bars inside each step card */
+          var lines = Array.from(stepGrid.querySelectorAll('div')).filter(function(d) {
+            return d.className && typeof d.className === 'string' && d.className.indexOf('h-[2px]') !== -1;
+          });
+          if (!lines.length) return;
+          lines.forEach(function(line) {
+            line.style.transform = 'scaleX(0)';
+            line.style.transformOrigin = 'left';
+          });
+          var triggered = false;
+          var obs = new IntersectionObserver(function(entries) {
+            if (!entries[0].isIntersecting || triggered) return;
+            triggered = true;
+            obs.disconnect();
+            lines.forEach(function(line, i) {
+              setTimeout(function() {
+                line.style.transition = 'transform 1.35s cubic-bezier(0.22,1,0.36,1)';
+                line.style.transform  = 'scaleX(1)';
+              }, i * 280);
+            });
+          }, { rootMargin: '0px 0px -60px 0px', threshold: 0.15 });
+          obs.observe(stepSec);
+        })();
+
         /* ── TASK 3: Visionary card dominance — scale, glow, stronger border ── */
         (function() {
           var compSec = document.querySelectorAll('section')[2];
