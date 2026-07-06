@@ -1215,7 +1215,7 @@
 
     function buildHeroHTML(slug, svc) {
       var rgb = hexToRgb(svc.color);
-      return '<div style="max-width:1200px;margin:0 auto;padding:0 40px;display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;width:100%;box-sizing:border-box;'+FF+'">'
+      var inner = '<div style="max-width:1200px;margin:0 auto;padding:0 40px;display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;width:100%;box-sizing:border-box;'+FF+'">'
         +'<div>'
         +heroIcon(slug, svc.color, svc.lt)
         +'<h1 style="font-size:clamp(52px,7vw,90px);font-weight:900;color:#fff;line-height:1;margin:0 0 20px;letter-spacing:-0.02em">'+svc.name.replace(' ','<br>')+'</h1>'
@@ -1224,6 +1224,10 @@
         +'</div>'
         +'<div style="display:flex;justify-content:flex-end">'+heroVisual(slug, svc)+'</div>'
         +'</div>';
+      return '<section id="vws-hero" style="'
+        +'background:radial-gradient(ellipse at top left,rgba('+rgb+',0.4) 0%,transparent 60%) #0a0a0a;'
+        +'min-height:85vh;display:flex;align-items:center;position:relative;overflow:hidden;padding:120px 0 80px'
+        +'">'+inner+'</section>';
     }
 
     function buildProblems(slug, svc) {
@@ -1346,12 +1350,11 @@
         +'</div></section>';
     }
 
-    /* ── Main rebuild — injects spec hero + all sections, hides ALL React sections ── */
+    /* ── Main rebuild — injects all spec sections before footer (outside React tree), hides React sections ── */
     var rebuilt = false;
     function rebuild() {
       if (rebuilt) return;
-      var firstSection = document.querySelector('section');
-      if (!firstSection) return;
+      if (!document.querySelector('section')) return;
       var footer = document.querySelector('footer');
       if (!footer) return;
       rebuilt = true;
@@ -1364,30 +1367,14 @@
         document.head.appendChild(bgStyle);
       }
 
-      /* Hide ALL React sections — we inject our own hero instead of mutating theirs */
+      /* Hide ALL React sections — our injected hero lives outside React's tree */
       var allReactSecs = document.querySelectorAll('section:not([id^="vws"])');
       for (var j = 0; j < allReactSecs.length; j++) {
         allReactSecs[j].style.setProperty('display','none','important');
       }
 
-      /* Inject spec hero before first React section (idempotent) */
-      if (!document.getElementById('vws-hero')) {
-        var heroEl = document.createElement('section');
-        heroEl.id = 'vws-hero';
-        heroEl.style.cssText = [
-          'background:radial-gradient(ellipse at top left,rgba('+hexToRgb(svc.color)+',0.4) 0%,transparent 60%) #0a0a0a',
-          'min-height:85vh',
-          'display:flex',
-          'align-items:center',
-          'position:relative',
-          'overflow:hidden',
-          'padding:120px 0 80px'
-        ].join(';');
-        heroEl.innerHTML = buildHeroHTML(SLUG_KEY, svc);
-        firstSection.parentNode.insertBefore(heroEl, firstSection);
-      }
-
-      /* Inject remaining spec sections before footer (idempotent) */
+      /* Insert all spec sections before footer. insertBefore(node, footer) each time
+         preserves order: hero → problem → steps → included → results → faq → cta → footer */
       function ins(html, id) {
         if (document.getElementById(id)) return;
         var tmp = document.createElement('div');
@@ -1396,6 +1383,7 @@
         if (node) footer.parentNode.insertBefore(node, footer);
       }
 
+      ins(buildHeroHTML(SLUG_KEY, svc), 'vws-hero');
       ins(buildProblems(SLUG_KEY, svc), 'vws-problem');
       ins(buildSteps(SLUG_KEY, svc), 'vws-steps');
       ins(buildIncluded(SLUG_KEY, svc), 'vws-included');
