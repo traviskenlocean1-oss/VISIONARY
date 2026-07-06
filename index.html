@@ -1079,7 +1079,7 @@
           obs.observe(stepSec);
         })();
 
-        /* ── TASK 3: Visionary card dominance — scale, glow, stronger border ── */
+        /* ── TASK 3 / NEW TASK 4: Comparison card contrast — grayscale Traditional, solid border Visionary ── */
         (function() {
           var compSec = document.querySelectorAll('section')[2];
           if (!compSec) return;
@@ -1087,13 +1087,14 @@
           if (!grid || grid.children.length < 2) return;
           var tradCard = grid.children[0];
           var visCard  = grid.children[1];
-          tradCard.style.opacity   = '0.78';
-          tradCard.style.transform = 'scale(0.98)';
+          /* Traditional: grayscale + dim — visually duller than Visionary without needing to read text */
+          tradCard.style.filter    = 'grayscale(0.72) brightness(0.68)';
+          tradCard.style.transform = 'scale(0.97)';
           tradCard.setAttribute('data-vws-enh', '1');
+          /* Visionary: solid 2px bright-blue border + strong drop-shadow reads clearly in static screenshot */
           visCard.style.transform  = 'scale(1.04)';
-          visCard.style.boxShadow  = '0 0 60px rgba(59,130,246,0.28), 0 24px 64px rgba(0,0,0,0.55), inset 0 0 0 1px rgba(96,165,250,0.5)';
-          visCard.style.border     = '1px solid rgba(96,165,250,0.5)';
-          visCard.style.transition = 'box-shadow 0.3s ease, transform 0.3s ease';
+          visCard.style.border     = '2px solid #3b82f6';
+          visCard.style.boxShadow  = '0 0 0 5px rgba(59,130,246,0.14), 0 28px 70px rgba(0,0,0,0.85)';
           visCard.setAttribute('data-vws-enh', '1');
         })();
 
