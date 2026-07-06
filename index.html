@@ -815,7 +815,7 @@
     function runAll() {
       var slug = getSlug();
       /* Clean up previous injections so switching service pages doesn't stack */
-      ['vws-ba-injected','vws-deepdive','vws-svc-theme','vws-svc-listing','vws-listing-colors','vws-early-hue','vws-ill-wrap','vws-hero','vws-problem','vws-steps','vws-included','vws-results','vws-faq','vws-cta'].forEach(function(id){
+      ['vws-ba-injected','vws-deepdive','vws-svc-theme','vws-svc-listing','vws-listing-colors','vws-early-hue','vws-ill-wrap','vws-hero','vws-problem','vws-steps','vws-included','vws-results','vws-faq','vws-cta','vws-about-diff'].forEach(function(id){
         var el = document.getElementById(id);
         if (el) el.remove ? el.remove() : el.parentNode.removeChild(el);
       });
@@ -842,7 +842,72 @@
         runServiceDetail(slug);
       } else if (isServicesIndex()) {
         runServicesListing();
+      } else if (/^\/about\/?$/.test(window.location.pathname)) {
+        runAboutPage();
       }
+    }
+
+    /* ── /about page — inject differentiators section ── */
+    function runAboutPage() {
+      var poll = 0;
+      var t = setInterval(function() {
+        poll++;
+        var footer = document.querySelector('footer');
+        if (!footer || poll > 80) { clearInterval(t); return; }
+        clearInterval(t);
+        if (document.getElementById('vws-about-diff')) return;
+
+        var ITEMS = [
+          {
+            n: '01',
+            h: 'Local SEO built into every site from day one',
+            p: 'Not added after. Not an upsell. Every site Visionary builds has proper title tags, meta descriptions, heading structure, schema markup, and Google Business Profile alignment baked into the code. This is what tells Google what your business does, where you are, and who to show you to. A site without this is invisible to search — it looks fine but does nothing.'
+          },
+          {
+            n: '02',
+            h: 'Copy written for your specific customer, not generic filler',
+            p: 'Most AI-generated sites have placeholder language that could be for any business in any city. We write the words on your site for the specific person in your specific market who is deciding right now whether to call you or your competitor. That difference in copy is often what separates a site that converts from one that just sits there.'
+          },
+          {
+            n: '03',
+            h: 'Conversion architecture — the layout is designed to make people act',
+            p: 'Where the phone number sits. Where the call to action appears. What the visitor sees first, second, and third. How trust is established before they\'re asked to contact you. None of this is accidental on a Visionary site. Every layout decision is made with one goal: getting the visitor to take action.'
+          },
+          {
+            n: '04',
+            h: 'Mobile-first, built for how your customers actually browse',
+            p: 'Over 70% of local service business customers find you on their phone. A site that looks good on desktop but is clunky on mobile loses those customers silently. Every site we build is designed for mobile first — not adapted for it after the fact.'
+          },
+          {
+            n: '05',
+            h: 'You own everything — no platform lock-in, no monthly fees to exist',
+            p: 'AI site builders and template platforms charge you monthly just to stay online. If you stop paying, your site disappears. We hand you the files. You own the domain, the code, the content. No ongoing platform dependency.'
+          }
+        ];
+
+        var html = '<section id="vws-about-diff" style="padding:100px 40px;background:#080808;font-family:inherit">'
+          + '<div style="max-width:900px;margin:0 auto">'
+          + '<p style="font-size:11px;letter-spacing:3px;text-transform:uppercase;color:#3B82F6;font-weight:700;margin:0 0 20px">THE REAL DIFFERENCE</p>'
+          + '<h2 style="font-size:clamp(30px,4.5vw,52px);font-weight:800;color:#fff;margin:0 0 16px;line-height:1.1">What actually gets your<br>phone ringing</h2>'
+          + '<p style="font-size:17px;color:rgba(255,255,255,0.45);line-height:1.7;margin:0 0 72px;max-width:640px">A good-looking website is table stakes. Here\'s what separates a site that sits there from one that consistently generates calls.</p>'
+          + ITEMS.map(function(item) {
+              return '<div style="display:grid;grid-template-columns:64px 1fr;gap:32px;padding:40px 0;border-top:1px solid rgba(255,255,255,0.07)">'
+                + '<div style="font-size:clamp(36px,5vw,52px);font-weight:900;color:rgba(59,130,246,0.2);line-height:1;letter-spacing:-0.02em;padding-top:4px">' + item.n + '</div>'
+                + '<div>'
+                + '<h3 style="font-size:20px;font-weight:700;color:#fff;margin:0 0 14px;line-height:1.3">' + item.h + '</h3>'
+                + '<p style="font-size:15px;color:rgba(255,255,255,0.5);line-height:1.75;margin:0">' + item.p + '</p>'
+                + '</div></div>';
+            }).join('')
+          + '<div style="border-top:1px solid rgba(255,255,255,0.07);padding-top:56px;margin-top:8px;display:flex;align-items:center;gap:24px;flex-wrap:wrap">'
+          + '<a href="/contact" style="display:inline-block;background:#3B82F6;color:#fff;font-size:14px;font-weight:700;letter-spacing:0.05em;padding:15px 32px;border-radius:8px;text-decoration:none;box-shadow:0 8px 30px rgba(59,130,246,0.35)">Start a Project →</a>'
+          + '<a href="tel:5618890507" style="font-size:14px;color:rgba(255,255,255,0.45);text-decoration:none">Or call (561) 889-0507</a>'
+          + '</div>'
+          + '</div></section>';
+
+        var tmp = document.createElement('div');
+        tmp.innerHTML = html;
+        footer.parentNode.insertBefore(tmp.firstElementChild, footer);
+      }, 150);
     }
 
     /* ── /services listing page enhancer ── */
