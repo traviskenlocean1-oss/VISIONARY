@@ -815,7 +815,7 @@
     function runAll() {
       var slug = getSlug();
       /* Clean up previous injections so switching service pages doesn't stack */
-      ['vws-ba-injected','vws-deepdive','vws-svc-theme','vws-svc-listing','vws-listing-colors','vws-early-hue','vws-ill-wrap','vws-hero','vws-problem','vws-steps','vws-included','vws-results','vws-faq','vws-cta','vws-about-diff','vws-about-styles','vws-design-cards','vws-seo-code'].forEach(function(id){
+      ['vws-ba-injected','vws-deepdive','vws-svc-theme','vws-svc-listing','vws-listing-colors','vws-early-hue','vws-ill-wrap','vws-hero','vws-problem','vws-steps','vws-included','vws-results','vws-faq','vws-cta','vws-about-diff','vws-about-styles','vws-design-cards','vws-seo-code','vws-whoweare-mockup','vws-comparison-table','vws-comparison-styles'].forEach(function(id){
         var el = document.getElementById(id);
         if (el) el.remove ? el.remove() : el.parentNode.removeChild(el);
       });
@@ -825,6 +825,8 @@
       if (window._vwsStandForObs) { window._vwsStandForObs.disconnect(); window._vwsStandForObs = null; }
       if (window._vwsStepsObs) { window._vwsStepsObs.disconnect(); window._vwsStepsObs = null; }
       if (window._vwsSeoCodeObs) { window._vwsSeoCodeObs.disconnect(); window._vwsSeoCodeObs = null; }
+      if (window._vwsWhoWeAreObs) { window._vwsWhoWeAreObs.disconnect(); window._vwsWhoWeAreObs = null; }
+      if (window._vwsCompTableObs) { window._vwsCompTableObs.disconnect(); window._vwsCompTableObs = null; }
       /* Remove about-page body class and any inline overrides on React sections */
       document.body.classList.remove('vws-about');
       document.querySelectorAll('[data-vws-enh]').forEach(function(el) {
@@ -841,6 +843,11 @@
         el.style.removeProperty('display');
         el.style.removeProperty('grid-template-columns');
         el.style.removeProperty('gap');
+        el.style.removeProperty('flex');
+        el.style.removeProperty('flex-wrap');
+        el.style.removeProperty('align-items');
+        el.style.removeProperty('min-width');
+        el.style.removeProperty('max-width');
         el.style.removeProperty('border-radius');
         el.style.removeProperty('overflow');
         el.style.removeProperty('filter');
@@ -1455,6 +1462,223 @@
             window._vwsSeoCodeObs = new MutationObserver(function() { applySeoCode(); });
             window._vwsSeoCodeObs.observe(document.getElementById('root') || document.body, { childList: true, subtree: true });
             setTimeout(function() { if (window._vwsSeoCodeObs) { window._vwsSeoCodeObs.disconnect(); window._vwsSeoCodeObs = null; } }, 60000);
+          }
+        })();
+
+        /* ── TASK A: "Who We Are" — two-column layout with layout-preview browser mockup ── */
+        (function() {
+          if (window._vwsWhoWeAreObs) { window._vwsWhoWeAreObs.disconnect(); window._vwsWhoWeAreObs = null; }
+          var done = false;
+
+          function applyWhoWeAre() {
+            if (done) return;
+            if (document.getElementById('vws-whoweare-mockup')) { done = true; return; }
+            var sec1 = document.querySelectorAll('section')[1];
+            if (!sec1) return;
+            var outerWrap = sec1.querySelector('.max-w-5xl');
+            if (!outerWrap) return;
+            var innerCard = outerWrap.querySelector('.rounded-2xl');
+            if (!innerCard) return;
+            done = true;
+            if (window._vwsWhoWeAreObs) { window._vwsWhoWeAreObs.disconnect(); window._vwsWhoWeAreObs = null; }
+
+            /* Two-column layout: outer wrap becomes flex row */
+            outerWrap.style.display = 'flex';
+            outerWrap.style.alignItems = 'flex-start';
+            outerWrap.style.gap = '2rem';
+            outerWrap.style.flexWrap = 'wrap';
+            outerWrap.setAttribute('data-vws-enh', '1');
+
+            /* Inner card (left col) shrinks to fit */
+            innerCard.style.flex = '1 1 min(100%, 460px)';
+            innerCard.style.minWidth = '0';
+            innerCard.setAttribute('data-vws-enh', '1');
+
+            /* Remove max-w-3xl constraint from the text block so it fills the narrower card */
+            var textBlock = innerCard.querySelector('.max-w-3xl');
+            if (textBlock) {
+              textBlock.style.maxWidth = 'none';
+              textBlock.setAttribute('data-vws-enh', '1');
+            }
+
+            /* Build the browser-frame layout-preview mockup */
+            var mockup = document.createElement('div');
+            mockup.id = 'vws-whoweare-mockup';
+            mockup.style.cssText = [
+              'flex:0 0 360px',
+              'border:1px solid rgba(59,130,246,0.22)',
+              'border-radius:14px',
+              'overflow:hidden',
+              'background:#0d1117',
+              'box-shadow:0 24px 60px rgba(0,0,0,0.65)',
+              'align-self:flex-start',
+              'position:sticky',
+              'top:100px'
+            ].join(';');
+
+            /* Title bar — same visual language as the schema.json card */
+            var titleBar = document.createElement('div');
+            titleBar.style.cssText = 'background:#161b22;padding:10px 14px;display:flex;align-items:center;gap:6px;border-bottom:1px solid rgba(255,255,255,0.07)';
+            titleBar.innerHTML = [
+              '<span style="width:10px;height:10px;border-radius:50%;background:#ff5f57;display:inline-block"></span>',
+              '<span style="width:10px;height:10px;border-radius:50%;background:#febc2e;display:inline-block"></span>',
+              '<span style="width:10px;height:10px;border-radius:50%;background:#28c840;display:inline-block"></span>',
+              '<span style="margin-left:8px;color:rgba(255,255,255,0.28);font-size:11px;font-family:ui-monospace,monospace">layout.html</span>'
+            ].join('');
+
+            /* Layout canvas — asymmetric block composition */
+            var canvas = document.createElement('div');
+            canvas.style.cssText = 'padding:20px;position:relative;height:230px';
+
+            var BLOCKS = [
+              /* hero banner — wide, top-left */
+              'position:absolute;top:0;left:0;width:67%;height:38px;background:rgba(59,130,246,0.42);border-radius:7px',
+              /* sidebar header — top-right */
+              'position:absolute;top:0;right:0;width:28%;height:38px;background:rgba(255,255,255,0.08);border-radius:7px',
+              /* section headline */
+              'position:absolute;top:50px;left:0;width:52%;height:16px;background:rgba(255,255,255,0.13);border-radius:4px',
+              /* large content card — left, tall */
+              'position:absolute;top:80px;left:0;width:43%;height:100px;background:rgba(59,130,246,0.11);border-radius:10px;border:1px solid rgba(59,130,246,0.22)',
+              /* body text line 1 */
+              'position:absolute;top:80px;right:0;width:51%;height:12px;background:rgba(255,255,255,0.09);border-radius:3px',
+              /* body text line 2 */
+              'position:absolute;top:101px;right:0;width:40%;height:12px;background:rgba(255,255,255,0.06);border-radius:3px',
+              /* body text line 3 */
+              'position:absolute;top:122px;right:0;width:47%;height:12px;background:rgba(255,255,255,0.06);border-radius:3px',
+              /* accent tag — bottom-right */
+              'position:absolute;top:155px;right:0;width:26%;height:20px;background:rgba(59,130,246,0.2);border-radius:10px;border:1px solid rgba(59,130,246,0.3)',
+              /* CTA button — bottom-left */
+              'position:absolute;top:196px;left:0;width:37%;height:26px;background:rgba(59,130,246,0.55);border-radius:6px'
+            ];
+
+            BLOCKS.forEach(function(css) {
+              var b = document.createElement('div');
+              b.style.cssText = css;
+              canvas.appendChild(b);
+            });
+
+            /* Footer caption */
+            var caption = document.createElement('div');
+            caption.style.cssText = 'background:#161b22;padding:10px 14px;border-top:1px solid rgba(255,255,255,0.07);display:flex;align-items:center;gap:6px';
+            caption.innerHTML = [
+              '<span style="width:6px;height:6px;border-radius:50%;background:#3b82f6;display:inline-block;flex-shrink:0"></span>',
+              '<span style="color:rgba(255,255,255,0.35);font-size:10px;font-family:ui-monospace,monospace;letter-spacing:0.04em">Every layout — hand-built, not templated.</span>'
+            ].join('');
+
+            mockup.appendChild(titleBar);
+            mockup.appendChild(canvas);
+            mockup.appendChild(caption);
+            outerWrap.appendChild(mockup);
+          }
+
+          applyWhoWeAre();
+          if (!done) {
+            window._vwsWhoWeAreObs = new MutationObserver(function() { applyWhoWeAre(); });
+            window._vwsWhoWeAreObs.observe(document.getElementById('root') || document.body, { childList: true, subtree: true });
+            setTimeout(function() { if (window._vwsWhoWeAreObs) { window._vwsWhoWeAreObs.disconnect(); window._vwsWhoWeAreObs = null; } }, 60000);
+          }
+        })();
+
+        /* ── TASK B: Comparison section — unified row-based table replacing parallel lists ── */
+        (function() {
+          if (window._vwsCompTableObs) { window._vwsCompTableObs.disconnect(); window._vwsCompTableObs = null; }
+          var done = false;
+
+          var ROWS = [
+            { trad: '$3k–$15k just to get started',          vis: '$500 starting price — honest and upfront' },
+            { trad: '3–6 months before your site goes live',  vis: 'Launch in days, not months' },
+            { trad: 'Hidden fees that add up fast',           vis: '100% transparent pricing, always' },
+            { trad: 'Limited support after launch',           vis: 'Support included after launch' },
+            { trad: 'Complex contracts with fine print',       vis: 'Simple, no-nonsense process' },
+            { trad: 'You handle content updates yourself',    vis: 'We handle all updates for you' }
+          ];
+
+          function applyCompTable() {
+            if (done) return;
+            if (document.getElementById('vws-comparison-table')) { done = true; return; }
+            var sec2 = document.querySelectorAll('section')[2];
+            if (!sec2) return;
+            var grid = sec2.querySelector('.grid.grid-cols-1');
+            if (!grid || grid.children.length < 2) return;
+            done = true;
+            if (window._vwsCompTableObs) { window._vwsCompTableObs.disconnect(); window._vwsCompTableObs = null; }
+
+            /* Hide the original two-card grid */
+            grid.style.display = 'none';
+            grid.setAttribute('data-vws-enh', '1');
+
+            /* Inject responsive style */
+            var styleEl = document.createElement('style');
+            styleEl.id = 'vws-comparison-styles';
+            styleEl.textContent = [
+              '#vws-comparison-table .comp-row { display:flex; }',
+              '#vws-comparison-table .cell-trad,#vws-comparison-table .cell-vis { flex:1 1 0; min-width:0; }',
+              '@media (max-width:640px) {',
+              '  #vws-comparison-table .comp-header { display:none !important; }',
+              '  #vws-comparison-table .comp-row { flex-direction:column; border:1px solid rgba(59,130,246,0.15); border-radius:12px; margin-bottom:0.75rem; overflow:hidden; background:transparent !important; }',
+              '  #vws-comparison-table .comp-row .cell-trad,#vws-comparison-table .comp-row .cell-vis { background:transparent !important; border:none !important; }',
+              '  #vws-comparison-table .comp-row .cell-trad { border-bottom:1px solid rgba(255,255,255,0.05) !important; }',
+              '  #vws-comparison-table .mob-label { display:inline-block !important; }',
+              '}'
+            ].join('\n');
+            document.head.appendChild(styleEl);
+
+            /* Build table */
+            var table = document.createElement('div');
+            table.id = 'vws-comparison-table';
+            table.style.cssText = 'margin-top:2.5rem;border-radius:16px;overflow:hidden;border:1px solid rgba(59,130,246,0.18)';
+
+            /* Header row */
+            var header = document.createElement('div');
+            header.className = 'comp-header';
+            header.style.cssText = 'display:flex;background:rgba(59,130,246,0.06)';
+
+            var hTrad = document.createElement('div');
+            hTrad.style.cssText = 'flex:1 1 0;padding:14px 20px;display:flex;align-items:center;gap:10px;border-right:1px solid rgba(255,255,255,0.06);filter:grayscale(0.7) brightness(0.75)';
+            hTrad.innerHTML = '<span style="width:22px;height:22px;border-radius:50%;background:rgba(255,255,255,0.08);display:inline-flex;align-items:center;justify-content:center;flex-shrink:0"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" style="width:12px;height:12px;color:#94a3b8"><path d="M18 6L6 18M6 6l12 12"/></svg></span><span style="font-size:0.75rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:rgba(148,163,184,0.7)">Traditional Agencies</span>';
+
+            var hVis = document.createElement('div');
+            hVis.style.cssText = 'flex:1 1 0;padding:14px 20px;display:flex;align-items:center;gap:10px;justify-content:space-between;background:rgba(59,130,246,0.07)';
+            hVis.innerHTML = '<div style="display:flex;align-items:center;gap:10px"><span style="width:22px;height:22px;border-radius:50%;background:rgba(59,130,246,0.25);display:inline-flex;align-items:center;justify-content:center;flex-shrink:0"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" style="width:12px;height:12px;color:#60a5fa"><path d="M20 6L9 17l-5-5"/></svg></span><span style="font-size:0.75rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:#93c5fd">Visionary</span></div><span style="font-size:0.6rem;font-weight:800;letter-spacing:0.12em;text-transform:uppercase;color:#60a5fa;background:rgba(59,130,246,0.15);padding:3px 10px;border-radius:20px;border:1px solid rgba(59,130,246,0.3)">BEST CHOICE</span>';
+
+            header.appendChild(hTrad);
+            header.appendChild(hVis);
+            table.appendChild(header);
+
+            /* Data rows */
+            ROWS.forEach(function(row, i) {
+              var rowEl = document.createElement('div');
+              rowEl.className = 'comp-row';
+              rowEl.style.cssText = 'border-top:1px solid rgba(255,255,255,0.05);' + (i % 2 === 0 ? 'background:rgba(255,255,255,0.015)' : 'background:rgba(255,255,255,0.03)');
+
+              var cellT = document.createElement('div');
+              cellT.className = 'cell-trad';
+              cellT.style.cssText = 'padding:14px 20px;display:flex;align-items:flex-start;gap:10px;border-right:1px solid rgba(255,255,255,0.06);filter:grayscale(0.7) brightness(0.8)';
+              cellT.innerHTML = '<span class="mob-label" style="display:none;font-size:0.6rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:rgba(148,163,184,0.55);margin-bottom:4px">Traditional</span>'
+                + '<svg style="width:14px;height:14px;flex-shrink:0;margin-top:2px;color:#64748b" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>'
+                + '<span style="font-size:0.82rem;color:rgba(148,163,184,0.75);line-height:1.4">' + row.trad + '</span>';
+
+              var cellV = document.createElement('div');
+              cellV.className = 'cell-vis';
+              cellV.style.cssText = 'padding:14px 20px;display:flex;align-items:flex-start;gap:10px;background:rgba(59,130,246,0.04)';
+              cellV.innerHTML = '<span class="mob-label" style="display:none;font-size:0.6rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#60a5fa;margin-bottom:4px">Visionary</span>'
+                + '<svg style="width:14px;height:14px;flex-shrink:0;margin-top:2px;color:#3b82f6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>'
+                + '<span style="font-size:0.82rem;color:rgba(225,224,204,0.85);line-height:1.4;font-weight:500">' + row.vis + '</span>';
+
+              rowEl.appendChild(cellT);
+              rowEl.appendChild(cellV);
+              table.appendChild(rowEl);
+            });
+
+            /* Inject before the hidden grid */
+            grid.parentNode.insertBefore(table, grid);
+          }
+
+          applyCompTable();
+          if (!done) {
+            window._vwsCompTableObs = new MutationObserver(function() { applyCompTable(); });
+            window._vwsCompTableObs.observe(document.getElementById('root') || document.body, { childList: true, subtree: true });
+            setTimeout(function() { if (window._vwsCompTableObs) { window._vwsCompTableObs.disconnect(); window._vwsCompTableObs = null; } }, 60000);
           }
         })();
 
