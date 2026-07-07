@@ -121,14 +121,8 @@
       if (logoA && !logoA.getAttribute('data-vws-logo')) {
         logoA.setAttribute('data-vws-logo', '1');
         logoA.addEventListener('click', function(e) {
-          if (window.scrollY > 0) {
-            e.preventDefault();
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-            setTimeout(function() {
-              history.pushState({}, '', '/');
-              window.dispatchEvent(new PopStateEvent('popstate'));
-            }, 450);
-          }
+          e.preventDefault();
+          window.location.href = '/';
         });
       }
 
@@ -190,7 +184,7 @@
   .vws-msg-anim{animation:vws-msgpop .22s ease both}
   #vws-msgs::-webkit-scrollbar{width:3px}
   #vws-msgs::-webkit-scrollbar-track{background:transparent}
-  #vws-msgs::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1);border-radius:3px}
+  #vws-msgs::-webkit-scrollbar-thumb{background:rgba(0,0,0,.15);border-radius:3px}
   #vws-fname:focus,#vws-fphone:focus,#vws-input:focus{border-color:rgba(59,130,246,.6)!important;box-shadow:0 0 0 3px rgba(59,130,246,.12)!important}
 
   /* ── Suppress React's built-in cookie consent (replaced by our custom banner) ── */
@@ -274,9 +268,9 @@
 
   /* ══ Homepage — before/after slider ══ */
   #vws-hp-slider{padding:80px 24px;position:relative}
-  #vws-ba-wrap{position:relative;width:100%;max-width:800px;margin:0 auto;border-radius:14px;overflow:hidden;box-shadow:0 24px 80px rgba(0,0,0,0.18);user-select:none;touch-action:none;cursor:ew-resize}
-  #vws-ba-before{position:absolute;inset:0;overflow:hidden}
-  #vws-ba-handle{position:absolute;top:0;bottom:0;left:50%;transform:translateX(-50%);width:3px;background:#fff;box-shadow:0 0 0 1px rgba(0,0,0,0.15);z-index:10;cursor:ew-resize}
+  #vws-ba-wrap{position:relative;width:100%;max-width:1300px;margin:0 auto;border-radius:14px;overflow:hidden;box-shadow:0 24px 80px rgba(0,0,0,0.18);user-select:none;touch-action:none;cursor:ew-resize}
+  #vws-ba-before{position:absolute;top:0;bottom:0;left:0;overflow:hidden;width:40%}
+  #vws-ba-handle{position:absolute;top:0;bottom:0;left:40%;transform:translateX(-50%);width:3px;background:#fff;box-shadow:0 0 0 1px rgba(0,0,0,0.15);z-index:10;cursor:ew-resize}
   #vws-ba-knob{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:42px;height:42px;border-radius:50%;background:#fff;box-shadow:0 2px 16px rgba(0,0,0,0.28);display:flex;align-items:center;justify-content:center;gap:0}
   .vws-ba-label{position:absolute;top:14px;font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;background:rgba(0,0,0,0.52);color:#fff;padding:3px 10px;border-radius:4px}
 
@@ -392,6 +386,8 @@
   .vws-section-light a[style*="rgba(255, 255, 255, 0.07)"]{background:rgba(37,99,235,0.08)!important;color:#2563eb!important;border-color:rgba(37,99,235,0.3)!important}
   /* Process accordion rows — remove inherited lavender tint, force white */
   .vws-section-light [class*="mb-14"][class*="border-t"]{background:#ffffff!important;border-color:rgba(0,0,0,0.07)!important}
+  /* Process step: only the big number turns blue on row hover */
+  .vws-section-light [class*="mb-14"] [class*="border-b"] [class*="py-7"]:hover span[class*="font-extrabold"][class*="flex-shrink-0"]{color:#2563eb!important;transition:color 0.3s!important}
   /* Hero form card SUBMIT button → solid blue, white text */
   section[class*="h-screen"] [style*="rgba(4, 8, 22, 0.92)"] button{background:#2563eb!important;color:#ffffff!important;font-weight:700!important}
   /* Inline cream-color text on pricing cards → dark (existing ticker fix handles most; this catches remaining) */
@@ -614,7 +610,7 @@
     /* ── Chat window (agency redesign) ── */
     var win = document.createElement('div');
     win.id = 'vws-chat-win';
-    win.style.cssText = 'width:368px;max-width:calc(100vw - 28px);border-radius:16px;overflow:hidden;display:none;flex-direction:column;background:#07091a;box-shadow:0 32px 80px rgba(0,0,0,.7),0 0 0 1px rgba(255,255,255,.07);animation:vws-slidein .26s cubic-bezier(.22,.68,0,1.2) both';
+    win.style.cssText = 'width:368px;max-width:calc(100vw - 28px);border-radius:16px;overflow:hidden;display:none;flex-direction:column;background:#ffffff;box-shadow:0 32px 80px rgba(0,0,0,.18),0 0 0 1px rgba(0,0,0,.1);animation:vws-slidein .26s cubic-bezier(.22,.68,0,1.2) both';
 
     win.innerHTML = [
       /* ── Header ── */
@@ -645,31 +641,31 @@
         '</div>',
       '</div>',
       /* ── Messages ── */
-      '<div id="vws-msgs" style="height:290px;overflow-y:auto;background:#07091a;padding:16px 0 8px;display:flex;flex-direction:column;gap:10px;scroll-behavior:smooth">',
-        '<p style="text-align:center;font-size:10px;color:rgba(255,255,255,.18);padding:0 16px;letter-spacing:.05em">— Chat started —</p>',
+      '<div id="vws-msgs" style="height:290px;overflow-y:auto;background:#f8fafc;padding:16px 0 8px;display:flex;flex-direction:column;gap:10px;scroll-behavior:smooth">',
+        '<p style="text-align:center;font-size:10px;color:rgba(0,0,0,.35);padding:0 16px;letter-spacing:.05em">— Chat started —</p>',
       '</div>',
       /* ── Quick replies ── */
-      '<div id="vws-qr" style="padding:10px 14px 12px;display:flex;flex-wrap:wrap;gap:7px;background:#07091a;border-top:1px solid rgba(255,255,255,.05);min-height:20px"></div>',
+      '<div id="vws-qr" style="padding:10px 14px 12px;display:flex;flex-wrap:wrap;gap:7px;background:#f8fafc;border-top:1px solid rgba(0,0,0,.08);min-height:20px"></div>',
       /* ── Lead form ── */
-      '<div id="vws-form" style="display:none;padding:14px;background:#07091a;border-top:1px solid rgba(255,255,255,.05)">',
-        '<input id="vws-fname"  placeholder="Your name"         style="width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:10px 13px;font-size:13px;color:#e1e0cc;outline:none;margin-bottom:9px;transition:border-color .2s,box-shadow .2s"/>',
-        '<input id="vws-fphone" placeholder="Your phone number" style="width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:10px 13px;font-size:13px;color:#e1e0cc;outline:none;margin-bottom:12px;transition:border-color .2s,box-shadow .2s"/>',
+      '<div id="vws-form" style="display:none;padding:14px;background:#f8fafc;border-top:1px solid rgba(0,0,0,.08)">',
+        '<input id="vws-fname"  placeholder="Your name"         style="width:100%;background:#fff;border:1px solid rgba(0,0,0,.15);border-radius:8px;padding:10px 13px;font-size:13px;color:#1a1a2e;outline:none;margin-bottom:9px;transition:border-color .2s,box-shadow .2s"/>',
+        '<input id="vws-fphone" placeholder="Your phone number" style="width:100%;background:#fff;border:1px solid rgba(0,0,0,.15);border-radius:8px;padding:10px 13px;font-size:13px;color:#1a1a2e;outline:none;margin-bottom:12px;transition:border-color .2s,box-shadow .2s"/>',
         '<button id="vws-fsub" style="width:100%;background:linear-gradient(135deg,#1d4ed8,#2563eb);border:none;border-radius:8px;padding:11px;font-size:12px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#fff;cursor:pointer">Send — We\'ll Reach Out →</button>',
         '<div style="display:flex;align-items:center;justify-content:center;gap:5px;margin-top:9px">',
-          '<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="rgba(74,222,128,0.7)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>',
-          '<span style="font-size:10px;color:rgba(255,255,255,0.35);letter-spacing:.03em">Secured & private — only our team sees this</span>',
+          '<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="rgba(37,99,235,0.7)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>',
+          '<span style="font-size:10px;color:rgba(0,0,0,.45);letter-spacing:.03em">Secured & private — only our team sees this</span>',
         '</div>',
       '</div>',
       /* ── Input row ── */
-      '<div style="display:flex;align-items:center;gap:10px;padding:11px 14px 12px;border-top:1px solid rgba(255,255,255,.05);background:#07091a">',
-        '<input id="vws-input" placeholder="Type a message..." style="flex:1;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:8px;padding:9px 12px;font-size:13px;color:rgba(225,224,204,.8);outline:none;transition:border-color .2s"/>',
+      '<div style="display:flex;align-items:center;gap:10px;padding:11px 14px 12px;border-top:1px solid rgba(0,0,0,.08);background:#f8fafc">',
+        '<input id="vws-input" placeholder="Type a message..." style="flex:1;background:#fff;border:1px solid rgba(0,0,0,.12);border-radius:8px;padding:9px 12px;font-size:13px;color:#374151;outline:none;transition:border-color .2s"/>',
         '<button id="vws-send" style="background:linear-gradient(135deg,#1d4ed8,#2563eb);border:none;border-radius:8px;width:36px;height:36px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:opacity .15s">',
           '<svg width="14" height="14" viewBox="0 0 24 24" fill="#fff"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>',
         '</button>',
       '</div>',
       /* ── Footer ── */
-      '<div style="padding:7px 14px 9px;background:#040610;text-align:center;border-top:1px solid rgba(255,255,255,.04)">',
-        '<a href="tel:+15618890507" style="font-size:10px;color:rgba(255,255,255,.25);text-decoration:none;letter-spacing:.04em">Visionary Web Studio · (561) 889-0507</a>',
+      '<div style="padding:7px 14px 9px;background:#f0f4f8;text-align:center;border-top:1px solid rgba(0,0,0,.06)">',
+        '<a href="tel:+15618890507" style="font-size:10px;color:rgba(0,0,0,.4);text-decoration:none;letter-spacing:.04em">Visionary Web Studio · (561) 889-0507</a>',
       '</div>',
     ].join('');
 
@@ -732,12 +728,12 @@
       bubble.className = 'vws-msg-anim';
       bubble.style.cssText = isUser
         ? 'background:linear-gradient(135deg,#1d4ed8,#2563eb);border-radius:14px 14px 2px 14px;padding:10px 14px;font-size:13px;color:#fff;line-height:1.6;max-width:84%'
-        : 'background:#0d1228;border:1px solid rgba(255,255,255,.07);border-radius:14px 14px 14px 2px;padding:10px 14px;font-size:13px;color:rgba(225,224,204,.9);line-height:1.6;max-width:84%';
+        : 'background:#e8eef5;border:1px solid rgba(0,0,0,.06);border-radius:14px 14px 14px 2px;padding:10px 14px;font-size:13px;color:#1a2035;line-height:1.6;max-width:84%';
       bubble.innerHTML = html.replace(/\n/g, '<br>');
 
       if (time) {
         var ts = document.createElement('div');
-        ts.style.cssText = 'font-size:9px;color:rgba(225,224,204,.25);margin-top:4px;text-align:' + (isUser ? 'right' : 'left');
+        ts.style.cssText = 'font-size:9px;color:rgba(0,0,0,.35);margin-top:4px;text-align:' + (isUser ? 'right' : 'left');
         ts.textContent = time;
         var col = document.createElement('div');
         col.style.cssText = 'display:flex;flex-direction:column;max-width:82%';
@@ -760,10 +756,10 @@
       d.id = 'vws-typing';
       d.style.cssText = 'padding:0 14px;display:flex;gap:8px;align-items:center';
       d.innerHTML = '<div style="width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#1e3a8a,#1d4ed8);flex-shrink:0"></div>' +
-        '<div style="background:#0e1525;border:1px solid rgba(255,255,255,.06);border-radius:14px 14px 14px 2px;padding:10px 14px;display:flex;gap:5px;align-items:center">' +
-        '<span class="vws-dot-1" style="width:7px;height:7px;border-radius:50%;background:rgba(225,224,204,.5);display:inline-block"></span>' +
-        '<span class="vws-dot-2" style="width:7px;height:7px;border-radius:50%;background:rgba(225,224,204,.5);display:inline-block"></span>' +
-        '<span class="vws-dot-3" style="width:7px;height:7px;border-radius:50%;background:rgba(225,224,204,.5);display:inline-block"></span>' +
+        '<div style="background:#e8eef5;border:1px solid rgba(0,0,0,.06);border-radius:14px 14px 14px 2px;padding:10px 14px;display:flex;gap:5px;align-items:center">' +
+        '<span class="vws-dot-1" style="width:7px;height:7px;border-radius:50%;background:rgba(0,0,0,.35);display:inline-block"></span>' +
+        '<span class="vws-dot-2" style="width:7px;height:7px;border-radius:50%;background:rgba(0,0,0,.35);display:inline-block"></span>' +
+        '<span class="vws-dot-3" style="width:7px;height:7px;border-radius:50%;background:rgba(0,0,0,.35);display:inline-block"></span>' +
         '</div>';
       msgs.appendChild(d);
       msgs.scrollTop = msgs.scrollHeight;
@@ -823,9 +819,9 @@
           (node.replies || []).forEach(function(r) {
             var b = document.createElement('button');
             b.textContent = r.label;
-            b.style.cssText = 'background:#0e1525;border:1px solid rgba(255,255,255,.1);border-radius:100px;padding:7px 13px;font-size:11px;font-weight:600;color:rgba(225,224,204,.75);cursor:pointer;transition:background .15s,color .15s,border-color .15s;white-space:nowrap';
-            b.addEventListener('mouseenter', function(){ b.style.background='rgba(29,78,216,.25)'; b.style.borderColor='rgba(29,78,216,.6)'; b.style.color='rgba(225,224,204,1)'; });
-            b.addEventListener('mouseleave', function(){ b.style.background='#0e1525'; b.style.borderColor='rgba(255,255,255,.1)'; b.style.color='rgba(225,224,204,.75)'; });
+            b.style.cssText = 'background:#fff;border:1px solid rgba(37,99,235,.25);border-radius:100px;padding:7px 13px;font-size:11px;font-weight:600;color:#2563eb;cursor:pointer;transition:background .15s,color .15s,border-color .15s;white-space:nowrap';
+            b.addEventListener('mouseenter', function(){ b.style.background='rgba(37,99,235,.08)'; b.style.borderColor='rgba(37,99,235,.5)'; b.style.color='#1d4ed8'; });
+            b.addEventListener('mouseleave', function(){ b.style.background='#fff'; b.style.borderColor='rgba(37,99,235,.25)'; b.style.color='#2563eb'; });
             b.addEventListener('click', function() {
               addMsg(r.label, true, now());
               document.getElementById('vws-qr').innerHTML = '';
@@ -842,8 +838,8 @@
       var name  = document.getElementById('vws-fname').value.trim();
       var phone = document.getElementById('vws-fphone').value.trim();
       if (!name || !phone) {
-        document.getElementById('vws-fname').style.borderColor = name ? 'rgba(255,255,255,.1)' : '#ef4444';
-        document.getElementById('vws-fphone').style.borderColor = phone ? 'rgba(255,255,255,.1)' : '#ef4444';
+        document.getElementById('vws-fname').style.borderColor = name ? 'rgba(0,0,0,.15)' : '#ef4444';
+        document.getElementById('vws-fphone').style.borderColor = phone ? 'rgba(0,0,0,.15)' : '#ef4444';
         return;
       }
       userData = { name: name, phone: phone };
@@ -2102,6 +2098,9 @@
           wrap.addEventListener('touchstart', function(e) { dragging = true; setPos(e.touches[0].clientX); e.preventDefault(); }, {passive:false});
           document.addEventListener('touchmove', function(e) { if (dragging) { setPos(e.touches[0].clientX); e.preventDefault(); } }, {passive:false});
           document.addEventListener('touchend', function() { dragging = false; });
+          /* Set initial reveal: 40% before, 60% after */
+          before.style.width = '40%';
+          handle.style.left = '40%';
         }, 100);
       }
     }
