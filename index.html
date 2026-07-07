@@ -241,6 +241,13 @@
   /* Card surfaces */
   .vws-section-light [class*="border-white"]{border-color:var(--vws-light-border)!important}
   .vws-section-light [class*="bg-white\/"]{background:var(--vws-light-card)!important}
+  /* Fix inline-styled elements with near-invisible light colors (cream rgba(225,224,204,...)) */
+  .vws-section-light [style*="rgba(225, 224, 204"]{color:var(--vws-light-text)!important}
+  .vws-section-light [style*="rgba(225,224,204"]{color:var(--vws-light-text)!important}
+  /* Fix inline-styled elements with white/near-white at low opacity */
+  .vws-section-light [style*="rgba(255, 255, 255, 0."]{color:var(--vws-light-sub)!important}
+  /* Generic span fallback for light sections */
+  .vws-section-light span:not([class]):not([data-vws-skip]){color:var(--vws-light-text)!important}
 
   /* ─── DARK section token ─── */
   .vws-section-dark{background:var(--vws-dark-bg)!important;isolation:isolate}
