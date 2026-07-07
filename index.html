@@ -358,8 +358,12 @@
   #vws-hp-trust .vws-trust-card-body{font-size:14px!important;line-height:1.7!important}
   #vws-hp-trust .vws-trust-grid{gap:24px!important;grid-template-columns:repeat(auto-fit,minmax(240px,1fr))!important}
 
-  /* ══ TASK 1: Logo icon chip — dark rounded square behind V icon ══ */
-  header.fixed.top-0 a[href="/"] svg{background:#0a0f1e;border-radius:10px;padding:5px;box-sizing:content-box}
+  /* ══ TASK 1: Logo — soft depth glow, no hard box ══ */
+  header.fixed.top-0 a[href="/"] svg{background:none!important;padding:2px;filter:drop-shadow(0 2px 8px rgba(10,15,35,0.55)) drop-shadow(0 0 14px rgba(37,99,235,0.25))}
+
+  /* ══ TASK 2: Wordmark — force cream inline-style to dark on white navbar ══ */
+  header.fixed.top-0 [style*="rgb(225, 224, 204)"]{color:#0d1117!important}
+  header.fixed.top-0 [style*="rgba(225, 224, 204"]{color:#0d1117!important}
 
   /* ══ TASK 2a: Hero form card → white ══ */
   section[class*="h-screen"] [style*="rgba(4, 8, 22, 0.92)"]{background:#ffffff!important;border:1px solid rgba(37,99,235,0.18)!important;box-shadow:0 8px 40px rgba(37,99,235,0.08)!important}
@@ -380,6 +384,30 @@
   .vws-section-light [style*="rgba(255, 255, 255, 0.07)"]{background:rgba(37,99,235,0.08)!important;color:#2563eb!important;border-color:rgba(37,99,235,0.3)!important}
   /* Inline cream-color text on pricing cards → dark (existing ticker fix handles most; this catches remaining) */
   .vws-section-light [style*="rgba(5, 8, 20, 0.65)"] [style*="rgba(225, 224, 204"]{color:#0d1117!important}
+
+  /* ══ TASK 5: Process section — Tailwind amber/orange step titles → dark ══ */
+  .vws-section-light [class*="text-amber-"],
+  .vws-section-light [class*="text-orange-"],
+  .vws-section-light [class*="text-yellow-"]{color:#0d1117!important}
+
+  /* ══ TASK 7: Footer → white ══ */
+  footer{background:#ffffff!important;border-top:1px solid rgba(0,0,0,0.07)!important}
+  footer h3,footer h4,footer h5,footer strong{color:#0d1117!important}
+  footer p,footer li,footer [class*="text-gray-"]{color:#374151!important}
+  /* Blue links stay blue */
+  footer a[class*="text-blue-"],footer [class*="text-blue-"]{color:#2563eb!important}
+  /* Neutral links */
+  footer a:not([class*="text-blue-"]):not([class*="bg-"]){color:#374151!important}
+  /* tel: / mailto: links */
+  footer a[href^="tel:"],footer a[href^="mailto:"]{color:#2563eb!important}
+  /* Social icon circles */
+  footer [class*="rounded-full"]{background:rgba(37,99,235,0.08)!important;border:1px solid rgba(37,99,235,0.15)!important}
+  footer [class*="rounded-full"] svg,footer [class*="rounded-full"] [class*="text-"]{color:#2563eb!important}
+  /* CTA button in footer stays blue */
+  footer button[class*="bg-blue"],footer a[class*="bg-blue"]{background:#2563eb!important;color:#ffffff!important}
+  /* Contact icon backgrounds */
+  footer [class*="bg-blue-"]{background:rgba(37,99,235,0.08)!important}
+  footer [class*="bg-blue-"] svg,footer [class*="bg-blue-"] [class*="text-"]{color:#2563eb!important}
   </style>
 
   <script>
@@ -1936,12 +1964,9 @@
           reactSecs[i].classList.add('vws-section-light');
           reactSecs[i].setAttribute('data-vws-hp','1');
         });
-        /* Sections 6 & 7 already solid dark — add token class for consistency */
-        [6,7].forEach(function(i) {
-          if (!reactSecs[i]) return;
-          reactSecs[i].classList.add('vws-section-dark');
-          reactSecs[i].setAttribute('data-vws-hp','1');
-        });
+        /* Section 6 stays dark (callback form); section 7 converts to light ("Ready to Launch") */
+        if (reactSecs[6]) { reactSecs[6].classList.add('vws-section-dark'); reactSecs[6].setAttribute('data-vws-hp','1'); }
+        if (reactSecs[7]) { reactSecs[7].classList.add('vws-section-light'); reactSecs[7].setAttribute('data-vws-hp','1'); }
 
         /* ── Task 5: Trust / How You Rank section — insert before section[4] ── */
         if (!document.getElementById('vws-hp-trust')) {
@@ -2729,24 +2754,49 @@
     }, 150);
     } /* end runServiceDetail */
 
-    /* ── Task 2b: Modal whitener — watches body for React portal overlays ── */
+    /* ── Task 2b: Modal whitener — subtree watch catches React-internal renders ── */
     (function(){
+      var MODAL_KEY = 'would you like done';
+      var vwsModalBusy = false;
+      function styleVwsModal(node) {
+        if (node.nodeType !== 1) return;
+        if (vwsModalBusy) return;
+        /* Fast bail-out: text scan before any DOM queries */
+        var txt = (node.textContent || '').toLowerCase();
+        if (txt.indexOf(MODAL_KEY) === -1) return;
+        vwsModalBusy = true;
+        /* Locate the inner card (parent of the h2 that contains the heading) */
+        var card = node;
+        var h2List = node.querySelectorAll('h2');
+        for (var k = 0; k < h2List.length; k++) {
+          if (h2List[k].textContent.toLowerCase().indexOf(MODAL_KEY) > -1) {
+            var p = h2List[k].parentElement;
+            card = (p && p.parentElement && p.parentElement !== node) ? p.parentElement : (p || node);
+            break;
+          }
+        }
+        card.style.setProperty('background','#ffffff','important');
+        card.style.setProperty('border','1px solid rgba(37,99,235,0.15)','important');
+        card.style.setProperty('border-radius','16px','important');
+        card.style.setProperty('box-shadow','0 24px 60px rgba(0,0,0,0.10)','important');
+        node.querySelectorAll('h1,h2,h3,h4,h5').forEach(function(h){h.style.setProperty('color','#0d1117','important');});
+        node.querySelectorAll('p').forEach(function(p){p.style.setProperty('color','#374151','important');});
+        /* Style the option buttons (New Website / Website Redesign / Website Updates) */
+        node.querySelectorAll('button').forEach(function(btn){
+          btn.style.setProperty('background','rgba(37,99,235,0.06)','important');
+          btn.style.setProperty('color','#2563eb','important');
+          btn.style.setProperty('border','1px solid rgba(37,99,235,0.28)','important');
+          btn.style.setProperty('border-radius','10px','important');
+        });
+        setTimeout(function(){ vwsModalBusy = false; }, 8000);
+      }
       var vwsModalObs = new MutationObserver(function(muts){
         muts.forEach(function(m){
-          m.addedNodes.forEach(function(node){
-            if (node.nodeType !== 1 || node.tagName !== 'DIV') return;
-            if (node.textContent.indexOf('What Would You Like') === -1) return;
-            /* Found the get-started modal portal */
-            var panel = node.querySelector('[class*="rounded"]') || node;
-            panel.style.setProperty('background','#ffffff','important');
-            panel.style.setProperty('border','1px solid rgba(37,99,235,0.18)','important');
-            panel.style.setProperty('box-shadow','0 24px 60px rgba(0,0,0,0.12)','important');
-            node.querySelectorAll('h1,h2,h3,h4,h5').forEach(function(h){h.style.setProperty('color','#0d1117','important');});
-            node.querySelectorAll('p').forEach(function(p){p.style.setProperty('color','#374151','important');});
-          });
+          m.addedNodes.forEach(styleVwsModal);
         });
       });
-      vwsModalObs.observe(document.body, {childList:true});
+      /* subtree:true required — modal renders inside React root, not as body portal */
+      vwsModalObs.observe(document.body, {childList:true, subtree:true});
     })();
 
     /* ── Kick off on initial load ── */
