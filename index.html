@@ -301,6 +301,61 @@
     #vws-hp-trust .vws-trust-grid{grid-template-columns:1fr}
     #vws-hp-bookend{padding:80px 20px}
   }
+
+  /* ══ TASK 2: White navbar — all pages, all scroll states ══ */
+  header.fixed.top-0.left-0.right-0{background:#ffffff!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;border-bottom:1px solid rgba(0,0,0,0.07)!important;box-shadow:0 2px 20px rgba(0,0,0,0.06)!important}
+  /* Nav links — dark on white */
+  header.fixed.top-0 a[class*="text-\[11px\]"],header.fixed.top-0 a[class*="tracking-\[0\.2em\]"]{color:#374151!important}
+  header.fixed.top-0 a[class*="text-\[11px\]"]:hover{color:#2563eb!important}
+  /* START A PROJECT CTA — blue pill on white navbar */
+  header.fixed.top-0 a[href="/contact"][class*="inline-flex"]{background:#2563eb!important;color:#ffffff!important;border-color:#2563eb!important}
+  header.fixed.top-0 a[href="/contact"][class*="inline-flex"]:hover{background:#1d4ed8!important}
+  /* Logo wordmark — dark on white */
+  header.fixed.top-0 a.select-none p,header.fixed.top-0 .select-none p,header.fixed.top-0 p[class*="font-black"]{color:#0d1117!important}
+  header.fixed.top-0 p[class*="tracking-"]{color:#374151!important}
+  /* Services dropdown — keep dark bg */
+  header.fixed.top-0 [data-vws-dd]{background:#0d1117!important}
+
+  /* ══ TASK 1: Card contrast — fix dark-navy cards inside light sections ══ */
+  /* Replace dark card bg with white + brand blue border */
+  .vws-section-light [class*="rounded-2xl"][class*="p-8"],
+  .vws-section-light [class*="rounded-2xl"][class*="p-10"]{background:#ffffff!important;border:1px solid rgba(37,99,235,0.15)!important;box-shadow:0 4px 20px rgba(37,99,235,0.05)!important}
+  /* Ensure heading + body text inside these cards are dark and readable */
+  .vws-section-light [class*="rounded-2xl"][class*="p-8"] h1,
+  .vws-section-light [class*="rounded-2xl"][class*="p-8"] h2,
+  .vws-section-light [class*="rounded-2xl"][class*="p-8"] h3,
+  .vws-section-light [class*="rounded-2xl"][class*="p-8"] h4,
+  .vws-section-light [class*="rounded-2xl"][class*="p-8"] p,
+  .vws-section-light [class*="rounded-2xl"][class*="p-10"] h2,
+  .vws-section-light [class*="rounded-2xl"][class*="p-10"] h3,
+  .vws-section-light [class*="rounded-2xl"][class*="p-10"] p{color:#0d1117!important}
+  .vws-section-light [class*="rounded-2xl"][class*="p-8"] [class*="text-sm"],
+  .vws-section-light [class*="rounded-2xl"][class*="p-8"] [class*="text-xs"],
+  .vws-section-light [class*="rounded-2xl"][class*="p-10"] [class*="text-sm"]{color:#4b5563!important}
+  /* Blue accent text within cards stays blue */
+  .vws-section-light [class*="rounded-2xl"] [class*="text-blue-"]{color:#2563eb!important}
+  /* Strikethrough prices */
+  .vws-section-light [class*="rounded-2xl"] [class*="line-through"]{color:#9ca3af!important}
+  /* "OPTIONAL ADD-ON" badge */
+  .vws-section-light [class*="rounded-2xl"] [class*="bg-amber"],[class*="rounded-2xl"] [class*="bg-\[rgba\(245,158"]{background:rgba(245,158,11,0.12)!important;color:#92400e!important}
+  /* Dark cards in dark sections — keep white text */
+  .vws-section-dark [class*="rounded-2xl"][class*="p-8"] h2,
+  .vws-section-dark [class*="rounded-2xl"][class*="p-8"] h3,
+  .vws-section-dark [class*="rounded-2xl"][class*="p-8"] h4,
+  .vws-section-dark [class*="rounded-2xl"][class*="p-8"] p,
+  .vws-section-dark [class*="rounded-2xl"][class*="p-10"] h2,
+  .vws-section-dark [class*="rounded-2xl"][class*="p-10"] h3,
+  .vws-section-dark [class*="rounded-2xl"][class*="p-10"] p{color:rgba(240,244,255,0.85)!important}
+  /* Hero protection — never allow light tokens on the hero */
+  section[class*="h-screen"]{background:transparent!important}
+  section[class*="h-screen"] h1,section[class*="h-screen"] h2,section[class*="h-screen"] p{color:inherit!important}
+
+  /* ══ TASK 3: Larger Local SEO trust cards ══ */
+  #vws-hp-trust .vws-trust-card{padding:28px 24px!important}
+  #vws-hp-trust .vws-trust-card-icon{width:44px;height:44px;margin:0 0 16px}
+  #vws-hp-trust .vws-trust-card-title{font-size:16px!important;margin:0 0 10px!important}
+  #vws-hp-trust .vws-trust-card-body{font-size:14px!important;line-height:1.7!important}
+  #vws-hp-trust .vws-trust-grid{gap:24px!important;grid-template-columns:repeat(auto-fit,minmax(240px,1fr))!important}
   </style>
 
   <script>
@@ -1847,17 +1902,21 @@
       }, 150);
 
       function applyHomepage(secs) {
-        /* ── Task 3: Apply .vws-section-light to mid-page React sections ── */
+        /* Filter out injected VWS sections so indices always point to React sections */
+        var reactSecs = Array.from(secs).filter(function(s) {
+          return !s.id || !s.id.match(/^vws-/);
+        });
+        /* Apply .vws-section-light to mid-page React sections [1-5] */
         [1,2,3,4,5].forEach(function(i) {
-          if (!secs[i]) return;
-          secs[i].classList.add('vws-section-light');
-          secs[i].setAttribute('data-vws-hp','1');
+          if (!reactSecs[i]) return;
+          reactSecs[i].classList.add('vws-section-light');
+          reactSecs[i].setAttribute('data-vws-hp','1');
         });
         /* Sections 6 & 7 already solid dark — add token class for consistency */
         [6,7].forEach(function(i) {
-          if (!secs[i]) return;
-          secs[i].classList.add('vws-section-dark');
-          secs[i].setAttribute('data-vws-hp','1');
+          if (!reactSecs[i]) return;
+          reactSecs[i].classList.add('vws-section-dark');
+          reactSecs[i].setAttribute('data-vws-hp','1');
         });
 
         /* ── Task 5: Trust / How You Rank section — insert before section[4] ── */
