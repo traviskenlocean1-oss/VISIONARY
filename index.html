@@ -357,6 +357,29 @@
   #vws-hp-trust .vws-trust-card-title{font-size:16px!important;margin:0 0 10px!important}
   #vws-hp-trust .vws-trust-card-body{font-size:14px!important;line-height:1.7!important}
   #vws-hp-trust .vws-trust-grid{gap:24px!important;grid-template-columns:repeat(auto-fit,minmax(240px,1fr))!important}
+
+  /* ══ TASK 1: Logo icon chip — dark rounded square behind V icon ══ */
+  header.fixed.top-0 a[href="/"] svg{background:#0a0f1e;border-radius:10px;padding:5px;box-sizing:content-box}
+
+  /* ══ TASK 2a: Hero form card → white ══ */
+  section[class*="h-screen"] [style*="rgba(4, 8, 22, 0.92)"]{background:#ffffff!important;border:1px solid rgba(37,99,235,0.18)!important;box-shadow:0 8px 40px rgba(37,99,235,0.08)!important}
+  section[class*="h-screen"] [style*="rgba(4, 8, 22, 0.92)"] h2,
+  section[class*="h-screen"] [style*="rgba(4, 8, 22, 0.92)"] h3,
+  section[class*="h-screen"] [style*="rgba(4, 8, 22, 0.92)"] h4{color:#0d1117!important}
+  section[class*="h-screen"] [style*="rgba(4, 8, 22, 0.92)"] label,
+  section[class*="h-screen"] [style*="rgba(4, 8, 22, 0.92)"] p{color:#374151!important}
+  section[class*="h-screen"] [style*="rgba(4, 8, 22, 0.92)"] input,
+  section[class*="h-screen"] [style*="rgba(4, 8, 22, 0.92)"] select,
+  section[class*="h-screen"] [style*="rgba(4, 8, 22, 0.92)"] textarea{background:#f7f8fc!important;border:1px solid rgba(0,0,0,0.12)!important;color:#0d1117!important}
+  section[class*="h-screen"] [style*="rgba(4, 8, 22, 0.92)"] input::placeholder,
+  section[class*="h-screen"] [style*="rgba(4, 8, 22, 0.92)"] textarea::placeholder{color:#9ca3af!important}
+
+  /* ══ TASK 4: Pricing card background → white (root fix) ══ */
+  .vws-section-light [style*="rgba(5, 8, 20, 0.65)"]{background:#ffffff!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+  /* Ghost pricing button → blue-tinted outline in light section */
+  .vws-section-light [style*="rgba(255, 255, 255, 0.07)"]{background:rgba(37,99,235,0.08)!important;color:#2563eb!important;border-color:rgba(37,99,235,0.3)!important}
+  /* Inline cream-color text on pricing cards → dark (existing ticker fix handles most; this catches remaining) */
+  .vws-section-light [style*="rgba(5, 8, 20, 0.65)"] [style*="rgba(225, 224, 204"]{color:#0d1117!important}
   </style>
 
   <script>
@@ -1939,14 +1962,6 @@
           initSlider();
         }
 
-        /* ── Task 3: Dark bookend — insert before section[6] ── */
-        if (!document.getElementById('vws-hp-bookend')) {
-          var bookendEl = document.createElement('section');
-          bookendEl.id = 'vws-hp-bookend';
-          bookendEl.className = 'vws-section-dark';
-          bookendEl.innerHTML = buildHPBookend();
-          secs[6].parentNode.insertBefore(bookendEl, secs[6]);
-        }
       }
 
       /* ── Build: Trust/rank section (Task 5) ── */
@@ -2713,6 +2728,26 @@
       }
     }, 150);
     } /* end runServiceDetail */
+
+    /* ── Task 2b: Modal whitener — watches body for React portal overlays ── */
+    (function(){
+      var vwsModalObs = new MutationObserver(function(muts){
+        muts.forEach(function(m){
+          m.addedNodes.forEach(function(node){
+            if (node.nodeType !== 1 || node.tagName !== 'DIV') return;
+            if (node.textContent.indexOf('What Would You Like') === -1) return;
+            /* Found the get-started modal portal */
+            var panel = node.querySelector('[class*="rounded"]') || node;
+            panel.style.setProperty('background','#ffffff','important');
+            panel.style.setProperty('border','1px solid rgba(37,99,235,0.18)','important');
+            panel.style.setProperty('box-shadow','0 24px 60px rgba(0,0,0,0.12)','important');
+            node.querySelectorAll('h1,h2,h3,h4,h5').forEach(function(h){h.style.setProperty('color','#0d1117','important');});
+            node.querySelectorAll('p').forEach(function(p){p.style.setProperty('color','#374151','important');});
+          });
+        });
+      });
+      vwsModalObs.observe(document.body, {childList:true});
+    })();
 
     /* ── Kick off on initial load ── */
     setTimeout(runAll, 400);
