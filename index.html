@@ -241,11 +241,11 @@
   /* Card surfaces */
   .vws-section-light [class*="border-white"]{border-color:var(--vws-light-border)!important}
   .vws-section-light [class*="bg-white\/"]{background:var(--vws-light-card)!important}
-  /* Fix inline-styled elements with near-invisible light colors (cream — both rgb and rgba forms) */
-  .vws-section-light [style*="rgba(225, 224, 204"]{color:var(--vws-light-text)!important}
-  .vws-section-light [style*="rgba(225,224,204"]{color:var(--vws-light-text)!important}
-  .vws-section-light [style*="rgb(225, 224, 204)"]{color:var(--vws-light-text)!important}
-  .vws-section-light [style*="rgb(225,224,204)"]{color:var(--vws-light-text)!important}
+  /* Fix inline-styled cream text in light sections — scoped away from h-screen (hero uses cream intentionally) */
+  .vws-section-light:not([class*="h-screen"]) [style*="rgba(225, 224, 204"]{color:var(--vws-light-text)!important}
+  .vws-section-light:not([class*="h-screen"]) [style*="rgba(225,224,204"]{color:var(--vws-light-text)!important}
+  .vws-section-light:not([class*="h-screen"]) [style*="rgb(225, 224, 204)"]{color:var(--vws-light-text)!important}
+  .vws-section-light:not([class*="h-screen"]) [style*="rgb(225,224,204)"]{color:var(--vws-light-text)!important}
   /* Fix inline-styled elements with white/near-white at low opacity */
   .vws-section-light [style*="rgba(255, 255, 255, 0."]{color:var(--vws-light-sub)!important}
   /* Generic span fallback for light sections */
@@ -352,6 +352,11 @@
   section[class*="h-screen"]{background:transparent!important}
   section[class*="h-screen"] h1,section[class*="h-screen"] h2{color:rgb(225,224,204)!important}
   section[class*="h-screen"] p{color:rgba(225,224,204,0.55)!important}
+  /* Safety net: inline cream spans inside hero override any light-section attribute selectors */
+  section[class*="h-screen"] [style*="rgb(225, 224, 204)"]{color:rgb(225,224,204)!important}
+  section[class*="h-screen"] [style*="rgb(225,224,204)"]{color:rgb(225,224,204)!important}
+  section[class*="h-screen"] [style*="rgba(225, 224, 204"]{color:rgba(225,224,204,0.9)!important}
+  section[class*="h-screen"] [style*="rgba(225,224,204"]{color:rgba(225,224,204,0.9)!important}
 
   /* ══ TASK 3: Larger Local SEO trust cards ══ */
   #vws-hp-trust .vws-trust-card{padding:28px 24px!important}
@@ -361,7 +366,7 @@
   #vws-hp-trust .vws-trust-grid{gap:24px!important;grid-template-columns:repeat(auto-fit,minmax(240px,1fr))!important}
 
   /* ══ TASK 1: Logo — soft depth glow, no hard box ══ */
-  header.fixed.top-0 a[href="/"] svg{background:none!important;padding:2px;filter:drop-shadow(0 2px 8px rgba(10,15,35,0.55)) drop-shadow(0 0 14px rgba(37,99,235,0.25))}
+  header.fixed.top-0 a[href="/"] svg{background:radial-gradient(ellipse at center,rgba(5,10,28,0.72) 0%,rgba(5,10,28,0.18) 55%,transparent 76%)!important;filter:none!important;border-radius:6px;padding:3px;box-sizing:content-box}
 
   /* ══ TASK 2: Wordmark — force cream inline-style to dark on white navbar ══ */
   header.fixed.top-0 [style*="rgb(225, 224, 204)"]{color:#0d1117!important}
@@ -382,8 +387,13 @@
 
   /* ══ TASK 4: Pricing card background → white (root fix) ══ */
   .vws-section-light [style*="rgba(5, 8, 20, 0.65)"]{background:#ffffff!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
-  /* Ghost pricing button → blue-tinted outline in light section */
-  .vws-section-light [style*="rgba(255, 255, 255, 0.07)"]{background:rgba(37,99,235,0.08)!important;color:#2563eb!important;border-color:rgba(37,99,235,0.3)!important}
+  /* Ghost pricing button → blue-tinted outline — button/a only, never general divs */
+  .vws-section-light button[style*="rgba(255, 255, 255, 0.07)"],
+  .vws-section-light a[style*="rgba(255, 255, 255, 0.07)"]{background:rgba(37,99,235,0.08)!important;color:#2563eb!important;border-color:rgba(37,99,235,0.3)!important}
+  /* Process accordion rows — remove inherited lavender tint, force white */
+  .vws-section-light [class*="mb-14"][class*="border-t"]{background:#ffffff!important;border-color:rgba(0,0,0,0.07)!important}
+  /* Hero form card SUBMIT button → solid blue, white text */
+  section[class*="h-screen"] [style*="rgba(4, 8, 22, 0.92)"] button{background:#2563eb!important;color:#ffffff!important;font-weight:700!important}
   /* Inline cream-color text on pricing cards → dark (existing ticker fix handles most; this catches remaining) */
   .vws-section-light [style*="rgba(5, 8, 20, 0.65)"] [style*="rgba(225, 224, 204"]{color:#0d1117!important}
 
