@@ -137,6 +137,37 @@
         heroSec.insertBefore(mask, heroSec.firstChild);
       })();
 
+      /* 1.8. Enhance deposit note → "How Payment Works" 2-step trust card */
+      (function() {
+        if (document.getElementById('vws-payment-trust')) return;
+        var allP = document.querySelectorAll('p');
+        var depositP = null;
+        for (var i = 0; i < allP.length; i++) {
+          if (allP[i].textContent.indexOf('50% deposit required') !== -1) {
+            depositP = allP[i]; break;
+          }
+        }
+        if (!depositP) return;
+        var wrapper = depositP.parentElement;
+        if (!wrapper) return;
+        wrapper.innerHTML = '<div id="vws-payment-trust" style="background:rgba(255,255,255,0.04);border:1px solid rgba(37,99,235,0.22);border-radius:14px;padding:28px 32px;max-width:820px;margin:0 auto">'
+          +'<p style="font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#60a5fa;margin:0 0 22px;text-align:center">How Payment Works</p>'
+          +'<div style="display:flex;gap:0;align-items:flex-start;flex-wrap:wrap">'
+            +'<div style="flex:1;min-width:220px;padding:0 28px 0 0;border-right:1px solid rgba(255,255,255,0.08)">'
+              +'<div style="width:34px;height:34px;background:#2563eb;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:800;color:#fff;margin:0 0 12px">1</div>'
+              +'<p style="font-size:15px;font-weight:700;color:#e1e0cc;margin:0 0 6px">50% Deposit to Start</p>'
+              +'<p style="font-size:13px;color:rgba(225,224,204,0.55);margin:0;line-height:1.55">We begin building your site immediately. No delays, no waiting around.</p>'
+            +'</div>'
+            +'<div style="flex:1;min-width:220px;padding:0 0 0 28px">'
+              +'<div style="width:34px;height:34px;background:rgba(37,99,235,0.12);border:2px solid rgba(37,99,235,0.5);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:800;color:#60a5fa;margin:0 0 12px">2</div>'
+              +'<p style="font-size:15px;font-weight:700;color:#e1e0cc;margin:0 0 6px">50% Only When You Approve</p>'
+              +'<p style="font-size:13px;color:rgba(225,224,204,0.55);margin:0;line-height:1.55">The remaining balance is due <strong style="color:#e1e0cc;font-weight:600">only after you\'ve seen the finished site and given us the green light.</strong> We never collect until you\'re satisfied.</p>'
+            +'</div>'
+          +'</div>'
+          +'<p style="font-size:12px;color:rgba(225,224,204,0.3);margin:20px 0 0;border-top:1px solid rgba(255,255,255,0.06);padding-top:16px;text-align:center">🔒 Secure invoice payment &nbsp;·&nbsp; You are never charged the balance before the project is complete and approved by you</p>'
+          +'</div>';
+      })();
+
       /* 2. Build Services dropdown if the nav is rendered and dropdown not yet injected */
       var servicesLink = Array.from(document.querySelectorAll('nav a')).find(function(a) {
         return a.textContent.trim() === 'Services';
