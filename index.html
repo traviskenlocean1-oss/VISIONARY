@@ -3076,7 +3076,6 @@
     var rebuilt = false;
     function rebuild() {
       if (rebuilt) return;
-      if (!document.querySelector('section')) return;
       var footer = document.querySelector('footer');
       if (!footer) return;
       rebuilt = true;
@@ -3118,7 +3117,7 @@
     var svcAttempts = 0;
     var svcPoll = setInterval(function(){
       svcAttempts++;
-      if (document.querySelectorAll('section').length > 0 || svcAttempts > 100) {
+      if (document.querySelectorAll('section').length > 0 || document.querySelector('footer') || svcAttempts > 20) {
         clearInterval(svcPoll);
         rebuild();
         setTimeout(function(){
