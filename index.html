@@ -2778,6 +2778,13 @@
     /* ── Section builder helpers ── */
     var FF = 'font-family:Barlow,system-ui,sans-serif;';
 
+    function waveBottom(color) {
+      return '<div style="position:absolute;bottom:-1px;left:0;right:0;height:80px;pointer-events:none;z-index:5;line-height:0">'
+        +'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 80" preserveAspectRatio="none" style="display:block;width:100%;height:80px">'
+        +'<path d="M0,40 C360,0 1080,80 1440,40 L1440,80 L0,80 Z" fill="'+color+'"/>'
+        +'</svg></div>';
+    }
+
     function heroIcon(slug, c, lt) {
       var paths = {
         'website-development':'<path d="M16 18l6-6-6-6M8 6l-6 6 6 6" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>',
@@ -2917,19 +2924,21 @@
       var contentWrap = '<div style="position:relative;z-index:1;width:100%;display:flex;align-items:center">'+inner+'</div>';
       return '<section id="vws-hero" style="'
         +'background:transparent;'
-        +'min-height:85vh;display:flex;align-items:center;position:relative;overflow:hidden;padding:120px 0 80px'
-        +'">'+tintOverlay+contentWrap+'</section>';
+        +'min-height:85vh;display:flex;align-items:center;position:relative;padding:120px 0 80px'
+        +'"><div style="position:absolute;inset:0;overflow:hidden;pointer-events:none">'+tintOverlay+'</div>'
+        +contentWrap+waveBottom('#0a0a0f')+'</section>';
     }
 
     function buildProblems(slug, svc) {
       var items = PROBLEMS[slug] || [];
       if (!items.length) return '';
+      var rgb = hexToRgb(svc.color);
       var icons = [
         '<path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z" stroke="currentColor" stroke-width="1.8" fill="none"/><line x1="12" y1="9" x2="12" y2="13" stroke="currentColor" stroke-width="1.8"/><line x1="12" y1="17" x2="12.01" y2="17" stroke="currentColor" stroke-width="2.5"/>',
         '<circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.8" fill="none"/><line x1="12" y1="8" x2="12" y2="12" stroke="currentColor" stroke-width="1.8"/><line x1="12" y1="16" x2="12.01" y2="16" stroke="currentColor" stroke-width="2.5"/>',
         '<circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.8" fill="none"/><polyline points="12 6 12 12 16 14" stroke="currentColor" stroke-width="1.8" fill="none"/>'
       ];
-      return '<section id="vws-problem" style="padding:100px 40px;background:#0d0d0d;'+FF+'">'
+      return '<section id="vws-problem" style="padding:100px 40px 160px;background:#0a0a0f;position:relative;'+FF+'">'
         +'<div style="max-width:1100px;margin:0 auto">'
         +'<p style="font-size:12px;letter-spacing:3px;text-transform:uppercase;color:'+svc.color+';font-weight:700;margin:0 0 14px">THE PROBLEM</p>'
         +'<h2 style="font-size:clamp(28px,4vw,48px);font-weight:800;color:#fff;margin:0 0 56px;line-height:1.15;max-width:700px">Why businesses like yours lose without '+(slug==='website-maintenance'?'ongoing maintenance':slug==='hosting-domain'?'proper hosting':slug==='logo-branding'?'a professional brand':slug==='website-redesign'?'a modern site':slug==='website-creation'?'any site at all':'a custom website')+'</h2>'
@@ -2941,14 +2950,16 @@
             +'<p style="font-size:14px;color:rgba(255,255,255,0.5);line-height:1.7;margin:0">'+item.p+'</p>'
             +'</div>';
         }).join('')
-        +'</div></div></section>';
+        +'</div></div>'
+        +waveBottom('#111827')
+        +'</section>';
     }
 
     function buildSteps(slug, svc) {
       var items = STEPS[slug] || [];
       if (!items.length) return '';
       var rgb = hexToRgb(svc.color);
-      return '<section id="vws-steps" style="padding:100px 40px;background:#0a0a0a;'+FF+'">'
+      return '<section id="vws-steps" style="padding:100px 40px 160px;background:#111827;position:relative;'+FF+'">'
         +'<div style="max-width:1100px;margin:0 auto">'
         +'<p style="font-size:12px;letter-spacing:3px;text-transform:uppercase;color:'+svc.color+';font-weight:700;margin:0 0 14px">THE PROCESS</p>'
         +'<h2 style="font-size:clamp(36px,5vw,56px);font-weight:800;color:#fff;margin:0 0 56px;line-height:1.1">How It Works</h2>'
@@ -2962,13 +2973,15 @@
             +'<p style="font-size:15px;color:rgba(255,255,255,0.55);line-height:1.7;margin:0">'+step.d+'</p>'
             +'</div></div>';
         }).join('')
-        +'</div></div></section>';
+        +'</div></div>'
+        +waveBottom('#0a0a0f')
+        +'</section>';
     }
 
     function buildIncluded(slug, svc) {
       var items = svc.gets || [];
       var rgb = hexToRgb(svc.color);
-      return '<section id="vws-included" style="padding:100px 40px;background:#0d0d0d;'+FF+'">'
+      return '<section id="vws-included" style="padding:100px 40px 160px;background:#0a0a0f;position:relative;'+FF+'">'
         +'<div style="max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 380px;gap:48px;align-items:start">'
         +'<div>'
         +'<p style="font-size:12px;letter-spacing:3px;text-transform:uppercase;color:'+svc.color+';font-weight:700;margin:0 0 14px">EVERYTHING COVERED</p>'
@@ -2988,13 +3001,16 @@
         +'<a href="/contact" style="display:block;background:'+svc.color+';color:#fff;font-size:15px;font-weight:700;padding:15px 24px;border-radius:8px;text-decoration:none;text-align:center;box-shadow:0 8px 24px '+svc.glow+'">Start Your Project →</a>'
         +'<p style="font-size:13px;color:rgba(255,255,255,0.35);text-align:center;margin:16px 0 0">Or call us → <a href="tel:5618890507" style="color:rgba(255,255,255,0.5);text-decoration:none">(561) 889-0507</a></p>'
         +'</div>'
-        +'</div></section>';
+        +'</div>'
+        +waveBottom('#111827')
+        +'</section>';
     }
 
     function buildResults(slug, svc) {
       var items = RESULTS[slug] || [];
       if (!items.length) return '';
-      return '<section id="vws-results" style="padding:100px 40px;background:#0a0a0a;'+FF+'">'
+      var rgb = hexToRgb(svc.color);
+      return '<section id="vws-results" style="padding:100px 40px 160px;background:#111827;position:relative;'+FF+'">'
         +'<div style="max-width:1100px;margin:0 auto">'
         +'<p style="font-size:12px;letter-spacing:3px;text-transform:uppercase;color:'+svc.color+';font-weight:700;margin:0 0 14px">THE RESULTS</p>'
         +'<h2 style="font-size:clamp(28px,4vw,44px);font-weight:800;color:#fff;margin:0 0 56px;line-height:1.15">What clients see after working with us</h2>'
@@ -3006,13 +3022,16 @@
             +'<p style="font-size:14px;color:rgba(255,255,255,0.5);line-height:1.6;margin:0">'+s.d+'</p>'
             +'</div>';
         }).join('')
-        +'</div></div></section>';
+        +'</div></div>'
+        +waveBottom('#0a0a0f')
+        +'</section>';
     }
 
     function buildFAQ(slug, svc) {
       var items = FAQ[slug] || [];
       if (!items.length) return '';
-      return '<section id="vws-faq" style="padding:100px 40px;background:#0d0d0d;'+FF+'">'
+      var rgb = hexToRgb(svc.color);
+      return '<section id="vws-faq" style="padding:100px 40px 160px;background:#0a0a0f;position:relative;'+FF+'">'
         +'<div style="max-width:780px;margin:0 auto">'
         +'<p style="font-size:12px;letter-spacing:3px;text-transform:uppercase;color:'+svc.color+';font-weight:700;margin:0 0 14px">QUESTIONS</p>'
         +'<h2 style="font-size:clamp(28px,4vw,44px);font-weight:800;color:#fff;margin:0 0 48px;line-height:1.15">Frequently Asked</h2>'
@@ -3027,7 +3046,9 @@
             +'<p style="font-size:14px;color:rgba(255,255,255,0.55);line-height:1.75;margin:0">'+item.a+'</p>'
             +'</div></div>';
         }).join('')
-        +'</div></div></section>';
+        +'</div></div>'
+        +waveBottom('#060912')
+        +'</section>';
     }
 
     function buildCTA(slug, svc) {
