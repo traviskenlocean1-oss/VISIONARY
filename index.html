@@ -1226,7 +1226,7 @@
           bgStyle.id = 'vws-about-styles';
           bgStyle.textContent = [
             /* Prevent glow ::before blobs from causing horizontal scroll on mobile */
-            'html{overflow-x:hidden}body.vws-about{overflow-x:hidden}',
+            'html{overflow-x:clip}body.vws-about{overflow-x:clip}',
             /* Shared base for all section ::before glows */
             'body.vws-about section::before{content:"";position:absolute;border-radius:50%;pointer-events:none;z-index:0}',
             /* Hero — large glow bottom-left, rotated outward */
