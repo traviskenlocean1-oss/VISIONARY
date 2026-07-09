@@ -308,6 +308,30 @@
         setTimeout(fixSite, 4000);
       }
     }, 100);
+
+    /* SPA navigation hook — React Router changes routes via history.pushState,
+       never triggering a real page load. Intercept it so fixSite() runs immediately
+       after every client-side navigation and the patched styles appear with zero delay. */
+    (function() {
+      function onNav() {
+        /* React needs ~1 frame to re-render the new route before we can patch it */
+        setTimeout(fixSite, 30);
+        setTimeout(fixSite, 150);
+        setTimeout(fixSite, 400);
+        setTimeout(fixGlow, 150);
+      }
+      var origPush = history.pushState;
+      history.pushState = function() {
+        origPush.apply(this, arguments);
+        onNav();
+      };
+      var origReplace = history.replaceState;
+      history.replaceState = function() {
+        origReplace.apply(this, arguments);
+        onNav();
+      };
+      window.addEventListener('popstate', onNav);
+    })();
   })();
   </script>
 
