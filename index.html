@@ -223,21 +223,21 @@
             return el.children.length === 0 && el.textContent.trim() === title;
           });
           if (!found) return;
-          /* Walk up looking for the WIDEST dark ancestor (the full card, not just inner text wrapper) */
+          /* Walk up — STOP at any <section> so we never escape the card's containing section */
           var node = found.parentElement;
-          var limit = 12;
-          while (node && node !== document.body && limit-- > 0) {
+          var limit = 10;
+          while (node && node.tagName !== 'SECTION' && node !== document.body && limit-- > 0) {
             var rect = node.getBoundingClientRect();
             var bg = window.getComputedStyle(node).backgroundColor;
             var m = bg && bg.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)/);
-            if (m && rect.width > 350 && rect.height > 40) {
+            /* Must be a real dark element (avg<100), card-sized (350-800px wide, <300px tall) */
+            if (m && rect.width > 350 && rect.width < 800 && rect.height > 40 && rect.height < 300) {
               var avg = (parseInt(m[1])+parseInt(m[2])+parseInt(m[3]))/3;
               if (avg < 100) {
                 node.style.setProperty('background','#ffffff','important');
                 node.style.setProperty('border','1px solid rgba(37,99,235,0.12)','important');
                 node.style.setProperty('border-radius','12px','important');
                 node.style.setProperty('box-shadow','0 2px 10px rgba(0,0,0,0.05)','important');
-                /* Fix near-white/white text to dark so it reads on white card */
                 Array.from(node.querySelectorAll('p,span,h3,h4,strong')).forEach(function(c) {
                   var col = window.getComputedStyle(c).color;
                   var cm = col && col.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)/);
