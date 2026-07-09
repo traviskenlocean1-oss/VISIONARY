@@ -198,6 +198,71 @@
         });
       })();
 
+      /* 1.10. Services page redesign: sticky-scroll, hero wave, built-for-results card */
+      (function() {
+        if (window.location.pathname !== '/services') return;
+
+        /* Hero wave — multi-crest ripple (distinct from About's single arch) */
+        var hero = document.querySelectorAll('section')[0];
+        if (hero && !document.getElementById('vws-svc-wave')) {
+          hero.style.setProperty('position','relative','important');
+          hero.style.setProperty('overflow','hidden','important');
+          var wave = document.createElement('div');
+          wave.id = 'vws-svc-wave';
+          wave.style.cssText = 'position:absolute;bottom:0;left:0;right:0;line-height:0;pointer-events:none;z-index:2';
+          wave.innerHTML = '<svg viewBox="0 0 1440 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"><path d="M0,40 C180,80 360,0 540,40 C720,80 900,0 1080,40 C1260,80 1440,40 1440,80 L1440,80 L0,80 Z" fill="#ffffff"/></svg>';
+          hero.appendChild(wave);
+        }
+
+        /* Hide React-rendered individual service sections */
+        ['web-development','hosting','website-maintenance','website-creation','website-redesign','logo-branding'].forEach(function(id) {
+          var s = document.getElementById(id);
+          if (s) s.style.setProperty('display','none','important');
+        });
+
+        /* Inject sticky-scroll services section */
+        if (!document.getElementById('vws-svc-sticky')) {
+          var svcs = [
+            {num:'01',title:'Website Development',desc:'Every site we build is hand-coded from scratch — no templates, no drag-and-drop builders. Custom design built around your brand.',href:'/services/website-development'},
+            {num:'02',title:'Hosting & Domain',desc:'Getting online shouldn\'t be complicated. We handle domain setup, connect everything, and host your site on fast, globally distributed servers.',href:'/services/hosting-domain'},
+            {num:'03',title:'Website Maintenance',desc:'The work doesn\'t stop at launch. We stay available for updates, fixes, and improvements so your site keeps performing at its best.',href:'/services/website-maintenance'},
+            {num:'04',title:'Website Creation',desc:'Starting from zero? We build your entire online presence from the ground up — custom design, clean code, and everything in between.',href:'/services/website-creation'},
+            {num:'05',title:'Website Redesign',desc:'Already have a site but it\'s outdated, slow, or not converting? We rebuild it from scratch — same domain, completely new results.',href:'/services/website-redesign'},
+            {num:'06',title:'Logo & Branding',desc:'Your logo is the face of your business. We design custom logos and full brand identities that look professional, stand out, and last.',href:'/services/logo-branding'}
+          ];
+          var cards = svcs.map(function(s) {
+            return '<div class="vws-ss-card">'
+              +'<p class="vws-ss-num">'+s.num+'</p>'
+              +'<h3 class="vws-ss-title">'+s.title+'</h3>'
+              +'<p class="vws-ss-desc">'+s.desc+'</p>'
+              +'<a href="'+s.href+'" class="vws-ss-link">Learn More →</a>'
+              +'</div>';
+          }).join('');
+          var sticky = document.createElement('section');
+          sticky.id = 'vws-svc-sticky';
+          sticky.innerHTML = '<div class="vws-ss-inner">'
+            +'<div class="vws-ss-left">'
+              +'<p class="vws-ss-label">OUR SERVICES</p>'
+              +'<h2 class="vws-ss-headline">Everything your<br>business needs<br>online.</h2>'
+              +'<p class="vws-ss-sub">Six services. One team. Zero compromises.</p>'
+              +'<a href="/contact" class="vws-ss-cta">Start a Project →</a>'
+            +'</div>'
+            +'<div class="vws-ss-right">'+cards+'</div>'
+            +'</div>';
+          var ref = document.getElementById('web-development');
+          if (ref) ref.parentElement.insertBefore(sticky, ref);
+        }
+
+        /* "Built for Results" — mark it for CSS white-tint card */
+        var sections = document.querySelectorAll('section');
+        sections.forEach(function(s) {
+          var h2 = s.querySelector('h2');
+          if (h2 && h2.textContent.trim() === 'Built for Results') {
+            s.id = 'vws-built-results';
+          }
+        });
+      })();
+
       /* 2. Build Services dropdown if the nav is rendered and dropdown not yet injected */
       var servicesLink = Array.from(document.querySelectorAll('nav a')).find(function(a) {
         return a.textContent.trim() === 'Services';
@@ -309,16 +374,17 @@
       }
     }, 100);
 
-    /* SPA navigation hook — React Router changes routes via history.pushState,
-       never triggering a real page load. Intercept it so fixSite() runs immediately
-       after every client-side navigation and the patched styles appear with zero delay. */
+    /* SPA navigation hook — React Router calls history.pushState for every route change.
+       Using a microtask (Promise.resolve().then) means fixSite runs AFTER React's
+       synchronous render commit but BEFORE the browser paints — zero flash. */
     (function() {
       function onNav() {
-        /* React needs ~1 frame to re-render the new route before we can patch it */
-        setTimeout(fixSite, 30);
-        setTimeout(fixSite, 150);
-        setTimeout(fixSite, 400);
-        setTimeout(fixGlow, 150);
+        /* Microtask: React commits the new route synchronously before microtasks flush,
+           so this fires on the new DOM before the browser gets a chance to paint it. */
+        Promise.resolve().then(fixSite);
+        setTimeout(fixSite, 100);   /* catch GSAP re-freezes */
+        setTimeout(fixSite, 400);   /* safety net for lazy components */
+        setTimeout(fixGlow, 100);
       }
       var origPush = history.pushState;
       history.pushState = function() {
@@ -820,6 +886,48 @@
   @media(max-width:768px){
     #vws-hp-services > div:first-child{grid-template-columns:1fr!important}
   }
+
+  /* ══ DROPDOWN — force all mega items white (override React colored bg) ══ */
+  [data-vws-mega] .vws-mega-item{background:#ffffff!important}
+  [data-vws-mega] .vws-mega-item:hover{background:rgba(37,99,235,0.06)!important}
+  [data-vws-mega] .vws-mega-item .vws-mega-item-name{color:#0d1117!important}
+  [data-vws-mega] .vws-mega-item .vws-mega-item-desc{color:#6b7280!important}
+
+  /* ══ SERVICES POPUP — "What would you like done?" buttons ══ */
+  /* Cream text rgb(225,224,204) on light-blue bg = invisible; force dark blue */
+  a[style*="rgba(37, 99, 235, 0.12)"][style*="rgb(225, 224, 204)"]{color:#1d4ed8!important}
+
+  /* ══ SERVICES PAGE — hero wave ══ */
+  #vws-svc-wave svg{display:block;width:100%;height:auto}
+
+  /* ══ SERVICES PAGE — sticky-scroll section ══ */
+  #vws-svc-sticky{background:#ffffff;padding:0 40px;font-family:inherit}
+  #vws-svc-sticky .vws-ss-inner{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:0 80px;align-items:start}
+  #vws-svc-sticky .vws-ss-left{position:sticky;top:90px;padding:100px 0;align-self:start}
+  #vws-svc-sticky .vws-ss-right{padding:100px 0 140px}
+  #vws-svc-sticky .vws-ss-label{font-size:11px;font-weight:700;letter-spacing:0.22em;text-transform:uppercase;color:#2563eb;margin:0 0 20px}
+  #vws-svc-sticky .vws-ss-headline{font-size:clamp(32px,3.5vw,52px);font-weight:900;color:#0d1117;line-height:1.1;margin:0 0 20px}
+  #vws-svc-sticky .vws-ss-sub{font-size:16px;color:#6b7280;line-height:1.7;margin:0 0 40px}
+  #vws-svc-sticky .vws-ss-cta{display:inline-flex;align-items:center;background:#2563eb;color:#fff;font-size:13px;font-weight:700;padding:12px 26px;border-radius:7px;text-decoration:none;transition:background 0.14s}
+  #vws-svc-sticky .vws-ss-cta:hover{background:#1d4ed8}
+  #vws-svc-sticky .vws-ss-card{padding:44px 0;border-top:1px solid rgba(0,0,0,0.08)}
+  #vws-svc-sticky .vws-ss-card:last-child{border-bottom:1px solid rgba(0,0,0,0.08)}
+  #vws-svc-sticky .vws-ss-num{font-size:11px;font-weight:700;letter-spacing:0.22em;text-transform:uppercase;color:#2563eb;margin:0 0 14px}
+  #vws-svc-sticky .vws-ss-title{font-size:clamp(20px,2vw,26px);font-weight:800;color:#0d1117;line-height:1.2;margin:0 0 14px}
+  #vws-svc-sticky .vws-ss-desc{font-size:15px;color:#4b5563;line-height:1.75;margin:0 0 20px}
+  #vws-svc-sticky .vws-ss-link{font-size:12px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#2563eb;text-decoration:none;display:inline-flex;align-items:center;gap:6px}
+  #vws-svc-sticky .vws-ss-link:hover{color:#1d4ed8}
+  @media(max-width:900px){
+    #vws-svc-sticky{padding:0 20px}
+    #vws-svc-sticky .vws-ss-inner{grid-template-columns:1fr}
+    #vws-svc-sticky .vws-ss-left{position:static;padding:60px 0 32px;border-bottom:1px solid rgba(0,0,0,0.07)}
+    #vws-svc-sticky .vws-ss-right{padding:32px 0 80px}
+  }
+
+  /* ══ SERVICES PAGE — "Built for Results" white-tinted card ══ */
+  #vws-built-results{background:#f0f4ff!important;border-top:none!important}
+  #vws-built-results h2{color:#0d1117!important}
+  #vws-built-results p{color:#374151!important}
 
   </style>
 
