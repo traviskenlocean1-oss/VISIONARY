@@ -1212,8 +1212,12 @@
       var poll = 0;
       var t = setInterval(function() {
         poll++;
+        /* Wait for the /about hero specifically — "Built for" is unique to this page */
+        var aboutHero = Array.from(document.querySelectorAll('section')).find(function(s) {
+          return s.textContent.indexOf('Built for') !== -1 && s.textContent.indexOf('businesses') !== -1;
+        });
         var footer = document.querySelector('footer');
-        if (!footer || poll > 80) { clearInterval(t); return; }
+        if (!aboutHero || !footer || poll > 100) { clearInterval(t); return; }
         clearInterval(t);
         if (document.getElementById('vws-about-diff') && document.getElementById('vws-about-sticky')) return;
 
