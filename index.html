@@ -1060,18 +1060,16 @@
   .vws-sl-vnum{font-size:clamp(100px,14vw,200px);font-weight:900;color:rgba(255,255,255,0.05);line-height:1;user-select:none}
   @media(max-width:768px){.vws-sl-row,.vws-sl-row.vws-sl-flip{flex-direction:column}.vws-sl-text{padding:48px 24px}.vws-sl-visual{min-height:220px}}
 
-  /* ══ SERVICES PAGE — "Built for Results" white-tinted section ══ */
-  #vws-built-results{background:#f0f4ff!important;border-top:none!important}
+  /* ══ SERVICES PAGE — "Built for Results" white section ══ */
+  #vws-built-results{background:#ffffff!important;border-top:1px solid #f3f4f6!important}
   #vws-built-results h2{color:#0d1117!important}
-  #vws-built-results p{color:#374151!important}
-  /* Feature cards inside Built for Results → white with subtle border */
-  #vws-built-results [class*="rounded"],
-  #vws-built-results [class*="bg-"]:not(#vws-built-results){background:#ffffff!important;border:1px solid rgba(37,99,235,0.1)!important}
-  #vws-built-results [class*="rounded"] p,
-  #vws-built-results [class*="rounded"] h3,
-  #vws-built-results [class*="rounded"] span{color:#374151!important}
-  #vws-built-results [class*="rounded"] h3{color:#0d1117!important}
-  #vws-built-results [class*="text-blue"]{color:#2563eb!important}
+  #vws-built-results>div>p,#vws-built-results>div>div>p{color:#6b7280!important}
+  /* Feature cards — target div.p-6 which is what React actually renders */
+  #vws-built-results div.p-6{background:#ffffff!important;border:1px solid rgba(0,0,0,0.08)!important;border-radius:12px!important;box-shadow:0 2px 8px rgba(0,0,0,0.04)!important}
+  #vws-built-results div.p-6 h3{color:#0d1117!important}
+  #vws-built-results div.p-6 p{color:#4b5563!important}
+  #vws-built-results div.p-6 span,#vws-built-results div.p-6 [class*="text-"]{color:#6b7280!important}
+  #vws-built-results [class*="text-blue"],#vws-built-results [class*="text-cyan"],#vws-built-results [class*="text-indigo"]{color:#2563eb!important}
 
   </style>
 
