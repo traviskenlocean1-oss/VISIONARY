@@ -109,7 +109,7 @@
         if (!heroSec || heroSec.querySelector('#vws-hero-rt')) return;
         var mask = document.createElement('div');
         mask.id = 'vws-hero-rt';
-        mask.style.cssText = 'position:absolute;top:0;right:0;bottom:0;width:55%;background:linear-gradient(to left,rgba(3,5,10,0.82) 0%,rgba(3,5,10,0.55) 35%,transparent 100%);pointer-events:none;z-index:0';
+        mask.style.cssText = 'position:absolute;top:0;right:0;bottom:0;width:58%;background:linear-gradient(to left,rgba(6,9,22,1) 0%,rgba(6,9,22,0.97) 20%,rgba(6,9,22,0.75) 50%,transparent 100%);pointer-events:none;z-index:0';
         heroSec.insertBefore(mask, heroSec.firstChild);
       })();
 
@@ -2483,7 +2483,7 @@
           var heroSec = reactSecs[0];
           if (heroSec) {
             heroSec.style.position = 'relative';
-            heroSec.style.overflow = 'visible';
+            heroSec.style.overflow = 'hidden';
             var waveDiv = document.createElement('div');
             waveDiv.id = 'vws-hero-wave';
             waveDiv.innerHTML = '<svg viewBox="0 0 1440 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"><path d="M0,0 C360,80 1080,80 1440,0 L1440,80 L0,80 Z" fill="#060916"/><path d="M0,20 C360,80 1080,60 1440,20 L1440,80 L0,80 Z" fill="#f7f8fc" opacity="0.08"/></svg>';
