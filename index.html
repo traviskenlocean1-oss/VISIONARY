@@ -1097,18 +1097,25 @@
   (function(){
     /* Capture slug from URL immediately — before React Router can replaceState('/services') */
     var _vwsPendingSlug = (location.pathname.match(/\/services\/([^\/]+)/) || [])[1] || null;
+    /* Lock prevents React Router's replaceState redirect from overwriting a service detail build */
+    var _vwsDetailLocked = false;
 
     /* ── Intercept React Router so enhancer re-runs on every SPA navigation ── */
     function patchHistory(method) {
       var orig = history[method];
       history[method] = function() {
+        /* User-initiated pushState = real navigation, unlock any detail lock */
+        if (method === 'pushState') _vwsDetailLocked = false;
         orig.apply(this, arguments);
         setTimeout(runAll, 300);
       };
     }
     patchHistory('pushState');
     patchHistory('replaceState');
-    window.addEventListener('popstate', function(){ setTimeout(runAll, 300); });
+    window.addEventListener('popstate', function(){
+      _vwsDetailLocked = false; /* browser back/forward = real navigation */
+      setTimeout(runAll, 300);
+    });
 
     function getSlug() {
       return (window.location.pathname.match(/\/services\/([^\/]+)/) || [])[1];
@@ -1132,6 +1139,10 @@
     }
 
     function runAll() {
+      /* If a service detail is being built, skip — prevents React Router's replaceState
+         redirect from triggering runServicesListing on top of an in-progress detail build */
+      if (_vwsDetailLocked) return;
+
       /* Use URL slug when present; fall back to the slug captured at page-load
          before React Router could replaceState('/services') over it. One-shot: clear after use. */
       var slug = getSlug() || _vwsPendingSlug;
@@ -1204,6 +1215,7 @@
       setTimeout(unfreezeAll, 400);
       setTimeout(unfreezeAll, 900);
       if (slug) {
+        _vwsDetailLocked = true;
         runServiceDetail(slug);
       } else if (isServicesIndex()) {
         runServicesListing();
