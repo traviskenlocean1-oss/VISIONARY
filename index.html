@@ -1247,8 +1247,13 @@
             'html{overflow-x:clip}body.vws-about{overflow-x:clip}',
             /* Shared base for all section ::before glows */
             'body.vws-about section::before{content:"";position:absolute;border-radius:50%;pointer-events:none;z-index:0}',
-            /* Hero — large glow bottom-left, rotated outward */
-            'body.vws-about section.min-h-screen::before{width:620px;height:620px;bottom:-80px;left:-70px;background:radial-gradient(circle,rgba(59,130,246,0.08) 0%,transparent 68%);transform:rotate(-18deg) scale(0.92);opacity:0.72}',
+            /* Hero ::after — second animated glow from top-right */
+            'body.vws-about section.min-h-screen::after{content:"";position:absolute;border-radius:50%;pointer-events:none;z-index:0;width:500px;height:500px;top:-60px;right:-80px;background:radial-gradient(circle,rgba(99,102,241,0.07) 0%,transparent 68%);animation:vwsAboutGlowR 11s ease-in-out infinite}',
+            /* Hero animations */
+            '@keyframes vwsAboutGlowL{0%,100%{transform:rotate(-18deg) scale(0.92);opacity:0.72}40%{transform:rotate(-6deg) scale(1.12);opacity:0.95}75%{transform:rotate(-28deg) scale(0.82);opacity:0.55}}',
+            '@keyframes vwsAboutGlowR{0%,100%{transform:rotate(12deg) scale(1);opacity:0.55}35%{transform:rotate(26deg) scale(1.18);opacity:0.75}70%{transform:rotate(4deg) scale(0.88);opacity:0.38}}',
+            /* Hero — large glow bottom-left, animated */
+            'body.vws-about section.min-h-screen::before{width:620px;height:620px;bottom:-80px;left:-70px;background:radial-gradient(circle,rgba(59,130,246,0.1) 0%,transparent 68%);animation:vwsAboutGlowL 9s ease-in-out infinite}',
             /* Our Story — medium glow top-right, tilted right */
             'body.vws-about section#our-story::before{width:440px;height:440px;top:30px;right:-90px;background:radial-gradient(circle,rgba(99,102,241,0.07) 0%,transparent 70%);transform:rotate(13deg) scale(1.08);opacity:0.55}',
             /* Comparison — left-side glow, compressed & rotated */
@@ -2927,7 +2932,7 @@
         +'onmouseout="this.style.color=\'rgba(255,255,255,0.45)\';this.style.background=\'rgba(255,255,255,0.05)\'">'
         +'<svg viewBox="0 0 24 24" style="width:14px;height:14px;flex-shrink:0" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>'
         +'All Services</a>';
-      var inner = '<div style="max-width:1200px;margin:0 auto;padding:0 40px;display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;width:100%;box-sizing:border-box;'+FF+'">'
+      var inner = '<div id="vws-hero-grid" style="max-width:1200px;margin:0 auto;padding:0 40px;display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;width:100%;box-sizing:border-box;'+FF+'">'
         +'<div>'
         +backLink
         +heroIcon(slug, svc.color, svc.lt)
@@ -2935,7 +2940,7 @@
         +'<p style="font-size:20px;color:rgba(255,255,255,0.6);margin:0 0 40px;line-height:1.4;max-width:420px">'+svc.tag+'</p>'
         +'<a href="/contact" style="display:inline-block;background:'+svc.color+';color:#fff;font-size:16px;font-weight:700;padding:16px 36px;border-radius:8px;text-decoration:none;box-shadow:0 8px 30px '+svc.glow+'">Get Started →</a>'
         +'</div>'
-        +'<div style="display:flex;justify-content:flex-end">'+heroVisual(slug, svc)+'</div>'
+        +'<div id="vws-hero-visual" style="display:flex;justify-content:flex-end">'+heroVisual(slug, svc)+'</div>'
         +'</div>';
       /* Colour tint overlay — transparent section so animated -z-10 bg shows through */
       var tintOverlay = '<div style="position:absolute;inset:0;background:radial-gradient(ellipse at top left,rgba('+rgb+',0.35) 0%,transparent 65%);pointer-events:none;z-index:0"></div>';
@@ -2960,7 +2965,7 @@
         +'<div style="max-width:1100px;margin:0 auto">'
         +'<p style="font-size:12px;letter-spacing:3px;text-transform:uppercase;color:'+svc.color+';font-weight:700;margin:0 0 14px">THE PROBLEM</p>'
         +'<h2 style="font-size:clamp(28px,4vw,48px);font-weight:800;color:#fff;margin:0 0 56px;line-height:1.15;max-width:700px">Why businesses like yours lose without '+(slug==='website-maintenance'?'ongoing maintenance':slug==='hosting-domain'?'proper hosting':slug==='logo-branding'?'a professional brand':slug==='website-redesign'?'a modern site':slug==='website-creation'?'any site at all':'a custom website')+'</h2>'
-        +'<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px">'
+        +'<div id="vws-problem-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px">'
         +items.map(function(item,i){
           return '<div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-left:3px solid '+svc.color+';border-radius:12px;padding:28px">'
             +'<div style="color:'+svc.lt+';margin-bottom:16px"><svg viewBox="0 0 24 24" style="width:24px;height:24px">'+icons[i]+'</svg></div>'
@@ -2981,7 +2986,7 @@
         +'<div style="max-width:1100px;margin:0 auto">'
         +'<p style="font-size:12px;letter-spacing:3px;text-transform:uppercase;color:'+svc.color+';font-weight:700;margin:0 0 14px">THE PROCESS</p>'
         +'<h2 style="font-size:clamp(36px,5vw,56px);font-weight:800;color:#fff;margin:0 0 56px;line-height:1.1">How It Works</h2>'
-        +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:24px">'
+        +'<div id="vws-steps-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:24px">'
         +items.map(function(step){
           return '<div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:12px;padding:32px;position:relative;overflow:hidden">'
             +'<div style="position:absolute;bottom:-10px;right:16px;font-size:120px;font-weight:900;color:'+svc.color+';opacity:0.06;line-height:1;z-index:0;pointer-events:none;user-select:none">'+step.n+'</div>'
@@ -3000,11 +3005,11 @@
       var items = svc.gets || [];
       var rgb = hexToRgb(svc.color);
       return '<section id="vws-included" style="padding:100px 40px 160px;background:#0a0a0f;position:relative;'+FF+'">'
-        +'<div style="max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 380px;gap:48px;align-items:start">'
+        +'<div id="vws-included-layout" style="max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 380px;gap:48px;align-items:start">'
         +'<div>'
         +'<p style="font-size:12px;letter-spacing:3px;text-transform:uppercase;color:'+svc.color+';font-weight:700;margin:0 0 14px">EVERYTHING COVERED</p>'
         +'<h2 style="font-size:clamp(28px,4vw,44px);font-weight:800;color:#fff;margin:0 0 40px;line-height:1.15">What\'s Included</h2>'
-        +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">'
+        +'<div id="vws-included-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:10px">'
         +items.map(function(g){
           return '<div style="background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);border-radius:8px;padding:16px 20px;display:flex;align-items:center;gap:12px">'
             +'<div style="width:20px;height:20px;border-radius:50%;background:rgba('+rgb+',0.15);border:1px solid rgba('+rgb+',0.3);display:flex;align-items:center;justify-content:center;flex-shrink:0">'
@@ -3032,7 +3037,7 @@
         +'<div style="max-width:1100px;margin:0 auto">'
         +'<p style="font-size:12px;letter-spacing:3px;text-transform:uppercase;color:'+svc.color+';font-weight:700;margin:0 0 14px">THE RESULTS</p>'
         +'<h2 style="font-size:clamp(28px,4vw,44px);font-weight:800;color:#fff;margin:0 0 56px;line-height:1.15">What clients see after working with us</h2>'
-        +'<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px">'
+        +'<div id="vws-results-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px">'
         +items.map(function(s){
           return '<div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:16px;padding:40px 32px;text-align:center">'
             +'<div style="font-size:clamp(48px,7vw,80px);font-weight:900;color:'+svc.color+';line-height:1;letter-spacing:-0.02em">'+s.v+'</div>'
@@ -3091,6 +3096,34 @@
       var footer = document.querySelector('footer');
       if (!footer) return;
       rebuilt = true;
+
+      /* Mobile-responsive overrides — targets stable IDs on every grid container */
+      if (!document.getElementById('vws-svc-mobile')) {
+        var ms = document.createElement('style');
+        ms.id = 'vws-svc-mobile';
+        ms.textContent =
+          '@media(max-width:768px){'
+          /* Hero: single col, hide decorative visual, tighten padding */
+          +'#vws-hero{padding:80px 0 60px!important;min-height:auto!important}'
+          +'#vws-hero-grid{grid-template-columns:1fr!important;gap:32px!important;padding:0 24px!important}'
+          +'#vws-hero-visual{display:none!important}'
+          /* All sections: narrower side padding */
+          +'#vws-problem,#vws-steps,#vws-included,#vws-results,#vws-faq,#vws-cta{'
+          +'padding-left:24px!important;padding-right:24px!important;'
+          +'padding-top:60px!important;padding-bottom:100px!important}'
+          /* Problem cards 3→1 col */
+          +'#vws-problem-grid{grid-template-columns:1fr!important}'
+          /* Steps 2→1 col */
+          +'#vws-steps-grid{grid-template-columns:1fr!important}'
+          /* Included: outer 2→1, inner checklist 2→1, unstick sidebar */
+          +'#vws-included-layout{grid-template-columns:1fr!important;gap:32px!important}'
+          +'#vws-included-grid{grid-template-columns:1fr!important}'
+          +'#vws-included-layout>div:last-child{position:static!important}'
+          /* Results 3→1 col */
+          +'#vws-results-grid{grid-template-columns:1fr!important}'
+          +'}';
+        document.head.appendChild(ms);
+      }
 
       /* Hue-rotate the fixed background for non-blue services */
       if (svc.hue !== '0deg' && !document.getElementById('vws-early-hue')) {
