@@ -36,6 +36,28 @@
         }
       });
 
+      /* 1.1. Hide light-bg floating decoration cards frozen in hero (revealed by GSAP fix above) */
+      (function() {
+        var heroSec = document.querySelector('section[class*="h-screen"]');
+        if (!heroSec) return;
+        Array.from(heroSec.querySelectorAll('*')).forEach(function(el) {
+          /* Only target absolutely-positioned children — decorative floaters */
+          var cs = window.getComputedStyle(el);
+          if (cs.position !== 'absolute') return;
+          var bg = cs.backgroundColor;
+          var rgb = bg && bg.match(/\d+/g);
+          if (!rgb || rgb.length < 3) return;
+          /* Skip near-transparent (alpha ≈ 0) — those are layout wrappers */
+          if (rgb[3] !== undefined && parseFloat(rgb[3]) < 0.1) return;
+          var avg = (parseInt(rgb[0]) + parseInt(rgb[1]) + parseInt(rgb[2])) / 3;
+          /* Light (near-white) background and small enough to be a badge/card */
+          var rect = el.getBoundingClientRect();
+          if (avg > 200 && rect.width < 500 && rect.height < 300 && rect.width > 30) {
+            el.style.setProperty('display','none','important');
+          }
+        });
+      })();
+
       /* 1.4. Pricing price numerals — find any $NNN leaf and make it big */
       Array.from(document.querySelectorAll('section *')).forEach(function(el) {
         if (el.children.length > 0) return;
