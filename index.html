@@ -317,7 +317,7 @@
           var wave = document.createElement('div');
           wave.id = 'vws-svc-wave';
           wave.style.cssText = 'position:absolute;bottom:0;left:0;right:0;line-height:0;pointer-events:none;z-index:2';
-          wave.innerHTML = '<svg viewBox="0 0 1440 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"><path d="M0,40 C180,80 360,0 540,40 C720,80 900,0 1080,40 C1260,80 1440,40 1440,80 L1440,80 L0,80 Z" fill="#e5e7eb"/></svg>';
+          wave.innerHTML = '<svg viewBox="0 0 1440 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"><path d="M0,40 C180,80 360,0 540,40 C720,80 900,0 1080,40 C1260,80 1440,40 1440,80 L1440,80 L0,80 Z" fill="#1f2937"/></svg>';
           hero.appendChild(wave);
         }
 
@@ -1049,11 +1049,11 @@
   #vws-svc-wave svg{display:block;width:100%;height:auto}
 
   /* ══ SERVICES PAGE — Meadowline alternating layout ══ */
-  #vws-svc-list{background:#e5e7eb;font-family:inherit}
-  .vws-sl-row{display:flex;min-height:480px;border-bottom:1px solid #d1d5db}
+  #vws-svc-list{background:transparent!important;font-family:inherit}
+  .vws-sl-row{display:flex;min-height:480px;border-bottom:1px solid rgba(255,255,255,0.08)}
   .vws-sl-text{flex:1;padding:80px 64px;display:flex;flex-direction:column;justify-content:center;background:#fff}
   /* Visual panel is transparent — the fixed video bg shows through it */
-  .vws-sl-visual{flex:1;position:relative;overflow:hidden;min-height:320px}
+  .vws-sl-visual{flex:1;position:relative;overflow:hidden;min-height:320px;background:transparent!important}
   .vws-sl-vtint{position:absolute;inset:0;z-index:1}
   .vws-sl-num{font-size:11px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:#9ca3af;margin:0 0 14px}
   .vws-sl-title{font-size:clamp(24px,2.8vw,38px);font-weight:900;color:#0d1117;margin:0 0 18px;line-height:1.15}
