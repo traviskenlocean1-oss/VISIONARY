@@ -200,21 +200,21 @@
 
       /* 1.11. Homepage service cards — tag grid + cards so CSS can make them bigger */
       (function() {
-        if (window.location.pathname !== '/' && window.location.pathname !== '') return;
-        /* Find the service grid: a grid inside a vws-section-light section that holds
-           cards with service names (Website Development, etc.) */
-        var sections = document.querySelectorAll('section.vws-section-light');
-        sections.forEach(function(sec) {
-          var grid = Array.from(sec.querySelectorAll('[class*="grid"]')).find(function(g) {
-            return g.className.indexOf('grid-cols') !== -1 && sec.textContent.indexOf('Website Development') !== -1;
-          });
-          if (grid && grid.id !== 'vws-hp-svc-grid') {
-            grid.id = 'vws-hp-svc-grid';
-            /* Tag each card for the CSS targeting */
-            Array.from(grid.children).forEach(function(card) {
-              if (!card.classList.contains('vws-hp-svc-card')) card.classList.add('vws-hp-svc-card');
-            });
-          }
+        if (document.getElementById('vws-hp-svc-grid')) return;
+        /* Find the section containing "What We Offer" + service links — no class dependency */
+        var svcSec = Array.from(document.querySelectorAll('section')).find(function(s) {
+          return s.textContent.indexOf('What We Offer') !== -1 &&
+                 s.textContent.indexOf('Website Development') !== -1 &&
+                 s.querySelectorAll('a').length >= 5;
+        });
+        if (!svcSec) return;
+        var grid = Array.from(svcSec.querySelectorAll('[class*="grid-cols"]')).find(function(g) {
+          return g.children.length >= 5;
+        });
+        if (!grid) return;
+        grid.id = 'vws-hp-svc-grid';
+        Array.from(grid.children).forEach(function(card) {
+          card.classList.add('vws-hp-svc-card');
         });
       })();
 
