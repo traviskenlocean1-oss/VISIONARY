@@ -924,10 +924,21 @@
     #vws-svc-sticky .vws-ss-right{padding:32px 0 80px}
   }
 
-  /* ══ SERVICES PAGE — "Built for Results" white-tinted card ══ */
+  /* ══ SERVICES sticky — strip React service-color bg from Learn More links ══ */
+  #vws-svc-sticky .vws-ss-link{background:transparent!important;background-color:transparent!important;border:none!important;padding:0!important}
+
+  /* ══ SERVICES PAGE — "Built for Results" white-tinted section ══ */
   #vws-built-results{background:#f0f4ff!important;border-top:none!important}
   #vws-built-results h2{color:#0d1117!important}
   #vws-built-results p{color:#374151!important}
+  /* Feature cards inside Built for Results → white with subtle border */
+  #vws-built-results [class*="rounded"],
+  #vws-built-results [class*="bg-"]:not(#vws-built-results){background:#ffffff!important;border:1px solid rgba(37,99,235,0.1)!important}
+  #vws-built-results [class*="rounded"] p,
+  #vws-built-results [class*="rounded"] h3,
+  #vws-built-results [class*="rounded"] span{color:#374151!important}
+  #vws-built-results [class*="rounded"] h3{color:#0d1117!important}
+  #vws-built-results [class*="text-blue"]{color:#2563eb!important}
 
   </style>
 
