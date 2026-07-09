@@ -1210,22 +1210,13 @@
 
     /* ── /about page — inject differentiators section with accordion ── */
     function runAboutPage() {
-      if (window._vwsAboutPollActive) return;
-      window._vwsAboutPollActive = true;
-      var poll = 0;
-      var t = setInterval(function() {
-        poll++;
-        /* Wait for the /about hero specifically — "Built for" is unique to this page */
+      clearTimeout(window._vwsAboutTimer);
+      window._vwsAboutTimer = setTimeout(function() {
         var aboutHero = Array.from(document.querySelectorAll('section')).find(function(s) {
           return s.textContent.indexOf('Built for') !== -1 && s.textContent.indexOf('businesses') !== -1;
         });
         var footer = document.querySelector('footer');
-        if (!aboutHero || !footer || poll > 100) {
-          if (poll > 100) { clearInterval(t); window._vwsAboutPollActive = false; }
-          return;
-        }
-        clearInterval(t);
-        window._vwsAboutPollActive = false;
+        if (!aboutHero || !footer) return;
         if (document.getElementById('vws-about-diff') && document.getElementById('vws-about-sticky')) return;
 
         /* ── TASK 1: Body class + per-section background glow variation ── */
@@ -2175,7 +2166,7 @@
           });
         }); // forEach acc items
         } // end if !data-vws-acc-init
-      }, 150);
+      }, 600);
     }
 
     /* ── Homepage pilot — Tasks 2–5 ── */
