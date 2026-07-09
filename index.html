@@ -1131,7 +1131,8 @@
     function runAll() {
       var slug = getSlug();
       /* Clean up previous injections so switching service pages doesn't stack */
-      ['vws-ba-injected','vws-deepdive','vws-svc-theme','vws-svc-listing','vws-listing-colors','vws-early-hue','vws-ill-wrap','vws-hero','vws-problem','vws-steps','vws-included','vws-results','vws-faq','vws-cta','vws-about-diff','vws-about-styles','vws-design-cards','vws-seo-code','vws-whoweare-mockup','vws-comparison-table','vws-comparison-styles','vws-hp-trust','vws-hp-slider','vws-hp-bookend'].forEach(function(id){
+      window._vwsAboutPollActive = false;
+      ['vws-ba-injected','vws-deepdive','vws-svc-theme','vws-svc-listing','vws-listing-colors','vws-early-hue','vws-ill-wrap','vws-hero','vws-problem','vws-steps','vws-included','vws-results','vws-faq','vws-cta','vws-about-diff','vws-about-sticky','vws-about-styles','vws-design-cards','vws-seo-code','vws-whoweare-mockup','vws-comparison-table','vws-comparison-styles','vws-hp-trust','vws-hp-slider','vws-hp-bookend'].forEach(function(id){
         var el = document.getElementById(id);
         if (el) el.remove ? el.remove() : el.parentNode.removeChild(el);
       });
@@ -1209,6 +1210,8 @@
 
     /* ── /about page — inject differentiators section with accordion ── */
     function runAboutPage() {
+      if (window._vwsAboutPollActive) return;
+      window._vwsAboutPollActive = true;
       var poll = 0;
       var t = setInterval(function() {
         poll++;
@@ -1217,8 +1220,12 @@
           return s.textContent.indexOf('Built for') !== -1 && s.textContent.indexOf('businesses') !== -1;
         });
         var footer = document.querySelector('footer');
-        if (!aboutHero || !footer || poll > 100) { clearInterval(t); return; }
+        if (!aboutHero || !footer || poll > 100) {
+          if (poll > 100) { clearInterval(t); window._vwsAboutPollActive = false; }
+          return;
+        }
         clearInterval(t);
+        window._vwsAboutPollActive = false;
         if (document.getElementById('vws-about-diff') && document.getElementById('vws-about-sticky')) return;
 
         /* ── TASK 1: Body class + per-section background glow variation ── */
