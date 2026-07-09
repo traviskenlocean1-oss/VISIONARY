@@ -168,6 +168,35 @@
           +'</div>';
       })();
 
+      /* 1.9. About page: video background + wave + hide process section */
+      (function() {
+        if (window.location.pathname.indexOf('/about') === -1) return;
+
+        /* Make about hero transparent — fixed video div shows through */
+        var aboutHero = document.querySelector('section[class*="min-h-screen"]');
+        if (aboutHero) {
+          aboutHero.style.setProperty('background', 'transparent', 'important');
+          aboutHero.style.setProperty('position', 'relative', 'important');
+          aboutHero.style.setProperty('overflow', 'hidden', 'important');
+
+          /* Wave curve at bottom of hero (white fill → matches vws-about-sticky white bg) */
+          if (!document.getElementById('vws-about-wave')) {
+            var wave = document.createElement('div');
+            wave.id = 'vws-about-wave';
+            wave.style.cssText = 'position:absolute;bottom:0;left:0;right:0;line-height:0;pointer-events:none;z-index:2';
+            wave.innerHTML = '<svg viewBox="0 0 1440 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"><path d="M0,0 C360,80 1080,80 1440,0 L1440,80 L0,80 Z" fill="#ffffff"/></svg>';
+            aboutHero.appendChild(wave);
+          }
+        }
+
+        /* Hide "How It Works" / "From idea to live site" process section */
+        Array.from(document.querySelectorAll('section')).forEach(function(s) {
+          if ((s.className || '').indexOf('border-t') !== -1) {
+            s.style.setProperty('display', 'none', 'important');
+          }
+        });
+      })();
+
       /* 2. Build Services dropdown if the nav is rendered and dropdown not yet injected */
       var servicesLink = Array.from(document.querySelectorAll('nav a')).find(function(a) {
         return a.textContent.trim() === 'Services';
