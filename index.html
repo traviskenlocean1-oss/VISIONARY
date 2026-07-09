@@ -492,15 +492,29 @@
   .vws-section-dark [class*="rounded-2xl"][class*="p-10"] h2,
   .vws-section-dark [class*="rounded-2xl"][class*="p-10"] h3,
   .vws-section-dark [class*="rounded-2xl"][class*="p-10"] p{color:rgba(240,244,255,0.85)!important}
-  /* Hero protection — hero stays transparent; restore cream text explicitly */
-  section[class*="h-screen"]{background:transparent!important}
+  /* Hero — lock to page dark so no bleed-through on right side */
+  section[class*="h-screen"]{background:#060916!important}
   section[class*="h-screen"] h1,section[class*="h-screen"] h2{color:rgb(225,224,204)!important}
   section[class*="h-screen"] p{color:rgba(225,224,204,0.55)!important}
-  /* Safety net: inline cream spans inside hero override any light-section attribute selectors */
+  /* Safety net: inline cream spans inside hero */
   section[class*="h-screen"] [style*="rgb(225, 224, 204)"]{color:rgb(225,224,204)!important}
   section[class*="h-screen"] [style*="rgb(225,224,204)"]{color:rgb(225,224,204)!important}
   section[class*="h-screen"] [style*="rgba(225, 224, 204"]{color:rgba(225,224,204,0.9)!important}
   section[class*="h-screen"] [style*="rgba(225,224,204"]{color:rgba(225,224,204,0.9)!important}
+  /* ══ TASK 2a: Hero form card → white + blue ══ */
+  section[class*="h-screen"] [style*="rgba(4, 8, 22, 0.92)"]{background:#ffffff!important;border:1px solid rgba(37,99,235,0.18)!important;box-shadow:0 8px 40px rgba(37,99,235,0.08)!important}
+  section[class*="h-screen"] [style*="rgba(4, 8, 22, 0.92)"] h2,
+  section[class*="h-screen"] [style*="rgba(4, 8, 22, 0.92)"] h3,
+  section[class*="h-screen"] [style*="rgba(4, 8, 22, 0.92)"] h4{color:#0d1117!important}
+  section[class*="h-screen"] [style*="rgba(4, 8, 22, 0.92)"] label,
+  section[class*="h-screen"] [style*="rgba(4, 8, 22, 0.92)"] p{color:#374151!important}
+  section[class*="h-screen"] [style*="rgba(4, 8, 22, 0.92)"] input,
+  section[class*="h-screen"] [style*="rgba(4, 8, 22, 0.92)"] select,
+  section[class*="h-screen"] [style*="rgba(4, 8, 22, 0.92)"] textarea{background:#f7f8fc!important;border:1px solid rgba(0,0,0,0.12)!important;color:#0d1117!important}
+  section[class*="h-screen"] [style*="rgba(4, 8, 22, 0.92)"] input::placeholder,
+  section[class*="h-screen"] [style*="rgba(4, 8, 22, 0.92)"] textarea::placeholder{color:#9ca3af!important}
+  section[class*="h-screen"] [style*="rgba(4, 8, 22, 0.92)"] button[type="submit"],
+  section[class*="h-screen"] [style*="rgba(4, 8, 22, 0.92)"] button:not([type="button"]){background:#2563eb!important;color:#ffffff!important;font-weight:700!important}
 
   /* ══ TASK 3: Larger Local SEO trust cards ══ */
   #vws-hp-trust .vws-trust-card{padding:28px 24px!important}
