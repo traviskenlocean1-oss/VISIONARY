@@ -184,11 +184,11 @@
           if (!document.getElementById('vws-about-bg')) {
             var bg = document.createElement('div');
             bg.id = 'vws-about-bg';
-            bg.style.cssText = 'position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden;background:linear-gradient(135deg,#060916 0%,#0a1535 45%,#060d28 75%,#060916 100%)';
+            bg.style.cssText = 'position:absolute;inset:0;z-index:0;pointer-events:none;overflow:visible;background:linear-gradient(135deg,#060916 0%,#0a1535 45%,#060d28 75%,#060916 100%)';
             bg.innerHTML =
-              '<div style="position:absolute;width:700px;height:700px;border-radius:50%;background:rgba(37,99,235,0.22);filter:blur(110px);top:-180px;left:-120px;animation:vws-ab-float 9s ease-in-out infinite"></div>'
-             +'<div style="position:absolute;width:500px;height:500px;border-radius:50%;background:rgba(96,165,250,0.14);filter:blur(90px);bottom:-140px;right:-80px;animation:vws-ab-float 12s ease-in-out infinite reverse"></div>'
-             +'<div style="position:absolute;width:350px;height:350px;border-radius:50%;background:rgba(59,130,246,0.10);filter:blur(70px);top:40%;left:45%;animation:vws-ab-float 7s ease-in-out infinite 2s"></div>';
+              '<div style="position:absolute;width:700px;height:700px;border-radius:50%;background:rgba(37,99,235,0.42);filter:blur(100px);top:-80px;left:-80px;animation:vws-ab-float 9s ease-in-out infinite"></div>'
+             +'<div style="position:absolute;width:500px;height:500px;border-radius:50%;background:rgba(96,165,250,0.28);filter:blur(80px);bottom:-60px;right:-40px;animation:vws-ab-float 12s ease-in-out infinite reverse"></div>'
+             +'<div style="position:absolute;width:380px;height:380px;border-radius:50%;background:rgba(59,130,246,0.22);filter:blur(65px);top:35%;left:40%;animation:vws-ab-float 7s ease-in-out infinite 2s"></div>';
             aboutHero.insertBefore(bg, aboutHero.firstChild);
           }
 
