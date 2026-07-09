@@ -331,12 +331,12 @@
         /* Meadowline-style alternating layout */
         if (!existingList) {
           var svcs = [
-            {num:'01',title:'Website Development',desc:'Every site we build is hand-coded from scratch — no templates, no drag-and-drop builders. Custom design built around your brand, built to convert visitors into customers.',href:'/services/website-development',grad:'linear-gradient(135deg,#0d1117 0%,#1e3a8a 100%)'},
-            {num:'02',title:'Hosting & Domain',desc:'Getting online shouldn\'t be complicated. We handle your domain setup, connect everything, and host your site on fast, globally distributed servers — included at no extra cost.',href:'/services/hosting-domain',grad:'linear-gradient(135deg,#1e1b4b 0%,#0c4a6e 100%)'},
-            {num:'03',title:'Website Maintenance',desc:'The work doesn\'t stop at launch. We stay available for updates, fixes, and improvements so your site keeps performing at its best — month after month.',href:'/services/website-maintenance',grad:'linear-gradient(135deg,#0d1117 0%,#164e63 100%)'},
-            {num:'04',title:'Website Creation',desc:'Starting from zero? We build your entire online presence from the ground up — custom design, clean code, and everything in between. No shortcuts.',href:'/services/website-creation',grad:'linear-gradient(135deg,#1c1917 0%,#1e1b4b 100%)'},
-            {num:'05',title:'Website Redesign',desc:'Already have a site but it\'s outdated, slow, or not converting? We rebuild it from scratch — same domain, completely new results and a design that actually works.',href:'/services/website-redesign',grad:'linear-gradient(135deg,#0d1117 0%,#3730a3 100%)'},
-            {num:'06',title:'Logo & Branding',desc:'Your logo is the face of your business. We design custom logos and full brand identities that look professional, stand out, and last for years.',href:'/services/logo-branding',grad:'linear-gradient(135deg,#1a0533 0%,#1e1b4b 100%)'}
+            {num:'01',title:'Website Development',desc:'Every site we build is hand-coded from scratch — no templates, no drag-and-drop builders. Custom design built around your brand, built to convert visitors into customers.',href:'/services/website-development',tint:'rgba(37,99,235,0.55)'},
+            {num:'02',title:'Hosting & Domain',desc:'Getting online shouldn\'t be complicated. We handle your domain setup, connect everything, and host your site on fast, globally distributed servers — included at no extra cost.',href:'/services/hosting-domain',tint:'rgba(13,148,136,0.55)'},
+            {num:'03',title:'Website Maintenance',desc:'The work doesn\'t stop at launch. We stay available for updates, fixes, and improvements so your site keeps performing at its best — month after month.',href:'/services/website-maintenance',tint:'rgba(245,158,11,0.5)'},
+            {num:'04',title:'Website Creation',desc:'Starting from zero? We build your entire online presence from the ground up — custom design, clean code, and everything in between. No shortcuts.',href:'/services/website-creation',tint:'rgba(124,58,237,0.55)'},
+            {num:'05',title:'Website Redesign',desc:'Already have a site but it\'s outdated, slow, or not converting? We rebuild it from scratch — same domain, completely new results and a design that actually works.',href:'/services/website-redesign',tint:'rgba(220,38,38,0.5)'},
+            {num:'06',title:'Logo & Branding',desc:'Your logo is the face of your business. We design custom logos and full brand identities that look professional, stand out, and last for years.',href:'/services/logo-branding',tint:'rgba(219,39,119,0.5)'}
           ];
           var rows = svcs.map(function(s, i) {
             var flip = i % 2 === 1;
@@ -346,7 +346,9 @@
               +'<p class="vws-sl-desc">'+s.desc+'</p>'
               +'<a href="'+s.href+'" class="vws-sl-btn">Learn More</a>'
               +'</div>';
-            var vis = '<div class="vws-sl-visual" style="background:'+s.grad+'">'
+            /* Transparent panel — fixed video shows through, color tint previews the detail page */
+            var vis = '<div class="vws-sl-visual">'
+              +'<div class="vws-sl-vtint" style="background:'+s.tint+'"></div>'
               +'<div class="vws-sl-vinner"><span class="vws-sl-vnum">'+s.num+'</span></div>'
               +'</div>';
             return '<div class="vws-sl-row'+(flip?' vws-sl-flip':'')+'">'
@@ -1050,14 +1052,16 @@
   #vws-svc-list{background:#e5e7eb;font-family:inherit}
   .vws-sl-row{display:flex;min-height:480px;border-bottom:1px solid #d1d5db}
   .vws-sl-text{flex:1;padding:80px 64px;display:flex;flex-direction:column;justify-content:center;background:#fff}
+  /* Visual panel is transparent — the fixed video bg shows through it */
   .vws-sl-visual{flex:1;position:relative;overflow:hidden;min-height:320px}
+  .vws-sl-vtint{position:absolute;inset:0;z-index:1}
   .vws-sl-num{font-size:11px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:#9ca3af;margin:0 0 14px}
   .vws-sl-title{font-size:clamp(24px,2.8vw,38px);font-weight:900;color:#0d1117;margin:0 0 18px;line-height:1.15}
   .vws-sl-desc{font-size:16px;color:#4b5563;margin:0 0 32px;line-height:1.75;max-width:480px}
   .vws-sl-btn{display:inline-block;padding:14px 32px;background:#0d1117!important;color:#fff!important;font-size:12px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;text-decoration:none!important;border-radius:6px;transition:background .2s;cursor:pointer;box-shadow:none!important;align-self:flex-start;width:auto!important}
   .vws-sl-btn:hover{background:#2563eb!important}
-  .vws-sl-vinner{position:absolute;inset:0;display:flex;align-items:center;justify-content:center}
-  .vws-sl-vnum{font-size:clamp(100px,14vw,200px);font-weight:900;color:rgba(255,255,255,0.05);line-height:1;user-select:none}
+  .vws-sl-vinner{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;z-index:2}
+  .vws-sl-vnum{font-size:clamp(100px,14vw,200px);font-weight:900;color:rgba(255,255,255,0.12);line-height:1;user-select:none}
   @media(max-width:768px){.vws-sl-row,.vws-sl-row.vws-sl-flip{flex-direction:column}.vws-sl-text{padding:48px 24px}.vws-sl-visual{min-height:220px}}
 
   /* ══ SERVICES PAGE — "Built for Results" white section ══ */
