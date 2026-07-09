@@ -36,25 +36,28 @@
         }
       });
 
-      /* 1.1. Hide light-bg floating decoration cards frozen in hero (revealed by GSAP fix above) */
+      /* 1.1. Hide light-bg floating decoration cards in/near hero */
       (function() {
-        var heroSec = document.querySelector('section[class*="h-screen"]');
-        if (!heroSec) return;
-        Array.from(heroSec.querySelectorAll('*')).forEach(function(el) {
-          /* Only target absolutely-positioned children — decorative floaters */
-          var cs = window.getComputedStyle(el);
-          if (cs.position !== 'absolute') return;
-          var bg = cs.backgroundColor;
-          var rgb = bg && bg.match(/\d+/g);
-          if (!rgb || rgb.length < 3) return;
-          /* Skip near-transparent (alpha ≈ 0) — those are layout wrappers */
-          if (rgb[3] !== undefined && parseFloat(rgb[3]) < 0.1) return;
-          var avg = (parseInt(rgb[0]) + parseInt(rgb[1]) + parseInt(rgb[2])) / 3;
-          /* Light (near-white) background and small enough to be a badge/card */
+        /* Search by class name "absolute" (Tailwind) OR inline position:absolute style */
+        var cands = Array.from(document.querySelectorAll(
+          'section[class*="h-screen"] [class*="absolute"],'
+          +'section[class*="h-screen"] [style*="position: absolute"],'
+          +'section[class*="h-screen"] [style*="position:absolute"]'
+        ));
+        cands.forEach(function(el) {
+          if (['INPUT','BUTTON','A','SVG','PATH','IMG','LABEL','HEADER','NAV'].indexOf(el.tagName) !== -1) return;
+          if (el.querySelector('input,select,textarea')) return;
+          var bg = window.getComputedStyle(el).backgroundColor;
+          /* Skip fully transparent */
+          if (!bg || bg === 'rgba(0, 0, 0, 0)' || bg === 'transparent') return;
+          /* Parse R,G,B only — ignore alpha entirely */
+          var rgb = bg.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)/);
+          if (!rgb) return;
+          var avg = (parseInt(rgb[1]) + parseInt(rgb[2]) + parseInt(rgb[3])) / 3;
+          if (avg < 200) return; /* Dark element — leave it alone */
           var rect = el.getBoundingClientRect();
-          if (avg > 200 && rect.width < 500 && rect.height < 300 && rect.width > 30) {
-            el.style.setProperty('display','none','important');
-          }
+          if (rect.width > 700 || rect.height > 600) return; /* Large overlay — skip */
+          el.style.setProperty('display','none','important');
         });
       })();
 
