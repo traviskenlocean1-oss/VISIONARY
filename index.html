@@ -1095,22 +1095,13 @@
     if(sl&&HUE[sl]){var se=document.createElement('style');se.id='vws-early-hue';se.textContent='[class~="-z-10"]{filter:hue-rotate('+HUE[sl]+') saturate(1.4)!important}';document.head.appendChild(se);}
   })();
   (function(){
+    /* Capture slug from URL immediately — before React Router can replaceState('/services') */
+    var _vwsPendingSlug = (location.pathname.match(/\/services\/([^\/]+)/) || [])[1] || null;
+
     /* ── Intercept React Router so enhancer re-runs on every SPA navigation ── */
     function patchHistory(method) {
       var orig = history[method];
       history[method] = function() {
-        /* Block React Router from redirecting a service detail URL back to /services.
-           React Router doesn't define /services/:slug routes so it replaceState('/services')
-           on initial load — intercept that and keep the slug URL intact. */
-        if (method === 'replaceState') {
-          var currentSlug = (window.location.pathname.match(/\/services\/([^\/]+)/) || [])[1];
-          var targetPath = typeof arguments[2] === 'string' ? arguments[2]
-                         : typeof arguments[1] === 'string' ? arguments[1] : '';
-          if (currentSlug && /^\/services\/?$/.test(targetPath)) {
-            setTimeout(runAll, 300);
-            return;
-          }
-        }
         orig.apply(this, arguments);
         setTimeout(runAll, 300);
       };
@@ -1141,7 +1132,10 @@
     }
 
     function runAll() {
-      var slug = getSlug();
+      /* Use URL slug when present; fall back to the slug captured at page-load
+         before React Router could replaceState('/services') over it. One-shot: clear after use. */
+      var slug = getSlug() || _vwsPendingSlug;
+      _vwsPendingSlug = null;
       /* Clean up previous injections so switching service pages doesn't stack */
       window._vwsAboutPollActive = false;
       ['vws-ba-injected','vws-deepdive','vws-svc-theme','vws-svc-listing','vws-listing-colors','vws-early-hue','vws-ill-wrap','vws-hero','vws-problem','vws-steps','vws-included','vws-results','vws-faq','vws-cta','vws-about-diff','vws-about-sticky','vws-about-styles','vws-design-cards','vws-seo-code','vws-whoweare-mockup','vws-comparison-table','vws-comparison-styles','vws-hp-trust','vws-hp-slider','vws-hp-bookend'].forEach(function(id){
