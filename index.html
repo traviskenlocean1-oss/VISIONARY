@@ -170,17 +170,32 @@
           +'</div>';
       })();
 
-      /* 1.9. About page: let React animated background show; add wave + hide process section */
+      /* 1.9. About page: transparent hero (shows fixed video bg) + wave + CTA section */
       (function() {
         if (window.location.pathname.indexOf('/about') === -1) return;
 
         var aboutHero = document.querySelector('section[class*="min-h-screen"]');
         if (aboutHero) {
-          /* Only set position so the wave anchor works — don't override React's background */
-          aboutHero.style.setProperty('position', 'relative', 'important');
-          aboutHero.style.setProperty('overflow', 'hidden', 'important');
+          /* React sets a solid #060916 bg on this section which blocks the fixed video.
+             Setting transparent lets the video (same one on services page) show through. */
+          function applyAboutBg(el) {
+            el.style.setProperty('background', 'transparent', 'important');
+            el.style.setProperty('position', 'relative', 'important');
+            el.style.setProperty('overflow', 'hidden', 'important');
+          }
+          applyAboutBg(aboutHero);
 
-          /* Wave curve at bottom of hero */
+          if (!aboutHero._vwsBgObs) {
+            aboutHero._vwsBgObs = true;
+            var bgObs = new MutationObserver(function(muts) {
+              for (var i = 0; i < muts.length; i++) {
+                if (muts[i].attributeName === 'style') applyAboutBg(aboutHero);
+              }
+            });
+            bgObs.observe(aboutHero, { attributes: true, attributeFilter: ['style'] });
+          }
+
+          /* Wave at bottom of hero */
           if (!document.getElementById('vws-about-wave')) {
             var wave = document.createElement('div');
             wave.id = 'vws-about-wave';
@@ -190,12 +205,33 @@
           }
         }
 
-        /* Hide "How It Works" / "From idea to live site" process section */
+        /* Hide "How It Works" process section */
         Array.from(document.querySelectorAll('section')).forEach(function(s) {
           if ((s.className || '').indexOf('border-t') !== -1) {
             s.style.setProperty('display', 'none', 'important');
           }
         });
+
+        /* CTA section above "What actually gets your phone ringing" (vws-about-diff) */
+        function injectAboutCta() {
+          if (document.getElementById('vws-about-cta')) return;
+          var diff = document.getElementById('vws-about-diff');
+          if (!diff) return;
+          var cta = document.createElement('section');
+          cta.id = 'vws-about-cta';
+          cta.innerHTML = '<div class="vws-acta-wrap">'
+            +'<p class="vws-acta-label">READY TO START?</p>'
+            +'<h2 class="vws-acta-title">Let\'s build something<br>you\'re proud to share.</h2>'
+            +'<a href="/contact" class="vws-acta-btn">Start a Project</a>'
+            +'</div>';
+          diff.parentNode.insertBefore(cta, diff);
+        }
+        injectAboutCta();
+        var ctaPoll = 0, ctaTimer = setInterval(function() {
+          ctaPoll++;
+          injectAboutCta();
+          if (document.getElementById('vws-about-cta') || ctaPoll > 30) clearInterval(ctaTimer);
+        }, 300);
       })();
 
       /* 1.11. Homepage service cards — tag grid + cards so CSS can make them bigger */
@@ -254,7 +290,24 @@
 
       /* 1.10. Services page: Meadowline-style alternating layout */
       (function() {
-        if (window.location.pathname !== '/services') return;
+        var path = window.location.pathname;
+
+        /* Service detail page — hide our listing grid, scroll to injected detail content */
+        if (path.indexOf('/services/') === 0) {
+          var list = document.getElementById('vws-svc-list');
+          if (list) list.style.setProperty('display','none','important');
+          setTimeout(function() {
+            var h = document.getElementById('vws-hero');
+            if (h) { var t = h.getBoundingClientRect().top + window.scrollY - 80; window.scrollTo({top:t,behavior:'instant'}); }
+          }, 700);
+          return;
+        }
+
+        if (path !== '/services') return;
+
+        /* Show listing if it was hidden while on a detail page */
+        var existingList = document.getElementById('vws-svc-list');
+        if (existingList) existingList.style.removeProperty('display');
 
         /* Hero wave — grey fill */
         var hero = document.querySelectorAll('section')[0];
@@ -276,7 +329,7 @@
         });
 
         /* Meadowline-style alternating layout */
-        if (!document.getElementById('vws-svc-list')) {
+        if (!existingList) {
           var svcs = [
             {num:'01',title:'Website Development',desc:'Every site we build is hand-coded from scratch — no templates, no drag-and-drop builders. Custom design built around your brand, built to convert visitors into customers.',href:'/services/website-development',grad:'linear-gradient(135deg,#0d1117 0%,#1e3a8a 100%)'},
             {num:'02',title:'Hosting & Domain',desc:'Getting online shouldn\'t be complicated. We handle your domain setup, connect everything, and host your site on fast, globally distributed servers — included at no extra cost.',href:'/services/hosting-domain',grad:'linear-gradient(135deg,#1e1b4b 0%,#0c4a6e 100%)'},
@@ -979,6 +1032,17 @@
   /* Cream text rgb(225,224,204) on light-blue bg = invisible; force dark blue */
   a[style*="rgba(37, 99, 235, 0.12)"][style*="rgb(225, 224, 204)"]{color:#1d4ed8!important}
 
+  /* Hide old services grid injected into body by previous code versions */
+  #vws-svc-listing{display:none!important}
+
+  /* ══ ABOUT PAGE — CTA section ══ */
+  #vws-about-cta{background:#0d1117;padding:80px 40px;text-align:center;font-family:inherit}
+  .vws-acta-wrap{max-width:700px;margin:0 auto}
+  .vws-acta-label{font-size:10px;font-weight:700;letter-spacing:.25em;text-transform:uppercase;color:rgba(96,165,250,0.7);margin:0 0 20px}
+  .vws-acta-title{font-size:clamp(32px,5vw,60px);font-weight:900;color:#e1e0cc;margin:0 0 36px;line-height:1.1}
+  .vws-acta-btn{display:inline-block;padding:16px 48px;background:#2563eb;color:#fff!important;font-size:13px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;text-decoration:none!important;border-radius:8px;transition:background .2s}
+  .vws-acta-btn:hover{background:#1d4ed8!important}
+
   /* ══ SERVICES PAGE — hero wave ══ */
   #vws-svc-wave svg{display:block;width:100%;height:auto}
 
@@ -990,7 +1054,7 @@
   .vws-sl-num{font-size:11px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:#9ca3af;margin:0 0 14px}
   .vws-sl-title{font-size:clamp(24px,2.8vw,38px);font-weight:900;color:#0d1117;margin:0 0 18px;line-height:1.15}
   .vws-sl-desc{font-size:16px;color:#4b5563;margin:0 0 32px;line-height:1.75;max-width:480px}
-  .vws-sl-btn{display:inline-block;padding:14px 32px;background:#0d1117;color:#fff!important;font-size:12px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;text-decoration:none!important;border-radius:6px;transition:background .2s;cursor:pointer}
+  .vws-sl-btn{display:inline-block;padding:14px 32px;background:#0d1117!important;color:#fff!important;font-size:12px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;text-decoration:none!important;border-radius:6px;transition:background .2s;cursor:pointer;box-shadow:none!important}
   .vws-sl-btn:hover{background:#2563eb!important}
   .vws-sl-vinner{position:absolute;inset:0;display:flex;align-items:center;justify-content:center}
   .vws-sl-vnum{font-size:clamp(100px,14vw,200px);font-weight:900;color:rgba(255,255,255,0.05);line-height:1;user-select:none}
@@ -1721,7 +1785,7 @@
         _vwsDetailLocked = true;
         runServiceDetail(slug);
       } else if (isServicesIndex()) {
-        runServicesListing();
+        /* runServicesListing disabled — step 1.10 handles the services listing layout */
       } else if (/^\/about\/?$/.test(window.location.pathname)) {
         runAboutPage();
       } else if (/^\/?$/.test(window.location.pathname)) {
