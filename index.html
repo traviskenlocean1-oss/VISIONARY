@@ -127,8 +127,9 @@
         }
       })();
 
-      /* 1.7. Dark right-side mask — extra insurance against video bleed */
+      /* 1.7. Dark right-side mask — extra insurance against video bleed (homepage only) */
       (function() {
+        if (window.location.pathname.indexOf('/about') !== -1) return;
         var heroSec = document.querySelector('section[class*="h-screen"]');
         if (!heroSec || heroSec.querySelector('#vws-hero-rt')) return;
         var mask = document.createElement('div');
