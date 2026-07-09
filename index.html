@@ -36,27 +36,24 @@
         }
       });
 
-      /* 1.1. Hide light-bg floating decoration cards in/near hero */
+      /* 1.1. Hide light-bg decoration cards in hero — ANY position, not just absolute */
       (function() {
-        /* Search by class name "absolute" (Tailwind) OR inline position:absolute style */
-        var cands = Array.from(document.querySelectorAll(
-          'section[class*="h-screen"] [class*="absolute"],'
-          +'section[class*="h-screen"] [style*="position: absolute"],'
-          +'section[class*="h-screen"] [style*="position:absolute"]'
-        ));
-        cands.forEach(function(el) {
-          if (['INPUT','BUTTON','A','SVG','PATH','IMG','LABEL','HEADER','NAV'].indexOf(el.tagName) !== -1) return;
+        var heroSec = document.querySelector('section[class*="h-screen"]');
+        if (!heroSec) return;
+        Array.from(heroSec.querySelectorAll('*')).forEach(function(el) {
+          /* Skip interactive/meaningful elements */
+          if (['INPUT','BUTTON','A','SVG','PATH','IMG','LABEL','HEADER','NAV','TEXTAREA','SELECT','FORM','CANVAS'].indexOf(el.tagName) !== -1) return;
+          /* Skip containers that hold form fields (protects the form card) */
           if (el.querySelector('input,select,textarea')) return;
           var bg = window.getComputedStyle(el).backgroundColor;
-          /* Skip fully transparent */
           if (!bg || bg === 'rgba(0, 0, 0, 0)' || bg === 'transparent') return;
-          /* Parse R,G,B only — ignore alpha entirely */
-          var rgb = bg.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)/);
-          if (!rgb) return;
-          var avg = (parseInt(rgb[1]) + parseInt(rgb[2]) + parseInt(rgb[3])) / 3;
-          if (avg < 200) return; /* Dark element — leave it alone */
+          var m = bg.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)/);
+          if (!m) return;
+          var avg = (parseInt(m[1]) + parseInt(m[2]) + parseInt(m[3])) / 3;
+          if (avg < 200) return;
           var rect = el.getBoundingClientRect();
-          if (rect.width > 700 || rect.height > 600) return; /* Large overlay — skip */
+          /* Size must be badge/card range — not huge section overlays */
+          if (rect.width < 20 || rect.width > 600 || rect.height < 20 || rect.height > 600) return;
           el.style.setProperty('display','none','important');
         });
       })();
