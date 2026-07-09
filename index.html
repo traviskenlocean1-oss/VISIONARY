@@ -52,8 +52,14 @@
           var avg = (parseInt(m[1]) + parseInt(m[2]) + parseInt(m[3])) / 3;
           if (avg < 200) return;
           var rect = el.getBoundingClientRect();
-          /* Size must be badge/card range — not huge section overlays */
-          if (rect.width < 20 || rect.width > 600 || rect.height < 20 || rect.height > 600) return;
+          if (rect.width < 20 || rect.height < 20) return;
+          if (rect.width > 600 || rect.height > 600) {
+            /* Large glow blobs — strip visual only, don't hide layout */
+            el.style.setProperty('background','transparent','important');
+            el.style.setProperty('box-shadow','none','important');
+            el.style.setProperty('filter','none','important');
+            return;
+          }
           el.style.setProperty('display','none','important');
         });
       })();
@@ -532,6 +538,8 @@
   /* Kill white bleed — form card wrapper divs must be transparent; only the inner card is white */
   section[class*="h-screen"] div:has(>[style*="rgba(4, 8, 22"]){background:transparent!important}
   section[class*="h-screen"] div:has(>div:has(>[style*="rgba(4, 8, 22"])){background:transparent!important}
+  /* Kill hero white glow blob (React's 2nd child of background layer — visible at desktop) */
+  section[class*="h-screen"] > .absolute.inset-0.pointer-events-none > .absolute:last-child{background:transparent!important;box-shadow:none!important;filter:none!important;opacity:0!important}
   /* ══ TASK 2a: Hero form card → white + blue ══ */
   section[class*="h-screen"] [style*="rgba(4, 8, 22, 0.92)"]{background:#ffffff!important;border:1px solid rgba(37,99,235,0.18)!important;box-shadow:0 8px 40px rgba(37,99,235,0.08)!important}
   section[class*="h-screen"] [style*="rgba(4, 8, 22, 0.92)"] h2,
