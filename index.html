@@ -176,37 +176,33 @@
 
         var aboutHero = document.querySelector('section[class*="min-h-screen"]');
         if (aboutHero) {
-          /* Apply dark gradient DIRECTLY on the section — survives React re-renders */
-          var ABG = 'linear-gradient(135deg,#060916 0%,#0a1535 45%,#060d28 75%,#060916 100%)';
+          /* Match homepage hero exactly: same dark base + same overlays */
           function applyAboutStyles(el) {
-            el.style.setProperty('background', ABG, 'important');
+            el.style.setProperty('background', '#060916', 'important');
             el.style.setProperty('position', 'relative', 'important');
             el.style.setProperty('overflow', 'hidden', 'important');
           }
           applyAboutStyles(aboutHero);
 
-          /* Watch for React overwriting our inline styles and fight back */
+          /* Fight React overwriting our styles */
           if (!aboutHero._vwsObserving) {
             aboutHero._vwsObserving = true;
             var heroStyleObs = new MutationObserver(function(muts) {
               for (var i = 0; i < muts.length; i++) {
-                if (muts[i].attributeName === 'style') {
-                  applyAboutStyles(aboutHero);
-                }
+                if (muts[i].attributeName === 'style') applyAboutStyles(aboutHero);
               }
             });
             heroStyleObs.observe(aboutHero, { attributes: true, attributeFilter: ['style'] });
           }
 
-          /* Inject animated blue glow blobs — all positioned within section bounds */
+          /* Same overlays as homepage hero (blue radial glow + subtle grid) */
           if (!document.getElementById('vws-about-bg')) {
             var bg = document.createElement('div');
             bg.id = 'vws-about-bg';
-            bg.style.cssText = 'position:absolute;inset:0;z-index:0;pointer-events:none;';
+            bg.style.cssText = 'position:absolute;inset:0;pointer-events:none;z-index:0;';
             bg.innerHTML =
-              '<div style="position:absolute;width:700px;height:700px;border-radius:50%;background:rgba(37,99,235,0.50);filter:blur(90px);top:0;left:0;animation:vws-ab-float 9s ease-in-out infinite"></div>'
-             +'<div style="position:absolute;width:600px;height:600px;border-radius:50%;background:rgba(96,165,250,0.35);filter:blur(80px);bottom:0;right:0;animation:vws-ab-float 12s ease-in-out infinite reverse"></div>'
-             +'<div style="position:absolute;width:400px;height:400px;border-radius:50%;background:rgba(59,130,246,0.28);filter:blur(70px);top:28%;left:32%;animation:vws-ab-float 7s ease-in-out infinite 2s"></div>';
+              '<div style="position:absolute;bottom:-15%;left:-5%;width:75%;height:80%;background:radial-gradient(at 40% 60%,rgba(37,99,235,0.4) 0%,rgba(79,70,229,0.2) 35%,transparent 70%);filter:blur(70px)"></div>'
+             +'<div style="position:absolute;inset:0;background-image:linear-gradient(rgba(96,165,250,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(96,165,250,0.04) 1px,transparent 1px);background-size:80px 80px"></div>';
             aboutHero.insertBefore(bg, aboutHero.firstChild);
           }
 
