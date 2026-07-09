@@ -882,9 +882,20 @@
   /* ══ SERVICES LISTING — wave section dividers ══ */
   #vws-listing-wave-1,#vws-listing-wave-2{position:relative;line-height:0;overflow:hidden}
 
+  /* ══ HOMEPAGE SERVICE CARDS — 2-column grid, bigger cards ══ */
+  .vws-section-light [class*="md:grid-cols-3"]{grid-template-columns:repeat(2,1fr)!important;gap:28px!important}
+  .vws-section-light [class*="rounded-2xl"][class*="p-8"][class*="flex-col"]{padding:48px 40px!important}
+  /* Icon wrapper + icon size bump */
+  .vws-section-light [class*="rounded-2xl"][class*="p-8"][class*="flex-col"] [class*="rounded-xl"]{width:60px!important;height:60px!important;padding:15px!important;margin-bottom:20px!important}
+  /* Title bigger inside card */
+  .vws-section-light [class*="rounded-2xl"][class*="p-8"][class*="flex-col"] h3{font-size:22px!important;font-weight:800!important;margin-bottom:12px!important}
+  /* Description bigger */
+  .vws-section-light [class*="rounded-2xl"][class*="p-8"][class*="flex-col"] p{font-size:15px!important;line-height:1.7!important;margin-bottom:24px!important}
+
   /* ══ HOMEPAGE SERVICES GRID — mobile ══ */
   @media(max-width:768px){
     #vws-hp-services > div:first-child{grid-template-columns:1fr!important}
+    .vws-section-light [class*="md:grid-cols-3"]{grid-template-columns:1fr!important}
   }
 
   /* ══ DROPDOWN — force all mega items white (override React colored bg) ══ */
