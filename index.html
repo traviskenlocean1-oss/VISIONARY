@@ -103,6 +103,16 @@
         });
       })();
 
+      /* 1.6. Dark right-side mask — kills bright video bleed-through on hero right side */
+      (function() {
+        var heroSec = document.querySelector('section[class*="h-screen"]');
+        if (!heroSec || heroSec.querySelector('#vws-hero-rt')) return;
+        var mask = document.createElement('div');
+        mask.id = 'vws-hero-rt';
+        mask.style.cssText = 'position:absolute;top:0;right:0;bottom:0;width:55%;background:linear-gradient(to left,rgba(3,5,10,0.82) 0%,rgba(3,5,10,0.55) 35%,transparent 100%);pointer-events:none;z-index:0';
+        heroSec.insertBefore(mask, heroSec.firstChild);
+      })();
+
       /* 2. Build Services dropdown if the nav is rendered and dropdown not yet injected */
       var servicesLink = Array.from(document.querySelectorAll('nav a')).find(function(a) {
         return a.textContent.trim() === 'Services';
@@ -492,8 +502,8 @@
   .vws-section-dark [class*="rounded-2xl"][class*="p-10"] h2,
   .vws-section-dark [class*="rounded-2xl"][class*="p-10"] h3,
   .vws-section-dark [class*="rounded-2xl"][class*="p-10"] p{color:rgba(240,244,255,0.85)!important}
-  /* Hero — lock to page dark so no bleed-through on right side */
-  section[class*="h-screen"]{background:#060916!important}
+  /* Hero — stays transparent so fixed video background shows through */
+  section[class*="h-screen"]{background:transparent!important}
   section[class*="h-screen"] h1,section[class*="h-screen"] h2{color:rgb(225,224,204)!important}
   section[class*="h-screen"] p{color:rgba(225,224,204,0.55)!important}
   /* Safety net: inline cream spans inside hero */
