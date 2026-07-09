@@ -1099,6 +1099,8 @@
     var _vwsPendingSlug = (location.pathname.match(/\/services\/([^\/]+)/) || [])[1] || null;
     /* Lock prevents React Router's replaceState redirect from overwriting a service detail build */
     var _vwsDetailLocked = false;
+    /* Save original replaceState before patching — used to silently restore slug URLs */
+    var _vwsOrigReplace = history.replaceState.bind(history);
 
     /* ── Intercept React Router so enhancer re-runs on every SPA navigation ── */
     function patchHistory(method) {
@@ -3156,6 +3158,12 @@
       ins(buildResults(SLUG_KEY, svc), 'vws-results');
       ins(buildFAQ(SLUG_KEY, svc), 'vws-faq');
       ins(buildCTA(SLUG_KEY, svc), 'vws-cta');
+
+      /* Restore the slug URL that React Router silently overwrote with /services.
+         Uses the saved original replaceState (bypasses VWS patch, no runAll triggered). */
+      if (!/\/services\/[^\/]+/.test(location.pathname)) {
+        _vwsOrigReplace({}, '', '/services/' + SLUG_KEY);
+      }
     }
 
     /* ── Poll until React renders, then rebuild. Second pass re-hides any React re-renders. ── */
