@@ -103,7 +103,25 @@
         });
       })();
 
-      /* 1.6. Dark right-side mask — kills bright video bleed-through on hero right side */
+      /* 1.6. Make form card ancestor wrappers transparent — kills white right-column bleed at desktop */
+      (function() {
+        var heroSec = document.querySelector('section[class*="h-screen"]');
+        if (!heroSec) return;
+        var formOuter = heroSec.querySelector('[style*="rgba(4, 8, 22"]');
+        if (!formOuter) return;
+        var node = formOuter.parentElement;
+        while (node && node !== heroSec) {
+          var bg = window.getComputedStyle(node).backgroundColor;
+          var m = bg && bg.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)/);
+          if (m) {
+            var avg = (parseInt(m[1]) + parseInt(m[2]) + parseInt(m[3])) / 3;
+            if (avg > 180) node.style.setProperty('background', 'transparent', 'important');
+          }
+          node = node.parentElement;
+        }
+      })();
+
+      /* 1.7. Dark right-side mask — extra insurance against video bleed */
       (function() {
         var heroSec = document.querySelector('section[class*="h-screen"]');
         if (!heroSec || heroSec.querySelector('#vws-hero-rt')) return;
@@ -511,6 +529,9 @@
   section[class*="h-screen"] [style*="rgb(225,224,204)"]{color:rgb(225,224,204)!important}
   section[class*="h-screen"] [style*="rgba(225, 224, 204"]{color:rgba(225,224,204,0.9)!important}
   section[class*="h-screen"] [style*="rgba(225,224,204"]{color:rgba(225,224,204,0.9)!important}
+  /* Kill white bleed — form card wrapper divs must be transparent; only the inner card is white */
+  section[class*="h-screen"] div:has(>[style*="rgba(4, 8, 22"]){background:transparent!important}
+  section[class*="h-screen"] div:has(>div:has(>[style*="rgba(4, 8, 22"])){background:transparent!important}
   /* ══ TASK 2a: Hero form card → white + blue ══ */
   section[class*="h-screen"] [style*="rgba(4, 8, 22, 0.92)"]{background:#ffffff!important;border:1px solid rgba(37,99,235,0.18)!important;box-shadow:0 8px 40px rgba(37,99,235,0.08)!important}
   section[class*="h-screen"] [style*="rgba(4, 8, 22, 0.92)"] h2,
