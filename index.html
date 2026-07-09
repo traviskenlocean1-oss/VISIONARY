@@ -75,6 +75,14 @@
 
       wrapper.appendChild(dd);
 
+      /* Click on "Services" text → navigate to /services (not just show dropdown) */
+      servicesLink.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        dd.classList.remove('vws-mega-open');
+        window.location.href = '/services';
+      });
+
       /* Show/hide on hover */
       wrapper.addEventListener('mouseenter', function() {
         dd.classList.add('vws-mega-open');
@@ -86,6 +94,22 @@
         var chevron = servicesLink.querySelector('svg');
         if (chevron) chevron.style.transform = 'rotate(0deg)';
       });
+
+      /* Continuously kill React's colored mega menu (it re-renders on hover) */
+      var reactMegaObs = new MutationObserver(function() {
+        var allInHeader = document.querySelectorAll('header *');
+        allInHeader.forEach(function(el) {
+          if (el.getAttribute('data-vws-dd') || el.getAttribute('data-vws-mega')) return;
+          var s = window.getComputedStyle(el);
+          if ((s.position === 'absolute' || s.position === 'fixed') && el.querySelectorAll('a').length > 4) {
+            var rect = el.getBoundingClientRect();
+            if (rect.top < 200 && rect.width > 300) {
+              el.style.setProperty('display','none','important');
+            }
+          }
+        });
+      });
+      reactMegaObs.observe(document.querySelector('header') || document.body, {childList:true, subtree:true, attributes:true, attributeFilter:['style','class']});
 
       /* 3. Logo click → smooth scroll to top, then SPA navigate home */
       var logoA = document.querySelector('header a[href="/"]');
@@ -132,6 +156,9 @@
         fixGlow();
         setTimeout(fixSite, 800);
         setTimeout(fixGlow, 800);
+        /* Extra passes — GSAP may re-freeze elements after initial render */
+        setTimeout(fixSite, 2000);
+        setTimeout(fixSite, 4000);
       }
     }, 100);
   })();
@@ -377,8 +404,11 @@
   /* Logo wordmark — dark on white */
   header.fixed.top-0 a.select-none p,header.fixed.top-0 .select-none p,header.fixed.top-0 p[class*="font-black"]{color:#0d1117!important}
   header.fixed.top-0 p[class*="tracking-"]{color:#374151!important}
-  /* Services dropdown — keep dark bg */
-  header.fixed.top-0 [data-vws-dd]{background:#0d1117!important}
+  /* Services dropdown — clean white */
+  header.fixed.top-0 [data-vws-dd]{background:#ffffff!important;border:1px solid rgba(0,0,0,0.08)!important;box-shadow:0 24px 80px rgba(0,0,0,0.14)!important}
+  /* Kill any React-generated colored nav mega-menu (ours replaces it) */
+  header nav [class*="absolute"]:not([data-vws-mega]):not([data-vws-dd]) > div > div[class*="rounded"],
+  header nav [class*="fixed"]:not([data-vws-mega]):not([data-vws-dd]) > div > div[class*="rounded"]{display:none!important}
 
   /* ══ TASK 1: Card contrast — fix dark-navy cards inside light sections ══ */
   /* Replace dark card bg with white + brand blue border */
@@ -439,6 +469,15 @@
   section[class*="h-screen"] [style*="rgba(4, 8, 22, 0.92)"] h2,
   section[class*="h-screen"] [style*="rgba(4, 8, 22, 0.92)"] h3,
   section[class*="h-screen"] [style*="rgba(4, 8, 22, 0.92)"] h4{color:#0d1117!important}
+  /* "LET'S BUILD YOUR DREAM WEBSITE" blue banner — text must be white on the blue bg */
+  section[class*="h-screen"] [style*="rgba(4, 8, 22, 0.92)"] [class*="bg-blue"] h1,
+  section[class*="h-screen"] [style*="rgba(4, 8, 22, 0.92)"] [class*="bg-blue"] h2,
+  section[class*="h-screen"] [style*="rgba(4, 8, 22, 0.92)"] [class*="bg-blue"] h3,
+  section[class*="h-screen"] [style*="rgba(4, 8, 22, 0.92)"] [class*="bg-blue"] p,
+  section[class*="h-screen"] [style*="rgba(4, 8, 22, 0.92)"] [class*="bg-blue"] span,
+  section[class*="h-screen"] [style*="rgba(4, 8, 22, 0.92)"] [style*="background: rgb(37, 99"] *,
+  section[class*="h-screen"] [style*="rgba(4, 8, 22, 0.92)"] [style*="background: rgba(37, 99"] *,
+  section[class*="h-screen"] [style*="rgba(4, 8, 22, 0.92)"] [style*="background:#2563eb"] *{color:#ffffff!important}
   section[class*="h-screen"] [style*="rgba(4, 8, 22, 0.92)"] label,
   section[class*="h-screen"] [style*="rgba(4, 8, 22, 0.92)"] p{color:#374151!important}
   section[class*="h-screen"] [style*="rgba(4, 8, 22, 0.92)"] input,
@@ -508,6 +547,83 @@
     #vws-about-sticky .vws-sticky-left{position:static;padding:60px 0 32px;border-bottom:1px solid rgba(0,0,0,0.07)}
     #vws-about-sticky .vws-sticky-right{padding:32px 0 80px}
   }
+
+  /* ══ ABOUT PAGE — hero overflow fix so glow blobs are visible ══ */
+  body.vws-about section.min-h-screen{position:relative!important;overflow:visible!important}
+
+  /* ══ ABOUT PAGE — comparison cards → clean white ══ */
+  body.vws-about section:not(.min-h-screen):not(#vws-about-diff):not(#vws-about-sticky) [class*="rounded-2xl"],
+  body.vws-about section:not(.min-h-screen):not(#vws-about-diff):not(#vws-about-sticky) [class*="rounded-xl"]{background:#ffffff!important;border:1px solid rgba(0,0,0,0.08)!important;box-shadow:0 2px 12px rgba(0,0,0,0.05)!important}
+  body.vws-about section:not(.min-h-screen) [class*="rounded-2xl"] *,
+  body.vws-about section:not(.min-h-screen) [class*="rounded-xl"] *{color:#0d1117!important}
+  /* Preserve accent icon circles */
+  body.vws-about [class*="rounded-full"][class*="bg-blue"]{background:rgba(37,99,235,0.1)!important}
+  body.vws-about [class*="rounded-full"][class*="bg-green"]{background:rgba(22,163,74,0.1)!important}
+  body.vws-about [class*="rounded-full"][class*="bg-red"]{background:rgba(220,38,38,0.1)!important}
+  body.vws-about [class*="rounded-full"][class*="bg-blue"] svg,body.vws-about [class*="rounded-full"][class*="bg-blue"] *{color:#2563eb!important}
+  body.vws-about [class*="rounded-full"][class*="bg-green"] svg,body.vws-about [class*="rounded-full"][class*="bg-green"] *{color:#16a34a!important}
+  body.vws-about [class*="rounded-full"][class*="bg-red"] svg,body.vws-about [class*="rounded-full"][class*="bg-red"] *{color:#dc2626!important}
+  /* The "BEST CHOICE" badge on about page stays blue */
+  body.vws-about [class*="rounded-full"][class*="text-blue"]{color:#2563eb!important;background:rgba(37,99,235,0.08)!important}
+  /* Checkmark and X icons in list items */
+  body.vws-about [class*="rounded-2xl"] [class*="text-green"],
+  body.vws-about [class*="rounded-xl"] [class*="text-green"]{color:#16a34a!important}
+  body.vws-about [class*="rounded-2xl"] [class*="text-red"],
+  body.vws-about [class*="rounded-xl"] [class*="text-red"]{color:#dc2626!important}
+
+  /* ══ READY TO LAUNCH — dark feature row cards → light blue-tinted ══ */
+  .vws-section-light [style*="background-color: rgb(30, 41, 59"],
+  .vws-section-light [style*="background: rgb(30, 41, 59"],
+  .vws-section-light [style*="background-color: rgba(30, 41, 59"],
+  .vws-section-light [style*="background: rgba(30, 41, 59"],
+  .vws-section-light [style*="background-color: rgb(17, 24, 39"],
+  .vws-section-light [style*="background: rgb(17, 24, 39"],
+  .vws-section-light [style*="background-color: rgb(15, 23, 42"],
+  .vws-section-light [style*="background: rgb(15, 23, 42"],
+  .vws-section-light [style*="background-color: rgb(31, 41, 55"],
+  .vws-section-light [style*="background: rgb(31, 41, 55"]{background:#f0f4ff!important;border:1px solid rgba(37,99,235,0.1)!important;border-radius:12px!important}
+  .vws-section-light [style*="rgb(30, 41, 59"] h2,.vws-section-light [style*="rgb(30, 41, 59"] h3,
+  .vws-section-light [style*="rgb(30, 41, 59"] p,.vws-section-light [style*="rgb(30, 41, 59"] span,
+  .vws-section-light [style*="rgb(17, 24, 39"] h2,.vws-section-light [style*="rgb(17, 24, 39"] h3,
+  .vws-section-light [style*="rgb(17, 24, 39"] p,.vws-section-light [style*="rgb(17, 24, 39"] span,
+  .vws-section-light [style*="rgb(31, 41, 55"] h2,.vws-section-light [style*="rgb(31, 41, 55"] h3,
+  .vws-section-light [style*="rgb(31, 41, 55"] p,.vws-section-light [style*="rgb(31, 41, 55"] span{color:#0d1117!important}
+  .vws-section-light [style*="rgb(30, 41, 59"] svg,.vws-section-light [style*="rgb(17, 24, 39"] svg,
+  .vws-section-light [style*="rgb(31, 41, 55"] svg{color:#2563eb!important}
+
+  /* ══ PRICING — bigger price numerals ══ */
+  .vws-section-light [style*="rgba(5, 8, 20"] [class*="text-4xl"],
+  .vws-section-light [style*="rgba(5, 8, 20"] [class*="text-5xl"],
+  .vws-section-light [style*="rgba(5, 8, 20"] [class*="text-6xl"]{font-size:3.8rem!important;font-weight:900!important;line-height:1!important}
+
+  /* ══ CONTACT PAGE — right info card → white ══ */
+  section:has([name="email"]) > div > div:last-child{background:#ffffff!important;border-radius:16px!important;border:1px solid rgba(0,0,0,0.07)!important;box-shadow:0 4px 24px rgba(0,0,0,0.07)!important;padding:48px 40px!important}
+  section:has([name="email"]) > div > div:last-child h2,
+  section:has([name="email"]) > div > div:last-child h3{color:#0d1117!important}
+  section:has([name="email"]) > div > div:last-child p{color:#374151!important}
+  section:has([name="email"]) > div > div:last-child span{color:#374151!important}
+  /* Contact info blocks (CALL US, EMAIL US etc.) → blue-tinted cards */
+  section:has([name="email"]) > div > div:last-child [class*="rounded-xl"],
+  section:has([name="email"]) > div > div:last-child [class*="rounded-2xl"]{background:rgba(37,99,235,0.05)!important;border:1px solid rgba(37,99,235,0.1)!important;box-shadow:none!important}
+  section:has([name="email"]) > div > div:last-child [class*="rounded-xl"] p,
+  section:has([name="email"]) > div > div:last-child [class*="rounded-xl"] span,
+  section:has([name="email"]) > div > div:last-child [class*="rounded-2xl"] p,
+  section:has([name="email"]) > div > div:last-child [class*="rounded-2xl"] span{color:#374151!important}
+  section:has([name="email"]) > div > div:last-child svg{color:#2563eb!important}
+  /* Icon wrapper circles */
+  section:has([name="email"]) > div > div:last-child [class*="bg-blue"]{background:rgba(37,99,235,0.1)!important}
+
+  /* ══ DEPOSIT BADGE on pricing cards ══ */
+  .vws-deposit-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(22,163,74,0.1);border:1px solid rgba(22,163,74,0.25);color:#15803d;font-size:11px;font-weight:700;letter-spacing:0.06em;padding:4px 10px;border-radius:20px;margin-top:8px}
+
+  /* ══ SERVICES LISTING — wave section dividers ══ */
+  #vws-listing-wave-1,#vws-listing-wave-2{position:relative;line-height:0;overflow:hidden}
+
+  /* ══ HOMEPAGE SERVICES GRID — mobile ══ */
+  @media(max-width:768px){
+    #vws-hp-services > div:first-child{grid-template-columns:1fr!important}
+  }
+
   </style>
 
   <script>
@@ -589,7 +705,7 @@
       ]
     },
     pricing: {
-      bot: "Here's the quick breakdown:\n\n💰 <b>Starter — $500</b> · Single page, perfect for getting online fast\n💰 <b>Standard — $750</b> · Up to 5 pages, most popular for service businesses\n💰 <b>Full Build — $1,000</b> · Up to 10 pages, blog, advanced SEO\n🔧 <b>Maintenance — $100/mo</b> · Unlimited updates, same-day turnaround\n\nAll plans are one-time fees. You own the site outright.\n\nAny of these stand out for you?",
+      bot: "Here's the quick breakdown:\n\n💰 <b>Starter — $500</b> · 2–3 pages, perfect for getting online fast\n💰 <b>Standard — $750</b> · Up to 5 pages, most popular for service businesses\n💰 <b>Full Build — $1,000</b> · Up to 10 pages, blog, advanced SEO\n🔧 <b>Maintenance — $100/mo</b> · Unlimited updates, same-day turnaround\n\n<b>Deposits:</b> We require a 50% deposit to begin. Remainder due at launch.\n\nAll plans are one-time fees. You own the site outright.\n\nAny of these stand out for you?",
       replies: [
         {label:'Standard sounds right — $750', next:'capture'},
         {label:'Tell me about Full Build',      next:'fullbuild'},
@@ -969,7 +1085,7 @@
 
       /* Price / cost */
       if (/\b(price|cost|how much|charge|fee|rate|afford|cheap|expensive|budget|pay|payment)\b/.test(t)) {
-        return { msg: "Here's the pricing breakdown:\n\n💰 <b>Starter — $500</b> · 1 page, fast launch\n💰 <b>Standard — $750</b> · Up to 5 pages, most popular for service businesses\n💰 <b>Full Build — $1,000</b> · Up to 10 pages, blog, advanced SEO, logo included\n🔧 <b>Maintenance — $100/mo</b> · Unlimited updates, same-day turnaround\n\nOne-time fees. You own the site outright — no subscriptions, no platform lock-in.\n\nWhich package sounds right for you?", next: 'pricing' };
+        return { msg: "Here's the pricing breakdown:\n\n💰 <b>Starter — $500</b> · 2–3 pages, fast launch\n💰 <b>Standard — $750</b> · Up to 5 pages, most popular for service businesses\n💰 <b>Full Build — $1,000</b> · Up to 10 pages, blog, advanced SEO, logo included\n🔧 <b>Maintenance — $100/mo</b> · Unlimited updates, same-day turnaround\n\n<b>50% deposit</b> to start — remainder due at launch.\nOne-time fees. You own the site outright — no subscriptions, no platform lock-in.\n\nWhich package sounds right for you?", next: 'pricing' };
       }
 
       /* Timeline / turnaround */
@@ -1151,7 +1267,7 @@
       _vwsPendingSlug = null;
       /* Clean up previous injections so switching service pages doesn't stack */
       window._vwsAboutPollActive = false;
-      ['vws-ba-injected','vws-deepdive','vws-svc-theme','vws-svc-listing','vws-listing-colors','vws-early-hue','vws-ill-wrap','vws-hero','vws-problem','vws-steps','vws-included','vws-results','vws-faq','vws-cta','vws-about-diff','vws-about-sticky','vws-about-styles','vws-design-cards','vws-seo-code','vws-whoweare-mockup','vws-comparison-table','vws-comparison-styles','vws-hp-trust','vws-hp-slider','vws-hp-bookend'].forEach(function(id){
+      ['vws-ba-injected','vws-deepdive','vws-svc-theme','vws-svc-listing','vws-listing-colors','vws-early-hue','vws-ill-wrap','vws-hero','vws-problem','vws-steps','vws-included','vws-results','vws-faq','vws-cta','vws-about-diff','vws-about-sticky','vws-about-styles','vws-design-cards','vws-seo-code','vws-whoweare-mockup','vws-comparison-table','vws-comparison-styles','vws-hp-trust','vws-hp-slider','vws-hp-bookend','vws-deposit-note','vws-hp-services'].forEach(function(id){
         var el = document.getElementById(id);
         if (el) el.remove ? el.remove() : el.parentNode.removeChild(el);
       });
@@ -1226,6 +1342,45 @@
       } else if (/^\/?$/.test(window.location.pathname)) {
         runHomePage();
       }
+      /* Run on every page — deposit note on pricing cards + contact card fix */
+      runPricingEnhancer();
+    }
+
+    /* ── Inject deposit note on any page that shows pricing cards ── */
+    function runPricingEnhancer() {
+      if (document.getElementById('vws-deposit-note')) return;
+      setTimeout(function() {
+        if (document.getElementById('vws-deposit-note')) return;
+        /* Find pricing cards by "one-time" text */
+        var pricingSecs = Array.from(document.querySelectorAll('section')).filter(function(s){
+          return s.textContent.indexOf('one-time') !== -1 && s.textContent.indexOf('500') !== -1;
+        });
+        if (!pricingSecs.length) return;
+        var priceSec = pricingSecs[0];
+        /* Update "Single page" text in Starter card to "2–3 pages" */
+        Array.from(priceSec.querySelectorAll('*')).forEach(function(el){
+          if (el.children.length === 0 && el.textContent.trim() === 'Single page website') {
+            el.textContent = '2–3 page website';
+          }
+          if (el.children.length === 0 && /single[\s-]?page/i.test(el.textContent)) {
+            el.textContent = el.textContent.replace(/single[\s-]?page/i, '2–3 page');
+          }
+        });
+        /* Inject deposit note below pricing cards */
+        var note = document.createElement('div');
+        note.id = 'vws-deposit-note';
+        note.style.cssText = 'text-align:center;margin:24px auto 0;padding:16px 24px;max-width:560px;background:#f0fdf4;border:1px solid rgba(22,163,74,0.2);border-radius:12px;font-family:Barlow,system-ui,sans-serif';
+        note.innerHTML = '<p style="font-size:14px;font-weight:600;color:#15803d;margin:0">'
+          +'<svg style="display:inline;vertical-align:middle;margin-right:6px" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>'
+          +'50% deposit required to start &mdash; remainder due at launch. Secure payment via invoice.</p>';
+        /* Insert after the pricing card grid */
+        var cards = priceSec.querySelector('[class*="grid"]');
+        if (cards && cards.parentNode) {
+          cards.parentNode.insertBefore(note, cards.nextSibling);
+        } else {
+          priceSec.appendChild(note);
+        }
+      }, 1200);
     }
 
     /* ── /about page — inject differentiators section with accordion ── */
@@ -1247,15 +1402,17 @@
           bgStyle.textContent = [
             /* Prevent glow ::before blobs from causing horizontal scroll on mobile */
             'html{overflow-x:clip}body.vws-about{overflow-x:clip}',
+            /* Hero section must be position:relative and overflow:visible for glows to show */
+            'body.vws-about section.min-h-screen{position:relative!important;overflow:visible!important}',
             /* Shared base for all section ::before glows */
             'body.vws-about section::before{content:"";position:absolute;border-radius:50%;pointer-events:none;z-index:0}',
-            /* Hero ::after — second animated glow from top-right */
-            'body.vws-about section.min-h-screen::after{content:"";position:absolute;border-radius:50%;pointer-events:none;z-index:0;width:500px;height:500px;top:-60px;right:-80px;background:radial-gradient(circle,rgba(99,102,241,0.07) 0%,transparent 68%);animation:vwsAboutGlowR 11s ease-in-out infinite}',
+            /* Hero ::after — second animated glow from top-right (inside bounds) */
+            'body.vws-about section.min-h-screen::after{content:"";position:absolute;border-radius:50%;pointer-events:none;z-index:0;width:55vw;height:55vw;max-width:640px;max-height:640px;top:5%;right:-5%;background:radial-gradient(circle,rgba(99,102,241,0.22) 0%,transparent 68%);animation:vwsAboutGlowR 11s ease-in-out infinite}',
             /* Hero animations */
-            '@keyframes vwsAboutGlowL{0%,100%{transform:rotate(-18deg) scale(0.92);opacity:0.72}40%{transform:rotate(-6deg) scale(1.12);opacity:0.95}75%{transform:rotate(-28deg) scale(0.82);opacity:0.55}}',
-            '@keyframes vwsAboutGlowR{0%,100%{transform:rotate(12deg) scale(1);opacity:0.55}35%{transform:rotate(26deg) scale(1.18);opacity:0.75}70%{transform:rotate(4deg) scale(0.88);opacity:0.38}}',
-            /* Hero — large glow bottom-left, animated */
-            'body.vws-about section.min-h-screen::before{width:620px;height:620px;bottom:-80px;left:-70px;background:radial-gradient(circle,rgba(59,130,246,0.1) 0%,transparent 68%);animation:vwsAboutGlowL 9s ease-in-out infinite}',
+            '@keyframes vwsAboutGlowL{0%,100%{transform:rotate(-18deg) scale(0.92);opacity:0.85}40%{transform:rotate(-6deg) scale(1.12);opacity:1}75%{transform:rotate(-28deg) scale(0.82);opacity:0.65}}',
+            '@keyframes vwsAboutGlowR{0%,100%{transform:rotate(12deg) scale(1);opacity:0.7}35%{transform:rotate(26deg) scale(1.18);opacity:0.9}70%{transform:rotate(4deg) scale(0.88);opacity:0.55}}',
+            /* Hero — large glow bottom-left, animated, inside bounds */
+            'body.vws-about section.min-h-screen::before{width:65vw;height:65vw;max-width:720px;max-height:720px;bottom:-10%;left:-8%;background:radial-gradient(circle,rgba(59,130,246,0.28) 0%,transparent 68%);animation:vwsAboutGlowL 9s ease-in-out infinite}',
             /* Our Story — medium glow top-right, tilted right */
             'body.vws-about section#our-story::before{width:440px;height:440px;top:30px;right:-90px;background:radial-gradient(circle,rgba(99,102,241,0.07) 0%,transparent 70%);transform:rotate(13deg) scale(1.08);opacity:0.55}',
             /* Comparison — left-side glow, compressed & rotated */
@@ -2297,6 +2454,46 @@
         /* ── Process accordion depth: inject bullet content ── */
         injectProcessDepth();
 
+        /* ── Services sneak peek — fill the "What We Offer" empty grid ── */
+        if (!document.getElementById('vws-hp-services')) {
+          var wwoSec = Array.from(document.querySelectorAll('section')).find(function(s){
+            return s.textContent.indexOf('What We Offer') !== -1 && !s.id;
+          });
+          if (wwoSec) {
+            var SVC_ITEMS = [
+              {slug:'website-development', icon:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>', name:'Website Development', desc:'Hand-coded from scratch. Zero templates.', color:'#2563eb'},
+              {slug:'website-creation',    icon:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>', name:'Website Creation', desc:'Get your business online fast in 5 days.', color:'#7c3aed'},
+              {slug:'website-redesign',    icon:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>', name:'Website Redesign', desc:'Modernize your existing site — zero downtime.', color:'#dc2626'},
+              {slug:'website-maintenance', icon:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>', name:'Website Maintenance', desc:'Unlimited updates. Same-day turnaround.', color:'#d97706'},
+              {slug:'hosting-domain',      icon:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="8" rx="2" ry="2"/><rect x="2" y="14" width="20" height="8" rx="2" ry="2"/><line x1="6" y1="6" x2="6.01" y2="6"/><line x1="6" y1="18" x2="6.01" y2="18"/></svg>', name:'Hosting & Domain', desc:'Fast, reliable — included free with every build.', color:'#0d9488'},
+              {slug:'logo-branding',       icon:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>', name:'Logo & Branding', desc:'Professional identity that stands out.', color:'#ca8a04'}
+            ];
+            var sGrid = document.createElement('div');
+            sGrid.id = 'vws-hp-services';
+            sGrid.style.cssText = 'padding:8px 24px 60px;font-family:Barlow,system-ui,sans-serif;max-width:1100px;margin:0 auto';
+            sGrid.innerHTML = '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px">'
+              + SVC_ITEMS.map(function(svc){
+                  return '<a href="/services/'+svc.slug+'" style="display:block;background:#ffffff;border:1px solid rgba(0,0,0,0.07);border-radius:14px;padding:24px;text-decoration:none;box-shadow:0 2px 8px rgba(0,0,0,0.04);transition:box-shadow .2s,border-color .2s" '
+                  +'onmouseover="this.style.boxShadow=\'0 8px 32px rgba(0,0,0,0.1)\';this.style.borderColor=\''+svc.color+'44\'" '
+                  +'onmouseout="this.style.boxShadow=\'0 2px 8px rgba(0,0,0,0.04)\';this.style.borderColor=\'rgba(0,0,0,0.07)\'">'
+                  +'<div style="width:44px;height:44px;border-radius:10px;background:'+svc.color+'18;border:1px solid '+svc.color+'44;display:flex;align-items:center;justify-content:center;color:'+svc.color+';margin-bottom:14px">'+svc.icon+'</div>'
+                  +'<div style="font-size:15px;font-weight:800;color:#0d1117;margin-bottom:6px">'+svc.name+'</div>'
+                  +'<div style="font-size:13px;color:#6b7280;line-height:1.55;margin-bottom:14px">'+svc.desc+'</div>'
+                  +'<div style="font-size:11px;font-weight:700;color:'+svc.color+';display:flex;align-items:center;gap:4px;letter-spacing:0.04em">Learn More <span style="font-size:13px">→</span></div>'
+                  +'</a>';
+                }).join('')
+              +'</div>'
+              +'<div style="text-align:center;margin-top:36px">'
+              +'<a href="/services" style="display:inline-flex;align-items:center;gap:8px;background:#2563eb;color:#fff;font-size:14px;font-weight:700;padding:14px 32px;border-radius:8px;text-decoration:none;box-shadow:0 4px 20px rgba(37,99,235,0.28)">View All Services →</a>'
+              +'</div>';
+            /* Hide any opacity:0 React cards first, then inject ours */
+            wwoSec.querySelectorAll('*').forEach(function(el){
+              if(parseFloat(window.getComputedStyle(el).opacity) === 0) el.style.display='none';
+            });
+            wwoSec.appendChild(sGrid);
+          }
+        }
+
       }
 
       /* ── Build: Dual ticker (Cosmico Studios style) ── */
@@ -2563,12 +2760,37 @@
             if (ORDER[i]) el.style.color = ORDER[i].lt;
           });
 
+          /* Add wave at bottom of services listing hero section */
+          var listingSecs = document.querySelectorAll('section');
+          if (listingSecs[0] && !listingSecs[0].querySelector('[data-vws-lwave]')) {
+            listingSecs[0].style.position = 'relative';
+            listingSecs[0].style.overflow = 'visible';
+            var heroWave = document.createElement('div');
+            heroWave.setAttribute('data-vws-lwave','hero');
+            heroWave.style.cssText = 'position:absolute;bottom:-1px;left:0;right:0;height:80px;pointer-events:none;z-index:5;line-height:0';
+            heroWave.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 80" preserveAspectRatio="none" style="display:block;width:100%;height:80px"><path d="M0,40 C360,0 1080,80 1440,40 L1440,80 L0,80 Z" fill="#f7f8fc"/></svg>';
+            listingSecs[0].appendChild(heroWave);
+          }
+          /* After service cards — wave before dark grid */
+          if (listingSecs[1] && !listingSecs[1].querySelector('[data-vws-lwave]')) {
+            listingSecs[1].style.position = 'relative';
+            listingSecs[1].style.overflow = 'visible';
+            var midWave = document.createElement('div');
+            midWave.setAttribute('data-vws-lwave','mid');
+            midWave.style.cssText = 'position:absolute;bottom:-1px;left:0;right:0;height:80px;pointer-events:none;z-index:5;line-height:0';
+            midWave.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 80" preserveAspectRatio="none" style="display:block;width:100%;height:80px"><path d="M0,40 C360,80 1080,0 1440,40 L1440,80 L0,80 Z" fill="#060916"/></svg>';
+            listingSecs[1].appendChild(midWave);
+          }
+
           /* Inject the services overview grid below the listing */
           if (document.getElementById('vws-svc-listing')) return;
           var grid = document.createElement('section');
           grid.id = 'vws-svc-listing';
-          grid.style.cssText = 'background:#060916;padding:60px 24px 80px;font-family:Barlow,system-ui,sans-serif';
-          grid.innerHTML = '<div style="max-width:960px;margin:0 auto">'
+          grid.style.cssText = 'background:#060916;padding:60px 24px 80px;font-family:Barlow,system-ui,sans-serif;position:relative;overflow:visible';
+          /* Wave at the bottom of the dark grid → back to white footer */
+          var gridEndWave = '<div style="position:absolute;bottom:-1px;left:0;right:0;height:80px;pointer-events:none;z-index:5;line-height:0">'
+            +'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 80" preserveAspectRatio="none" style="display:block;width:100%;height:80px"><path d="M0,40 C360,0 1080,80 1440,40 L1440,80 L0,80 Z" fill="#ffffff"/></svg></div>';
+          grid.innerHTML = gridEndWave + '<div style="max-width:960px;margin:0 auto">'
             +'<div style="text-align:center;margin-bottom:40px">'
             +'<div style="font-size:10px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:#60a5fa;margin-bottom:10px">Everything We Do</div>'
             +'<div style="font-size:28px;font-weight:900;color:#fff;line-height:1.25">Six Ways We Help Local Businesses<br>Win Online</div>'
