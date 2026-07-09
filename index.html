@@ -36,6 +36,32 @@
         }
       });
 
+      /* 1.5. Force "LET'S BUILD YOUR DREAM WEBSITE" banner text to white via computed bg */
+      (function() {
+        var heroSec = document.querySelector('section[class*="h-screen"]');
+        if (!heroSec) return;
+        Array.from(heroSec.querySelectorAll('*')).forEach(function(el) {
+          if (el.children.length > 0) return;
+          var txt = el.textContent.trim().toUpperCase();
+          if (txt.indexOf('DREAM WEBSITE') === -1 && txt.indexOf("LET'S BUILD") === -1) return;
+          /* Walk up the DOM to find a blue background container */
+          var node = el;
+          var found = false;
+          while (node && node !== heroSec) {
+            var bg = window.getComputedStyle(node).backgroundColor;
+            var m = bg && bg.match(/\d+/g);
+            if (m && parseInt(m[0]) < 100 && parseInt(m[2]) > 150) {
+              /* blue channel dominates — this is the blue banner */
+              node.style.setProperty('color','#ffffff','important');
+              Array.from(node.querySelectorAll('*')).forEach(function(c){ c.style.setProperty('color','#ffffff','important'); });
+              found = true; break;
+            }
+            node = node.parentElement;
+          }
+          if (!found) el.style.setProperty('color','#ffffff','important');
+        });
+      })();
+
       /* 2. Build Services dropdown if the nav is rendered and dropdown not yet injected */
       var servicesLink = Array.from(document.querySelectorAll('nav a')).find(function(a) {
         return a.textContent.trim() === 'Services';
@@ -95,21 +121,6 @@
         if (chevron) chevron.style.transform = 'rotate(0deg)';
       });
 
-      /* Continuously kill React's colored mega menu (it re-renders on hover) */
-      var reactMegaObs = new MutationObserver(function() {
-        var allInHeader = document.querySelectorAll('header *');
-        allInHeader.forEach(function(el) {
-          if (el.getAttribute('data-vws-dd') || el.getAttribute('data-vws-mega')) return;
-          var s = window.getComputedStyle(el);
-          if ((s.position === 'absolute' || s.position === 'fixed') && el.querySelectorAll('a').length > 4) {
-            var rect = el.getBoundingClientRect();
-            if (rect.top < 200 && rect.width > 300) {
-              el.style.setProperty('display','none','important');
-            }
-          }
-        });
-      });
-      reactMegaObs.observe(document.querySelector('header') || document.body, {childList:true, subtree:true, attributes:true, attributeFilter:['style','class']});
 
       /* 3. Logo click → smooth scroll to top, then SPA navigate home */
       var logoA = document.querySelector('header a[href="/"]');
@@ -406,9 +417,9 @@
   header.fixed.top-0 p[class*="tracking-"]{color:#374151!important}
   /* Services dropdown — clean white */
   header.fixed.top-0 [data-vws-dd]{background:#ffffff!important;border:1px solid rgba(0,0,0,0.08)!important;box-shadow:0 24px 80px rgba(0,0,0,0.14)!important}
-  /* Kill any React-generated colored nav mega-menu (ours replaces it) */
-  header nav [class*="absolute"]:not([data-vws-mega]):not([data-vws-dd]) > div > div[class*="rounded"],
-  header nav [class*="fixed"]:not([data-vws-mega]):not([data-vws-dd]) > div > div[class*="rounded"]{display:none!important}
+  /* Force ALL nav links visible and dark on the white navbar (catches any Tailwind class variant) */
+  header.fixed.top-0 nav a:not([href="/contact"]):not([class*="inline-flex"]){color:#374151!important}
+  header.fixed.top-0 nav a:not([href="/contact"]):not([class*="inline-flex"]):hover{color:#2563eb!important}
 
   /* ══ TASK 1: Card contrast — fix dark-navy cards inside light sections ══ */
   /* Replace dark card bg with white + brand blue border */
