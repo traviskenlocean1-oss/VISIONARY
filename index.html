@@ -1099,6 +1099,18 @@
     function patchHistory(method) {
       var orig = history[method];
       history[method] = function() {
+        /* Block React Router from redirecting a service detail URL back to /services.
+           React Router doesn't define /services/:slug routes so it replaceState('/services')
+           on initial load — intercept that and keep the slug URL intact. */
+        if (method === 'replaceState') {
+          var currentSlug = (window.location.pathname.match(/\/services\/([^\/]+)/) || [])[1];
+          var targetPath = typeof arguments[2] === 'string' ? arguments[2]
+                         : typeof arguments[1] === 'string' ? arguments[1] : '';
+          if (currentSlug && /^\/services\/?$/.test(targetPath)) {
+            setTimeout(runAll, 300);
+            return;
+          }
+        }
         orig.apply(this, arguments);
         setTimeout(runAll, 300);
       };
