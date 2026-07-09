@@ -45,73 +45,44 @@
       var wrapper = servicesLink.parentElement;
       wrapper.style.position = 'relative';
 
-      var items = [
-        { label: 'Website Development',  href: '/services/website-development' },
-        { label: 'Hosting & Domain',     href: '/services/hosting-domain' },
-        { label: 'Website Maintenance',  href: '/services/website-maintenance' },
-        { label: 'Website Creation',     href: '/services/website-creation' },
-        { label: 'Website Redesign',     href: '/services/website-redesign' },
-        { label: 'Logo & Branding',      href: '/services/logo-branding' }
+      var megaItems = [
+        { name: 'Website Development',  desc: 'Hand-coded from scratch, no templates', href: '/services/website-development' },
+        { name: 'Website Creation',     desc: 'Get your business online fast', href: '/services/website-creation' },
+        { name: 'Website Redesign',     desc: 'Modernize your existing site', href: '/services/website-redesign' },
+        { name: 'Website Maintenance',  desc: 'Unlimited updates, same-day turnaround', href: '/services/website-maintenance' },
+        { name: 'Hosting & Domain',     desc: 'Fast, reliable — included free', href: '/services/hosting-domain' },
+        { name: 'Logo & Branding',      desc: 'Professional identity that stands out', href: '/services/logo-branding' }
       ];
 
       var dd = document.createElement('div');
       dd.setAttribute('data-vws-dd', '1');
-      dd.style.cssText = [
-        'position:absolute',
-        'top:calc(100% + 10px)',
-        'left:50%',
-        'transform:translateX(-50%)',
-        'background:#080d1c',
-        'border:1px solid rgba(225,224,204,0.1)',
-        'border-radius:10px',
-        'min-width:230px',
-        'padding:6px',
-        'opacity:0',
-        'visibility:hidden',
-        'transition:opacity 0.18s,visibility 0.18s',
-        'z-index:9999',
-        'box-shadow:0 20px 60px rgba(0,0,0,0.6)'
-      ].join(';');
+      dd.setAttribute('data-vws-mega', '1');
 
-      items.forEach(function(svc) {
+      megaItems.forEach(function(svc) {
         var a = document.createElement('a');
         a.href = svc.href;
-        a.textContent = svc.label;
-        a.style.cssText = [
-          'display:block',
-          'padding:10px 16px',
-          'color:rgba(225,224,204,0.55)',
-          'font-size:10px',
-          'font-weight:700',
-          'letter-spacing:0.18em',
-          'text-transform:uppercase',
-          'text-decoration:none',
-          'border-radius:6px',
-          'transition:background 0.15s,color 0.15s'
-        ].join(';');
-        a.addEventListener('mouseenter', function() {
-          a.style.background = 'rgba(255,255,255,0.05)';
-          a.style.color = 'rgba(225,224,204,1)';
-        });
-        a.addEventListener('mouseleave', function() {
-          a.style.background = '';
-          a.style.color = 'rgba(225,224,204,0.55)';
-        });
+        a.className = 'vws-mega-item';
+        a.innerHTML = '<span class="vws-mega-item-name">' + svc.name + '</span>'
+          + '<span class="vws-mega-item-desc">' + svc.desc + '</span>';
         dd.appendChild(a);
       });
 
+      var footer = document.createElement('div');
+      footer.className = 'vws-mega-footer';
+      footer.innerHTML = '<span style="font-size:12px;color:#9ca3af;font-weight:500">Everything your business needs to grow online</span>'
+        + '<a href="/contact" class="vws-mega-cta">Start a Project →</a>';
+      dd.appendChild(footer);
+
       wrapper.appendChild(dd);
 
-      /* Services link itself navigates to /services — dropdown shows on hover only */
+      /* Show/hide on hover */
       wrapper.addEventListener('mouseenter', function() {
-        dd.style.opacity = '1';
-        dd.style.visibility = 'visible';
+        dd.classList.add('vws-mega-open');
         var chevron = servicesLink.querySelector('svg');
         if (chevron) chevron.style.transform = 'rotate(180deg)';
       });
       wrapper.addEventListener('mouseleave', function() {
-        dd.style.opacity = '0';
-        dd.style.visibility = 'hidden';
+        dd.classList.remove('vws-mega-open');
         var chevron = servicesLink.querySelector('svg');
         if (chevron) chevron.style.transform = 'rotate(0deg)';
       });
@@ -296,6 +267,103 @@
     #vws-hp-slider,#vws-hp-trust,#vws-hp-bookend{padding:60px 16px}
     #vws-hp-trust .vws-trust-grid{grid-template-columns:1fr}
     #vws-hp-bookend{padding:80px 20px}
+  }
+
+  /* ══ BIGGER NAV TEXT ══ */
+  header.fixed.top-0 a[class*="text-\[11px\]"],header.fixed.top-0 a[class*="tracking-\[0\.2em\]"]{font-size:13.5px!important;letter-spacing:0.14em!important}
+  header.fixed.top-0 a[href="/contact"][class*="inline-flex"]{font-size:13.5px!important;padding:12px 28px!important}
+
+  /* ══ GLOBAL FONT BUMP ══ */
+  body{font-size:17px}
+  section p{font-size:16px!important;line-height:1.75!important}
+  section h2{font-size:clamp(32px,5vw,56px)!important}
+  section h3{font-size:clamp(20px,3vw,28px)!important}
+
+  /* ══ HIDE TYPICAL PROJECT TIMELINE STAT CARDS ══ */
+  /* The stat card block that follows the process steps */
+  section [class*="border"][class*="rounded-2xl"]:has([class*="text-4xl"]):has(p[class*="text-gray"]):not([id]),
+  section div[class*="grid"][class*="grid-cols-3"]:has(p[class*="text-2xl"]) { display:none!important }
+  /* Broader fallback — hide any child div labelled "TYPICAL PROJECT TIMELINE" */
+  section [style*="text-transform: uppercase"]:has + div { display:none!important }
+
+  /* ══ DUAL TICKER — Cosmico Studios style ══ */
+  #vws-dual-ticker{padding:0;overflow:hidden;background:#060916;border-top:1px solid rgba(255,255,255,0.06);border-bottom:1px solid rgba(255,255,255,0.06)}
+  #vws-dual-ticker .vws-tk-row{display:flex;overflow:hidden;padding:14px 0}
+  #vws-dual-ticker .vws-tk-track{display:flex;gap:0;white-space:nowrap;will-change:transform}
+  #vws-dual-ticker .vws-tk-track--left{animation:vws-tk-left 28s linear infinite}
+  #vws-dual-ticker .vws-tk-track--right{animation:vws-tk-right 32s linear infinite}
+  #vws-dual-ticker .vws-tk-item{display:inline-flex;align-items:center;gap:0;font-size:13px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:rgba(225,224,204,0.55);white-space:nowrap}
+  #vws-dual-ticker .vws-tk-item .vws-tk-star{color:#2563eb;margin:0 18px;font-size:10px;line-height:1;flex-shrink:0}
+  #vws-dual-ticker .vws-tk-row:hover .vws-tk-track{animation-play-state:paused}
+  @keyframes vws-tk-left{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+  @keyframes vws-tk-right{from{transform:translateX(-50%)}to{transform:translateX(0)}}
+
+  /* ══ HERO WAVE ══ */
+  #vws-hero-wave{position:absolute;bottom:0;left:0;right:0;line-height:0;pointer-events:none;z-index:2}
+  #vws-hero-wave svg{display:block;width:100%;height:auto}
+
+  /* ══ MEGA DROPDOWN — 911myweb style ══ */
+  [data-vws-mega]{position:absolute;top:calc(100% + 8px);left:50%;transform:translateX(-50%);background:#ffffff;border:1px solid rgba(0,0,0,0.08);border-radius:14px;min-width:640px;padding:24px 28px;opacity:0;visibility:hidden;transition:opacity 0.2s,visibility 0.2s;z-index:9999;box-shadow:0 24px 80px rgba(0,0,0,0.14);display:grid;grid-template-columns:1fr 1fr;gap:4px 32px}
+  [data-vws-mega].vws-mega-open{opacity:1;visibility:visible}
+  [data-vws-mega] .vws-mega-item{display:flex;flex-direction:column;padding:10px 12px;border-radius:8px;text-decoration:none;transition:background 0.14s}
+  [data-vws-mega] .vws-mega-item:hover{background:rgba(37,99,235,0.06)}
+  [data-vws-mega] .vws-mega-item-name{font-size:13.5px;font-weight:700;color:#0d1117;letter-spacing:0.02em}
+  [data-vws-mega] .vws-mega-item-desc{font-size:12px;color:#6b7280;margin-top:3px;line-height:1.4}
+  [data-vws-mega] .vws-mega-footer{grid-column:1/-1;margin-top:12px;padding-top:14px;border-top:1px solid rgba(0,0,0,0.06);display:flex;align-items:center;justify-content:space-between}
+  [data-vws-mega] .vws-mega-cta{display:inline-flex;align-items:center;gap:8px;background:#2563eb;color:#fff;font-size:13px;font-weight:700;padding:9px 22px;border-radius:7px;text-decoration:none;transition:background 0.14s}
+  [data-vws-mega] .vws-mega-cta:hover{background:#1d4ed8}
+
+  /* ══ ABOUT PAGE ENHANCEMENTS ══ */
+  body.vws-about section{background:#ffffff!important}
+  body.vws-about section h1,body.vws-about section h2,body.vws-about section h3,body.vws-about section h4{color:#0d1117!important}
+  body.vws-about section p,body.vws-about section li{color:#374151!important}
+  /* Hero on about stays dark */
+  body.vws-about section.min-h-screen{background:#060916!important}
+  body.vws-about section.min-h-screen h1,body.vws-about section.min-h-screen h2{color:rgb(225,224,204)!important}
+  body.vws-about section.min-h-screen p{color:rgba(225,224,204,0.6)!important}
+  /* Preserve our injected dark differentiators section */
+  #vws-about-diff{background:#080808!important}
+  #vws-about-diff h2,#vws-about-diff h3{color:#fff!important}
+  #vws-about-diff p{color:rgba(255,255,255,0.5)!important}
+
+  /* ══ MOBILE FIXES ══ */
+  @media(max-width:768px){
+    /* Bigger hero headline on mobile */
+    section[class*="h-screen"] h1{font-size:clamp(36px,10vw,60px)!important;line-height:1.05!important}
+    /* Before/after slider mobile */
+    #vws-ba-wrap{border-radius:8px}
+    /* Mega dropdown — full width on mobile */
+    [data-vws-mega]{min-width:calc(100vw - 32px)!important;grid-template-columns:1fr!important;left:16px!important;transform:none!important;right:16px}
+    /* Trust cards stacked */
+    #vws-hp-trust .vws-trust-grid{grid-template-columns:1fr 1fr}
+    /* Nav wordmark smaller */
+    header.fixed.top-0 p[class*="font-black"]{font-size:14px!important}
+    /* Process accordion mobile padding */
+    section [class*="py-7"]{padding-top:20px!important;padding-bottom:20px!important}
+    /* What We Offer cards */
+    section [class*="grid-cols-3"]{grid-template-columns:1fr!important}
+    section [class*="grid-cols-2"]:not([id]){grid-template-columns:1fr!important}
+    /* Services page steps */
+    #vws-steps [style*="grid-template-columns:1fr 1fr"]{display:block!important}
+    #vws-steps [style*="grid-template-columns:1fr 1fr"] > div{margin-bottom:16px}
+    /* Included section */
+    #vws-included [style*="grid-template-columns:1fr 380px"]{display:block!important}
+    #vws-included [style*="position:sticky"]{position:static!important;margin-top:32px}
+    /* Comparison table */
+    #vws-comparison-table .comp-row{flex-direction:column}
+    /* Dual ticker padding */
+    #vws-dual-ticker .vws-tk-row{padding:10px 0}
+  }
+  @media(max-width:480px){
+    /* Form card in hero - full width */
+    section[class*="h-screen"] [style*="rgba(4, 8, 22, 0.92)"]{margin:16px!important;width:calc(100vw - 32px)!important;max-width:none!important}
+    /* Footer grid */
+    footer [class*="grid-cols-4"]{display:block!important}
+    footer [class*="grid-cols-3"]{display:block!important}
+    /* Hero layout stack on small screens */
+    section[class*="h-screen"] .flex.flex-col{gap:24px}
+    /* Chat widget smaller */
+    #vws-chat-win{width:calc(100vw - 32px)!important;bottom:80px!important;right:16px!important}
   }
 
   /* ══ TASK 2: White navbar — all pages, all scroll states ══ */
@@ -1976,6 +2044,58 @@
         if (reactSecs[6]) { reactSecs[6].classList.add('vws-section-dark'); reactSecs[6].setAttribute('data-vws-hp','1'); }
         if (reactSecs[7]) { reactSecs[7].classList.add('vws-section-light'); reactSecs[7].setAttribute('data-vws-hp','1'); }
 
+        /* ── Dual ticker: hide React industries section, inject ours ── */
+        if (!document.getElementById('vws-dual-ticker')) {
+          /* Find and hide the React industries ticker (contains "Industries we've built for") */
+          Array.from(reactSecs).forEach(function(s) {
+            if (s.textContent.indexOf("Industries we've built for") !== -1 || s.textContent.indexOf("Industries we’ve built for") !== -1) {
+              s.style.display = 'none';
+              s.setAttribute('data-vws-hidden','1');
+            }
+          });
+
+          var tkEl = document.createElement('section');
+          tkEl.id = 'vws-dual-ticker';
+          tkEl.innerHTML = buildDualTicker();
+          /* Insert after hero (reactSecs[0]) */
+          if (reactSecs[0] && reactSecs[0].nextSibling) {
+            reactSecs[0].parentNode.insertBefore(tkEl, reactSecs[0].nextSibling);
+          }
+        }
+
+        /* ── Hero wave: inject SVG curve at bottom of hero ── */
+        if (!document.getElementById('vws-hero-wave')) {
+          var heroSec = reactSecs[0];
+          if (heroSec) {
+            heroSec.style.position = 'relative';
+            heroSec.style.overflow = 'visible';
+            var waveDiv = document.createElement('div');
+            waveDiv.id = 'vws-hero-wave';
+            waveDiv.innerHTML = '<svg viewBox="0 0 1440 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"><path d="M0,0 C360,80 1080,80 1440,0 L1440,80 L0,80 Z" fill="#060916"/><path d="M0,20 C360,80 1080,60 1440,20 L1440,80 L0,80 Z" fill="#f7f8fc" opacity="0.08"/></svg>';
+            heroSec.appendChild(waveDiv);
+          }
+        }
+
+        /* ── Hide "Typical Project Timeline" stat cards ── */
+        (function() {
+          var allText = document.querySelectorAll('*');
+          for (var i = 0; i < allText.length; i++) {
+            var el = allText[i];
+            if (el.childNodes.length === 1 && el.childNodes[0].nodeType === 3) {
+              if (el.textContent.trim() === 'TYPICAL PROJECT TIMELINE') {
+                var card = el;
+                /* Walk up to find the containing card/div */
+                for (var j = 0; j < 6; j++) {
+                  if (card.parentElement) card = card.parentElement;
+                  var rect = card.getBoundingClientRect();
+                  if (rect.width > 400) { card.style.display = 'none'; card.setAttribute('data-vws-hidden','1'); break; }
+                }
+                break;
+              }
+            }
+          }
+        })();
+
         /* ── Task 5: Trust / How You Rank section — insert before section[4] ── */
         if (!document.getElementById('vws-hp-trust')) {
           var trustEl = document.createElement('section');
@@ -1995,6 +2115,101 @@
           initSlider();
         }
 
+        /* ── Process accordion depth: inject bullet content ── */
+        injectProcessDepth();
+
+      }
+
+      /* ── Build: Dual ticker (Cosmico Studios style) ── */
+      function buildDualTicker() {
+        var row1 = ['Custom Websites','SEO Optimization','Logo & Branding','Website Redesign','Hosting & Domains','Website Maintenance','Mobile-First Design','Fast Delivery','Local SEO','E-Commerce','Hand-Coded','No Templates'];
+        var row2 = ['Restaurants','Contractors','Beauty Studios','Auto Shops','Law Firms','Real Estate','Fitness Studios','Medical Clinics','Landscaping','Cleaning Services','Barber Shops','Plumbers','Spas & Wellness','Consultants'];
+
+        function buildTrack(items) {
+          var doubled = items.concat(items);
+          return doubled.map(function(item) {
+            return '<span class="vws-tk-item">' + item + '<span class="vws-tk-star">✦</span></span>';
+          }).join('');
+        }
+
+        return '<div class="vws-tk-row"><div class="vws-tk-track vws-tk-track--left">' + buildTrack(row1) + '</div></div>'
+          + '<div class="vws-tk-row" style="border-top:1px solid rgba(255,255,255,0.04)"><div class="vws-tk-track vws-tk-track--right">' + buildTrack(row2) + '</div></div>';
+      }
+
+      /* ── Process accordion depth injection ── */
+      function injectProcessDepth() {
+        var DEPTH = {
+          'Discovery & Strategy': [
+            '30-min kickoff call to map your goals, market & customers',
+            'Full competitor site audit — find what they\'re doing right & wrong',
+            'Conversion goal mapping: what action should every visitor take?',
+            'Written site plan delivered before any design begins'
+          ],
+          'Design & Prototype': [
+            'Figma mockup built for desktop + mobile simultaneously',
+            'Brand identity locked in: fonts, colors, tone, visual style',
+            'Two revision rounds included — design is approved before code starts',
+            'Every layout decision made to drive contact form submissions & calls'
+          ],
+          'Development & Testing': [
+            'Hand-coded HTML/CSS/JS — no page builders, no WordPress bloat',
+            'Mobile-first build: 70%+ of your customers are on phones',
+            'Sub-2s load time target — speed is an SEO ranking factor',
+            'Full local SEO foundation: schema markup, meta tags, sitemap'
+          ],
+          'Launch & Support': [
+            'Domain + Cloudflare hosting setup included at no extra cost',
+            'Google Analytics + Search Console connected from day one',
+            '30-day post-launch support window — we fix anything that comes up',
+            'You own the files outright — no platform lock-in, ever'
+          ]
+        };
+
+        var UL_STYLE = 'margin:14px 0 0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px';
+        var LI_STYLE = 'font-size:14px;color:rgba(37,99,235,0.9);line-height:1.55;display:flex;align-items:flex-start;gap:8px;font-weight:500';
+        var ARROW = '<span style="color:#2563eb;flex-shrink:0;margin-top:2px">→</span>';
+
+        function inject(stepTitle, container) {
+          if (container.querySelector('[data-vws-depth]')) return;
+          var bullets = DEPTH[stepTitle];
+          if (!bullets) return;
+          var ul = document.createElement('ul');
+          ul.setAttribute('data-vws-depth','1');
+          ul.style.cssText = UL_STYLE;
+          bullets.forEach(function(b) {
+            var li = document.createElement('li');
+            li.style.cssText = LI_STYLE;
+            li.innerHTML = ARROW + '<span style="color:#374151">' + b + '</span>';
+            ul.appendChild(li);
+          });
+          container.appendChild(ul);
+        }
+
+        function scanSteps() {
+          var steps = document.querySelectorAll('[class*="border-b"]');
+          steps.forEach(function(step) {
+            var header = step.querySelector('[class*="py-7"]');
+            if (!header) return;
+            var titleSpan = header.querySelector('span[class*="text-xl"]');
+            if (!titleSpan) return;
+            var title = titleSpan.textContent.trim();
+            /* Find the expanded content div — look for height:auto */
+            var contentWrapper = step.querySelector('[style*="height: auto"]');
+            if (!contentWrapper) return;
+            var pbFlex = contentWrapper.querySelector('.pb-8.flex.gap-5, [class*="pb-8"][class*="flex"][class*="gap-5"]');
+            if (!pbFlex) return;
+            var divs = pbFlex.children;
+            if (divs.length < 2) return;
+            inject(title, divs[1]);
+          });
+        }
+
+        scanSteps();
+        /* Also watch for future expansions */
+        if (!window._vwsDepthObs) {
+          window._vwsDepthObs = new MutationObserver(function() { scanSteps(); });
+          window._vwsDepthObs.observe(document.body, { subtree:true, attributes:true, attributeFilter:['style'] });
+        }
       }
 
       /* ── Build: Trust/rank section (Task 5) ── */
