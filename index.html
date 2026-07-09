@@ -484,6 +484,30 @@
   /* Contact icon backgrounds */
   footer [class*="bg-blue-"]{background:rgba(37,99,235,0.08)!important}
   footer [class*="bg-blue-"] svg,footer [class*="bg-blue-"] [class*="text-"]{color:#2563eb!important}
+
+  /* ══ ABOUT PAGE — Absolute Web sticky-scroll section ══ */
+  #vws-about-sticky{background:#ffffff;padding:0 40px;font-family:inherit}
+  #vws-about-sticky .vws-sticky-inner{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:0 80px;align-items:start}
+  #vws-about-sticky .vws-sticky-left{position:sticky;top:90px;padding:100px 0 100px;align-self:start}
+  #vws-about-sticky .vws-sticky-right{padding:100px 0 140px}
+  #vws-about-sticky .vws-sc-card{padding:44px 0;border-top:1px solid rgba(0,0,0,0.08)}
+  #vws-about-sticky .vws-sc-card:last-child{border-bottom:1px solid rgba(0,0,0,0.08)}
+  #vws-about-sticky .vws-sc-num{font-size:11px;font-weight:700;letter-spacing:0.22em;text-transform:uppercase;color:#2563eb;margin:0 0 14px}
+  #vws-about-sticky .vws-sc-title{font-size:clamp(20px,2.2vw,28px);font-weight:800;color:#0d1117;line-height:1.2;margin:0 0 14px;display:flex;align-items:center;justify-content:space-between;gap:16px;cursor:pointer;user-select:none}
+  #vws-about-sticky .vws-sc-desc{font-size:16px;color:#4b5563;line-height:1.75;margin:0 0 20px}
+  #vws-about-sticky .vws-sc-expand{overflow:hidden;max-height:0;opacity:0;margin-top:0;transition:max-height 0.44s ease,opacity 0.3s ease,margin-top 0.3s ease}
+  #vws-about-sticky .vws-sc-expand.open{max-height:700px;opacity:1;margin-top:12px}
+  #vws-about-sticky .vws-sc-expand ul{margin:0;padding:0;list-style:none;border-top:1px solid rgba(0,0,0,0.06);padding-top:4px}
+  #vws-about-sticky .vws-sc-expand ul li{display:flex;align-items:flex-start;gap:12px;padding:11px 0;border-bottom:1px solid rgba(0,0,0,0.05);font-size:15px;color:#374151;line-height:1.6}
+  #vws-about-sticky .vws-sc-expand ul li::before{content:'';width:6px;height:6px;border-radius:50%;background:#2563eb;flex-shrink:0;margin-top:8px}
+  #vws-about-sticky .vws-sc-more{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:700;color:#2563eb;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;background:none;border:none;padding:0;font-family:inherit}
+  #vws-about-sticky .vws-sc-more-arrow{display:inline-block;transition:transform 0.25s ease;font-style:normal}
+  @media(max-width:900px){
+    #vws-about-sticky{padding:0 20px}
+    #vws-about-sticky .vws-sticky-inner{grid-template-columns:1fr}
+    #vws-about-sticky .vws-sticky-left{position:static;padding:60px 0 32px;border-bottom:1px solid rgba(0,0,0,0.07)}
+    #vws-about-sticky .vws-sticky-right{padding:32px 0 80px}
+  }
   </style>
 
   <script>
@@ -1217,6 +1241,129 @@
             'body.vws-about section.py-32::before{width:560px;height:560px;bottom:-90px;right:-50px;background:radial-gradient(circle,rgba(59,130,246,0.09) 0%,transparent 70%);transform:rotate(-9deg) scale(1.2);opacity:0.52}'
           ].join('');
           document.head.appendChild(bgStyle);
+        }
+
+        /* ── Absolute Web sticky-scroll: inject after hero ── */
+        if (!document.getElementById('vws-about-sticky')) {
+          var SC_CARDS = [
+            {
+              num: '01',
+              title: 'Custom Website Development',
+              desc: 'Every site is hand-coded from scratch — no WordPress, no templates, no drag-and-drop builders. You get a site built exactly for your business, your market, and your customers.',
+              more: [
+                'Clean HTML/CSS/JS — no bloated page builders slowing you down',
+                'Every layout decision drives contact form submissions and calls',
+                'Sub-2 second load time — speed is a Google ranking factor',
+                'You own the files outright — no platform lock-in, ever'
+              ]
+            },
+            {
+              num: '02',
+              title: 'Local SEO Foundation',
+              desc: 'Search engine optimization isn\'t an add-on — it\'s baked into every Visionary site from the first line of code. Your site tells Google exactly what you do, where you are, and who you serve.',
+              more: [
+                'Title tags, meta descriptions, and heading structure done right',
+                'Schema markup so Google understands your business instantly',
+                'Google Business Profile alignment for local search dominance',
+                'Sitemap and canonical tags submitted on launch day'
+              ]
+            },
+            {
+              num: '03',
+              title: 'Mobile-First Design',
+              desc: 'Over 70% of your customers find you on their phone. We design for mobile first — not as an afterthought, but as the primary canvas every layout decision is made around.',
+              more: [
+                'Designed at 375px width before anything else',
+                'Touch-friendly buttons, forms, and tap targets (minimum 44px)',
+                'Images optimized for fast load on cellular connections',
+                'Tested on real devices before launch — not just browser DevTools'
+              ]
+            },
+            {
+              num: '04',
+              title: 'Conversion Architecture',
+              desc: 'Where the phone number sits. What the visitor sees first. How trust is built before they\'re asked to act. Every element has one job: getting the visitor to contact you.',
+              more: [
+                'Above-the-fold CTA visible without scrolling on every page',
+                'Trust signals placed where they have the most impact on decisions',
+                'Contact forms designed short, clear, and low-friction to submit',
+                'Layout decisions drawn from 100+ real local business site builds'
+              ]
+            },
+            {
+              num: '05',
+              title: 'Ongoing Maintenance & Support',
+              desc: 'Your site doesn\'t go dark after launch. Visionary clients get same-day content updates, monthly performance reports, and direct access to our team — for $100/month flat.',
+              more: [
+                'Unlimited content updates — hours, photos, prices, anything',
+                'Same-day turnaround guaranteed on all change requests',
+                'Monthly Google Analytics performance report to your inbox',
+                'Priority support access — skip the queue, get answers fast'
+              ]
+            }
+          ];
+
+          var sLeft = '<div class="vws-sticky-left">'
+            + '<p style="font-size:11px;letter-spacing:0.25em;text-transform:uppercase;font-weight:700;color:#2563eb;margin:0 0 18px">WHAT WE DO</p>'
+            + '<h2 style="font-size:clamp(30px,3.4vw,50px);font-weight:900;color:#0d1117;line-height:1.1;margin:0 0 22px">We build websites<br>that get you <span style="color:#2563eb">calls.</span></h2>'
+            + '<p style="font-size:16px;color:#4b5563;line-height:1.75;margin:0 0 36px;max-width:330px">Every site is hand-coded, conversion-optimized, and built to dominate local search — from day one.</p>'
+            + '<a href="/contact" style="display:inline-flex;align-items:center;gap:10px;background:#2563eb;color:#fff;font-size:13px;font-weight:700;letter-spacing:0.05em;padding:14px 28px;border-radius:8px;text-decoration:none;box-shadow:0 4px 20px rgba(37,99,235,0.28)">Start a Project →</a>'
+            + '<div style="margin-top:44px;padding-top:36px;border-top:1px solid rgba(0,0,0,0.08)">'
+            + '<p style="font-size:11px;color:#9ca3af;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;margin:0 0 14px">Trusted by local businesses</p>'
+            + '<div style="display:flex;align-items:center;gap:12px">'
+            + '<div style="display:flex">'
+            + '<div style="width:30px;height:30px;border-radius:50%;background:#dbeafe;border:2px solid #fff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#1d4ed8">A</div>'
+            + '<div style="width:30px;height:30px;border-radius:50%;background:#dcfce7;border:2px solid #fff;margin-left:-9px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#15803d">S</div>'
+            + '<div style="width:30px;height:30px;border-radius:50%;background:#fef9c3;border:2px solid #fff;margin-left:-9px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#92400e">R</div>'
+            + '</div>'
+            + '<span style="font-size:13px;color:#4b5563;line-height:1.45">Detailers, contractors,<br>service pros — all growing</span>'
+            + '</div></div></div>';
+
+          var sRight = '<div class="vws-sticky-right">'
+            + SC_CARDS.map(function(c) {
+                return '<div class="vws-sc-card">'
+                  + '<p class="vws-sc-num">' + c.num + '</p>'
+                  + '<div class="vws-sc-title"><span>' + c.title + '</span>'
+                  + '<svg class="vws-sc-chevron" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#d1d5db" stroke-width="2.2" stroke-linecap="round" style="flex-shrink:0;transition:transform 0.28s ease,stroke 0.2s ease"><polyline points="6 9 12 15 18 9"/></svg></div>'
+                  + '<p class="vws-sc-desc">' + c.desc + '</p>'
+                  + '<div class="vws-sc-expand"><ul>'
+                  + c.more.map(function(pt){ return '<li>' + pt + '</li>'; }).join('')
+                  + '</ul></div>'
+                  + '<button class="vws-sc-more"><span class="vws-sc-more-text">Learn More</span><em class="vws-sc-more-arrow"> ↓</em></button>'
+                  + '</div>';
+              }).join('')
+            + '</div>';
+
+          var sEl = document.createElement('section');
+          sEl.id = 'vws-about-sticky';
+          sEl.innerHTML = '<div class="vws-sticky-inner">' + sLeft + sRight + '</div>';
+          var heroSec = document.querySelector('section');
+          if (heroSec && heroSec.nextSibling) {
+            heroSec.parentNode.insertBefore(sEl, heroSec.nextSibling);
+          } else if (heroSec) {
+            heroSec.parentNode.appendChild(sEl);
+          }
+
+          /* Wire expand buttons */
+          sEl.querySelectorAll('.vws-sc-card').forEach(function(card) {
+            var btn     = card.querySelector('.vws-sc-more');
+            var expand  = card.querySelector('.vws-sc-expand');
+            var chevron = card.querySelector('.vws-sc-chevron');
+            var txt     = card.querySelector('.vws-sc-more-text');
+            var arrow   = card.querySelector('.vws-sc-more-arrow');
+            var titleEl = card.querySelector('.vws-sc-title');
+            var isOpen  = false;
+            function toggle() {
+              isOpen = !isOpen;
+              expand.classList.toggle('open', isOpen);
+              chevron.style.transform = isOpen ? 'rotate(180deg)' : '';
+              chevron.setAttribute('stroke', isOpen ? '#2563eb' : '#d1d5db');
+              txt.textContent = isOpen ? 'Show Less' : 'Learn More';
+              arrow.textContent = isOpen ? ' ↑' : ' ↓';
+            }
+            btn.addEventListener('click', function(e) { e.stopPropagation(); toggle(); });
+            titleEl.addEventListener('click', toggle);
+          });
         }
 
         var ITEMS = [
