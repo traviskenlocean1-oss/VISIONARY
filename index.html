@@ -36,6 +36,25 @@
         }
       });
 
+      /* 1.4. Pricing price numerals — find any $NNN leaf and make it big */
+      Array.from(document.querySelectorAll('section *')).forEach(function(el) {
+        if (el.children.length > 0) return;
+        var txt = el.textContent.trim();
+        if (!/^\$[\d,]+$/.test(txt)) return;
+        /* Skip strikethrough prices */
+        var par = el.parentElement;
+        var isStrike = false;
+        while (par && par.tagName !== 'SECTION') {
+          if ((par.className||'').indexOf('line-through') !== -1) { isStrike = true; break; }
+          par = par.parentElement;
+        }
+        if (!isStrike) {
+          el.style.setProperty('font-size','4rem','important');
+          el.style.setProperty('font-weight','900','important');
+          el.style.setProperty('line-height','1','important');
+        }
+      });
+
       /* 1.5. Force "LET'S BUILD YOUR DREAM WEBSITE" banner text to white via computed bg */
       (function() {
         var heroSec = document.querySelector('section[class*="h-screen"]');
@@ -475,27 +494,6 @@
   header.fixed.top-0 [style*="rgb(225, 224, 204)"]{color:#0d1117!important}
   header.fixed.top-0 [style*="rgba(225, 224, 204"]{color:#0d1117!important}
 
-  /* ══ TASK 2a: Hero form card → white ══ */
-  section[class*="h-screen"] [style*="rgba(4, 8, 22, 0.92)"]{background:#ffffff!important;border:1px solid rgba(37,99,235,0.18)!important;box-shadow:0 8px 40px rgba(37,99,235,0.08)!important}
-  section[class*="h-screen"] [style*="rgba(4, 8, 22, 0.92)"] h2,
-  section[class*="h-screen"] [style*="rgba(4, 8, 22, 0.92)"] h3,
-  section[class*="h-screen"] [style*="rgba(4, 8, 22, 0.92)"] h4{color:#0d1117!important}
-  /* "LET'S BUILD YOUR DREAM WEBSITE" blue banner — text must be white on the blue bg */
-  section[class*="h-screen"] [style*="rgba(4, 8, 22, 0.92)"] [class*="bg-blue"] h1,
-  section[class*="h-screen"] [style*="rgba(4, 8, 22, 0.92)"] [class*="bg-blue"] h2,
-  section[class*="h-screen"] [style*="rgba(4, 8, 22, 0.92)"] [class*="bg-blue"] h3,
-  section[class*="h-screen"] [style*="rgba(4, 8, 22, 0.92)"] [class*="bg-blue"] p,
-  section[class*="h-screen"] [style*="rgba(4, 8, 22, 0.92)"] [class*="bg-blue"] span,
-  section[class*="h-screen"] [style*="rgba(4, 8, 22, 0.92)"] [style*="background: rgb(37, 99"] *,
-  section[class*="h-screen"] [style*="rgba(4, 8, 22, 0.92)"] [style*="background: rgba(37, 99"] *,
-  section[class*="h-screen"] [style*="rgba(4, 8, 22, 0.92)"] [style*="background:#2563eb"] *{color:#ffffff!important}
-  section[class*="h-screen"] [style*="rgba(4, 8, 22, 0.92)"] label,
-  section[class*="h-screen"] [style*="rgba(4, 8, 22, 0.92)"] p{color:#374151!important}
-  section[class*="h-screen"] [style*="rgba(4, 8, 22, 0.92)"] input,
-  section[class*="h-screen"] [style*="rgba(4, 8, 22, 0.92)"] select,
-  section[class*="h-screen"] [style*="rgba(4, 8, 22, 0.92)"] textarea{background:#f7f8fc!important;border:1px solid rgba(0,0,0,0.12)!important;color:#0d1117!important}
-  section[class*="h-screen"] [style*="rgba(4, 8, 22, 0.92)"] input::placeholder,
-  section[class*="h-screen"] [style*="rgba(4, 8, 22, 0.92)"] textarea::placeholder{color:#9ca3af!important}
 
   /* ══ TASK 4: Pricing card background → white (root fix) ══ */
   .vws-section-light [style*="rgba(5, 8, 20, 0.65)"]{background:#ffffff!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
@@ -506,8 +504,6 @@
   .vws-section-light [class*="mb-14"][class*="border-t"]{background:#ffffff!important;border-color:rgba(0,0,0,0.07)!important}
   /* Process step: only the big number turns blue on row hover */
   .vws-section-light [class*="mb-14"] [class*="border-b"] [class*="py-7"]:hover span[class*="font-extrabold"][class*="flex-shrink-0"]{color:#2563eb!important;transition:color 0.3s!important}
-  /* Hero form card SUBMIT button → solid blue, white text */
-  section[class*="h-screen"] [style*="rgba(4, 8, 22, 0.92)"] button{background:#2563eb!important;color:#ffffff!important;font-weight:700!important}
   /* Inline cream-color text on pricing cards → dark (existing ticker fix handles most; this catches remaining) */
   .vws-section-light [style*="rgba(5, 8, 20, 0.65)"] [style*="rgba(225, 224, 204"]{color:#0d1117!important}
 
@@ -583,6 +579,7 @@
   body.vws-about [class*="rounded-xl"] [class*="text-red"]{color:#dc2626!important}
 
   /* ══ READY TO LAUNCH — dark feature row cards → light blue-tinted ══ */
+  /* inline-style dark values */
   .vws-section-light [style*="background-color: rgb(30, 41, 59"],
   .vws-section-light [style*="background: rgb(30, 41, 59"],
   .vws-section-light [style*="background-color: rgba(30, 41, 59"],
@@ -592,20 +589,45 @@
   .vws-section-light [style*="background-color: rgb(15, 23, 42"],
   .vws-section-light [style*="background: rgb(15, 23, 42"],
   .vws-section-light [style*="background-color: rgb(31, 41, 55"],
-  .vws-section-light [style*="background: rgb(31, 41, 55"]{background:#f0f4ff!important;border:1px solid rgba(37,99,235,0.1)!important;border-radius:12px!important}
+  .vws-section-light [style*="background: rgb(31, 41, 55"],
+  .vws-section-light [style*="background-color: rgb(55, 65, 81"],
+  .vws-section-light [style*="background: rgb(55, 65, 81"],
+  .vws-section-light [style*="background-color: rgb(51, 65, 85"],
+  .vws-section-light [style*="background: rgb(51, 65, 85"],
+  .vws-section-light [style*="background-color: rgb(71, 85, 105"],
+  .vws-section-light [style*="background: rgb(71, 85, 105"],
+  /* Tailwind-class dark cards (gray-700, slate-700, etc.) */
+  .vws-section-light [class*="bg-gray-7"]:not(body):not(header):not(footer),
+  .vws-section-light [class*="bg-gray-8"]:not(body):not(header):not(footer),
+  .vws-section-light [class*="bg-slate-7"]:not(body):not(header):not(footer),
+  .vws-section-light [class*="bg-slate-8"]:not(body):not(header):not(footer),
+  .vws-section-light [class*="bg-zinc-7"]:not(body):not(header):not(footer){background:#f0f4ff!important;border:1px solid rgba(37,99,235,0.1)!important;border-radius:12px!important}
+  /* text inside dark cards → dark readable */
   .vws-section-light [style*="rgb(30, 41, 59"] h2,.vws-section-light [style*="rgb(30, 41, 59"] h3,
   .vws-section-light [style*="rgb(30, 41, 59"] p,.vws-section-light [style*="rgb(30, 41, 59"] span,
   .vws-section-light [style*="rgb(17, 24, 39"] h2,.vws-section-light [style*="rgb(17, 24, 39"] h3,
   .vws-section-light [style*="rgb(17, 24, 39"] p,.vws-section-light [style*="rgb(17, 24, 39"] span,
   .vws-section-light [style*="rgb(31, 41, 55"] h2,.vws-section-light [style*="rgb(31, 41, 55"] h3,
-  .vws-section-light [style*="rgb(31, 41, 55"] p,.vws-section-light [style*="rgb(31, 41, 55"] span{color:#0d1117!important}
+  .vws-section-light [style*="rgb(31, 41, 55"] p,.vws-section-light [style*="rgb(31, 41, 55"] span,
+  .vws-section-light [style*="rgb(55, 65, 81"] h2,.vws-section-light [style*="rgb(55, 65, 81"] h3,
+  .vws-section-light [style*="rgb(55, 65, 81"] p,.vws-section-light [style*="rgb(55, 65, 81"] span,
+  .vws-section-light [class*="bg-gray-7"] h2,.vws-section-light [class*="bg-gray-7"] h3,
+  .vws-section-light [class*="bg-gray-7"] p,.vws-section-light [class*="bg-gray-7"] span,
+  .vws-section-light [class*="bg-slate-7"] h2,.vws-section-light [class*="bg-slate-7"] h3,
+  .vws-section-light [class*="bg-slate-7"] p,.vws-section-light [class*="bg-slate-7"] span{color:#0d1117!important}
   .vws-section-light [style*="rgb(30, 41, 59"] svg,.vws-section-light [style*="rgb(17, 24, 39"] svg,
-  .vws-section-light [style*="rgb(31, 41, 55"] svg{color:#2563eb!important}
+  .vws-section-light [style*="rgb(31, 41, 55"] svg,.vws-section-light [style*="rgb(55, 65, 81"] svg,
+  .vws-section-light [class*="bg-gray-7"] svg,.vws-section-light [class*="bg-slate-7"] svg{color:#2563eb!important}
 
   /* ══ PRICING — bigger price numerals ══ */
+  .vws-section-light [style*="rgba(5, 8, 20"] [class*="text-3xl"],
   .vws-section-light [style*="rgba(5, 8, 20"] [class*="text-4xl"],
   .vws-section-light [style*="rgba(5, 8, 20"] [class*="text-5xl"],
-  .vws-section-light [style*="rgba(5, 8, 20"] [class*="text-6xl"]{font-size:3.8rem!important;font-weight:900!important;line-height:1!important}
+  .vws-section-light [style*="rgba(5, 8, 20"] [class*="text-6xl"],
+  .vws-section-light [style*="rgba(5, 8, 20"] [class*="text-7xl"],
+  .vws-section-light [class*="rounded-2xl"] [class*="text-4xl"],
+  .vws-section-light [class*="rounded-2xl"] [class*="text-5xl"],
+  .vws-section-light [class*="rounded-2xl"] [class*="text-6xl"]{font-size:4rem!important;font-weight:900!important;line-height:1!important}
 
   /* ══ CONTACT PAGE — right info card → white ══ */
   section:has([name="email"]) > div > div:last-child{background:#ffffff!important;border-radius:16px!important;border:1px solid rgba(0,0,0,0.07)!important;box-shadow:0 4px 24px rgba(0,0,0,0.07)!important;padding:48px 40px!important}
@@ -2779,7 +2801,7 @@
             var heroWave = document.createElement('div');
             heroWave.setAttribute('data-vws-lwave','hero');
             heroWave.style.cssText = 'position:absolute;bottom:-1px;left:0;right:0;height:80px;pointer-events:none;z-index:5;line-height:0';
-            heroWave.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 80" preserveAspectRatio="none" style="display:block;width:100%;height:80px"><path d="M0,40 C360,0 1080,80 1440,40 L1440,80 L0,80 Z" fill="#f7f8fc"/></svg>';
+            heroWave.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 80" preserveAspectRatio="none" style="display:block;width:100%;height:80px"><path d="M0,40 C360,0 1080,80 1440,40 L1440,80 L0,80 Z" fill="#060916"/></svg>';
             listingSecs[0].appendChild(heroWave);
           }
           /* After service cards — wave before dark grid */
@@ -3417,48 +3439,68 @@
     }, 150);
     } /* end runServiceDetail */
 
-    /* ── Task 2b: Modal whitener — subtree watch catches React-internal renders ── */
+    /* ── Task 2b: Modal whitener v2 — doc-level search beats incremental React renders ── */
     (function(){
-      var MODAL_KEY = 'would you like done';
-      var vwsModalBusy = false;
-      function styleVwsModal(node) {
-        if (node.nodeType !== 1) return;
-        if (vwsModalBusy) return;
-        /* Fast bail-out: text scan before any DOM queries */
-        var txt = (node.textContent || '').toLowerCase();
-        if (txt.indexOf(MODAL_KEY) === -1) return;
-        vwsModalBusy = true;
-        /* Locate the inner card (parent of the h2 that contains the heading) */
-        var card = node;
-        var h2List = node.querySelectorAll('h2');
-        for (var k = 0; k < h2List.length; k++) {
-          if (h2List[k].textContent.toLowerCase().indexOf(MODAL_KEY) > -1) {
-            var p = h2List[k].parentElement;
-            card = (p && p.parentElement && p.parentElement !== node) ? p.parentElement : (p || node);
-            break;
-          }
+      var _busy = false;
+      function styleVwsModal() {
+        /* Find the heading in the full doc (not just the mutated node) */
+        var headings = Array.from(document.querySelectorAll('h2,h3,h4')).filter(function(h){
+          return h.textContent.toLowerCase().indexOf('would you like done') !== -1;
+        });
+        if (!headings.length) return;
+        if (_busy) return;
+        _busy = true;
+        var heading = headings[0];
+        /* Walk up to the modal card container */
+        var card = heading.parentElement;
+        for (var i = 0; i < 5 && card && card.tagName !== 'BODY'; i++) {
+          if (window.getComputedStyle(card).borderRadius && card.children.length >= 3) break;
+          card = card.parentElement;
         }
+        if (!card || card.tagName === 'BODY') card = heading.parentElement;
+        /* 1. Unfreeze any GSAP opacity:0 inside the modal */
+        card.querySelectorAll('*').forEach(function(el){
+          var s = el.getAttribute('style') || '';
+          if (/opacity\s*:\s*0/.test(s)) { el.style.opacity = '1'; el.style.transform = 'none'; }
+        });
+        /* 2. White card */
         card.style.setProperty('background','#ffffff','important');
-        card.style.setProperty('border','1px solid rgba(37,99,235,0.15)','important');
-        card.style.setProperty('border-radius','16px','important');
-        card.style.setProperty('box-shadow','0 24px 60px rgba(0,0,0,0.10)','important');
-        node.querySelectorAll('h1,h2,h3,h4,h5').forEach(function(h){h.style.setProperty('color','#0d1117','important');});
-        node.querySelectorAll('p').forEach(function(p){p.style.setProperty('color','#374151','important');});
-        /* Style the option buttons (New Website / Website Redesign / Website Updates) */
-        node.querySelectorAll('button').forEach(function(btn){
-          btn.style.setProperty('background','rgba(37,99,235,0.06)','important');
-          btn.style.setProperty('color','#2563eb','important');
-          btn.style.setProperty('border','1px solid rgba(37,99,235,0.28)','important');
+        card.style.setProperty('border-radius','20px','important');
+        card.style.setProperty('border','1px solid rgba(37,99,235,0.12)','important');
+        card.style.setProperty('box-shadow','0 24px 60px rgba(0,0,0,0.12)','important');
+        /* 3. Text colors */
+        card.querySelectorAll('h1,h2,h3,h4,h5').forEach(function(h){
+          h.style.setProperty('color','#0d1117','important');
+          h.style.setProperty('opacity','1','important');
+        });
+        card.querySelectorAll('p').forEach(function(p){
+          p.style.setProperty('color','#4b5563','important');
+          p.style.setProperty('opacity','1','important');
+        });
+        /* 4. "GET STARTED" label → blue */
+        card.querySelectorAll('*').forEach(function(el){
+          if (el.children.length === 0 && el.textContent.trim() === 'GET STARTED') {
+            el.style.setProperty('color','#2563eb','important');
+            el.style.setProperty('opacity','1','important');
+          }
+        });
+        /* 5. Option buttons */
+        card.querySelectorAll('button').forEach(function(btn){
+          btn.style.setProperty('background','#f0f4ff','important');
+          btn.style.setProperty('color','#1d3a6b','important');
+          btn.style.setProperty('border','1px solid rgba(37,99,235,0.22)','important');
           btn.style.setProperty('border-radius','10px','important');
+          btn.style.setProperty('font-weight','600','important');
+          btn.style.setProperty('opacity','1','important');
         });
-        setTimeout(function(){ vwsModalBusy = false; }, 8000);
+        setTimeout(function(){ _busy = false; }, 6000);
       }
-      var vwsModalObs = new MutationObserver(function(muts){
-        muts.forEach(function(m){
-          m.addedNodes.forEach(styleVwsModal);
-        });
+      /* Fire on any DOM change — check the full doc for the heading */
+      var _t = null;
+      var vwsModalObs = new MutationObserver(function(){
+        clearTimeout(_t);
+        _t = setTimeout(styleVwsModal, 80);
       });
-      /* subtree:true required — modal renders inside React root, not as body portal */
       vwsModalObs.observe(document.body, {childList:true, subtree:true});
     })();
 
