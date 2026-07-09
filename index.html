@@ -176,19 +176,37 @@
 
         var aboutHero = document.querySelector('section[class*="min-h-screen"]');
         if (aboutHero) {
-          aboutHero.style.setProperty('background', 'transparent', 'important');
-          aboutHero.style.setProperty('position', 'relative', 'important');
-          aboutHero.style.setProperty('overflow', 'hidden', 'important');
+          /* Apply dark gradient DIRECTLY on the section — survives React re-renders */
+          var ABG = 'linear-gradient(135deg,#060916 0%,#0a1535 45%,#060d28 75%,#060916 100%)';
+          function applyAboutStyles(el) {
+            el.style.setProperty('background', ABG, 'important');
+            el.style.setProperty('position', 'relative', 'important');
+            el.style.setProperty('overflow', 'hidden', 'important');
+          }
+          applyAboutStyles(aboutHero);
 
-          /* Inject animated dark background (floating blue glows — mirrors homepage feel) */
+          /* Watch for React overwriting our inline styles and fight back */
+          if (!aboutHero._vwsObserving) {
+            aboutHero._vwsObserving = true;
+            var heroStyleObs = new MutationObserver(function(muts) {
+              for (var i = 0; i < muts.length; i++) {
+                if (muts[i].attributeName === 'style') {
+                  applyAboutStyles(aboutHero);
+                }
+              }
+            });
+            heroStyleObs.observe(aboutHero, { attributes: true, attributeFilter: ['style'] });
+          }
+
+          /* Inject animated blue glow blobs — all positioned within section bounds */
           if (!document.getElementById('vws-about-bg')) {
             var bg = document.createElement('div');
             bg.id = 'vws-about-bg';
-            bg.style.cssText = 'position:absolute;inset:0;z-index:0;pointer-events:none;overflow:visible;background:linear-gradient(135deg,#060916 0%,#0a1535 45%,#060d28 75%,#060916 100%)';
+            bg.style.cssText = 'position:absolute;inset:0;z-index:0;pointer-events:none;';
             bg.innerHTML =
-              '<div style="position:absolute;width:700px;height:700px;border-radius:50%;background:rgba(37,99,235,0.42);filter:blur(100px);top:-80px;left:-80px;animation:vws-ab-float 9s ease-in-out infinite"></div>'
-             +'<div style="position:absolute;width:500px;height:500px;border-radius:50%;background:rgba(96,165,250,0.28);filter:blur(80px);bottom:-60px;right:-40px;animation:vws-ab-float 12s ease-in-out infinite reverse"></div>'
-             +'<div style="position:absolute;width:380px;height:380px;border-radius:50%;background:rgba(59,130,246,0.22);filter:blur(65px);top:35%;left:40%;animation:vws-ab-float 7s ease-in-out infinite 2s"></div>';
+              '<div style="position:absolute;width:700px;height:700px;border-radius:50%;background:rgba(37,99,235,0.50);filter:blur(90px);top:0;left:0;animation:vws-ab-float 9s ease-in-out infinite"></div>'
+             +'<div style="position:absolute;width:600px;height:600px;border-radius:50%;background:rgba(96,165,250,0.35);filter:blur(80px);bottom:0;right:0;animation:vws-ab-float 12s ease-in-out infinite reverse"></div>'
+             +'<div style="position:absolute;width:400px;height:400px;border-radius:50%;background:rgba(59,130,246,0.28);filter:blur(70px);top:28%;left:32%;animation:vws-ab-float 7s ease-in-out infinite 2s"></div>';
             aboutHero.insertBefore(bg, aboutHero.firstChild);
           }
 
@@ -286,9 +304,8 @@
           if (s) s.style.setProperty('display','none','important');
         });
 
-        /* Inject 2-column card grid — always recreate to avoid stale cached version */
-        var oldSvc = document.getElementById('vws-svc-sticky');
-        if (oldSvc) oldSvc.remove();
+        /* Inject 2-column card grid */
+        if (!document.getElementById('vws-svc-sticky')) {
         var svcs = [
           {num:'01',title:'Website Development',badge:'MOST POPULAR',desc:'Every site we build is hand-coded from scratch — no templates, no drag-and-drop builders. Custom design built around your brand.',href:'/services/website-development'},
           {num:'02',title:'Hosting & Domain',badge:'INCLUDED FREE',desc:'Getting online shouldn\'t be complicated. We handle domain setup, connect everything, and host your site on fast, globally distributed servers.',href:'/services/hosting-domain'},
@@ -318,6 +335,7 @@
           +'</div>';
         var ref = document.querySelector('section.relative.border-t');
         if (ref) ref.parentElement.insertBefore(gridSec, ref);
+        } /* end card grid guard */
 
         /* "Built for Results" — mark it for CSS white-tint card */
         var sections = document.querySelectorAll('section');
