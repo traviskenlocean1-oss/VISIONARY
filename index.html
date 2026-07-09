@@ -170,41 +170,15 @@
           +'</div>';
       })();
 
-      /* 1.9. About page: animated background + wave + hide process section */
+      /* 1.9. About page: let React animated background show; add wave + hide process section */
       (function() {
         if (window.location.pathname.indexOf('/about') === -1) return;
 
         var aboutHero = document.querySelector('section[class*="min-h-screen"]');
         if (aboutHero) {
-          /* Match homepage hero exactly: same dark base + same overlays */
-          function applyAboutStyles(el) {
-            el.style.setProperty('background', '#060916', 'important');
-            el.style.setProperty('position', 'relative', 'important');
-            el.style.setProperty('overflow', 'hidden', 'important');
-          }
-          applyAboutStyles(aboutHero);
-
-          /* Fight React overwriting our styles */
-          if (!aboutHero._vwsObserving) {
-            aboutHero._vwsObserving = true;
-            var heroStyleObs = new MutationObserver(function(muts) {
-              for (var i = 0; i < muts.length; i++) {
-                if (muts[i].attributeName === 'style') applyAboutStyles(aboutHero);
-              }
-            });
-            heroStyleObs.observe(aboutHero, { attributes: true, attributeFilter: ['style'] });
-          }
-
-          /* Same overlays as homepage hero (blue radial glow + subtle grid) */
-          if (!document.getElementById('vws-about-bg')) {
-            var bg = document.createElement('div');
-            bg.id = 'vws-about-bg';
-            bg.style.cssText = 'position:absolute;inset:0;pointer-events:none;z-index:0;';
-            bg.innerHTML =
-              '<div style="position:absolute;bottom:-15%;left:-5%;width:75%;height:80%;background:radial-gradient(at 40% 60%,rgba(37,99,235,0.4) 0%,rgba(79,70,229,0.2) 35%,transparent 70%);filter:blur(70px)"></div>'
-             +'<div style="position:absolute;inset:0;background-image:linear-gradient(rgba(96,165,250,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(96,165,250,0.04) 1px,transparent 1px);background-size:80px 80px"></div>';
-            aboutHero.insertBefore(bg, aboutHero.firstChild);
-          }
+          /* Only set position so the wave anchor works — don't override React's background */
+          aboutHero.style.setProperty('position', 'relative', 'important');
+          aboutHero.style.setProperty('overflow', 'hidden', 'important');
 
           /* Wave curve at bottom of hero */
           if (!document.getElementById('vws-about-wave')) {
@@ -278,11 +252,11 @@
         });
       })();
 
-      /* 1.10. Services page redesign: sticky-scroll, hero wave, built-for-results card */
+      /* 1.10. Services page: Meadowline-style alternating layout */
       (function() {
         if (window.location.pathname !== '/services') return;
 
-        /* Hero wave — multi-crest ripple (distinct from About's single arch) */
+        /* Hero wave — grey fill */
         var hero = document.querySelectorAll('section')[0];
         if (hero && !document.getElementById('vws-svc-wave')) {
           hero.style.setProperty('position','relative','important');
@@ -290,57 +264,53 @@
           var wave = document.createElement('div');
           wave.id = 'vws-svc-wave';
           wave.style.cssText = 'position:absolute;bottom:0;left:0;right:0;line-height:0;pointer-events:none;z-index:2';
-          wave.innerHTML = '<svg viewBox="0 0 1440 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"><path d="M0,40 C180,80 360,0 540,40 C720,80 900,0 1080,40 C1260,80 1440,40 1440,80 L1440,80 L0,80 Z" fill="#f3f4f6"/></svg>';
+          wave.innerHTML = '<svg viewBox="0 0 1440 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"><path d="M0,40 C180,80 360,0 540,40 C720,80 900,0 1080,40 C1260,80 1440,40 1440,80 L1440,80 L0,80 Z" fill="#e5e7eb"/></svg>';
           hero.appendChild(wave);
         }
 
-        /* Hide React-rendered individual service sections (they use class not id) */
+        /* Hide React-rendered individual service sections */
         Array.from(document.querySelectorAll('section')).forEach(function(s) {
           if (s.className === 'relative border-t') {
             s.style.setProperty('display','none','important');
           }
         });
 
-        /* Inject 2-column card grid */
-        if (!document.getElementById('vws-svc-sticky')) {
-        var svcs = [
-          {num:'01',title:'Website Development',badge:'MOST POPULAR',desc:'Every site we build is hand-coded from scratch — no templates, no drag-and-drop builders. Custom design built around your brand.',href:'/services/website-development'},
-          {num:'02',title:'Hosting & Domain',badge:'INCLUDED FREE',desc:'Getting online shouldn\'t be complicated. We handle domain setup, connect everything, and host your site on fast, globally distributed servers.',href:'/services/hosting-domain'},
-          {num:'03',title:'Website Maintenance',badge:'',desc:'The work doesn\'t stop at launch. We stay available for updates, fixes, and improvements so your site keeps performing at its best.',href:'/services/website-maintenance'},
-          {num:'04',title:'Website Creation',badge:'',desc:'Starting from zero? We build your entire online presence from the ground up — custom design, clean code, and everything in between.',href:'/services/website-creation'},
-          {num:'05',title:'Website Redesign',badge:'',desc:'Already have a site but it\'s outdated, slow, or not converting? We rebuild it from scratch — same domain, completely new results.',href:'/services/website-redesign'},
-          {num:'06',title:'Logo & Branding',badge:'',desc:'Your logo is the face of your business. We design custom logos and full brand identities that look professional, stand out, and last.',href:'/services/logo-branding'}
-        ];
-        var cards = svcs.map(function(s) {
-          return '<a href="'+s.href+'" class="vws-svc-card">'
-            +(s.badge ? '<span class="vws-svc-badge">'+s.badge+'</span>' : '')
-            +'<p class="vws-svc-num">'+s.num+'</p>'
-            +'<h3 class="vws-svc-title">'+s.title+'</h3>'
-            +'<p class="vws-svc-desc">'+s.desc+'</p>'
-            +'<span class="vws-svc-arrow">Learn More →</span>'
-            +'</a>';
-        }).join('');
-        var gridSec = document.createElement('section');
-        gridSec.id = 'vws-svc-sticky';
-        gridSec.innerHTML = '<div class="vws-sg-wrap">'
-          +'<div class="vws-sg-head">'
-            +'<p class="vws-sg-label">OUR SERVICES</p>'
-            +'<h2 class="vws-sg-title">Everything your business<br>needs online.</h2>'
-            +'<p class="vws-sg-sub">Six services. One team. Zero compromises.</p>'
-          +'</div>'
-          +'<div class="vws-sg-grid">'+cards+'</div>'
-          +'</div>';
-        var ref = document.querySelector('section.relative.border-t');
-        if (ref) ref.parentElement.insertBefore(gridSec, ref);
-        } /* end card grid guard */
+        /* Meadowline-style alternating layout */
+        if (!document.getElementById('vws-svc-list')) {
+          var svcs = [
+            {num:'01',title:'Website Development',desc:'Every site we build is hand-coded from scratch — no templates, no drag-and-drop builders. Custom design built around your brand, built to convert visitors into customers.',href:'/services/website-development',grad:'linear-gradient(135deg,#0d1117 0%,#1e3a8a 100%)'},
+            {num:'02',title:'Hosting & Domain',desc:'Getting online shouldn\'t be complicated. We handle your domain setup, connect everything, and host your site on fast, globally distributed servers — included at no extra cost.',href:'/services/hosting-domain',grad:'linear-gradient(135deg,#1e1b4b 0%,#0c4a6e 100%)'},
+            {num:'03',title:'Website Maintenance',desc:'The work doesn\'t stop at launch. We stay available for updates, fixes, and improvements so your site keeps performing at its best — month after month.',href:'/services/website-maintenance',grad:'linear-gradient(135deg,#0d1117 0%,#164e63 100%)'},
+            {num:'04',title:'Website Creation',desc:'Starting from zero? We build your entire online presence from the ground up — custom design, clean code, and everything in between. No shortcuts.',href:'/services/website-creation',grad:'linear-gradient(135deg,#1c1917 0%,#1e1b4b 100%)'},
+            {num:'05',title:'Website Redesign',desc:'Already have a site but it\'s outdated, slow, or not converting? We rebuild it from scratch — same domain, completely new results and a design that actually works.',href:'/services/website-redesign',grad:'linear-gradient(135deg,#0d1117 0%,#3730a3 100%)'},
+            {num:'06',title:'Logo & Branding',desc:'Your logo is the face of your business. We design custom logos and full brand identities that look professional, stand out, and last for years.',href:'/services/logo-branding',grad:'linear-gradient(135deg,#1a0533 0%,#1e1b4b 100%)'}
+          ];
+          var rows = svcs.map(function(s, i) {
+            var flip = i % 2 === 1;
+            var text = '<div class="vws-sl-text">'
+              +'<p class="vws-sl-num">'+s.num+'</p>'
+              +'<h3 class="vws-sl-title">'+s.title+'</h3>'
+              +'<p class="vws-sl-desc">'+s.desc+'</p>'
+              +'<a href="'+s.href+'" class="vws-sl-btn">Learn More</a>'
+              +'</div>';
+            var vis = '<div class="vws-sl-visual" style="background:'+s.grad+'">'
+              +'<div class="vws-sl-vinner"><span class="vws-sl-vnum">'+s.num+'</span></div>'
+              +'</div>';
+            return '<div class="vws-sl-row'+(flip?' vws-sl-flip':'')+'">'
+              +(flip ? vis+text : text+vis)
+              +'</div>';
+          }).join('');
+          var listSec = document.createElement('section');
+          listSec.id = 'vws-svc-list';
+          listSec.innerHTML = rows;
+          var ref = document.querySelector('section.relative.border-t');
+          if (ref) ref.parentElement.insertBefore(listSec, ref);
+        }
 
-        /* "Built for Results" — mark it for CSS white-tint card */
-        var sections = document.querySelectorAll('section');
-        sections.forEach(function(s) {
+        /* "Built for Results" section */
+        document.querySelectorAll('section').forEach(function(s) {
           var h2 = s.querySelector('h2');
-          if (h2 && h2.textContent.trim() === 'Built for Results') {
-            s.id = 'vws-built-results';
-          }
+          if (h2 && h2.textContent.trim() === 'Built for Results') s.id = 'vws-built-results';
         });
       })();
 
@@ -1012,22 +982,19 @@
   /* ══ SERVICES PAGE — hero wave ══ */
   #vws-svc-wave svg{display:block;width:100%;height:auto}
 
-  /* ══ SERVICES PAGE — 2-column card grid ══ */
-  #vws-svc-sticky{background:#f3f4f6;padding:80px 40px;font-family:inherit}
-  .vws-sg-wrap{max-width:1120px;margin:0 auto}
-  .vws-sg-head{text-align:center;margin-bottom:52px}
-  .vws-sg-label{font-size:11px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:#2563eb;margin:0 0 16px}
-  .vws-sg-title{font-size:clamp(28px,3.5vw,44px);font-weight:900;color:#0d1117;margin:0 0 14px;line-height:1.15}
-  .vws-sg-sub{font-size:16px;color:#6b7280;margin:0}
-  .vws-sg-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
-  .vws-svc-card{display:block;padding:36px;border:1.5px solid rgba(0,0,0,0.08);border-radius:16px;text-decoration:none!important;background:#ffffff!important;transition:border-color .2s,box-shadow .2s;cursor:pointer}
-  .vws-svc-card:hover{border-color:rgba(37,99,235,.3);box-shadow:0 8px 28px rgba(37,99,235,.09)}
-  .vws-svc-badge{display:inline-block;font-size:9px;font-weight:800;letter-spacing:.15em;text-transform:uppercase;color:#2563eb;background:rgba(37,99,235,.07);border:1px solid rgba(37,99,235,.18);border-radius:999px;padding:3px 10px;margin-bottom:16px}
-  .vws-svc-num{font-size:11px;font-weight:700;color:#9ca3af;margin:0 0 10px;letter-spacing:.1em}
-  .vws-svc-title{font-size:20px;font-weight:800;color:#0d1117;margin:0 0 12px;line-height:1.25}
-  .vws-svc-desc{font-size:14px;color:#6b7280;margin:0 0 20px;line-height:1.65}
-  .vws-svc-arrow{font-size:13px;font-weight:700;color:#2563eb}
-  @media(max-width:700px){#vws-svc-sticky{padding:60px 20px}.vws-sg-grid{grid-template-columns:1fr}}
+  /* ══ SERVICES PAGE — Meadowline alternating layout ══ */
+  #vws-svc-list{background:#e5e7eb;font-family:inherit}
+  .vws-sl-row{display:flex;min-height:480px;border-bottom:1px solid #d1d5db}
+  .vws-sl-text{flex:1;padding:80px 64px;display:flex;flex-direction:column;justify-content:center;background:#fff}
+  .vws-sl-visual{flex:1;position:relative;overflow:hidden;min-height:320px}
+  .vws-sl-num{font-size:11px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:#9ca3af;margin:0 0 14px}
+  .vws-sl-title{font-size:clamp(24px,2.8vw,38px);font-weight:900;color:#0d1117;margin:0 0 18px;line-height:1.15}
+  .vws-sl-desc{font-size:16px;color:#4b5563;margin:0 0 32px;line-height:1.75;max-width:480px}
+  .vws-sl-btn{display:inline-block;padding:14px 32px;background:#0d1117;color:#fff!important;font-size:12px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;text-decoration:none!important;border-radius:6px;transition:background .2s;cursor:pointer}
+  .vws-sl-btn:hover{background:#2563eb!important}
+  .vws-sl-vinner{position:absolute;inset:0;display:flex;align-items:center;justify-content:center}
+  .vws-sl-vnum{font-size:clamp(100px,14vw,200px);font-weight:900;color:rgba(255,255,255,0.05);line-height:1;user-select:none}
+  @media(max-width:768px){.vws-sl-row,.vws-sl-row.vws-sl-flip{flex-direction:column}.vws-sl-text{padding:48px 24px}.vws-sl-visual{min-height:220px}}
 
   /* ══ SERVICES PAGE — "Built for Results" white-tinted section ══ */
   #vws-built-results{background:#f0f4ff!important;border-top:none!important}
