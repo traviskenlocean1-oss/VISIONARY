@@ -69,7 +69,8 @@
         if (el.children.length > 0) return;
         var txt = el.textContent.trim();
         if (!/^\$[\d,]+$/.test(txt)) return;
-        /* Skip strikethrough prices */
+        /* Skip strikethrough prices — check element itself AND ancestors */
+        if ((el.className||'').indexOf('line-through') !== -1) return;
         var par = el.parentElement;
         var isStrike = false;
         while (par && par.tagName !== 'SECTION') {
@@ -77,7 +78,7 @@
           par = par.parentElement;
         }
         if (!isStrike) {
-          el.style.setProperty('font-size','4rem','important');
+          el.style.setProperty('font-size','3rem','important');
           el.style.setProperty('font-weight','900','important');
           el.style.setProperty('line-height','1','important');
         }
@@ -151,21 +152,21 @@
         if (!depositP) return;
         var wrapper = depositP.parentElement;
         if (!wrapper) return;
-        wrapper.innerHTML = '<div id="vws-payment-trust" style="background:#f0f4ff;border:1px solid rgba(37,99,235,0.18);border-radius:14px;padding:28px 32px;max-width:820px;margin:0 auto">'
-          +'<p class="vws-pt-head" style="font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#2563eb;margin:0 0 22px;text-align:center">How Payment Works</p>'
+        wrapper.innerHTML = '<div id="vws-payment-trust" style="background:#f0f4ff;border:1px solid rgba(37,99,235,0.18);border-radius:12px;padding:20px 24px;max-width:760px;margin:0 auto">'
+          +'<p class="vws-pt-head" style="font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#2563eb;margin:0 0 16px;text-align:center">How Payment Works</p>'
           +'<div style="display:flex;gap:0;align-items:flex-start;flex-wrap:wrap">'
-            +'<div style="flex:1;min-width:220px;padding:0 28px 0 0;border-right:1px solid rgba(0,0,0,0.07)">'
-              +'<div style="width:34px;height:34px;background:#2563eb;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:800;color:#fff;margin:0 0 12px">1</div>'
-              +'<p style="font-size:15px;font-weight:700;color:#0d1117;margin:0 0 6px">50% Deposit to Start</p>'
-              +'<p style="font-size:13px;color:#374151;margin:0;line-height:1.55">We begin building your site immediately. No delays, no waiting around.</p>'
+            +'<div style="flex:1;min-width:200px;padding:0 24px 0 0;border-right:1px solid rgba(0,0,0,0.07)">'
+              +'<div style="width:28px;height:28px;background:#2563eb;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#fff;margin:0 0 10px">1</div>'
+              +'<p style="font-size:14px;font-weight:700;color:#0d1117;margin:0 0 5px">50% Deposit to Start</p>'
+              +'<p style="font-size:13px;color:#374151;margin:0;line-height:1.5">We start building immediately — no delays, no waiting around.</p>'
             +'</div>'
-            +'<div style="flex:1;min-width:220px;padding:0 0 0 28px">'
-              +'<div style="width:34px;height:34px;background:rgba(37,99,235,0.1);border:2px solid #2563eb;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:800;color:#2563eb;margin:0 0 12px">2</div>'
-              +'<p style="font-size:15px;font-weight:700;color:#0d1117;margin:0 0 6px">50% Only When You Approve</p>'
-              +'<p style="font-size:13px;color:#374151;margin:0;line-height:1.55">The remaining balance is due <strong style="color:#0d1117;font-weight:600">only after you\'ve seen the finished site and given us the green light.</strong> We never collect until you\'re satisfied.</p>'
+            +'<div style="flex:1;min-width:200px;padding:0 0 0 24px">'
+              +'<div style="width:28px;height:28px;background:rgba(37,99,235,0.1);border:2px solid #2563eb;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#2563eb;margin:0 0 10px">2</div>'
+              +'<p style="font-size:14px;font-weight:700;color:#0d1117;margin:0 0 5px">50% After You Approve</p>'
+              +'<p style="font-size:13px;color:#374151;margin:0;line-height:1.5">The remaining balance is only collected <strong style="color:#0d1117;font-weight:700">after you\'ve seen the finished site.</strong> You never pay until you\'re satisfied.</p>'
             +'</div>'
           +'</div>'
-          +'<p style="font-size:12px;color:#6b7280;margin:20px 0 0;border-top:1px solid rgba(0,0,0,0.06);padding-top:16px;text-align:center">🔒 Secure invoice payment &nbsp;·&nbsp; You are never charged the balance before the project is complete and approved by you</p>'
+          +'<p style="font-size:11px;color:#9ca3af;margin:14px 0 0;border-top:1px solid rgba(0,0,0,0.06);padding-top:12px;text-align:center">🔒 You are never charged the balance until you approve the final result.</p>'
           +'</div>';
       })();
 
@@ -211,6 +212,43 @@
         grid.id = 'vws-hp-svc-grid';
         Array.from(grid.children).forEach(function(card) {
           card.classList.add('vws-hp-svc-card');
+        });
+      })();
+
+      /* 1.12. "Fast Delivery / No Hidden Fees / Support Included" dark cards → white */
+      (function() {
+        var targets = ['Fast Delivery','No Hidden Fees','Support Included'];
+        targets.forEach(function(title) {
+          var found = Array.from(document.querySelectorAll('*')).find(function(el) {
+            return el.children.length === 0 && el.textContent.trim() === title;
+          });
+          if (!found) return;
+          var node = found.parentElement;
+          var limit = 8;
+          while (node && limit-- > 0) {
+            var rect = node.getBoundingClientRect();
+            var bg = window.getComputedStyle(node).backgroundColor;
+            var m = bg && bg.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)/);
+            if (m && rect.width > 100 && rect.width < 700 && rect.height > 40) {
+              var avg = (parseInt(m[1])+parseInt(m[2])+parseInt(m[3]))/3;
+              if (avg < 100) {
+                node.style.setProperty('background','#ffffff','important');
+                node.style.setProperty('border','1px solid rgba(37,99,235,0.12)','important');
+                node.style.setProperty('border-radius','12px','important');
+                node.style.setProperty('box-shadow','0 2px 10px rgba(0,0,0,0.05)','important');
+                /* Fix near-white text to dark so it's readable on white */
+                Array.from(node.querySelectorAll('p,span,h3,h4')).forEach(function(c) {
+                  var col = window.getComputedStyle(c).color;
+                  var cm = col && col.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)/);
+                  if (cm && (parseInt(cm[1])+parseInt(cm[2])+parseInt(cm[3]))/3 > 180) {
+                    c.style.setProperty('color','#0d1117','important');
+                  }
+                });
+                break;
+              }
+            }
+            node = node.parentElement;
+          }
         });
       })();
 
@@ -865,15 +903,17 @@
   .vws-section-light [style*="rgb(31, 41, 55"] svg,.vws-section-light [style*="rgb(55, 65, 81"] svg,
   .vws-section-light [class*="bg-gray-7"] svg,.vws-section-light [class*="bg-slate-7"] svg{color:#2563eb!important}
 
-  /* ══ PRICING — bigger price numerals ══ */
-  .vws-section-light [style*="rgba(5, 8, 20"] [class*="text-3xl"],
-  .vws-section-light [style*="rgba(5, 8, 20"] [class*="text-4xl"],
-  .vws-section-light [style*="rgba(5, 8, 20"] [class*="text-5xl"],
-  .vws-section-light [style*="rgba(5, 8, 20"] [class*="text-6xl"],
-  .vws-section-light [style*="rgba(5, 8, 20"] [class*="text-7xl"],
-  .vws-section-light [class*="rounded-2xl"] [class*="text-4xl"],
-  .vws-section-light [class*="rounded-2xl"] [class*="text-5xl"],
-  .vws-section-light [class*="rounded-2xl"] [class*="text-6xl"]{font-size:4rem!important;font-weight:900!important;line-height:1!important}
+  /* ══ PRICING — bigger price numerals (strikethrough excluded) ══ */
+  .vws-section-light [style*="rgba(5, 8, 20"] [class*="text-3xl"]:not([class*="line-through"]),
+  .vws-section-light [style*="rgba(5, 8, 20"] [class*="text-4xl"]:not([class*="line-through"]),
+  .vws-section-light [style*="rgba(5, 8, 20"] [class*="text-5xl"]:not([class*="line-through"]),
+  .vws-section-light [style*="rgba(5, 8, 20"] [class*="text-6xl"]:not([class*="line-through"]),
+  .vws-section-light [style*="rgba(5, 8, 20"] [class*="text-7xl"]:not([class*="line-through"]),
+  .vws-section-light [class*="rounded-2xl"] [class*="text-4xl"]:not([class*="line-through"]),
+  .vws-section-light [class*="rounded-2xl"] [class*="text-5xl"]:not([class*="line-through"]),
+  .vws-section-light [class*="rounded-2xl"] [class*="text-6xl"]:not([class*="line-through"]){font-size:3rem!important;font-weight:900!important;line-height:1!important}
+  /* Strikethrough (original) prices stay compact */
+  .vws-section-light [class*="rounded-2xl"] [class*="line-through"]{font-size:1.25rem!important;font-weight:400!important;line-height:1.4!important}
 
   /* ══ CONTACT PAGE — right info card → white ══ */
   section:has([name="email"]) > div > div:last-child{background:#ffffff!important;border-radius:16px!important;border:1px solid rgba(0,0,0,0.07)!important;box-shadow:0 4px 24px rgba(0,0,0,0.07)!important;padding:48px 40px!important}
