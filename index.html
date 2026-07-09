@@ -1215,7 +1215,7 @@
         var footer = document.querySelector('footer');
         if (!footer || poll > 80) { clearInterval(t); return; }
         clearInterval(t);
-        if (document.getElementById('vws-about-diff')) return;
+        if (document.getElementById('vws-about-diff') && document.getElementById('vws-about-sticky')) return;
 
         /* ── TASK 1: Body class + per-section background glow variation ── */
         document.body.classList.add('vws-about');
@@ -1394,6 +1394,7 @@
           }
         ];
 
+        if (!document.getElementById('vws-about-diff')) {
         var CHEVRON = '<svg data-chv="1" style="flex-shrink:0;transition:transform 0.32s ease" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="rgba(59,130,246,0.55)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>';
 
         var html = '<section id="vws-about-diff" style="padding:100px 40px;background:#080808;font-family:inherit">'
@@ -1421,6 +1422,7 @@
         var tmp = document.createElement('div');
         tmp.innerHTML = html;
         footer.parentNode.insertBefore(tmp.firstElementChild, footer);
+        } // end if (!vws-about-diff)
 
         /* ── TASK 5: Spacious padding on hero, comparison, CTA sections ── */
         (function() {
@@ -2130,6 +2132,8 @@
 
         /* ── Accordion init — collapse all, wire click handlers ── */
         var section = document.getElementById('vws-about-diff');
+        if (section && !section.getAttribute('data-vws-acc-init')) {
+        section.setAttribute('data-vws-acc-init','1');
         section.querySelectorAll('[data-acc="1"]').forEach(function(item) {
           var p   = item.querySelector('[data-body="1"]');
           var chv = item.querySelector('[data-chv="1"]');
@@ -2158,7 +2162,8 @@
               chv.style.transform = 'rotate(180deg)';
             }
           });
-        });
+        }); // forEach acc items
+        } // end if !data-vws-acc-init
       }, 150);
     }
 
