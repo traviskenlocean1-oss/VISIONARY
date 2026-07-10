@@ -4014,7 +4014,9 @@
         +'<div id="vws-hero-visual" style="display:flex;justify-content:flex-end">'+heroVisual(slug, svc)+'</div>'
         +'</div>';
       /* Colour tint overlay — transparent section so animated -z-10 bg shows through */
-      var tintOverlay = '<div style="position:absolute;inset:0;background:radial-gradient(ellipse at top left,rgba('+rgb+',0.35) 0%,transparent 65%);pointer-events:none;z-index:0"></div>';
+      var tintOverlay = slug === 'website-development'
+        ? '<div style="position:absolute;inset:0;background:linear-gradient(135deg,rgba(8,18,70,0.78) 0%,rgba(12,30,100,0.68) 50%,rgba(5,12,55,0.82) 100%);pointer-events:none;z-index:0"></div>'
+        : '<div style="position:absolute;inset:0;background:radial-gradient(ellipse at top left,rgba('+rgb+',0.35) 0%,transparent 65%);pointer-events:none;z-index:0"></div>';
       var contentWrap = '<div style="position:relative;z-index:1;width:100%;display:flex;align-items:center">'+inner+'</div>';
       return '<section id="vws-hero" style="'
         +'background:transparent;'
