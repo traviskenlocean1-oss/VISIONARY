@@ -3126,6 +3126,9 @@
           initSlider();
         }
 
+        /* ── "Ready to Launch" CTA: replace 3D laptop with team photo ── */
+        injectHeroSectionPhoto();
+
         /* ── Process section: two-column layout (steps left, photo right) ── */
         injectProcessPhoto();
 
@@ -3212,6 +3215,35 @@
 
         return '<div class="vws-tk-row"><div class="vws-tk-track vws-tk-track--left">' + buildTrack(row1) + '</div></div>'
           + '<div class="vws-tk-row" style="border-top:1px solid rgba(255,255,255,0.04)"><div class="vws-tk-track vws-tk-track--right">' + buildTrack(row2) + '</div></div>';
+      }
+
+      /* ── "Ready to Launch" CTA section: replace 3D laptop with real photo ── */
+      function injectHeroSectionPhoto() {
+        if (document.getElementById('vws-hero-cta-photo')) return true;
+        var targetSection = null;
+        var allSections = document.querySelectorAll('section');
+        for (var i = 0; i < allSections.length; i++) {
+          if (allSections[i].textContent.indexOf('Ready to Launch Your') !== -1) {
+            targetSection = allSections[i]; break;
+          }
+        }
+        if (!targetSection) return false;
+        var grid = null;
+        var allDivs = targetSection.querySelectorAll('div');
+        for (var j = 0; j < allDivs.length; j++) {
+          if (allDivs[j].children.length === 2 &&
+              allDivs[j].firstElementChild &&
+              allDivs[j].firstElementChild.textContent.indexOf('Get Started Today') !== -1) {
+            grid = allDivs[j]; break;
+          }
+        }
+        if (!grid || !grid.children[1]) return false;
+        var photoDiv = document.createElement('div');
+        photoDiv.id = 'vws-hero-cta-photo';
+        photoDiv.style.cssText = 'display:flex;align-items:center;justify-content:center';
+        photoDiv.innerHTML = '<img src="https://images.pexels.com/photos/3184338/pexels-photo-3184338.jpeg?auto=compress&cs=tinysrgb&w=700&h=560&fit=crop" alt="Professional team working together" loading="lazy" style="width:100%;height:520px;object-fit:cover;border-radius:16px;display:block;box-shadow:0 24px 64px rgba(0,0,0,0.45)"/>';
+        grid.replaceChild(photoDiv, grid.children[1]);
+        return true;
       }
 
       /* ── Process section: two-column layout ── */
