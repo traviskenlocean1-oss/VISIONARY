@@ -240,21 +240,7 @@
         }, 300);
       })();
 
-      /* 1.11. Homepage service cards — tag grid + cards so CSS can make them bigger */
-      (function() {
-        if (document.getElementById('vws-hp-svc-grid')) return;
-        /* Cards live in a classless <div> inside #vws-hp-services */
-        var container = document.getElementById('vws-hp-services');
-        if (!container) return;
-        var grid = Array.from(container.children).find(function(c) {
-          return c.tagName === 'DIV' && c.children.length >= 5;
-        });
-        if (!grid) return;
-        grid.id = 'vws-hp-svc-grid';
-        Array.from(grid.children).forEach(function(card) {
-          card.classList.add('vws-hp-svc-card');
-        });
-      })();
+      /* 1.11. [removed — bento grid owns its own classes, no re-tagging needed] */
 
       /* 1.12. "Fast Delivery / No Hidden Fees / Support Included" dark cards → white */
       (function() {
@@ -1057,17 +1043,9 @@
   /* ══ SERVICES LISTING — wave section dividers ══ */
   #vws-listing-wave-1,#vws-listing-wave-2{position:relative;line-height:0;overflow:hidden}
 
-  /* ══ HOMEPAGE SERVICE CARDS — 2-column, bigger (cards are classless <a> inside #vws-hp-services) ══ */
-  #vws-hp-svc-grid{display:grid!important;grid-template-columns:repeat(2,1fr)!important;gap:28px!important}
-  #vws-hp-svc-grid .vws-hp-svc-card{padding:40px 36px!important}
-  #vws-hp-svc-grid .vws-hp-svc-card > div:first-child{width:60px!important;height:60px!important;margin-bottom:20px!important}
-  #vws-hp-svc-grid .vws-hp-svc-card > p,
-  #vws-hp-svc-grid .vws-hp-svc-card > h3{font-size:20px!important;font-weight:800!important;margin-bottom:10px!important}
-
   /* ══ HOMEPAGE SERVICES GRID — mobile ══ */
   @media(max-width:768px){
     #vws-hp-services > div:first-child{grid-template-columns:1fr!important}
-    #vws-hp-svc-grid{grid-template-columns:1fr!important}
   }
 
   /* ══ DROPDOWN — force all mega items white (override React colored bg) ══ */
