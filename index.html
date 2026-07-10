@@ -490,7 +490,9 @@
 
         function injectUniversalWave() {
           if (window.location.pathname !== path) return true; /* navigated away — stop */
-          if (document.getElementById('vws-universal-wave')) return true;
+          /* Wave must belong to THIS page — a transitioning previous page's wave doesn't count */
+          var _ew = document.getElementById('vws-universal-wave');
+          if (_ew && _ew.getAttribute('data-vws-page') === path) return true;
           var secs = document.querySelectorAll('section');
           var hero = null;
           for (var i = 0; i < secs.length; i++) {
@@ -506,6 +508,7 @@
           hero.style.setProperty('position', 'relative', 'important');
           var wave = document.createElement('div');
           wave.id = 'vws-universal-wave';
+          wave.setAttribute('data-vws-page', path);
           wave.style.cssText = 'position:absolute;bottom:0;left:0;right:0;line-height:0;pointer-events:none;z-index:2';
           wave.innerHTML = '<svg viewBox="0 0 1440 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"><path d="M0,0 C360,80 1080,80 1440,0 L1440,80 L0,80 Z" fill="#060916"/><path d="M0,20 C360,80 1080,60 1440,20 L1440,80 L0,80 Z" fill="#f7f8fc" opacity="0.08"/></svg>';
           hero.appendChild(wave);
