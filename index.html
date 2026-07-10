@@ -2611,12 +2611,13 @@
           }
         })();
 
-        /* ── TASK 3: Hero split — add "Built to be found. From day one." as right column in hero ── */
+        /* ── TASK 3: Hero split — disabled; "Built to be found" removed from hero ── */
         (function() {
           if (window._vwsHeroSplitObs) { window._vwsHeroSplitObs.disconnect(); window._vwsHeroSplitObs = null; }
           var done = false;
 
           function applyHeroSplit() {
+            return; /* disabled — user removed this from hero */
             if (done) return;
             if (document.getElementById('vws-hero-seo-col')) { done = true; return; }
 
