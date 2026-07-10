@@ -1954,16 +1954,9 @@
   <script>
   /* Apply background hue-rotate immediately on initial page load (no flash/transition) */
   (function(){
-    var HUE={'hosting-domain':'-60deg','hosting':'-60deg','website-maintenance':'-165deg','website-creation':'102deg','website-redesign':'120deg','logo-branding':'131deg'};
+    var HUE={'website-development':'sepia(1) saturate(5) hue-rotate(205deg) brightness(1.5)','hosting-domain':'hue-rotate(-60deg) saturate(1.4)','hosting':'hue-rotate(-60deg) saturate(1.4)','website-maintenance':'hue-rotate(-165deg) saturate(1.4)','website-creation':'hue-rotate(102deg) saturate(1.4)','website-redesign':'hue-rotate(120deg) saturate(1.4)','logo-branding':'hue-rotate(131deg) saturate(1.4)'};
     var sl=(location.pathname.match(/\/services\/([^\/]+)/)||[])[1];
-    if(sl){var se=document.createElement('style');se.id='vws-early-hue';
-      if(sl==='website-development'){
-        se.textContent='[class~="-z-10"]{filter:sepia(1) saturate(5) hue-rotate(205deg) brightness(1.6)!important}';
-      }else if(HUE[sl]){
-        se.textContent='[class~="-z-10"]{filter:hue-rotate('+HUE[sl]+') saturate(1.4)!important}';
-      }
-      if(se.textContent)document.head.appendChild(se);
-    }
+    if(sl&&HUE[sl]){var se=document.createElement('style');se.id='vws-early-hue';se.textContent='[class~="-z-10"]{filter:'+HUE[sl]+'!important}';document.head.appendChild(se);}
   })();
   (function(){
     /* Capture slug from URL immediately — before React Router can replaceState('/services') */
@@ -3680,7 +3673,9 @@
 
     var C = {
       'website-development': {
-        color:'#3B82F6',lt:'#93C5FD',glow:'rgba(59,130,246,0.35)',hue:'0deg',reactRgb:null,reactCrgb:null,
+        color:'#3B82F6',lt:'#93C5FD',glow:'rgba(59,130,246,0.35)',hue:'0deg',
+        bgFilter:'sepia(1) saturate(5) hue-rotate(205deg) brightness(1.5)',
+        reactRgb:null,reactCrgb:null,
         name:'Website Development',tag:'Custom-built. Hand-coded. Yours.',
         gets:['Custom design built around your brand','Mobile-first, fully responsive on every screen','Conversion-focused layout and copywriting','Sub-2s load time, performance-optimized from day one','Full SEO foundation built in','You own every file outright — no subscriptions ever']
       },
@@ -4201,11 +4196,13 @@
         document.head.appendChild(ms);
       }
 
-      /* Hue-rotate the fixed background for non-blue services */
-      if (svc.hue !== '0deg' && !document.getElementById('vws-early-hue')) {
+      /* Apply background filter — use explicit bgFilter if set, else standard hue-rotate */
+      if ((svc.bgFilter || svc.hue !== '0deg') && !document.getElementById('vws-early-hue')) {
         var bgStyle = document.createElement('style');
         bgStyle.id = 'vws-early-hue';
-        bgStyle.textContent = '[class~="-z-10"]{filter:hue-rotate('+svc.hue+') saturate(1.4)!important}';
+        bgStyle.textContent = '[class~="-z-10"]{filter:'
+          + (svc.bgFilter || 'hue-rotate('+svc.hue+') saturate(1.4)')
+          + '!important}';
         document.head.appendChild(bgStyle);
       }
 
