@@ -130,7 +130,8 @@
 
       /* 1.7. Dark right-side mask — extra insurance against video bleed (homepage only) */
       (function() {
-        if (window.location.pathname.indexOf('/about') !== -1) return;
+        var _mp = window.location.pathname;
+        if (_mp.indexOf('/about') !== -1 || _mp.indexOf('/contact') !== -1) return;
         var heroSec = document.querySelector('section[class*="h-screen"]');
         if (!heroSec || heroSec.querySelector('#vws-hero-rt')) return;
         var mask = document.createElement('div');
@@ -288,15 +289,42 @@
         });
       })();
 
+      /* 1.13. Contact page: body class + ID key elements for dark-theme CSS */
+      (function() {
+        if (window.location.pathname.indexOf('/contact') === -1) return;
+        document.body.classList.add('vws-contact');
+        function setupContactIds() {
+          var secs = document.querySelectorAll('section');
+          var formSec = secs[1];
+          if (!formSec || formSec.id === 'vws-contact-form-sec') return true;
+          formSec.id = 'vws-contact-form-sec';
+          var grid = formSec.querySelector('[class*="grid-cols"]');
+          if (grid) grid.id = 'vws-contact-grid';
+          return true;
+        }
+        if (!setupContactIds()) {
+          var _cp = 0, _ct = setInterval(function() {
+            _cp++; if (setupContactIds() || _cp > 30) clearInterval(_ct);
+          }, 200);
+        }
+      })();
+
       /* 1.10. Services page: Meadowline-style alternating layout */
       (function() {
         var path = window.location.pathname;
 
-        /* Service detail page — hide listing, scroll to detail content */
+        /* Service detail page — hide listing + React sections, scroll to detail */
         if (path.indexOf('/services/') === 0) {
+          /* Hide all non-id React sections (services hero, listing cards) above our detail */
+          document.querySelectorAll('section:not([id])').forEach(function(s) {
+            s.style.setProperty('display','none','important');
+          });
           var list = document.getElementById('vws-svc-list');
           if (list) list.style.setProperty('display','none','important');
           setTimeout(function() {
+            document.querySelectorAll('section:not([id])').forEach(function(s) {
+              s.style.setProperty('display','none','important');
+            });
             var h = document.getElementById('vws-hero');
             if (h) { var t = h.getBoundingClientRect().top + window.scrollY - 80; window.scrollTo({top:t,behavior:'instant'}); }
           }, 700);
@@ -1087,6 +1115,41 @@
   #vws-built-results div.p-6 p{color:#4b5563!important}
   #vws-built-results div.p-6 span,#vws-built-results div.p-6 [class*="text-"]{color:#6b7280!important}
   #vws-built-results [class*="text-blue"],#vws-built-results [class*="text-cyan"],#vws-built-results [class*="text-indigo"]{color:#2563eb!important}
+
+  /* ══ HOME PAGE — WWO Bento Grid ══ */
+  .vws-wwo-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;max-width:1120px;margin:0 auto;padding:8px 24px 0;font-family:Barlow,system-ui,sans-serif}
+  .vws-wwo-card{position:relative;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:16px;padding:32px 28px 28px;text-decoration:none;overflow:hidden;display:flex;flex-direction:column;min-height:200px;transition:border-color .2s,box-shadow .2s,transform .2s;cursor:pointer}
+  .vws-wwo-card:hover{transform:translateY(-2px)}
+  .vws-wwo-c2{grid-column:span 2}
+  .vws-wwo-c3{grid-column:span 3;flex-direction:row;align-items:center;gap:48px;min-height:auto;padding:28px 32px}
+  .vws-wwo-c3 .vws-wwo-num{position:relative;bottom:auto;right:auto;font-size:72px;flex-shrink:0;opacity:.08}
+  .vws-wwo-c3 .vws-wwo-body{flex:1}
+  .vws-wwo-bar{position:absolute;top:0;left:0;right:0;height:2px}
+  .vws-wwo-num{position:absolute;bottom:-8px;right:16px;font-size:clamp(80px,10vw,120px);font-weight:900;color:rgba(255,255,255,0.05);line-height:1;pointer-events:none;user-select:none;font-family:inherit}
+  .vws-wwo-body{position:relative;z-index:1;display:flex;flex-direction:column;flex:1}
+  .vws-wwo-name{font-size:17px;font-weight:800;color:#f0f4ff;margin:0 0 10px;line-height:1.2}
+  .vws-wwo-desc{font-size:13px;color:rgba(240,244,255,0.5);line-height:1.65;margin:0 0 auto}
+  .vws-wwo-link{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-top:22px;display:flex;align-items:center;gap:5px}
+  #vws-hp-services{padding:0 0 60px}
+  @media(max-width:900px){.vws-wwo-grid{grid-template-columns:1fr 1fr}.vws-wwo-c3{grid-column:span 2;flex-direction:column;gap:16px}}
+  @media(max-width:600px){.vws-wwo-grid{grid-template-columns:1fr}.vws-wwo-c2,.vws-wwo-c3{grid-column:span 1;flex-direction:column}}
+
+  /* ══ CONTACT PAGE — dark form theme ══ */
+  #vws-contact-form-sec{background:#060916!important}
+  #vws-contact-grid{background:rgba(255,255,255,0.03)!important;border:1px solid rgba(255,255,255,0.08)!important;border-radius:20px!important;padding:40px!important}
+  body.vws-contact h2{color:#f0f4ff!important}
+  body.vws-contact p:not([class*="vws-"]){color:rgba(240,244,255,0.55)!important}
+  body.vws-contact label,body.vws-contact [class*="tracking"][class*="uppercase"]{color:rgba(255,255,255,0.45)!important;font-weight:700!important;letter-spacing:.1em!important}
+  body.vws-contact input,body.vws-contact textarea,body.vws-contact select{background:rgba(255,255,255,0.05)!important;border-color:rgba(255,255,255,0.12)!important;color:#f0f4ff!important;border-radius:10px!important}
+  body.vws-contact input::placeholder,body.vws-contact textarea::placeholder{color:rgba(255,255,255,0.22)!important}
+  body.vws-contact input:focus,body.vws-contact textarea:focus{border-color:rgba(37,99,235,0.6)!important;box-shadow:0 0 0 3px rgba(37,99,235,0.12)!important;outline:none!important}
+  body.vws-contact button[type="submit"]{background:#2563eb!important;color:#fff!important;border:none!important;font-weight:800!important}
+  body.vws-contact button[type="submit"]:hover{background:#1d4ed8!important}
+  body.vws-contact [class*="rounded-2xl"]{background:rgba(255,255,255,0.03)!important;border-color:rgba(255,255,255,0.08)!important}
+  body.vws-contact [class*="rounded-2xl"] p,body.vws-contact [class*="rounded-2xl"] span:not([class*="bg-"]){color:rgba(240,244,255,0.75)!important}
+  body.vws-contact [class*="rounded-2xl"] a,[class*="rounded-2xl"] [class*="text-blue"]{color:#60a5fa!important}
+  body.vws-contact [class*="rounded-xl"][class*="flex"]{background:rgba(37,99,235,0.1)!important;border:1px solid rgba(37,99,235,0.2)!important}
+  body.vws-contact [class*="text-center"]:not([id]) h2{color:#f0f4ff!important}
 
   </style>
 
@@ -2932,25 +2995,50 @@
               {slug:'hosting-domain',      icon:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="8" rx="2" ry="2"/><rect x="2" y="14" width="20" height="8" rx="2" ry="2"/><line x1="6" y1="6" x2="6.01" y2="6"/><line x1="6" y1="18" x2="6.01" y2="18"/></svg>', name:'Hosting & Domain', desc:'Fast, reliable — included free with every build.', color:'#0d9488'},
               {slug:'logo-branding',       icon:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>', name:'Logo & Branding', desc:'Professional identity that stands out.', color:'#ca8a04'}
             ];
+            /* Dark bento-grid layout — more complex than plain 2-col */
+            function bentoCard(svc, spanCls) {
+              return '<a href="/services/'+svc.slug+'" class="vws-wwo-card'+spanCls+'" '
+                +'onmouseover="this.style.borderColor=\''+svc.color+'55\';this.style.boxShadow=\'0 24px 60px rgba(0,0,0,0.4),inset 0 0 0 1px '+svc.color+'33\'" '
+                +'onmouseout="this.style.borderColor=\'\';this.style.boxShadow=\'\'">'
+                +'<div class="vws-wwo-bar" style="background:linear-gradient(90deg,'+svc.color+','+svc.color+'88)"></div>'
+                +'<span class="vws-wwo-num">'+svc.num+'</span>'
+                +'<div class="vws-wwo-body">'
+                  +'<div class="vws-wwo-name">'+svc.name+'</div>'
+                  +'<div class="vws-wwo-desc">'+svc.desc+'</div>'
+                  +'<div class="vws-wwo-link" style="color:'+svc.color+'">Learn More <span>→</span></div>'
+                +'</div>'
+                +'</a>';
+            }
+            var BENTO = [
+              {slug:'website-development', num:'01', name:'Website Development', desc:'Hand-coded from scratch. Every line is intentional — no templates, no page builders, no compromise.',  color:'#2563eb'},
+              {slug:'website-creation',    num:'02', name:'Website Creation',    desc:'Get online fast in 5 days without cutting corners.',                                                         color:'#7c3aed'},
+              {slug:'website-redesign',    num:'03', name:'Website Redesign',    desc:'Same domain. Completely new results.',                                                                        color:'#dc2626'},
+              {slug:'website-maintenance', num:'04', name:'Website Maintenance', desc:'Unlimited updates, same-day turnaround.',                                                                     color:'#d97706'},
+              {slug:'hosting-domain',      num:'05', name:'Hosting & Domain',    desc:'Fast, globally distributed — included free.',                                                                  color:'#0d9488'},
+              {slug:'logo-branding',       num:'06', name:'Logo & Branding',     desc:'A professional identity that makes clients trust you before you even say a word.',                            color:'#ca8a04'}
+            ];
             var sGrid = document.createElement('div');
             sGrid.id = 'vws-hp-services';
-            sGrid.style.cssText = 'padding:8px 24px 60px;font-family:Barlow,system-ui,sans-serif;max-width:1100px;margin:0 auto';
-            sGrid.innerHTML = '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px">'
-              + SVC_ITEMS.map(function(svc){
-                  return '<a href="/services/'+svc.slug+'" style="display:block;background:#ffffff;border:1px solid rgba(0,0,0,0.07);border-radius:14px;padding:24px;text-decoration:none;box-shadow:0 2px 8px rgba(0,0,0,0.04);transition:box-shadow .2s,border-color .2s" '
-                  +'onmouseover="this.style.boxShadow=\'0 8px 32px rgba(0,0,0,0.1)\';this.style.borderColor=\''+svc.color+'44\'" '
-                  +'onmouseout="this.style.boxShadow=\'0 2px 8px rgba(0,0,0,0.04)\';this.style.borderColor=\'rgba(0,0,0,0.07)\'">'
-                  +'<div style="width:44px;height:44px;border-radius:10px;background:'+svc.color+'18;border:1px solid '+svc.color+'44;display:flex;align-items:center;justify-content:center;color:'+svc.color+';margin-bottom:14px">'+svc.icon+'</div>'
-                  +'<div style="font-size:15px;font-weight:800;color:#0d1117;margin-bottom:6px">'+svc.name+'</div>'
-                  +'<div style="font-size:13px;color:#6b7280;line-height:1.55;margin-bottom:14px">'+svc.desc+'</div>'
-                  +'<div style="font-size:11px;font-weight:700;color:'+svc.color+';display:flex;align-items:center;gap:4px;letter-spacing:0.04em">Learn More <span style="font-size:13px">→</span></div>'
-                  +'</a>';
-                }).join('')
+            sGrid.innerHTML = '<div class="vws-wwo-grid">'
+              + bentoCard(BENTO[0], ' vws-wwo-c2')  /* 01 — spans 2 cols */
+              + bentoCard(BENTO[1], '')              /* 02 */
+              + bentoCard(BENTO[2], '')              /* 03 */
+              + bentoCard(BENTO[3], '')              /* 04 */
+              + bentoCard(BENTO[4], '')              /* 05 */
+              + bentoCard(BENTO[5], ' vws-wwo-c3')  /* 06 — full width */
               +'</div>'
-              +'<div style="text-align:center;margin-top:36px">'
-              +'<a href="/services" style="display:inline-flex;align-items:center;gap:8px;background:#2563eb;color:#fff;font-size:14px;font-weight:700;padding:14px 32px;border-radius:8px;text-decoration:none;box-shadow:0 4px 20px rgba(37,99,235,0.28)">View All Services →</a>'
+              +'<div style="text-align:center;margin-top:40px">'
+              +'<a href="/services" style="display:inline-flex;align-items:center;gap:8px;background:#2563eb;color:#fff;font-size:14px;font-weight:700;padding:14px 32px;border-radius:8px;text-decoration:none;box-shadow:0 4px 20px rgba(37,99,235,0.28)">Explore All Services →</a>'
               +'</div>';
-            /* Hide any opacity:0 React cards first, then inject ours */
+            /* SPA nav — intercept clicks so no full-page reload glitch */
+            sGrid.addEventListener('click', function(e) {
+              var a = e.target.closest('a[href^="/services/"]');
+              if (!a) return;
+              e.preventDefault();
+              history.pushState(null, '', new URL(a.href).pathname);
+            });
+            /* Style the parent section dark */
+            wwoSec.style.setProperty('background','#060916','important');
             wwoSec.querySelectorAll('*').forEach(function(el){
               if(parseFloat(window.getComputedStyle(el).opacity) === 0) el.style.display='none';
             });
