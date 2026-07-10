@@ -225,19 +225,25 @@
           }
         });
 
-        /* Match design cards section bg to #080808 — "What We Stand For" / values cards */
+        /* Hide React "What We Stand For" section — replaced by custom #vws-stand-for */
         Array.from(document.querySelectorAll('section')).forEach(function(s) {
-          if (s.textContent.indexOf('What We Stand For') !== -1 || s.textContent.indexOf('Honesty first') !== -1) {
-            s.style.setProperty('background','#080808','important');
-            s.setAttribute('data-vws-dark-sec','1');
+          if (!s.id && (s.textContent.indexOf('What We Stand For') !== -1 || s.textContent.indexOf('Honesty first') !== -1)) {
+            s.classList.add('vws-react-hidden');
           }
         });
 
-        /* CTA section after "What actually gets your phone ringing" (vws-about-diff) */
+        /* Hide React "Built to be found" section — content moved to hero right column */
+        Array.from(document.querySelectorAll('section')).forEach(function(s) {
+          if (!s.id && s.textContent.indexOf('Built to be found') !== -1) {
+            s.classList.add('vws-react-hidden');
+          }
+        });
+
+        /* CTA section — anchors after #vws-stand-for if it exists, else after #vws-about-diff */
         function injectAboutCta() {
           if (document.getElementById('vws-about-cta')) return;
-          var diff = document.getElementById('vws-about-diff');
-          if (!diff) return;
+          var anchor = document.getElementById('vws-stand-for') || document.getElementById('vws-about-diff');
+          if (!anchor) return;
           var cta = document.createElement('section');
           cta.id = 'vws-about-cta';
           cta.innerHTML = '<div class="vws-acta-wrap">'
@@ -245,7 +251,7 @@
             +'<h2 class="vws-acta-title">Let\'s build something<br>you\'re proud to share.</h2>'
             +'<a href="/contact" class="vws-acta-btn">Start a Project</a>'
             +'</div>';
-          diff.parentNode.insertBefore(cta, diff.nextSibling);
+          anchor.parentNode.insertBefore(cta, anchor.nextSibling);
         }
         injectAboutCta();
         var ctaPoll = 0, ctaTimer = setInterval(function() {
@@ -1087,12 +1093,40 @@
   #vws-svc-listing{display:none!important}
 
   /* ══ ABOUT PAGE — CTA section ══ */
-  #vws-about-cta{background:#0d1117!important;padding:80px 40px;text-align:center;font-family:inherit}
-  .vws-acta-wrap{max-width:700px;margin:0 auto}
+  @keyframes vwsCtaBg{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+  #vws-about-cta{position:relative;overflow:hidden;background:linear-gradient(-45deg,#020818,#0f1f5c,#030a24,#180838)!important;background-size:400% 400%!important;animation:vwsCtaBg 10s ease infinite!important;padding:100px 40px;text-align:center;font-family:inherit}
+  .vws-acta-wrap{max-width:700px;margin:0 auto;position:relative;z-index:1}
   .vws-acta-label{font-size:10px;font-weight:700;letter-spacing:.25em;text-transform:uppercase;color:rgba(96,165,250,0.7);margin:0 0 20px}
   .vws-acta-title{font-size:clamp(32px,5vw,60px);font-weight:900;color:#e1e0cc;margin:0 0 36px;line-height:1.1}
-  .vws-acta-btn{display:inline-block;padding:16px 48px;background:#2563eb;color:#fff!important;font-size:13px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;text-decoration:none!important;border-radius:8px;transition:background .2s}
-  .vws-acta-btn:hover{background:#1d4ed8!important}
+  .vws-acta-btn{display:inline-block;padding:16px 48px;background:#ffffff;color:#0d1117!important;font-size:13px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;text-decoration:none!important;border-radius:8px;transition:background .2s,box-shadow .2s,transform .2s;box-shadow:0 4px 20px rgba(255,255,255,0.15)}
+  .vws-acta-btn:hover{background:#f0f4ff!important;transform:translateY(-2px);box-shadow:0 8px 32px rgba(255,255,255,0.22)!important}
+  /* ══ ABOUT PAGE — What We Stand For (animated manifesto) ══ */
+  #vws-stand-for{background:#060606!important;padding:100px 40px;font-family:inherit;overflow:hidden}
+  .vws-sf-inner{max-width:1100px;margin:0 auto}
+  .vws-sf-kicker{font-size:10px;font-weight:700;letter-spacing:.28em;text-transform:uppercase;color:rgba(96,165,250,0.65);margin:0 0 14px}
+  .vws-sf-htitle{font-size:clamp(28px,3vw,44px);font-weight:900;color:#e1e0cc!important;line-height:1.15;margin:0 0 72px}
+  .vws-sf-item{position:relative;display:grid;grid-template-columns:80px 1fr;gap:0 24px;padding:44px 0 44px;opacity:0;transform:translateY(28px);transition:opacity 0.65s ease,transform 0.65s ease}
+  .vws-sf-item.vws-sf-in{opacity:1;transform:translateY(0)}
+  .vws-sf-bar{position:absolute;top:0;left:0;right:0;height:1px;background:rgba(255,255,255,0.08)}
+  .vws-sf-bar::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,#2563eb,rgba(99,102,241,0.3));transform:scaleX(0);transform-origin:left;transition:transform 0.9s cubic-bezier(0.16,1,0.3,1)}
+  .vws-sf-item.vws-sf-in .vws-sf-bar::after{transform:scaleX(1)}
+  .vws-sf-n{font-size:52px;font-weight:900;color:rgba(37,99,235,0.12);line-height:1;letter-spacing:-0.02em;transition:color 0.4s ease;user-select:none}
+  .vws-sf-item:hover .vws-sf-n{color:rgba(37,99,235,0.4)}
+  .vws-sf-body{padding-top:4px}
+  .vws-sf-name{font-size:clamp(18px,2vw,26px);font-weight:800;color:rgba(225,224,204,0.9)!important;margin:0 0 10px;line-height:1.25;transition:color 0.25s ease}
+  .vws-sf-item:hover .vws-sf-name{color:#fff!important}
+  .vws-sf-desc{font-size:15px;color:rgba(225,224,204,0.38)!important;line-height:1.75;margin:0;max-width:620px;transition:color 0.25s ease}
+  .vws-sf-item:hover .vws-sf-desc{color:rgba(225,224,204,0.55)!important}
+  .vws-sf-lastbar{height:1px;background:rgba(255,255,255,0.08);margin:0}
+  @media(max-width:640px){#vws-stand-for{padding:72px 20px}.vws-sf-item{grid-template-columns:52px 1fr;gap:0 16px}}
+  /* ══ ABOUT PAGE — Hero right column (Built to be found) ══ */
+  #vws-hero-seo-col{flex:0 0 360px;min-width:260px;padding-top:8px}
+  .vws-hsc-tag{font-size:10px;font-weight:700;letter-spacing:.28em;text-transform:uppercase;color:rgba(96,165,250,0.65)!important;margin:0 0 16px;display:block}
+  .vws-hsc-h{font-size:clamp(20px,2.2vw,30px);font-weight:900;color:#e1e0cc!important;line-height:1.2;margin:0 0 6px;display:block}
+  .vws-hsc-sub{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:rgba(225,224,204,0.3)!important;margin:0 0 20px;display:block}
+  .vws-hsc-desc{font-size:14px;color:rgba(225,224,204,0.45)!important;line-height:1.7;margin:0 0 22px;display:block}
+  .vws-hsc-card{border:1px solid rgba(59,130,246,0.2);border-radius:12px;overflow:hidden;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11px;line-height:1.55;background:#0a0e1a;box-shadow:0 12px 40px rgba(0,0,0,0.55)}
+  @media(max-width:900px){#vws-hero-seo-col{flex:none;width:100%;max-width:440px;margin-top:36px}}
 
   /* ══ SERVICES PAGE — hero wave ══ */
   #vws-svc-wave svg{display:block;width:100%;height:auto}
@@ -1809,7 +1843,7 @@
       _vwsPendingSlug = null;
       /* Clean up previous injections so switching service pages doesn't stack */
       window._vwsAboutPollActive = false;
-      ['vws-ba-injected','vws-deepdive','vws-svc-theme','vws-svc-listing','vws-listing-colors','vws-early-hue','vws-ill-wrap','vws-hero','vws-problem','vws-steps','vws-included','vws-results','vws-faq','vws-cta','vws-about-diff','vws-about-sticky','vws-about-styles','vws-design-cards','vws-seo-code','vws-whoweare-mockup','vws-comparison-table','vws-comparison-styles','vws-hp-trust','vws-hp-slider','vws-hp-bookend','vws-deposit-note','vws-hp-services'].forEach(function(id){
+      ['vws-ba-injected','vws-deepdive','vws-svc-theme','vws-svc-listing','vws-listing-colors','vws-early-hue','vws-ill-wrap','vws-hero','vws-problem','vws-steps','vws-included','vws-results','vws-faq','vws-cta','vws-about-diff','vws-about-sticky','vws-about-styles','vws-design-cards','vws-hero-seo-col','vws-hero-left-wrap','vws-stand-for','vws-about-cta','vws-whoweare-mockup','vws-comparison-table','vws-comparison-styles','vws-hp-trust','vws-hp-slider','vws-hp-bookend','vws-deposit-note','vws-hp-services'].forEach(function(id){
         var el = document.getElementById(id);
         if (el) el.remove ? el.remove() : el.parentNode.removeChild(el);
       });
@@ -2415,40 +2449,76 @@
           }
         })();
 
-        /* ── NEW TASK 5: "What We Stand For" — 2×2 bordered card grid (MutationObserver-backed) ── */
+        /* ── TASK 5: "What We Stand For" — animated manifesto, injected after #vws-about-diff ── */
         (function() {
-          if (window._vwsStandForObs) { window._vwsStandForObs.disconnect(); window._vwsStandForObs = null; }
-          var done = false;
+          if (document.getElementById('vws-stand-for')) return;
+          var diff = document.getElementById('vws-about-diff');
+          if (!diff) return;
 
-          function applyStandFor() {
-            if (done) return;
-            var sec3 = document.querySelectorAll('section')[3];
-            if (!sec3) return;
-            var container = sec3.querySelector('.border-t');
-            if (!container || container.children.length < 4) return;
-            done = true;
-            if (window._vwsStandForObs) { window._vwsStandForObs.disconnect(); window._vwsStandForObs = null; }
-            container.style.display = 'grid';
-            container.style.gridTemplateColumns = 'repeat(2, 1fr)';
-            container.style.gap = '1.25rem';
-            container.style.borderTop = 'none';
-            container.setAttribute('data-vws-enh', '1');
-            Array.from(container.children).forEach(function(item) {
-              item.style.border = '1px solid rgba(59,130,246,0.18)';
-              item.style.borderRadius = '14px';
-              item.style.padding = '2rem';
-              item.style.background = 'rgba(59,130,246,0.04)';
-              item.style.overflow = 'visible';
-              item.setAttribute('data-vws-enh', '1');
+          var VALUES = [
+            {
+              n: '01',
+              name: 'Honesty first.',
+              desc: 'We don\'t inflate portfolios, exaggerate results, or make promises we can\'t keep. You get straight answers, realistic timelines, and work that speaks for itself.'
+            },
+            {
+              n: '02',
+              name: 'You own everything.',
+              desc: 'Once delivered and paid, the entire project is yours — code, files, domain, all of it. No monthly platform fees, no lock-in, no strings attached. Ever.'
+            },
+            {
+              n: '03',
+              name: 'Built to convert.',
+              desc: 'A beautiful website that brings in zero customers is just expensive decoration. We design with one goal: turning visitors into calls, bookings, and sales.'
+            },
+            {
+              n: '04',
+              name: 'Results, not excuses.',
+              desc: 'We measure success by calls made and leads generated — not aesthetics. Every decision is made to make your phone ring, and we stand behind that.'
+            }
+          ];
+
+          var itemsHtml = VALUES.map(function(v) {
+            return '<div class="vws-sf-item">'
+              + '<div class="vws-sf-bar"></div>'
+              + '<div class="vws-sf-n">' + v.n + '</div>'
+              + '<div class="vws-sf-body">'
+              + '<div class="vws-sf-name">' + v.name + '</div>'
+              + '<div class="vws-sf-desc">' + v.desc + '</div>'
+              + '</div></div>';
+          }).join('');
+
+          var sf = document.createElement('section');
+          sf.id = 'vws-stand-for';
+          sf.innerHTML = '<div class="vws-sf-inner">'
+            + '<div class="vws-sf-kicker">WHAT WE STAND FOR</div>'
+            + '<div class="vws-sf-htitle">The principles we<br>build everything on.</div>'
+            + itemsHtml
+            + '<div class="vws-sf-lastbar"></div>'
+            + '</div>';
+
+          /* Insert before CTA if it already exists, else right after diff */
+          var cta = document.getElementById('vws-about-cta');
+          if (cta) {
+            cta.parentNode.insertBefore(sf, cta);
+          } else {
+            diff.parentNode.insertBefore(sf, diff.nextSibling);
+          }
+
+          /* Scroll-triggered reveal via IntersectionObserver */
+          var items = sf.querySelectorAll('.vws-sf-item');
+          var revealObs = new IntersectionObserver(function(entries) {
+            entries.forEach(function(entry) {
+              if (entry.isIntersecting) {
+                entry.target.classList.add('vws-sf-in');
+                revealObs.unobserve(entry.target);
+              }
             });
-          }
-
-          applyStandFor();
-          if (!done) {
-            window._vwsStandForObs = new MutationObserver(function() { applyStandFor(); });
-            window._vwsStandForObs.observe(document.getElementById('root') || document.body, { childList: true, subtree: true });
-            setTimeout(function() { if (window._vwsStandForObs) { window._vwsStandForObs.disconnect(); window._vwsStandForObs = null; } }, 60000);
-          }
+          }, { rootMargin: '0px 0px -80px 0px', threshold: 0.08 });
+          items.forEach(function(item, i) {
+            item.style.transitionDelay = (i * 0.12) + 's';
+            revealObs.observe(item);
+          });
         })();
 
         /* ── NEW TASK 6: "How It Works" — step cards (MutationObserver-backed) ── */
@@ -2541,101 +2611,97 @@
           }
         })();
 
-        /* ── TASK 3: SEO section — two-column layout with editor code card (MutationObserver-backed) ── */
+        /* ── TASK 3: Hero split — add "Built to be found. From day one." as right column in hero ── */
         (function() {
-          if (window._vwsSeoCodeObs) { window._vwsSeoCodeObs.disconnect(); window._vwsSeoCodeObs = null; }
+          if (window._vwsHeroSplitObs) { window._vwsHeroSplitObs.disconnect(); window._vwsHeroSplitObs = null; }
           var done = false;
 
-          function applySeoCode() {
+          function applyHeroSplit() {
             if (done) return;
-            if (document.getElementById('vws-seo-code')) { done = true; return; }
-            var seoH = Array.from(document.querySelectorAll('h2,h3')).find(function(h) {
-              return h.textContent && h.textContent.indexOf('Built to be found') !== -1;
-            });
-            if (!seoH) return;
+            if (document.getElementById('vws-hero-seo-col')) { done = true; return; }
 
-            /* Walk up to find the max-w container holding the heading + pills */
-            var el = seoH;
-            while (el && el.tagName !== 'BODY') {
-              if (el.className && typeof el.className === 'string' && el.className.indexOf('max-w') !== -1) break;
-              el = el.parentElement;
+            /* Find the hero section */
+            var heroSec = document.querySelector('section[class*="min-h-screen"]');
+            if (!heroSec) return;
+
+            /* Find the direct-child max-w content container */
+            var contentContainer = null;
+            for (var i = 0; i < heroSec.children.length; i++) {
+              var ch = heroSec.children[i];
+              if (ch.className && typeof ch.className === 'string' && ch.className.indexOf('max-w') !== -1) {
+                contentContainer = ch; break;
+              }
             }
-            if (!el || el.tagName === 'BODY') return;
-            var leftCol = el;
+            if (!contentContainer) contentContainer = heroSec.querySelector('[class*="max-w"]');
+            if (!contentContainer) return;
 
-            /* Walk up one more level to get the row wrapper */
-            var rowWrap = leftCol.parentElement;
-            if (!rowWrap) return;
+            /* Verify heading is inside this container */
+            var designH = contentContainer.querySelector('h2,h3');
+            if (!designH || designH.textContent.indexOf('cost twice as much') === -1) {
+              designH = Array.from(document.querySelectorAll('h2,h3')).find(function(h) {
+                return h.textContent && h.textContent.indexOf('cost twice as much') !== -1;
+              });
+              if (!designH) return;
+            }
 
             done = true;
-            if (window._vwsSeoCodeObs) { window._vwsSeoCodeObs.disconnect(); window._vwsSeoCodeObs = null; }
+            if (window._vwsHeroSplitObs) { window._vwsHeroSplitObs.disconnect(); window._vwsHeroSplitObs = null; }
 
-            /* Turn the row into a two-column flex layout */
-            rowWrap.style.display = 'flex';
-            rowWrap.style.alignItems = 'flex-start';
-            rowWrap.style.gap = '3rem';
-            rowWrap.setAttribute('data-vws-enh', '1');
-            leftCol.style.flex = '1 1 0';
-            leftCol.style.minWidth = '0';
-            leftCol.setAttribute('data-vws-enh', '1');
+            /* Wrap all existing contentContainer children into a left-column div */
+            var leftWrap = document.createElement('div');
+            leftWrap.id = 'vws-hero-left-wrap';
+            leftWrap.style.cssText = 'flex:1 1 300px;min-width:0';
+            var existingChildren = Array.from(contentContainer.children);
+            existingChildren.forEach(function(child) { leftWrap.appendChild(child); });
+            contentContainer.appendChild(leftWrap);
 
-            /* Build the editor code card */
-            var card = document.createElement('div');
-            card.id = 'vws-seo-code';
-            card.style.cssText = [
-              'flex:0 0 380px',
-              'border:1px solid rgba(59,130,246,0.25)',
-              'border-radius:14px',
-              'overflow:hidden',
-              'font-family:ui-monospace,SFMono-Regular,Menlo,monospace',
-              'font-size:12px',
-              'line-height:1.6',
-              'background:#0d1117',
-              'box-shadow:0 24px 60px rgba(0,0,0,0.7)',
-              'align-self:flex-start',
-              'position:sticky',
-              'top:100px'
-            ].join(';');
+            /* Turn contentContainer into a flex row */
+            contentContainer.style.display = 'flex';
+            contentContainer.style.alignItems = 'flex-start';
+            contentContainer.style.gap = '3.5rem';
+            contentContainer.style.flexWrap = 'wrap';
 
-            card.innerHTML = [
-              /* Title bar */
-              '<div style="background:#161b22;padding:10px 14px;display:flex;align-items:center;gap:6px;border-bottom:1px solid rgba(255,255,255,0.07)">',
-              '  <span style="width:10px;height:10px;border-radius:50%;background:#ff5f57;display:inline-block"></span>',
-              '  <span style="width:10px;height:10px;border-radius:50%;background:#febc2e;display:inline-block"></span>',
-              '  <span style="width:10px;height:10px;border-radius:50%;background:#28c840;display:inline-block"></span>',
-              '  <span style="margin-left:8px;color:rgba(255,255,255,0.3);font-size:11px">schema.json</span>',
-              '</div>',
-              /* Code body */
-              '<div style="padding:18px 20px;color:#e6edf3">',
-              '<span style="color:#79c0ff">{</span><br>',
-              '  <span style="color:#ff7b72">"@context"</span><span style="color:#e6edf3">: </span><span style="color:#a5d6ff">"https://schema.org"</span><span style="color:#e6edf3">,</span><br>',
-              '  <span style="color:#ff7b72">"@type"</span><span style="color:#e6edf3">: </span><span style="color:#a5d6ff">"LocalBusiness"</span><span style="color:#e6edf3">,</span><br>',
-              '  <span style="color:#ff7b72">"name"</span><span style="color:#e6edf3">: </span><span style="color:#a5d6ff">"Your Business"</span><span style="color:#e6edf3">,</span><br>',
-              '  <span style="color:#ff7b72">"description"</span><span style="color:#e6edf3">: </span><span style="color:#a5d6ff">"..."</span><span style="color:#e6edf3">,</span><br>',
-              '  <span style="color:#ff7b72">"url"</span><span style="color:#e6edf3">: </span><span style="color:#a5d6ff">"https://yourdomain.com"</span><span style="color:#e6edf3">,</span><br>',
-              '  <span style="color:#ff7b72">"telephone"</span><span style="color:#e6edf3">: </span><span style="color:#a5d6ff">"+1-555-000-0000"</span><span style="color:#e6edf3">,</span><br>',
-              '  <span style="color:#ff7b72">"address"</span><span style="color:#e6edf3">: </span><span style="color:#79c0ff">{</span><br>',
-              '    <span style="color:#ff7b72">"@type"</span><span style="color:#e6edf3">: </span><span style="color:#a5d6ff">"PostalAddress"</span><span style="color:#e6edf3">,</span><br>',
-              '    <span style="color:#ff7b72">"addressLocality"</span><span style="color:#e6edf3">: </span><span style="color:#a5d6ff">"Your City"</span><span style="color:#e6edf3">,</span><br>',
-              '    <span style="color:#ff7b72">"addressRegion"</span><span style="color:#e6edf3">: </span><span style="color:#a5d6ff">"FL"</span><br>',
-              '  <span style="color:#79c0ff">}</span><br>',
-              '<span style="color:#79c0ff">}</span>',
-              '</div>',
-              /* Footer badge */
-              '<div style="background:#161b22;padding:8px 14px;border-top:1px solid rgba(255,255,255,0.07);display:flex;align-items:center;gap:6px">',
-              '  <span style="width:6px;height:6px;border-radius:50%;background:#28c840;display:inline-block"></span>',
-              '  <span style="color:rgba(255,255,255,0.35);font-size:10px;letter-spacing:0.05em">JSON-LD · Ships with every site</span>',
+            /* Build right column: "Built to be found. From day one." */
+            var rightCol = document.createElement('div');
+            rightCol.id = 'vws-hero-seo-col';
+            rightCol.innerHTML = [
+              '<span class="vws-hsc-tag">BUILT TO BE FOUND</span>',
+              '<span class="vws-hsc-h">From day one.</span>',
+              '<span class="vws-hsc-sub">Local SEO · Schema · Google-Ready</span>',
+              '<span class="vws-hsc-desc">Every Visionary site ships with JSON-LD schema markup, optimized meta tags, and Google Business Profile alignment — so you rank before the site even gets traffic.</span>',
+              '<div class="vws-hsc-card">',
+              '  <div style="background:#0d1117;padding:9px 14px;display:flex;align-items:center;gap:6px;border-bottom:1px solid rgba(255,255,255,0.06)">',
+              '    <span style="width:9px;height:9px;border-radius:50%;background:#ff5f57;display:inline-block"></span>',
+              '    <span style="width:9px;height:9px;border-radius:50%;background:#febc2e;display:inline-block"></span>',
+              '    <span style="width:9px;height:9px;border-radius:50%;background:#28c840;display:inline-block"></span>',
+              '    <span style="margin-left:8px;color:rgba(255,255,255,0.28);font-size:10px;font-family:ui-monospace,monospace">schema.json</span>',
+              '  </div>',
+              '  <div style="padding:16px 18px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11px;line-height:1.6;color:#e6edf3">',
+              '    <span style="color:#79c0ff">{</span><br>',
+              '    &nbsp; <span style="color:#ff7b72">"@context"</span><span style="color:#e6edf3">: </span><span style="color:#a5d6ff">"https://schema.org"</span><span style="color:#e6edf3">,</span><br>',
+              '    &nbsp; <span style="color:#ff7b72">"@type"</span><span style="color:#e6edf3">: </span><span style="color:#a5d6ff">"LocalBusiness"</span><span style="color:#e6edf3">,</span><br>',
+              '    &nbsp; <span style="color:#ff7b72">"name"</span><span style="color:#e6edf3">: </span><span style="color:#a5d6ff">"Your Business"</span><span style="color:#e6edf3">,</span><br>',
+              '    &nbsp; <span style="color:#ff7b72">"telephone"</span><span style="color:#e6edf3">: </span><span style="color:#a5d6ff">"+1-555-000-0000"</span><span style="color:#e6edf3">,</span><br>',
+              '    &nbsp; <span style="color:#ff7b72">"address"</span><span style="color:#e6edf3">: </span><span style="color:#79c0ff">{</span><br>',
+              '    &nbsp;&nbsp;&nbsp; <span style="color:#ff7b72">"addressLocality"</span><span style="color:#e6edf3">: </span><span style="color:#a5d6ff">"Your City"</span><br>',
+              '    &nbsp; <span style="color:#79c0ff">}</span><br>',
+              '    <span style="color:#79c0ff">}</span>',
+              '  </div>',
+              '  <div style="background:#0d1117;padding:7px 14px;border-top:1px solid rgba(255,255,255,0.06);display:flex;align-items:center;gap:6px">',
+              '    <span style="width:5px;height:5px;border-radius:50%;background:#28c840;display:inline-block"></span>',
+              '    <span style="color:rgba(255,255,255,0.3);font-size:10px;letter-spacing:0.05em;font-family:ui-monospace,monospace">JSON-LD · Ships with every site</span>',
+              '  </div>',
               '</div>'
             ].join('');
 
-            rowWrap.appendChild(card);
+            contentContainer.appendChild(rightCol);
           }
 
-          applySeoCode();
+          applyHeroSplit();
           if (!done) {
-            window._vwsSeoCodeObs = new MutationObserver(function() { applySeoCode(); });
-            window._vwsSeoCodeObs.observe(document.getElementById('root') || document.body, { childList: true, subtree: true });
-            setTimeout(function() { if (window._vwsSeoCodeObs) { window._vwsSeoCodeObs.disconnect(); window._vwsSeoCodeObs = null; } }, 60000);
+            window._vwsHeroSplitObs = new MutationObserver(function() { applyHeroSplit(); });
+            window._vwsHeroSplitObs.observe(document.getElementById('root') || document.body, { childList: true, subtree: true });
+            setTimeout(function() { if (window._vwsHeroSplitObs) { window._vwsHeroSplitObs.disconnect(); window._vwsHeroSplitObs = null; } }, 60000);
           }
         })();
 
