@@ -1165,6 +1165,14 @@
   .vws-mcard-desc{font-size:0.78rem;color:rgba(225,224,204,0.5)!important;line-height:1.45}
   @media(max-width:900px){.vws-mgrid{grid-template-columns:1fr;gap:48px}}
   @media(max-width:640px){#vws-about-merge{padding:72px 20px}}
+  /* ══ ID-specificity overrides — beat body.vws-about section h2/h3 (specificity 0,1,2) ══ */
+  #vws-about-merge h3,#vws-about-merge .vws-merge-h3{color:#e1e0cc!important}
+  #vws-about-merge p,#vws-about-merge .vws-merge-p{color:rgba(225,224,204,0.52)!important}
+  #vws-about-merge li,#vws-about-merge .vws-mpill{color:rgba(147,197,253,0.9)!important}
+  #vws-about-merge .vws-mcard-name{color:#e1e0cc!important}
+  #vws-about-merge .vws-mcard-desc{color:rgba(225,224,204,0.5)!important}
+  #vws-about-cta h2,#vws-about-cta .vws-acta-title{color:#e1e0cc!important}
+  #vws-about-cta p,#vws-about-cta .vws-acta-label{color:rgba(96,165,250,0.9)!important}
   /* ══ ABOUT PAGE — What We Stand For (animated manifesto) ══ */
   #vws-stand-for{background:#060606!important;padding:100px 40px;font-family:inherit;overflow:hidden}
   .vws-sf-inner{max-width:1100px;margin:0 auto}
