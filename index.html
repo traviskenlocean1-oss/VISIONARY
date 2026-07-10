@@ -286,6 +286,50 @@
           if (document.getElementById('vws-about-merge') || mergePoll > 30) clearInterval(mergeTimer);
         }, 300);
 
+        /* "Who We Are" section — 2-col layout: text left, team photo right */
+        function injectAboutWhoWeArePhoto() {
+          if (document.getElementById('vws-about-wwa-grid')) return;
+          /* Find the our-story section or any section containing "Who We Are" text */
+          var ourStory = document.getElementById('our-story');
+          if (!ourStory) {
+            var allSections = document.querySelectorAll('section');
+            for (var i = 0; i < allSections.length; i++) {
+              if (allSections[i].textContent.indexOf('Who We Are') !== -1) {
+                ourStory = allSections[i]; break;
+              }
+            }
+          }
+          if (!ourStory) return;
+          /* Find the innermost max-width content container */
+          var container = null;
+          var divs = ourStory.querySelectorAll('div');
+          for (var j = 0; j < divs.length; j++) {
+            var cls = typeof divs[j].className === 'string' ? divs[j].className : '';
+            if (cls.indexOf('max-w') !== -1) { container = divs[j]; break; }
+          }
+          if (!container) container = ourStory;
+          /* Build grid wrapper */
+          var grid = document.createElement('div');
+          grid.id = 'vws-about-wwa-grid';
+          /* Move all existing children into the left column */
+          var leftCol = document.createElement('div');
+          while (container.firstChild) { leftCol.appendChild(container.firstChild); }
+          /* Right column: smiling office team photo */
+          var rightCol = document.createElement('div');
+          rightCol.id = 'vws-about-wwa-img';
+          rightCol.style.cssText = 'position:sticky;top:120px';
+          rightCol.innerHTML = '<img src="https://images.pexels.com/photos/3182812/pexels-photo-3182812.jpeg?auto=compress&cs=tinysrgb&w=680&h=820&fit=crop&fp-y=0.25" alt="Visionary Web Studio team smiling in office" loading="lazy" style="width:100%;height:520px;object-fit:cover;object-position:center 15%;border-radius:12px;display:block;box-shadow:0 16px 48px rgba(0,0,0,0.10)"/>';
+          grid.appendChild(leftCol);
+          grid.appendChild(rightCol);
+          container.appendChild(grid);
+        }
+        injectAboutWhoWeArePhoto();
+        var wwaPoll = 0, wwaTimer = setInterval(function() {
+          wwaPoll++;
+          injectAboutWhoWeArePhoto();
+          if (document.getElementById('vws-about-wwa-grid') || wwaPoll > 30) clearInterval(wwaTimer);
+        }, 300);
+
         /* CTA section — anchors after #vws-stand-for, else before footer */
         function injectAboutCta() {
           if (document.getElementById('vws-about-cta')) return;
@@ -874,6 +918,11 @@
   body.vws-about section.min-h-screen{background:transparent!important}
   body.vws-about section.min-h-screen h1,body.vws-about section.min-h-screen h2{color:rgb(225,224,204)!important}
   body.vws-about section.min-h-screen p{color:rgba(225,224,204,0.6)!important}
+  /* Fix "businesses." cyan gradient → match site blue/indigo */
+  body.vws-about section.min-h-screen h1 span{background:linear-gradient(135deg,#60a5fa 0%,#3b82f6 50%,#818cf8 100%)!important;-webkit-background-clip:text!important;background-clip:text!important;-webkit-text-fill-color:transparent!important}
+  /* Who We Are two-column grid */
+  #vws-about-wwa-grid{display:grid;grid-template-columns:1fr 42%;gap:56px;align-items:start}
+  @media(max-width:900px){#vws-about-wwa-grid{grid-template-columns:1fr}#vws-about-wwa-img{display:none}}
   /* Preserve our injected dark differentiators section */
   #vws-about-diff{background:#080808!important}
   #vws-about-diff h2,#vws-about-diff h3{color:#fff!important}
