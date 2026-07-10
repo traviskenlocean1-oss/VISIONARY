@@ -1958,7 +1958,7 @@
     var sl=(location.pathname.match(/\/services\/([^\/]+)/)||[])[1];
     if(sl){var se=document.createElement('style');se.id='vws-early-hue';
       if(sl==='website-development'){
-        se.textContent='[class~="-z-10"]{filter:sepia(1) saturate(4) hue-rotate(205deg)!important}';
+        se.textContent='[class~="-z-10"]{filter:sepia(1) saturate(5) hue-rotate(205deg) brightness(1.6)!important}';
       }else if(HUE[sl]){
         se.textContent='[class~="-z-10"]{filter:hue-rotate('+HUE[sl]+') saturate(1.4)!important}';
       }
