@@ -218,7 +218,21 @@
           }
         });
 
-        /* CTA section above "What actually gets your phone ringing" (vws-about-diff) */
+        /* Hide React-native "proud to share" CTA (light bg, duplicate of our dark CTA) */
+        document.querySelectorAll('section:not([id])').forEach(function(s) {
+          if (s.textContent.indexOf('proud to share') !== -1) {
+            s.style.setProperty('display','none','important');
+          }
+        });
+
+        /* Match design cards section bg to the dark Real Difference color (#080808) */
+        Array.from(document.querySelectorAll('section')).forEach(function(s) {
+          if (s.textContent.indexOf('Custom Layouts') !== -1 || s.textContent.indexOf('Brand-Matched Color') !== -1) {
+            s.style.setProperty('background','#080808','important');
+          }
+        });
+
+        /* CTA section after "What actually gets your phone ringing" (vws-about-diff) */
         function injectAboutCta() {
           if (document.getElementById('vws-about-cta')) return;
           var diff = document.getElementById('vws-about-diff');
@@ -230,7 +244,7 @@
             +'<h2 class="vws-acta-title">Let\'s build something<br>you\'re proud to share.</h2>'
             +'<a href="/contact" class="vws-acta-btn">Start a Project</a>'
             +'</div>';
-          diff.parentNode.insertBefore(cta, diff);
+          diff.parentNode.insertBefore(cta, diff.nextSibling);
         }
         injectAboutCta();
         var ctaPoll = 0, ctaTimer = setInterval(function() {
@@ -313,11 +327,16 @@
           var list = document.getElementById('vws-svc-list');
           if (list) list.style.setProperty('display','none','important');
           setTimeout(function() {
+            /* Guard: if user navigated away from the detail page within 700ms, don't fire */
+            if (window.location.pathname.indexOf('/services/') !== 0) return;
             document.querySelectorAll('section:not([id])').forEach(function(s) {
               s.style.setProperty('display','none','important');
             });
-            var h = document.getElementById('vws-hero');
-            if (h) { var t = h.getBoundingClientRect().top + window.scrollY - 80; window.scrollTo({top:t,behavior:'instant'}); }
+            /* Only auto-scroll if user hasn't scrolled yet (prevents jarring jump-back glitch) */
+            if (window.scrollY < 80) {
+              var h = document.getElementById('vws-hero');
+              if (h) { var t = h.getBoundingClientRect().top + window.scrollY - 80; window.scrollTo({top:t,behavior:'instant'}); }
+            }
           }, 700);
           return;
         }
@@ -662,7 +681,7 @@
 
   /* ══ Homepage — before/after slider ══ */
   #vws-hp-slider{padding:80px 24px;position:relative}
-  #vws-ba-wrap{position:relative;width:100%;max-width:1300px;margin:0 auto;border-radius:14px;overflow:hidden;box-shadow:0 24px 80px rgba(0,0,0,0.18);user-select:none;touch-action:none;cursor:ew-resize}
+  #vws-ba-wrap{position:relative;width:100%;max-width:1300px;margin:0 auto;border-radius:14px;overflow:hidden;box-shadow:0 24px 80px rgba(0,0,0,0.18);user-select:none;touch-action:none;cursor:ew-resize;height:600px}
   #vws-ba-before{position:absolute;top:0;bottom:0;left:0;overflow:hidden;width:50%}
   #vws-ba-handle{position:absolute;top:0;bottom:0;left:50%;transform:translateX(-50%);width:3px;background:#fff;box-shadow:0 0 0 1px rgba(0,0,0,0.15);z-index:10;cursor:ew-resize}
   #vws-ba-knob{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:42px;height:42px;border-radius:50%;background:#fff;box-shadow:0 2px 16px rgba(0,0,0,0.28);display:flex;align-items:center;justify-content:center;gap:0}
@@ -1084,8 +1103,9 @@
   .vws-sl-desc{font-size:16px;color:#4b5563;margin:0 0 32px;line-height:1.75;max-width:480px}
   .vws-sl-btn{display:inline-block;padding:14px 32px;background:#0d1117!important;color:#fff!important;font-size:12px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;text-decoration:none!important;border-radius:6px;transition:background .2s;cursor:pointer;box-shadow:none!important;align-self:flex-start;width:auto!important}
   .vws-sl-btn:hover{background:#2563eb!important}
-  .vws-sl-vinner{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;z-index:2}
+  .vws-sl-vinner{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:2;gap:0}
   .vws-sl-vnum{font-size:clamp(100px,14vw,200px);font-weight:900;color:rgba(255,255,255,0.12);line-height:1;user-select:none}
+  .vws-sl-vnum::after{content:'';display:block;width:52px;height:52px;border-radius:50%;border:2px solid rgba(255,255,255,0.5);margin:18px auto 0}
   @media(max-width:768px){.vws-sl-row,.vws-sl-row.vws-sl-flip{flex-direction:column}.vws-sl-text{padding:48px 24px}.vws-sl-visual{min-height:220px}}
 
   /* ══ SERVICES PAGE — "Built for Results" white section ══ */
