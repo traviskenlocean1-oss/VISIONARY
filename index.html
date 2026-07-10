@@ -3,9 +3,6 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0" />
-    <meta http-equiv="Pragma" content="no-cache" />
-    <meta http-equiv="Expires" content="0" />
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='18' fill='%230a0f1e'/><text x='50' y='82' font-family='Arial Black,sans-serif' font-size='84' font-weight='900' fill='%233b82f6' text-anchor='middle'>V</text></svg>" />
     <title>Visionary Web Studio | Custom Websites</title>
     <meta name="description" content="Visionary Web Studio — custom websites built from scratch for businesses that refuse to blend in." />
@@ -732,6 +729,17 @@
   /* Broader fallback — hide any child div labelled "TYPICAL PROJECT TIMELINE" */
   section [style*="text-transform: uppercase"]:has + div { display:none!important }
 
+  /* ══ DUAL TICKER — Cosmico Studios style ══ */
+  #vws-dual-ticker{padding:0;overflow:hidden;background:#060916;border-top:1px solid rgba(255,255,255,0.06);border-bottom:1px solid rgba(255,255,255,0.06)}
+  #vws-dual-ticker .vws-tk-row{display:flex;overflow:hidden;padding:14px 0}
+  #vws-dual-ticker .vws-tk-track{display:flex;gap:0;white-space:nowrap;will-change:transform}
+  #vws-dual-ticker .vws-tk-track--left{animation:vws-tk-left 28s linear infinite}
+  #vws-dual-ticker .vws-tk-track--right{animation:vws-tk-right 32s linear infinite}
+  #vws-dual-ticker .vws-tk-item{display:inline-flex;align-items:center;gap:0;font-size:13px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:rgba(225,224,204,0.55);white-space:nowrap}
+  #vws-dual-ticker .vws-tk-item .vws-tk-star{color:#2563eb;margin:0 18px;font-size:10px;line-height:1;flex-shrink:0}
+  #vws-dual-ticker .vws-tk-row:hover .vws-tk-track{animation-play-state:paused}
+  @keyframes vws-tk-left{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+  @keyframes vws-tk-right{from{transform:translateX(-50%)}to{transform:translateX(0)}}
 
   /* ══ HERO WAVE ══ */
   #vws-hero-wave{position:absolute;bottom:0;left:0;right:0;line-height:0;pointer-events:none;z-index:2}
@@ -1799,7 +1807,7 @@
       _vwsPendingSlug = null;
       /* Clean up previous injections so switching service pages doesn't stack */
       window._vwsAboutPollActive = false;
-      ['vws-ba-injected','vws-deepdive','vws-svc-theme','vws-svc-listing','vws-listing-colors','vws-early-hue','vws-ill-wrap','vws-hero','vws-problem','vws-steps','vws-included','vws-results','vws-faq','vws-cta','vws-about-diff','vws-about-sticky','vws-about-styles','vws-design-cards','vws-seo-code','vws-whoweare-mockup','vws-comparison-table','vws-comparison-styles','vws-hp-trust','vws-hp-slider','vws-hp-bookend','vws-deposit-note','vws-hp-services','vws-dual-ticker'].forEach(function(id){
+      ['vws-ba-injected','vws-deepdive','vws-svc-theme','vws-svc-listing','vws-listing-colors','vws-early-hue','vws-ill-wrap','vws-hero','vws-problem','vws-steps','vws-included','vws-results','vws-faq','vws-cta','vws-about-diff','vws-about-sticky','vws-about-styles','vws-design-cards','vws-seo-code','vws-whoweare-mockup','vws-comparison-table','vws-comparison-styles','vws-hp-trust','vws-hp-slider','vws-hp-bookend','vws-deposit-note','vws-hp-services'].forEach(function(id){
         var el = document.getElementById(id);
         if (el) el.remove ? el.remove() : el.parentNode.removeChild(el);
       });
@@ -2912,12 +2920,24 @@
         if (reactSecs[6]) { reactSecs[6].classList.add('vws-section-dark'); reactSecs[6].setAttribute('data-vws-hp','1'); }
         if (reactSecs[7]) { reactSecs[7].classList.add('vws-section-light'); reactSecs[7].setAttribute('data-vws-hp','1'); }
 
-        /* Hide React industries ticker */
-        Array.from(reactSecs).forEach(function(s) {
-          if (s.textContent.indexOf("Industries we’ve built for") !== -1) {
-            s.style.setProperty(‘display’,’none’,’important’);
+        /* ── Dual ticker: hide React industries section, inject ours ── */
+        if (!document.getElementById('vws-dual-ticker')) {
+          /* Find and hide the React industries ticker (contains "Industries we've built for") */
+          Array.from(reactSecs).forEach(function(s) {
+            if (s.textContent.indexOf("Industries we've built for") !== -1 || s.textContent.indexOf("Industries we’ve built for") !== -1) {
+              s.style.display = 'none';
+              s.setAttribute('data-vws-hidden','1');
+            }
+          });
+
+          var tkEl = document.createElement('section');
+          tkEl.id = 'vws-dual-ticker';
+          tkEl.innerHTML = buildDualTicker();
+          /* Insert after hero (reactSecs[0]) */
+          if (reactSecs[0] && reactSecs[0].nextSibling) {
+            reactSecs[0].parentNode.insertBefore(tkEl, reactSecs[0].nextSibling);
           }
-        });
+        }
 
         /* ── Hero wave: inject SVG curve at bottom of hero ── */
         if (!document.getElementById('vws-hero-wave')) {
@@ -3040,6 +3060,21 @@
 
       }
 
+      /* ── Build: Dual ticker (Cosmico Studios style) ── */
+      function buildDualTicker() {
+        var row1 = ['Custom Websites','SEO Optimization','Logo & Branding','Website Redesign','Hosting & Domains','Website Maintenance','Mobile-First Design','Fast Delivery','Local SEO','E-Commerce','Hand-Coded','No Templates'];
+        var row2 = ['Restaurants','Contractors','Beauty Studios','Auto Shops','Law Firms','Real Estate','Fitness Studios','Medical Clinics','Landscaping','Cleaning Services','Barber Shops','Plumbers','Spas & Wellness','Consultants'];
+
+        function buildTrack(items) {
+          var doubled = items.concat(items);
+          return doubled.map(function(item) {
+            return '<span class="vws-tk-item">' + item + '<span class="vws-tk-star">✦</span></span>';
+          }).join('');
+        }
+
+        return '<div class="vws-tk-row"><div class="vws-tk-track vws-tk-track--left">' + buildTrack(row1) + '</div></div>'
+          + '<div class="vws-tk-row" style="border-top:1px solid rgba(255,255,255,0.04)"><div class="vws-tk-track vws-tk-track--right">' + buildTrack(row2) + '</div></div>';
+      }
 
       /* ── Process accordion depth injection ── */
       function injectProcessDepth() {
