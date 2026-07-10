@@ -499,6 +499,8 @@
             hero = secs[i]; break;
           }
           if (!hero) return false;
+          /* Skip if this is the outgoing home/services hero (it already has its own wave inside) */
+          if (hero.querySelector('#vws-hero-wave') || hero.querySelector('#vws-svc-wave')) return false;
           /* About page needs overflow:visible so its glow orbs aren't clipped */
           if (path.indexOf('/about') === -1) hero.style.setProperty('overflow', 'hidden', 'important');
           hero.style.setProperty('position', 'relative', 'important');
