@@ -3126,6 +3126,9 @@
           initSlider();
         }
 
+        /* ── Process section: two-column layout (steps left, photo right) ── */
+        injectProcessPhoto();
+
         /* ── Process accordion depth: inject bullet content ── */
         injectProcessDepth();
 
@@ -3209,6 +3212,66 @@
 
         return '<div class="vws-tk-row"><div class="vws-tk-track vws-tk-track--left">' + buildTrack(row1) + '</div></div>'
           + '<div class="vws-tk-row" style="border-top:1px solid rgba(255,255,255,0.04)"><div class="vws-tk-track vws-tk-track--right">' + buildTrack(row2) + '</div></div>';
+      }
+
+      /* ── Process section: two-column layout ── */
+      function injectProcessPhoto() {
+        if (document.getElementById('vws-proc-grid')) return true;
+        var h2 = null;
+        var allH2 = document.querySelectorAll('h2');
+        for (var i = 0; i < allH2.length; i++) {
+          if (allH2[i].textContent.trim() === 'How We Transform Your Vision Into Reality') {
+            h2 = allH2[i]; break;
+          }
+        }
+        if (!h2) return false;
+
+        /* Walk up to find the max-w-6xl container */
+        var container = h2.parentElement;
+        while (container && container.tagName !== 'SECTION') {
+          if (container.className && typeof container.className === 'string' && container.className.indexOf('max-w-6xl') !== -1) break;
+          container = container.parentElement;
+        }
+        if (!container || !container.className || typeof container.className !== 'string' || container.className.indexOf('max-w-6xl') === -1) return false;
+
+        var headlineBlock = container.children[0]; /* div.mb-14 — OUR PROCESS label + h2 */
+        var stepsBlock = container.children[1];    /* div.mb-14.border-t — accordion steps */
+        if (!headlineBlock || !stepsBlock) return false;
+
+        /* Inject compact-steps + grid CSS once */
+        if (!document.getElementById('vws-proc-css')) {
+          var css = document.createElement('style');
+          css.id = 'vws-proc-css';
+          css.textContent = [
+            '#vws-proc-grid{display:grid;grid-template-columns:1fr 43%;gap:52px;align-items:start}',
+            '@media(max-width:900px){#vws-proc-grid{grid-template-columns:1fr}#vws-proc-photo{display:none}}',
+            '#vws-proc-grid [class*="py-7"]{padding-top:13px!important;padding-bottom:13px!important}',
+            '#vws-proc-grid span[class*="text-xl"]{font-size:15px!important;line-height:1.35!important}',
+            '#vws-proc-photo{position:sticky;top:110px}',
+            '#vws-proc-photo img{width:100%;height:580px;object-fit:cover;border-radius:10px;display:block;box-shadow:0 20px 60px rgba(0,0,0,0.12)}'
+          ].join('');
+          document.head.appendChild(css);
+        }
+
+        /* Build the grid */
+        var grid = document.createElement('div');
+        grid.id = 'vws-proc-grid';
+
+        var leftCol = document.createElement('div');
+        leftCol.id = 'vws-proc-left';
+
+        var rightCol = document.createElement('div');
+        rightCol.id = 'vws-proc-photo';
+        rightCol.innerHTML = '<img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&w=720&h=900&fit=crop&q=85" alt="Our team collaborating on your project" loading="lazy"/>';
+
+        grid.appendChild(leftCol);
+        grid.appendChild(rightCol);
+
+        /* Insert grid between headlineBlock and stepsBlock, then move steps into left col */
+        container.insertBefore(grid, stepsBlock);
+        leftCol.appendChild(stepsBlock);
+
+        return true;
       }
 
       /* ── Process accordion depth injection ── */
