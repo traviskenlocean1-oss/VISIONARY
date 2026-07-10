@@ -26,19 +26,8 @@
     function fixSite() {
       /* Un-hide sections that a detail page may have hidden — runs before all other steps */
       if (window.location.pathname.indexOf('/services/') === -1) {
-        document.querySelectorAll('section:not([id])').forEach(function(s){
-          /* Never un-hide the React industries ticker — it must stay hidden always */
-          if (s.textContent.indexOf('Industries we') !== -1 && s.textContent.indexOf('built for') !== -1) return;
-          s.style.removeProperty('display');
-        });
+        document.querySelectorAll('section:not([id])').forEach(function(s){s.style.removeProperty('display');});
       }
-
-      /* Keep React industries ticker hidden on every fixSite() call */
-      document.querySelectorAll('section').forEach(function(s) {
-        if (!s.id && s.textContent.indexOf('Industries we') !== -1 && s.textContent.indexOf('built for') !== -1) {
-          s.style.setProperty('display','none','important');
-        }
-      });
 
       /* 1. Unfreeze every section element stuck at opacity:0 by GSAP */
       document.querySelectorAll('section *').forEach(function(el) {
@@ -2925,7 +2914,7 @@
 
         /* Hide React industries ticker */
         Array.from(reactSecs).forEach(function(s) {
-          if (s.textContent.indexOf(‘Industries we’) !== -1 && s.textContent.indexOf(‘built for’) !== -1) {
+          if (s.textContent.indexOf("Industries we’ve built for") !== -1) {
             s.style.setProperty(‘display’,’none’,’important’);
           }
         });
