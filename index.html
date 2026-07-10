@@ -225,10 +225,11 @@
           }
         });
 
-        /* Match design cards section bg to the dark Real Difference color (#080808) */
+        /* Match design cards section bg to #080808 — "What We Stand For" / values cards */
         Array.from(document.querySelectorAll('section')).forEach(function(s) {
-          if (s.textContent.indexOf('Custom Layouts') !== -1 || s.textContent.indexOf('Brand-Matched Color') !== -1) {
+          if (s.textContent.indexOf('What We Stand For') !== -1 || s.textContent.indexOf('Honesty first') !== -1) {
             s.style.setProperty('background','#080808','important');
+            s.setAttribute('data-vws-dark-sec','1');
           }
         });
 
@@ -767,6 +768,9 @@
   #vws-about-diff{background:#080808!important}
   #vws-about-diff h2,#vws-about-diff h3{color:#fff!important}
   #vws-about-diff p{color:rgba(255,255,255,0.5)!important}
+  /* Values cards ("What We Stand For") — dark section text overrides */
+  [data-vws-dark-sec] h1,[data-vws-dark-sec] h2,[data-vws-dark-sec] h3,[data-vws-dark-sec] h4,[data-vws-dark-sec] span{color:#ffffff!important}
+  [data-vws-dark-sec] p,[data-vws-dark-sec] li{color:rgba(255,255,255,0.55)!important}
 
   /* ══ MOBILE FIXES ══ */
   @media(max-width:768px){
@@ -1081,7 +1085,7 @@
   #vws-svc-listing{display:none!important}
 
   /* ══ ABOUT PAGE — CTA section ══ */
-  #vws-about-cta{background:#0d1117;padding:80px 40px;text-align:center;font-family:inherit}
+  #vws-about-cta{background:#0d1117!important;padding:80px 40px;text-align:center;font-family:inherit}
   .vws-acta-wrap{max-width:700px;margin:0 auto}
   .vws-acta-label{font-size:10px;font-weight:700;letter-spacing:.25em;text-transform:uppercase;color:rgba(96,165,250,0.7);margin:0 0 20px}
   .vws-acta-title{font-size:clamp(32px,5vw,60px);font-weight:900;color:#e1e0cc;margin:0 0 36px;line-height:1.1}
