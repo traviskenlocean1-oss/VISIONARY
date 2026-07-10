@@ -21,6 +21,11 @@
   /* ── PATCH: fix frozen GSAP scroll animations + Services dropdown ── */
   (function() {
     function fixSite() {
+      /* Un-hide sections that a detail page may have hidden — runs before all other steps */
+      if (window.location.pathname.indexOf('/services/') === -1) {
+        document.querySelectorAll('section:not([id])').forEach(function(s){s.style.removeProperty('display');});
+      }
+
       /* 1. Unfreeze every section element stuck at opacity:0 by GSAP */
       document.querySelectorAll('section *').forEach(function(el) {
         var s = el.getAttribute('style') || '';
@@ -1133,6 +1138,12 @@
   #vws-hp-services{padding:0 0 60px}
   @media(max-width:900px){.vws-wwo-grid{grid-template-columns:1fr 1fr}.vws-wwo-c3{grid-column:span 2;flex-direction:column;gap:16px}}
   @media(max-width:600px){.vws-wwo-grid{grid-template-columns:1fr}.vws-wwo-c2,.vws-wwo-c3{grid-column:span 1;flex-direction:column}}
+
+  /* ══ MOBILE HERO — hide form card, strip right-side gradient ══ */
+  @media(max-width:768px){
+    section[class*="h-screen"] [style*="rgba(4, 8, 22"]{display:none!important}
+    #vws-hero-rt{display:none!important}
+  }
 
   /* ══ CONTACT PAGE — dark form theme ══ */
   #vws-contact-form-sec{background:#060916!important}
@@ -3039,9 +3050,8 @@
             });
             /* Style the parent section dark */
             wwoSec.style.setProperty('background','#060916','important');
-            wwoSec.querySelectorAll('*').forEach(function(el){
-              if(parseFloat(window.getComputedStyle(el).opacity) === 0) el.style.display='none';
-            });
+            /* Hide ALL React children — not just opacity:0 ones — so icon boxes don't bleed through */
+            Array.from(wwoSec.children).forEach(function(c){c.style.setProperty('display','none','important');});
             wwoSec.appendChild(sGrid);
           }
         }
