@@ -482,26 +482,44 @@
       /* ── Universal hero wave: about / pricing / portfolio pages ── */
       (function() {
         var path = window.location.pathname;
-        /* Home already has #vws-hero-wave; contact is excluded; services pages have their own waves */
         if (/^\/?$/.test(path) || path.indexOf('/contact') !== -1 || path.indexOf('/services') !== -1) return;
-        if (document.getElementById('vws-universal-wave')) return;
-        /* Find first visible non-injected section (the hero) */
-        var secs = document.querySelectorAll('section');
-        var hero = null;
-        for (var i = 0; i < secs.length; i++) {
-          if (secs[i].id && secs[i].id.indexOf('vws-') === 0) continue;
-          if (window.getComputedStyle(secs[i]).display === 'none') continue;
-          hero = secs[i]; break;
+        /* One polling timer per path — clear old one if path changed */
+        if (window._vwsUWPath === path && window._vwsUWTimer) return;
+        if (window._vwsUWTimer) { clearInterval(window._vwsUWTimer); window._vwsUWTimer = null; }
+        window._vwsUWPath = path;
+
+        function injectUniversalWave() {
+          if (window.location.pathname !== path) return true; /* navigated away — stop */
+          if (document.getElementById('vws-universal-wave')) return true;
+          var secs = document.querySelectorAll('section');
+          var hero = null;
+          for (var i = 0; i < secs.length; i++) {
+            if (secs[i].id && secs[i].id.indexOf('vws-') === 0) continue;
+            if (window.getComputedStyle(secs[i]).display === 'none') continue;
+            hero = secs[i]; break;
+          }
+          if (!hero) return false;
+          /* About page needs overflow:visible so its glow orbs aren't clipped */
+          if (path.indexOf('/about') === -1) hero.style.setProperty('overflow', 'hidden', 'important');
+          hero.style.setProperty('position', 'relative', 'important');
+          var wave = document.createElement('div');
+          wave.id = 'vws-universal-wave';
+          wave.style.cssText = 'position:absolute;bottom:0;left:0;right:0;line-height:0;pointer-events:none;z-index:2';
+          wave.innerHTML = '<svg viewBox="0 0 1440 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"><path d="M0,0 C360,80 1080,80 1440,0 L1440,80 L0,80 Z" fill="#060916"/><path d="M0,20 C360,80 1080,60 1440,20 L1440,80 L0,80 Z" fill="#f7f8fc" opacity="0.08"/></svg>';
+          hero.appendChild(wave);
+          return true;
         }
-        if (!hero) return;
-        /* About page needs overflow:visible so its glow orbs aren't clipped */
-        if (path.indexOf('/about') === -1) hero.style.setProperty('overflow', 'hidden', 'important');
-        hero.style.setProperty('position', 'relative', 'important');
-        var wave = document.createElement('div');
-        wave.id = 'vws-universal-wave';
-        wave.style.cssText = 'position:absolute;bottom:0;left:0;right:0;line-height:0;pointer-events:none;z-index:2';
-        wave.innerHTML = '<svg viewBox="0 0 1440 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"><path d="M0,0 C360,80 1080,80 1440,0 L1440,80 L0,80 Z" fill="#060916"/><path d="M0,20 C360,80 1080,60 1440,20 L1440,80 L0,80 Z" fill="#f7f8fc" opacity="0.08"/></svg>';
-        hero.appendChild(wave);
+
+        if (!injectUniversalWave()) {
+          var _uwp = 0;
+          window._vwsUWTimer = setInterval(function() {
+            _uwp++;
+            if (injectUniversalWave() || _uwp > 30) {
+              clearInterval(window._vwsUWTimer);
+              window._vwsUWTimer = null;
+            }
+          }, 200);
+        }
       })();
 
       /* 2. Build Services dropdown if the nav is rendered and dropdown not yet injected */
