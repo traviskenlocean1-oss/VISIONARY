@@ -23,7 +23,7 @@
     function fixSite() {
       /* Un-hide sections that a detail page may have hidden — runs before all other steps */
       if (window.location.pathname.indexOf('/services/') === -1) {
-        document.querySelectorAll('section:not([id])').forEach(function(s){s.style.removeProperty('display');});
+        document.querySelectorAll('section:not([id]):not([data-vws-hidden])').forEach(function(s){s.style.removeProperty('display');});
       }
 
       /* 1. Unfreeze every section element stuck at opacity:0 by GSAP */
@@ -2920,15 +2920,17 @@
         if (reactSecs[6]) { reactSecs[6].classList.add('vws-section-dark'); reactSecs[6].setAttribute('data-vws-hp','1'); }
         if (reactSecs[7]) { reactSecs[7].classList.add('vws-section-light'); reactSecs[7].setAttribute('data-vws-hp','1'); }
 
-        /* ── Dual ticker: hide React industries section, inject ours ── */
-        if (!document.getElementById('vws-dual-ticker')) {
-          /* Find and hide the React industries ticker (contains "Industries we've built for") */
-          Array.from(reactSecs).forEach(function(s) {
-            if (s.textContent.indexOf("Industries we've built for") !== -1 || s.textContent.indexOf("Industries we’ve built for") !== -1) {
-              s.style.display = 'none';
-              s.setAttribute('data-vws-hidden','1');
-            }
-          });
+        /* ── Always hide React industries section (runs every fixSite call) ── */
+        Array.from(reactSecs).forEach(function(s) {
+          var t = s.textContent;
+          if (t.indexOf("Industries we’ve built for") !== -1 || t.indexOf("Industries we've built for") !== -1) {
+            s.style.setProperty(‘display’,’none’,’important’);
+            s.setAttribute(‘data-vws-hidden’,’1’);
+          }
+        });
+
+        /* ── Dual ticker: inject ours once ── */
+        if (!document.getElementById(‘vws-dual-ticker’)) {
 
           var tkEl = document.createElement('section');
           tkEl.id = 'vws-dual-ticker';
