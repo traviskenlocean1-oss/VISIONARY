@@ -1954,11 +1954,10 @@
   <script>
   /* Apply background hue-rotate immediately on initial page load (no flash/transition) */
   (function(){
-    var HUE={'website-development':'-20deg','hosting-domain':'-60deg','hosting':'-60deg','website-maintenance':'-165deg','website-creation':'102deg','website-redesign':'120deg','logo-branding':'131deg'};
-    var SAT={'website-development':'2.8'};
-    var BRI={'website-development':'0.68'};
+    var HUE={'website-development':'-40deg','hosting-domain':'-60deg','hosting':'-60deg','website-maintenance':'-165deg','website-creation':'102deg','website-redesign':'120deg','logo-branding':'131deg'};
+    var SAT={'website-development':'2.0'};
     var sl=(location.pathname.match(/\/services\/([^\/]+)/)||[])[1];
-    if(sl&&HUE[sl]){var se=document.createElement('style');se.id='vws-early-hue';se.textContent='[class~="-z-10"]{filter:hue-rotate('+HUE[sl]+') saturate('+(SAT[sl]||'1.4')+') brightness('+(BRI[sl]||'1')+') contrast('+(sl==='website-development'?'1.25':'1')+')!important}';document.head.appendChild(se);}
+    if(sl&&HUE[sl]){var se=document.createElement('style');se.id='vws-early-hue';se.textContent='[class~="-z-10"]{filter:hue-rotate('+HUE[sl]+') saturate('+(SAT[sl]||'1.4')+')!important}';document.head.appendChild(se);}
   })();
   (function(){
     /* Capture slug from URL immediately — before React Router can replaceState('/services') */
