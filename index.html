@@ -292,7 +292,7 @@
       (function() {
         var path = window.location.pathname;
 
-        /* Service detail page — hide our listing grid, scroll to injected detail content */
+        /* Service detail page — hide listing, scroll to detail content */
         if (path.indexOf('/services/') === 0) {
           var list = document.getElementById('vws-svc-list');
           if (list) list.style.setProperty('display','none','important');
@@ -305,13 +305,26 @@
 
         if (path !== '/services') return;
 
-        /* Show listing if it was hidden while on a detail page */
+        /* Show listing if hidden from a prior detail-page visit */
         var existingList = document.getElementById('vws-svc-list');
         if (existingList) existingList.style.removeProperty('display');
 
-        /* Hero wave — grey fill */
-        var hero = document.querySelectorAll('section')[0];
-        if (hero && !document.getElementById('vws-svc-wave')) {
+        /* Hide React-rendered per-service sections */
+        Array.from(document.querySelectorAll('section')).forEach(function(s) {
+          if (s.className === 'relative border-t') s.style.setProperty('display','none','important');
+        });
+
+        /* "Built for Results" id */
+        document.querySelectorAll('section').forEach(function(s) {
+          var h2 = s.querySelector('h2');
+          if (h2 && h2.textContent.trim() === 'Built for Results') s.id = 'vws-built-results';
+        });
+
+        /* ── Wave injector — re-runs until hero exists ── */
+        function injectWave() {
+          if (document.getElementById('vws-svc-wave')) return;
+          var hero = document.querySelectorAll('section')[0];
+          if (!hero) return;
           hero.style.setProperty('position','relative','important');
           hero.style.setProperty('overflow','hidden','important');
           var wave = document.createElement('div');
@@ -321,24 +334,24 @@
           hero.appendChild(wave);
         }
 
-        /* Hide React-rendered individual service sections */
-        Array.from(document.querySelectorAll('section')).forEach(function(s) {
-          if (s.className === 'relative border-t') {
-            s.style.setProperty('display','none','important');
-          }
-        });
+        /* ── Listing injector — returns true on success, false if ref not ready yet ── */
+        var SVC_DATA = [
+          {num:'01',title:'Website Development',desc:'Every site we build is hand-coded from scratch — no templates, no drag-and-drop builders. Custom design built around your brand, built to convert visitors into customers.',href:'/services/website-development',tint:'rgba(37,99,235,0.55)'},
+          {num:'02',title:'Hosting & Domain',desc:'Getting online shouldn\'t be complicated. We handle your domain setup, connect everything, and host your site on fast, globally distributed servers — included at no extra cost.',href:'/services/hosting-domain',tint:'rgba(13,148,136,0.55)'},
+          {num:'03',title:'Website Maintenance',desc:'The work doesn\'t stop at launch. We stay available for updates, fixes, and improvements so your site keeps performing at its best — month after month.',href:'/services/website-maintenance',tint:'rgba(217,119,6,0.55)'},
+          {num:'04',title:'Website Creation',desc:'Starting from zero? We build your entire online presence from the ground up — custom design, clean code, and everything in between. No shortcuts.',href:'/services/website-creation',tint:'rgba(124,58,237,0.55)'},
+          {num:'05',title:'Website Redesign',desc:'Already have a site but it\'s outdated, slow, or not converting? We rebuild it from scratch — same domain, completely new results and a design that actually works.',href:'/services/website-redesign',tint:'rgba(220,38,38,0.5)'},
+          {num:'06',title:'Logo & Branding',desc:'Your logo is the face of your business. We design custom logos and full brand identities that look professional, stand out, and last for years.',href:'/services/logo-branding',tint:'rgba(202,138,4,0.6)'}
+        ];
 
-        /* Meadowline-style alternating layout */
-        if (!existingList) {
-          var svcs = [
-            {num:'01',title:'Website Development',desc:'Every site we build is hand-coded from scratch — no templates, no drag-and-drop builders. Custom design built around your brand, built to convert visitors into customers.',href:'/services/website-development',tint:'rgba(37,99,235,0.55)'},
-            {num:'02',title:'Hosting & Domain',desc:'Getting online shouldn\'t be complicated. We handle your domain setup, connect everything, and host your site on fast, globally distributed servers — included at no extra cost.',href:'/services/hosting-domain',tint:'rgba(13,148,136,0.55)'},
-            {num:'03',title:'Website Maintenance',desc:'The work doesn\'t stop at launch. We stay available for updates, fixes, and improvements so your site keeps performing at its best — month after month.',href:'/services/website-maintenance',tint:'rgba(245,158,11,0.5)'},
-            {num:'04',title:'Website Creation',desc:'Starting from zero? We build your entire online presence from the ground up — custom design, clean code, and everything in between. No shortcuts.',href:'/services/website-creation',tint:'rgba(124,58,237,0.55)'},
-            {num:'05',title:'Website Redesign',desc:'Already have a site but it\'s outdated, slow, or not converting? We rebuild it from scratch — same domain, completely new results and a design that actually works.',href:'/services/website-redesign',tint:'rgba(220,38,38,0.5)'},
-            {num:'06',title:'Logo & Branding',desc:'Your logo is the face of your business. We design custom logos and full brand identities that look professional, stand out, and last for years.',href:'/services/logo-branding',tint:'rgba(219,39,119,0.5)'}
-          ];
-          var rows = svcs.map(function(s, i) {
+        function injectListing() {
+          if (document.getElementById('vws-svc-list')) return true;
+          var ref = document.querySelector('section.relative.border-t');
+          if (!ref) return false;
+          Array.from(document.querySelectorAll('section')).forEach(function(s) {
+            if (s.className === 'relative border-t') s.style.setProperty('display','none','important');
+          });
+          var rows = SVC_DATA.map(function(s, i) {
             var flip = i % 2 === 1;
             var text = '<div class="vws-sl-text">'
               +'<p class="vws-sl-num">'+s.num+'</p>'
@@ -346,27 +359,27 @@
               +'<p class="vws-sl-desc">'+s.desc+'</p>'
               +'<a href="'+s.href+'" class="vws-sl-btn">Learn More</a>'
               +'</div>';
-            /* Transparent panel — fixed video shows through, color tint previews the detail page */
             var vis = '<div class="vws-sl-visual">'
               +'<div class="vws-sl-vtint" style="background:'+s.tint+'"></div>'
               +'<div class="vws-sl-vinner"><span class="vws-sl-vnum">'+s.num+'</span></div>'
               +'</div>';
-            return '<div class="vws-sl-row'+(flip?' vws-sl-flip':'')+'">'
-              +(flip ? vis+text : text+vis)
-              +'</div>';
+            return '<div class="vws-sl-row'+(flip?' vws-sl-flip':'')+'">'+(flip?vis+text:text+vis)+'</div>';
           }).join('');
-          var listSec = document.createElement('section');
-          listSec.id = 'vws-svc-list';
-          listSec.innerHTML = rows;
-          var ref = document.querySelector('section.relative.border-t');
-          if (ref) ref.parentElement.insertBefore(listSec, ref);
+          var sec = document.createElement('section');
+          sec.id = 'vws-svc-list';
+          sec.innerHTML = rows;
+          ref.parentElement.insertBefore(sec, ref);
+          return true;
         }
 
-        /* "Built for Results" section */
-        document.querySelectorAll('section').forEach(function(s) {
-          var h2 = s.querySelector('h2');
-          if (h2 && h2.textContent.trim() === 'Built for Results') s.id = 'vws-built-results';
-        });
+        injectWave();
+        if (!injectListing()) {
+          var svsPoll = 0, svsTimer = setInterval(function() {
+            svsPoll++;
+            injectWave();
+            if (injectListing() || svsPoll > 30) clearInterval(svsTimer);
+          }, 200);
+        }
       })();
 
       /* 2. Build Services dropdown if the nav is rendered and dropdown not yet injected */
