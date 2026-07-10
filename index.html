@@ -214,14 +214,14 @@
         /* Hide "How It Works" process section */
         Array.from(document.querySelectorAll('section')).forEach(function(s) {
           if ((s.className || '').indexOf('border-t') !== -1) {
-            s.style.setProperty('display', 'none', 'important');
+            s.classList.add('vws-react-hidden');
           }
         });
 
         /* Hide React-native "proud to share" CTA (light bg, duplicate of our dark CTA) */
         document.querySelectorAll('section:not([id])').forEach(function(s) {
           if (s.textContent.indexOf('proud to share') !== -1) {
-            s.style.setProperty('display','none','important');
+            s.classList.add('vws-react-hidden');
           }
         });
 
@@ -350,7 +350,7 @@
 
         /* Hide React-rendered per-service sections */
         Array.from(document.querySelectorAll('section')).forEach(function(s) {
-          if (s.className === 'relative border-t') s.style.setProperty('display','none','important');
+          if (s.className === 'relative border-t') s.classList.add('vws-react-hidden');
         });
 
         /* "Built for Results" id */
@@ -388,7 +388,7 @@
           var ref = document.querySelector('section.relative.border-t');
           if (!ref) return false;
           Array.from(document.querySelectorAll('section')).forEach(function(s) {
-            if (s.className === 'relative border-t') s.style.setProperty('display','none','important');
+            if (s.className === 'relative border-t') s.classList.add('vws-react-hidden');
           });
           var rows = SVC_DATA.map(function(s, i) {
             var flip = i % 2 === 1;
@@ -730,6 +730,7 @@
   section [style*="text-transform: uppercase"]:has + div { display:none!important }
 
   .vws-industries-hidden{display:none!important}
+  .vws-react-hidden{display:none!important}
   /* ══ DUAL TICKER — Cosmico Studios style ══ */
   #vws-dual-ticker{padding:0;overflow:hidden;background:#060916;border-top:1px solid rgba(255,255,255,0.06);border-bottom:1px solid rgba(255,255,255,0.06)}
   #vws-dual-ticker .vws-tk-row{display:flex;overflow:hidden;padding:14px 0}
