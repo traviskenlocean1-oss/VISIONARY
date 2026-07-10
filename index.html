@@ -1955,10 +1955,10 @@
   /* Apply background hue-rotate immediately on initial page load (no flash/transition) */
   (function(){
     var HUE={'website-development':'-20deg','hosting-domain':'-60deg','hosting':'-60deg','website-maintenance':'-165deg','website-creation':'102deg','website-redesign':'120deg','logo-branding':'131deg'};
-    var SAT={'website-development':'2.2'};
-    var BRI={'website-development':'0.82'};
+    var SAT={'website-development':'2.8'};
+    var BRI={'website-development':'0.68'};
     var sl=(location.pathname.match(/\/services\/([^\/]+)/)||[])[1];
-    if(sl&&HUE[sl]){var se=document.createElement('style');se.id='vws-early-hue';se.textContent='[class~="-z-10"]{filter:hue-rotate('+HUE[sl]+') saturate('+(SAT[sl]||'1.4')+') brightness('+(BRI[sl]||'1')+')!important}';document.head.appendChild(se);}
+    if(sl&&HUE[sl]){var se=document.createElement('style');se.id='vws-early-hue';se.textContent='[class~="-z-10"]{filter:hue-rotate('+HUE[sl]+') saturate('+(SAT[sl]||'1.4')+') brightness('+(BRI[sl]||'1')+') contrast('+(sl==='website-development'?'1.25':'1')+')!important}';document.head.appendChild(se);}
   })();
   (function(){
     /* Capture slug from URL immediately — before React Router can replaceState('/services') */
@@ -4014,9 +4014,7 @@
         +'<div id="vws-hero-visual" style="display:flex;justify-content:flex-end">'+heroVisual(slug, svc)+'</div>'
         +'</div>';
       /* Colour tint overlay — transparent section so animated -z-10 bg shows through */
-      var tintOverlay = slug === 'website-development'
-        ? '<div style="position:absolute;inset:0;background:linear-gradient(135deg,rgba(8,18,70,0.78) 0%,rgba(12,30,100,0.68) 50%,rgba(5,12,55,0.82) 100%);pointer-events:none;z-index:0"></div>'
-        : '<div style="position:absolute;inset:0;background:radial-gradient(ellipse at top left,rgba('+rgb+',0.35) 0%,transparent 65%);pointer-events:none;z-index:0"></div>';
+      var tintOverlay = '<div style="position:absolute;inset:0;background:radial-gradient(ellipse at top left,rgba('+rgb+',0.35) 0%,transparent 65%);pointer-events:none;z-index:0"></div>';
       var contentWrap = '<div style="position:relative;z-index:1;width:100%;display:flex;align-items:center">'+inner+'</div>';
       return '<section id="vws-hero" style="'
         +'background:transparent;'
