@@ -2366,7 +2366,8 @@
         runHomePage();
         runMobileHeroCTA();
       }
-      /* Run on every page — deposit note on pricing cards + contact card fix */
+      /* Run on every page — mobile nav expander + deposit note + contact card fix */
+      runMobileServicesExpander();
       runPricingEnhancer();
     }
 
@@ -3349,6 +3350,35 @@
         }); // forEach acc items
         } // end if !data-vws-acc-init
       }, 600);
+    }
+
+    /* ── Mobile nav: inject missing service links into the Services accordion ── */
+    function runMobileServicesExpander() {
+      if (window.innerWidth >= 768) return;
+      var EXTRA = [
+        { label: 'Website Maintenance', href: '/services#website-maintenance' },
+        { label: 'Website Creation',    href: '/services#website-creation'    },
+        { label: 'Website Redesign',    href: '/services#website-redesign'    },
+        { label: 'Logo & Branding',     href: '/services#logo-branding'       }
+      ];
+      function patch() {
+        /* The support link is the last item React renders in the mobile Services accordion */
+        var supportLink = document.querySelector('a[href="/services#support"]');
+        if (!supportLink) return;
+        var container = supportLink.parentElement;
+        if (!container || container.dataset.vwsPatched) return;
+        container.dataset.vwsPatched = '1';
+        EXTRA.forEach(function(svc) {
+          var a = document.createElement('a');
+          a.href = svc.href;
+          a.className = 'flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm transition-all duration-150';
+          a.innerHTML = '<span style="color:#60a5fa;flex-shrink:0;font-size:13px;line-height:1">↗</span><span>' + svc.label + '</span>';
+          container.appendChild(a);
+        });
+      }
+      var obs = new MutationObserver(patch);
+      obs.observe(document.body, { childList: true, subtree: true });
+      patch();
     }
 
     /* ── Mobile hero CTA — adds "Start a Project" button in hero on mobile only ── */
