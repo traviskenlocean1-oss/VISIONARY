@@ -1954,7 +1954,7 @@
   <script>
   /* Apply background hue-rotate immediately on initial page load (no flash/transition) */
   (function(){
-    var HUE={'website-development':'sepia(1) saturate(5) hue-rotate(205deg) brightness(1.5)','hosting-domain':'hue-rotate(-60deg) saturate(1.4)','hosting':'hue-rotate(-60deg) saturate(1.4)','website-maintenance':'hue-rotate(-165deg) saturate(1.4)','website-creation':'hue-rotate(102deg) saturate(1.4)','website-redesign':'hue-rotate(120deg) saturate(1.4)','logo-branding':'hue-rotate(131deg) saturate(1.4)'};
+    var HUE={'website-development':'sepia(1) saturate(5) hue-rotate(178deg) brightness(1.6)','hosting-domain':'hue-rotate(-60deg) saturate(1.4)','hosting':'hue-rotate(-60deg) saturate(1.4)','website-maintenance':'hue-rotate(-165deg) saturate(1.4)','website-creation':'hue-rotate(102deg) saturate(1.4)','website-redesign':'hue-rotate(120deg) saturate(1.4)','logo-branding':'hue-rotate(131deg) saturate(1.4)'};
     var sl=(location.pathname.match(/\/services\/([^\/]+)/)||[])[1];
     if(sl&&HUE[sl]){var se=document.createElement('style');se.id='vws-early-hue';se.textContent='[class~="-z-10"]{filter:'+HUE[sl]+'!important}';document.head.appendChild(se);}
   })();
@@ -3674,7 +3674,7 @@
     var C = {
       'website-development': {
         color:'#3B82F6',lt:'#93C5FD',glow:'rgba(59,130,246,0.35)',hue:'0deg',
-        bgFilter:'sepia(1) saturate(5) hue-rotate(205deg) brightness(1.5)',
+        bgFilter:'sepia(1) saturate(5) hue-rotate(178deg) brightness(1.6)',
         reactRgb:null,reactCrgb:null,
         name:'Website Development',tag:'Custom-built. Hand-coded. Yours.',
         gets:['Custom design built around your brand','Mobile-first, fully responsive on every screen','Conversion-focused layout and copywriting','Sub-2s load time, performance-optimized from day one','Full SEO foundation built in','You own every file outright — no subscriptions ever']
