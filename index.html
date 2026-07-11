@@ -1427,13 +1427,27 @@
   .vws-revealed{opacity:1!important;transform:none!important}
   @media(prefers-reduced-motion:reduce){.vws-reveal-l,.vws-reveal-r,.vws-reveal-u{opacity:1;transform:none;transition:none}}
 
-  /* ══ SITEWIDE — Tighter section spacing + bigger headings ══ */
-  section[class*="py-24"]{padding-top:4.5rem!important;padding-bottom:4.5rem!important}
-  section[class*="py-28"]{padding-top:4.5rem!important;padding-bottom:4.5rem!important}
-  section[class*="py-20"]{padding-top:3.5rem!important;padding-bottom:3.5rem!important}
-  section[class*="md:py-32"]{padding-top:4.5rem!important;padding-bottom:4.5rem!important}
-  section h2{font-size:clamp(36px,5vw,66px)!important}
-  section h3{font-size:clamp(20px,3vw,28px)!important}
+  /* ══ SITEWIDE — Tighter section spacing + bigger everything ══ */
+  section[class*="py-24"]{padding-top:3.5rem!important;padding-bottom:3.5rem!important}
+  section[class*="py-28"]{padding-top:3.5rem!important;padding-bottom:3.5rem!important}
+  section[class*="py-20"]{padding-top:3rem!important;padding-bottom:3rem!important}
+  section[class*="md:py-32"]{padding-top:3.5rem!important;padding-bottom:3.5rem!important}
+  section h2{font-size:clamp(40px,5.5vw,76px)!important;line-height:1.08!important}
+  section h3{font-size:clamp(22px,3vw,32px)!important}
+  section p{font-size:clamp(15px,1.4vw,18px)!important;line-height:1.7!important}
+  /* Bigger body text in injected sections */
+  .vws-svc-title{font-size:22px!important}
+  .vws-svc-desc{font-size:15px!important}
+  .vws-svc-card{padding:48px 30px 40px!important}
+  .vws-svc-icon-wrap{width:96px!important;height:96px!important;margin-bottom:28px!important}
+  /* Ticker bigger */
+  .vws-tk-item{font-size:15px!important}
+  /* Pricing cards bigger text */
+  #pricing [class*="text-4xl"]{font-size:clamp(36px,4vw,52px)!important}
+  #pricing [class*="text-2xl"]{font-size:clamp(20px,2vw,26px)!important}
+  #pricing [class*="p-7"]{padding:2.25rem!important}
+  /* Nav items bigger */
+  header nav a{font-size:15px!important}
 
   /* ══ MOBILE HERO — hide form card, strip right-side gradient ══ */
   @media(max-width:768px){
@@ -3434,23 +3448,30 @@
 
         /* ── Scroll reveal: animate homepage sections as they enter viewport ── */
         if (!window._vwsRevealObs && window.IntersectionObserver) {
+          /* Process section — left/right slide */
           var procLeft=document.getElementById('vws-proc-left');
           var procPhoto=document.getElementById('vws-proc-photo');
           if(procLeft){procLeft.classList.add('vws-reveal-l');}
           if(procPhoto){procPhoto.classList.add('vws-reveal-r');}
+          /* Service cards — staggered fade up */
           document.querySelectorAll('.vws-svc-card').forEach(function(card,i){
             card.classList.add('vws-reveal-u');
             card.style.transitionDelay=(i%3*0.12)+'s';
           });
-          var trustSec=document.getElementById('vws-hp-trust');
-          if(trustSec){trustSec.classList.add('vws-reveal-u');}
-          var sliderSec=document.getElementById('vws-hp-slider');
-          if(sliderSec){sliderSec.classList.add('vws-reveal-u');}
+          /* Stats section — left/right split (no animation on trust or slider) */
           var statSec=Array.from(document.querySelectorAll('section')).find(function(s){return s.textContent.indexOf('76%')!==-1;});
           if(statSec&&statSec.firstElementChild){
             var si=statSec.firstElementChild.children;
             if(si[0])si[0].classList.add('vws-reveal-l');
             if(si[1])si[1].classList.add('vws-reveal-r');
+          }
+          /* Pricing cards — fade up on scroll, fade out on scroll back */
+          var pricingSec=document.getElementById('pricing');
+          if(pricingSec){
+            pricingSec.querySelectorAll('.relative.flex.flex-col.rounded-2xl').forEach(function(card,i){
+              card.classList.add('vws-reveal-u');
+              card.style.transitionDelay=(i*0.18)+'s';
+            });
           }
           window._vwsRevealObs=new IntersectionObserver(function(entries){
             entries.forEach(function(en){
