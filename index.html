@@ -1442,10 +1442,8 @@
   .vws-svc-icon-wrap{width:96px!important;height:96px!important;margin-bottom:28px!important}
   /* Ticker bigger */
   .vws-tk-item{font-size:15px!important}
-  /* Pricing cards bigger text */
-  #pricing [class*="text-4xl"]{font-size:clamp(36px,4vw,52px)!important}
-  #pricing [class*="text-2xl"]{font-size:clamp(20px,2vw,26px)!important}
-  #pricing [class*="p-7"]{padding:2.25rem!important}
+  /* Process photo — slower reveal so it feels smooth while scrolling */
+  #vws-proc-photo.vws-reveal-r,#vws-proc-photo.vws-revealed{transition-duration:1.3s!important}
   /* Nav items bigger */
   header nav a{font-size:15px!important}
 
@@ -3528,7 +3526,7 @@
         var photoDiv = document.createElement('div');
         photoDiv.id = 'vws-hero-cta-photo';
         photoDiv.style.cssText = 'display:flex;align-items:center;justify-content:center';
-        photoDiv.innerHTML = '<img src="https://images.pexels.com/photos/3184338/pexels-photo-3184338.jpeg?auto=compress&cs=tinysrgb&w=700&h=560&fit=crop&fp-y=0.35" alt="Professional team working together" loading="lazy" style="width:100%;height:520px;object-fit:cover;object-position:center 25%;border-radius:16px;display:block;box-shadow:0 24px 64px rgba(0,0,0,0.45)"/>';
+        photoDiv.innerHTML = '<img src="https://images.pexels.com/photos/3184338/pexels-photo-3184338.jpeg?auto=compress&cs=tinysrgb&w=700&h=560&fit=crop&fp-y=0.35" alt="Professional team working together" loading="lazy" style="width:100%;height:400px;object-fit:cover;object-position:center 25%;border-radius:16px;display:block;box-shadow:0 24px 64px rgba(0,0,0,0.45)"/>';
         grid.replaceChild(photoDiv, laptopCol);
         return true;
       }
