@@ -885,6 +885,8 @@
   #vws-hp-slider{padding:80px 24px;position:relative}
   #vws-ba-wrap{position:relative;width:100%;max-width:1300px;margin:0 auto;border-radius:14px;overflow:hidden;box-shadow:0 24px 80px rgba(0,0,0,0.18);user-select:none;touch-action:none;cursor:ew-resize;height:600px}
   #vws-ba-before{position:absolute;top:0;bottom:0;left:0;overflow:hidden;width:50%}
+  #vws-ba-after{background-size:cover!important;background-position:center center!important;height:100%}
+  #vws-ba-before > *{background-size:cover!important;background-position:center center!important;height:100%!important;width:100%!important;aspect-ratio:unset!important}
   #vws-ba-handle{position:absolute;top:0;bottom:0;left:50%;transform:translateX(-50%);width:3px;background:#fff;box-shadow:0 0 0 1px rgba(0,0,0,0.15);z-index:10;cursor:ew-resize}
   #vws-ba-knob{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:42px;height:42px;border-radius:50%;background:#fff;box-shadow:0 2px 16px rgba(0,0,0,0.28);display:flex;align-items:center;justify-content:center;gap:0}
   .vws-ba-label{position:absolute;top:14px;font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;background:rgba(0,0,0,0.52);color:#fff;padding:3px 10px;border-radius:4px}
@@ -992,7 +994,7 @@
     /* Bigger hero headline on mobile */
     section[class*="h-screen"] h1{font-size:clamp(36px,10vw,60px)!important;line-height:1.05!important}
     /* Before/after slider mobile */
-    #vws-ba-wrap{border-radius:8px}
+    #vws-ba-wrap{border-radius:8px;height:240px}
     /* Mega dropdown — full width on mobile */
     [data-vws-mega]{min-width:calc(100vw - 32px)!important;grid-template-columns:1fr!important;left:16px!important;transform:none!important;right:16px}
     /* Trust cards stacked */
@@ -1014,10 +1016,16 @@
     #vws-comparison-table .comp-row{flex-direction:column}
     /* Dual ticker padding */
     #vws-dual-ticker .vws-tk-row{padding:10px 0}
+    /* Footer section group spacing — labels run into items when stacked */
+    footer [class*="grid-cols-4"] > div + div,
+    footer [class*="grid-cols-3"] > div + div{margin-top:28px}
   }
   @media(max-width:480px){
-    /* Form card in hero - full width */
-    section[class*="h-screen"] [style*="rgba(4, 8, 22, 0.92)"]{margin:16px!important;width:calc(100vw - 32px)!important;max-width:none!important}
+    /* Form card in hero — force visible + full width on mobile */
+    section[class*="h-screen"] [style*="rgba(4, 8, 22"]{display:block!important;position:relative!important;margin:24px 16px 0!important;width:calc(100vw - 32px)!important;max-width:none!important;z-index:5}
+    /* Also show any hidden parent containers of the form card */
+    section[class*="h-screen"] [style*="rgba(4, 8, 22"] ~ *,
+    section[class*="h-screen"] > div > *:last-child{display:block!important}
     /* Footer grid */
     footer [class*="grid-cols-4"]{display:block!important}
     footer [class*="grid-cols-3"]{display:block!important}
@@ -2243,7 +2251,7 @@
       _vwsPendingSlug = null;
       /* Clean up previous injections so switching service pages doesn't stack */
       window._vwsAboutPollActive = false;
-      ['vws-portfolio-page','vws-pf-style','vws-ba-injected','vws-deepdive','vws-svc-theme','vws-svc-listing','vws-listing-colors','vws-early-hue','vws-ill-wrap','vws-hero','vws-problem','vws-steps','vws-included','vws-results','vws-faq','vws-cta','vws-about-diff','vws-about-sticky','vws-about-styles','vws-design-cards','vws-hero-seo-col','vws-hero-left-wrap','vws-stand-for','vws-about-cta','vws-whoweare-mockup','vws-comparison-table','vws-comparison-styles','vws-hp-trust','vws-hp-slider','vws-hp-bookend','vws-deposit-note','vws-hp-services'].forEach(function(id){
+      ['vws-mob-cta','vws-portfolio-page','vws-pf-style','vws-ba-injected','vws-deepdive','vws-svc-theme','vws-svc-listing','vws-listing-colors','vws-early-hue','vws-ill-wrap','vws-hero','vws-problem','vws-steps','vws-included','vws-results','vws-faq','vws-cta','vws-about-diff','vws-about-sticky','vws-about-styles','vws-design-cards','vws-hero-seo-col','vws-hero-left-wrap','vws-stand-for','vws-about-cta','vws-whoweare-mockup','vws-comparison-table','vws-comparison-styles','vws-hp-trust','vws-hp-slider','vws-hp-bookend','vws-deposit-note','vws-hp-services'].forEach(function(id){
         var el = document.getElementById(id);
         if (el) el.remove ? el.remove() : el.parentNode.removeChild(el);
       });
@@ -2356,6 +2364,7 @@
         runPortfolioPage();
       } else if (/^\/?$/.test(window.location.pathname)) {
         runHomePage();
+        runMobileHeroCTA();
       }
       /* Run on every page — deposit note on pricing cards + contact card fix */
       runPricingEnhancer();
@@ -3342,6 +3351,46 @@
       }, 600);
     }
 
+    /* ── Mobile hero CTA — adds "Start a Project" button in hero on mobile only ── */
+    function runMobileHeroCTA() {
+      if (window.innerWidth >= 768) return;
+      if (document.getElementById('vws-mob-cta')) return;
+      var att = 0;
+      var poll = setInterval(function() {
+        att++;
+        var heroSec = document.querySelector('section[class*="h-screen"]');
+        if (heroSec || att > 40) {
+          clearInterval(poll);
+          if (!heroSec || document.getElementById('vws-mob-cta')) return;
+          /* Find the button inside the hero to insert after */
+          var heroBtn = heroSec.querySelector('button');
+          if (!heroBtn) return;
+          var cta = document.createElement('a');
+          cta.id = 'vws-mob-cta';
+          cta.href = '/contact';
+          cta.textContent = 'Start a Project →';
+          cta.style.cssText = [
+            'display:inline-flex',
+            'align-items:center',
+            'background:#2563eb',
+            'color:#ffffff',
+            'font-family:Barlow,system-ui,sans-serif',
+            'font-size:15px',
+            'font-weight:800',
+            'letter-spacing:.06em',
+            'padding:14px 32px',
+            'border-radius:999px',
+            'text-decoration:none',
+            'margin-top:16px',
+            'box-shadow:0 8px 28px rgba(37,99,235,0.45)',
+            'transition:background .2s,transform .2s',
+            'cursor:pointer'
+          ].join(';');
+          heroBtn.parentNode.insertBefore(cta, heroBtn.nextSibling);
+        }
+      }, 150);
+    }
+
     /* ── Portfolio page — full content injection ── */
     function runPortfolioPage() {
       if (document.getElementById('vws-portfolio-page')) return;
@@ -3400,7 +3449,8 @@
               '.vws-pf-cta-btn{display:inline-flex;align-items:center;gap:10px;background:#2563eb;color:#fff;font-size:14px;font-weight:800;letter-spacing:.08em;padding:17px 40px;border-radius:999px;text-decoration:none;transition:background .2s,transform .2s,box-shadow .2s;box-shadow:0 8px 32px rgba(37,99,235,0.42)}',
               '.vws-pf-cta-btn:hover{background:#1d4ed8;transform:translateY(-4px);box-shadow:0 16px 44px rgba(37,99,235,0.58)}',
               '@media(max-width:1024px){.vws-pf-grid{grid-template-columns:repeat(2,1fr)}}',
-              '@media(max-width:640px){.vws-pf-grid{grid-template-columns:1fr}.vws-pf-grid-sec{padding:60px 20px 80px}.vws-pf-hero{padding:120px 20px 60px}.vws-pf-stats{gap:32px}.vws-pf-cta-sec{padding:60px 20px 80px}.vws-pf-preview{height:160px}}',
+              '@media(max-width:640px){.vws-pf-grid{grid-template-columns:1fr}.vws-pf-grid-sec{padding:60px 20px 80px}.vws-pf-hero{padding:120px 20px 60px}.vws-pf-stats{gap:20px;flex-wrap:nowrap}.vws-pf-cta-sec{padding:60px 20px 80px}.vws-pf-preview{height:160px}}',
+              '@media(max-width:420px){.vws-pf-stats{gap:10px}.vws-pf-stat-n{font-size:28px}.vws-pf-stat-l{font-size:9px;letter-spacing:.06em}}',
               '@media(prefers-reduced-motion:reduce){.vws-pf-card{opacity:1;transform:none;transition:none}}'
             ].join('');
             document.head.appendChild(st);
