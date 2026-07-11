@@ -1411,6 +1411,17 @@
   @media(max-width:900px){.vws-bs-grid{grid-template-columns:1fr;gap:36px}.vws-bs-char{max-width:480px;margin:0 auto}}
   @media(max-width:480px){#vws-best-svc{padding:60px 20px}}
 
+  /* ══ PRICING PAGE — card hover + scroll reveal ══ */
+  .vws-section-light [class*="rounded-2xl"][class*="p-7"]{transition:border-color .25s,box-shadow .25s,transform .25s!important;cursor:default}
+  .vws-section-light [class*="rounded-2xl"][class*="p-7"]:hover{border-color:rgba(37,99,235,0.55)!important;box-shadow:0 8px 40px rgba(37,99,235,0.18)!important;transform:translateY(-4px)!important}
+  .vws-section-light [class*="rounded-2xl"][class*="p-7"]:hover h3{color:#2563eb!important}
+  /* Scroll reveal for pricing page */
+  .vws-pr-fade{opacity:0;transform:translateY(32px);transition:opacity .6s cubic-bezier(.4,0,.2,1),transform .6s cubic-bezier(.4,0,.2,1)}
+  .vws-pr-fade.vws-revealed{opacity:1!important;transform:none!important}
+  .vws-pr-oval{width:220px;height:36px;border-radius:50%;background:rgba(37,99,235,0.28);filter:blur(18px);margin:6px auto 0;opacity:0;transition:opacity .9s ease .25s;display:block;pointer-events:none}
+  .vws-pr-oval.vws-revealed{opacity:1}
+  @media(prefers-reduced-motion:reduce){.vws-pr-fade{opacity:1;transform:none;transition:none}.vws-pr-oval{opacity:1}}
+
   /* ══ HOME PAGE — Services Card Grid ══ */
   .vws-svc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;max-width:1140px;margin:0 auto;padding:0 24px;font-family:Barlow,system-ui,sans-serif}
   .vws-svc-card{position:relative;border-radius:18px;padding:42px 28px 36px;text-align:center;overflow:hidden;display:flex;flex-direction:column;align-items:center;border:1px solid rgba(255,255,255,0.09);background:rgba(255,255,255,0.03);transition:transform .35s cubic-bezier(.4,0,.2,1),box-shadow .35s,border-color .35s;cursor:pointer}
@@ -2218,6 +2229,7 @@
       if (window._vwsWhoWeAreObs) { window._vwsWhoWeAreObs.disconnect(); window._vwsWhoWeAreObs = null; }
       if (window._vwsCompTableObs) { window._vwsCompTableObs.disconnect(); window._vwsCompTableObs = null; }
       if (window._vwsRevealObs) { window._vwsRevealObs.disconnect(); window._vwsRevealObs = null; }
+      if (window._vwsPrObs) { window._vwsPrObs.disconnect(); window._vwsPrObs = null; }
       /* Remove about-page body class and any inline overrides on React sections */
       document.body.classList.remove('vws-about');
       document.querySelectorAll('[data-vws-enh]').forEach(function(el) {
@@ -3300,20 +3312,53 @@
       }, 600);
     }
 
-    /* ── Pricing page — white sections below hero ── */
+    /* ── Pricing page — white sections + animations ── */
     function runPricingPage() {
       if (document.body.getAttribute('data-vws-pricing')) return;
       var attempts = 0;
       var poll = setInterval(function() {
         attempts++;
         var secs = Array.from(document.querySelectorAll('section'));
-        if (secs.length >= 2 || attempts > 30) {
+        if (secs.length >= 4 || attempts > 30) {
           clearInterval(poll);
-          /* Section 0 = hero (keep dark/transparent); sections 1+ → white */
+          /* Section 0 = hero, last = CTA — both keep dark; middle sections → white */
           secs.forEach(function(s, i) {
-            if (i === 0) return;
+            if (i === 0 || i === secs.length - 1) return;
             s.classList.add('vws-section-light');
           });
+          /* Scroll reveal — pricing cards */
+          document.querySelectorAll('[class*="rounded-2xl"][class*="p-7"]').forEach(function(card, i) {
+            card.classList.add('vws-pr-fade');
+            card.style.transitionDelay = (i * 0.14) + 's';
+          });
+          /* Scroll reveal + oval glow under h2 headings in middle sections */
+          secs.forEach(function(s, i) {
+            if (i === 0 || i === secs.length - 1) return;
+            var h2 = s.querySelector('h2');
+            if (h2 && !h2.nextElementSibling?.classList.contains('vws-pr-oval')) {
+              h2.classList.add('vws-pr-fade');
+              var oval = document.createElement('div');
+              oval.className = 'vws-pr-oval';
+              h2.parentNode.insertBefore(oval, h2.nextSibling);
+            }
+          });
+          /* Also fade the icon cards in "Proven Formula" section */
+          document.querySelectorAll('[class*="p-10"][style*="rgba(5, 8, 20"]').forEach(function(card, i) {
+            card.classList.add('vws-pr-fade');
+            card.style.transitionDelay = (i * 0.15) + 's';
+          });
+          /* IntersectionObserver fires reveals */
+          if (!window._vwsPrObs && window.IntersectionObserver) {
+            window._vwsPrObs = new IntersectionObserver(function(entries) {
+              entries.forEach(function(en) {
+                if (en.isIntersecting) en.target.classList.add('vws-revealed');
+                else en.target.classList.remove('vws-revealed');
+              });
+            }, {threshold: 0.08, rootMargin: '0px 0px -40px 0px'});
+            document.querySelectorAll('.vws-pr-fade,.vws-pr-oval').forEach(function(el) {
+              window._vwsPrObs.observe(el);
+            });
+          }
           document.body.setAttribute('data-vws-pricing', '1');
         }
       }, 150);
