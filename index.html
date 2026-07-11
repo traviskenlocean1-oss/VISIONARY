@@ -1412,6 +1412,12 @@
   @media(max-width:480px){#vws-best-svc{padding:60px 20px}}
 
   /* ══ PRICING PAGE — card hover + scroll reveal ══ */
+  /* Proven Formula icon cards (p-10): lift + glow on hover — no dark bg */
+  .vws-section-light [class*="rounded-2xl"][class*="p-10"]{transition:transform .35s cubic-bezier(.34,1.56,.64,1),box-shadow .35s ease,border-color .35s ease!important;cursor:default;will-change:transform}
+  .vws-section-light [class*="rounded-2xl"][class*="p-10"]:hover{background:#ffffff!important;transform:translateY(-8px) scale(1.025)!important;box-shadow:0 20px 50px rgba(37,99,235,0.18),0 0 0 2px rgba(37,99,235,0.2)!important;border-color:rgba(37,99,235,0.35)!important}
+  .vws-section-light [class*="rounded-2xl"][class*="p-10"]:hover *{color:#0d1117!important}
+  .vws-section-light [class*="rounded-2xl"][class*="p-10"]:hover [class*="text-blue"]{color:#2563eb!important}
+  /* Pricing plan cards (p-7): blue fill on hover */
   .vws-section-light [class*="rounded-2xl"][class*="p-7"]{transition:background .3s ease,border-color .3s,box-shadow .3s,transform .3s!important;cursor:default}
   .vws-section-light [class*="rounded-2xl"][class*="p-7"]:hover{background:#2563eb!important;border-color:#2563eb!important;box-shadow:0 16px 48px rgba(37,99,235,0.4)!important;transform:translateY(-5px)!important}
   .vws-section-light [class*="rounded-2xl"][class*="p-7"]:hover *{color:#fff!important}
