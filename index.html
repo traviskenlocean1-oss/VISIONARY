@@ -1046,9 +1046,17 @@
 
   /* ══ TASK 1: Card contrast — fix dark-navy cards inside light sections ══ */
   /* Replace dark card bg with white + brand blue border */
+  .vws-section-light [class*="rounded-2xl"][class*="p-7"],
   .vws-section-light [class*="rounded-2xl"][class*="p-8"],
   .vws-section-light [class*="rounded-2xl"][class*="p-10"]{background:#ffffff!important;border:1px solid rgba(37,99,235,0.15)!important;box-shadow:0 4px 20px rgba(37,99,235,0.05)!important}
+  /* Hide the absolute dark/gradient inner overlay layers on pricing cards */
+  .vws-section-light [class*="rounded-2xl"] [class*="absolute"][class*="inset-0"]{display:none!important}
   /* Ensure heading + body text inside these cards are dark and readable */
+  .vws-section-light [class*="rounded-2xl"][class*="p-7"] h1,
+  .vws-section-light [class*="rounded-2xl"][class*="p-7"] h2,
+  .vws-section-light [class*="rounded-2xl"][class*="p-7"] h3,
+  .vws-section-light [class*="rounded-2xl"][class*="p-7"] h4,
+  .vws-section-light [class*="rounded-2xl"][class*="p-7"] p,
   .vws-section-light [class*="rounded-2xl"][class*="p-8"] h1,
   .vws-section-light [class*="rounded-2xl"][class*="p-8"] h2,
   .vws-section-light [class*="rounded-2xl"][class*="p-8"] h3,
@@ -1057,6 +1065,8 @@
   .vws-section-light [class*="rounded-2xl"][class*="p-10"] h2,
   .vws-section-light [class*="rounded-2xl"][class*="p-10"] h3,
   .vws-section-light [class*="rounded-2xl"][class*="p-10"] p{color:#0d1117!important}
+  .vws-section-light [class*="rounded-2xl"][class*="p-7"] [class*="text-sm"],
+  .vws-section-light [class*="rounded-2xl"][class*="p-7"] [class*="text-xs"],
   .vws-section-light [class*="rounded-2xl"][class*="p-8"] [class*="text-sm"],
   .vws-section-light [class*="rounded-2xl"][class*="p-8"] [class*="text-xs"],
   .vws-section-light [class*="rounded-2xl"][class*="p-10"] [class*="text-sm"]{color:#4b5563!important}
@@ -2240,6 +2250,13 @@
         el.classList.remove('vws-section-light','vws-section-dark');
         el.removeAttribute('data-vws-hp');
       });
+      /* Remove pricing page light classes */
+      if (document.body.getAttribute('data-vws-pricing')) {
+        document.querySelectorAll('section.vws-section-light').forEach(function(s) {
+          s.classList.remove('vws-section-light');
+        });
+        document.body.removeAttribute('data-vws-pricing');
+      }
       /* Remove page-level color attribute (used for scoped CSS overrides) */
       document.documentElement.removeAttribute('data-vws-page');
       /* Restore inline styles and filters we previously set */
@@ -2287,6 +2304,8 @@
         }
       } else if (/^\/about\/?$/.test(window.location.pathname)) {
         runAboutPage();
+      } else if (/^\/pricing\/?$/.test(window.location.pathname)) {
+        runPricingPage();
       } else if (/^\/?$/.test(window.location.pathname)) {
         runHomePage();
       }
@@ -3273,6 +3292,25 @@
         }); // forEach acc items
         } // end if !data-vws-acc-init
       }, 600);
+    }
+
+    /* ── Pricing page — white sections below hero ── */
+    function runPricingPage() {
+      if (document.body.getAttribute('data-vws-pricing')) return;
+      var attempts = 0;
+      var poll = setInterval(function() {
+        attempts++;
+        var secs = Array.from(document.querySelectorAll('section'));
+        if (secs.length >= 2 || attempts > 30) {
+          clearInterval(poll);
+          /* Section 0 = hero (keep dark/transparent); sections 1+ → white */
+          secs.forEach(function(s, i) {
+            if (i === 0) return;
+            s.classList.add('vws-section-light');
+          });
+          document.body.setAttribute('data-vws-pricing', '1');
+        }
+      }, 150);
     }
 
     /* ── Homepage pilot — Tasks 2–5 ── */
