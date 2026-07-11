@@ -3421,7 +3421,7 @@
       }, 150);
     }
 
-    /* ── Portfolio page — full content injection ── */
+    /* ── Portfolio page — device mockup grid ── */
     function runPortfolioPage() {
       if (document.getElementById('vws-portfolio-page')) return;
       var att = 0;
@@ -3437,8 +3437,9 @@
             var st = document.createElement('style');
             st.id = 'vws-pf-style';
             st.textContent = [
-              '#vws-portfolio-page{background:#080e1a;font-family:Barlow,system-ui,sans-serif}',
-              '.vws-pf-hero{padding:140px 40px 80px;text-align:center;position:relative;overflow:hidden;background:linear-gradient(180deg,#050a18 0%,#080e1a 100%)}',
+              /* Hero */
+              '#vws-portfolio-page{font-family:Barlow,system-ui,sans-serif}',
+              '.vws-pf-hero{background:linear-gradient(180deg,#050a18 0%,#080e1a 100%);padding:140px 40px 80px;text-align:center;position:relative;overflow:hidden}',
               '.vws-pf-hero::before{content:"";position:absolute;top:-120px;left:50%;transform:translateX(-50%);width:700px;height:700px;background:radial-gradient(circle,rgba(37,99,235,0.14) 0%,transparent 70%);pointer-events:none}',
               '.vws-pf-lbl{font-size:11px;font-weight:700;letter-spacing:.25em;text-transform:uppercase;color:#60a5fa;display:block;margin:0 0 20px}',
               '.vws-pf-h1{font-size:clamp(52px,7vw,92px);font-weight:900;color:#f0f4ff;line-height:1;margin:0 0 24px}',
@@ -3447,79 +3448,84 @@
               '.vws-pf-stats{display:flex;justify-content:center;gap:56px;flex-wrap:wrap}',
               '.vws-pf-stat-n{font-size:38px;font-weight:900;color:#f0f4ff;line-height:1}',
               '.vws-pf-stat-l{font-size:11px;color:rgba(240,244,255,0.42);margin-top:6px;text-transform:uppercase;letter-spacing:.12em}',
-              '.vws-pf-grid-sec{padding:80px 40px 100px;max-width:1320px;margin:0 auto}',
-              '.vws-pf-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:28px}',
-              '.vws-pf-card{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:20px;overflow:hidden;transition:transform .45s cubic-bezier(.34,1.56,.64,1),box-shadow .45s ease,border-color .45s ease;cursor:pointer;opacity:0;transform:translateY(36px)}',
-              '.vws-pf-card.vws-pf-in{opacity:1!important;transform:translateY(0)!important}',
-              '.vws-pf-card:hover{transform:translateY(-14px) scale(1.025)!important;box-shadow:0 32px 80px rgba(37,99,235,0.25),0 0 0 2px rgba(37,99,235,0.5)!important;border-color:rgba(37,99,235,0.5)!important}',
-              '.vws-pf-chrome{background:#111827;padding:10px 14px;display:flex;align-items:center;gap:10px}',
-              '.vws-pf-dots{display:flex;gap:5px}',
-              '.vws-pf-dot{width:10px;height:10px;border-radius:50%}',
-              '.vws-pf-dot:nth-child(1){background:#ff5f57}',
-              '.vws-pf-dot:nth-child(2){background:#febc2e}',
-              '.vws-pf-dot:nth-child(3){background:#28c840}',
-              '.vws-pf-url{flex:1;background:rgba(255,255,255,0.06);border-radius:6px;padding:5px 12px;font-size:11px;color:rgba(255,255,255,0.32);font-family:monospace}',
-              '.vws-pf-preview{height:200px;position:relative;overflow:hidden;padding:22px 22px 0}',
-              '.vws-pf-mn{height:5px;background:rgba(255,255,255,0.1);border-radius:3px;width:100%;margin-bottom:20px}',
-              '.vws-pf-mh{height:15px;border-radius:3px;margin-bottom:10px}',
-              '.vws-pf-ms{height:8px;background:rgba(255,255,255,0.3);border-radius:3px;width:46%;margin-bottom:24px}',
-              '.vws-pf-mb{height:27px;border-radius:14px;width:96px;display:inline-block}',
-              '.vws-pf-info{padding:26px}',
-              '.vws-pf-ind{font-size:11px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:#60a5fa;margin:0 0 8px}',
-              '.vws-pf-name{font-size:21px;font-weight:800;color:#f0f4ff;margin:0 0 10px;line-height:1.2}',
-              '.vws-pf-desc{font-size:14px;color:rgba(240,244,255,0.52);line-height:1.65;margin:0 0 18px}',
-              '.vws-pf-tags{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:22px}',
-              '.vws-pf-tag{font-size:11px;font-weight:600;padding:4px 11px;border-radius:20px;background:rgba(37,99,235,0.12);border:1px solid rgba(37,99,235,0.28);color:#93c5fd}',
-              '.vws-pf-link{display:inline-flex;align-items:center;gap:7px;font-size:13px;font-weight:700;color:#60a5fa;text-decoration:none;letter-spacing:.03em;transition:gap .2s,color .2s}',
-              '.vws-pf-link:hover{gap:13px;color:#93c5fd}',
+              /* Grid section — white */
+              '.vws-pf-grid-sec{background:#f3f4f6;padding:70px 40px 100px}',
+              '.vws-pf-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:28px;max-width:1260px;margin:0 auto}',
+              /* Card */
+              '.vws-pf2-card{background:#fff;border-radius:16px;padding:22px 22px 26px;box-shadow:0 2px 20px rgba(0,0,0,0.09);transition:transform .3s ease,box-shadow .3s ease}',
+              '.vws-pf2-card:hover{transform:translateY(-6px);box-shadow:0 18px 52px rgba(0,0,0,0.14)}',
+              /* Industry label */
+              '.vws-pf2-lbl{font-size:10px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:#2563eb;margin:0 0 14px;display:block;font-family:Barlow,system-ui,sans-serif}',
+              /* Device row */
+              '.vws-pf2-devices{display:flex;align-items:flex-end}',
+              /* Phone frame */
+              '.vws-pf2-phone{flex-shrink:0;width:72px;z-index:2;margin-right:-20px;background:#e2e4e8;border-radius:13px;padding:8px 5px 6px;box-shadow:0 6px 22px rgba(0,0,0,0.16),0 0 0 1px rgba(0,0,0,0.08)}',
+              '.vws-pf2-ph-notch{width:22px;height:3px;background:#b0b4bc;border-radius:2px;margin:0 auto 5px}',
+              '.vws-pf2-ph-screen{width:62px;height:134px;overflow:hidden;border-radius:6px;background:#0a0a0a}',
+              '.vws-pf2-ph-screen iframe{width:390px;height:844px;transform:scale(0.159);transform-origin:top left;border:none;pointer-events:none;display:block}',
+              '.vws-pf2-ph-bar{width:22px;height:3px;background:#b0b4bc;border-radius:2px;margin:5px auto 0}',
+              /* Laptop frame */
+              '.vws-pf2-laptop{flex:1;min-width:0}',
+              '.vws-pf2-laptop-lid{background:#d4d7dc;border-radius:8px 8px 0 0;padding:5px 5px 0;box-shadow:inset 0 2px 4px rgba(0,0,0,0.07)}',
+              '.vws-pf2-laptop-cam{width:4px;height:4px;background:#a0a4ac;border-radius:50%;margin:0 auto 3px}',
+              /* Laptop screen: height driven by padding-bottom (16:10 ratio = 62.5%) */
+              '.vws-pf2-laptop-screen{position:relative;overflow:hidden;border-radius:3px 3px 0 0;background:#0a0a0a;height:0;padding-bottom:62.5%}',
+              '.vws-pf2-laptop-screen iframe{position:absolute;top:0;left:0;width:1280px;height:800px;transform-origin:top left;border:none;pointer-events:none;display:block}',
+              '.vws-pf2-laptop-base{height:8px;background:#c0c4cc;border-radius:0 0 4px 4px;box-shadow:0 4px 10px rgba(0,0,0,0.1)}',
+              '.vws-pf2-laptop-stand{width:34%;height:4px;background:#b0b4bc;margin:0 auto;border-radius:0 0 4px 4px}',
+              /* CTA */
               '.vws-pf-cta-sec{text-align:center;padding:80px 40px 120px;background:linear-gradient(180deg,#080e1a 0%,#040810 100%);border-top:1px solid rgba(255,255,255,0.05)}',
               '.vws-pf-cta-h{font-size:clamp(38px,5vw,66px);font-weight:900;color:#f0f4ff;margin:0 0 16px;line-height:1.05}',
               '.vws-pf-cta-h em{color:#2563eb;font-style:normal}',
               '.vws-pf-cta-p{font-size:17px;color:rgba(240,244,255,0.55);margin:0 auto 40px;max-width:440px;display:block;line-height:1.7}',
               '.vws-pf-cta-btn{display:inline-flex;align-items:center;gap:10px;background:#2563eb;color:#fff;font-size:14px;font-weight:800;letter-spacing:.08em;padding:17px 40px;border-radius:999px;text-decoration:none;transition:background .2s,transform .2s,box-shadow .2s;box-shadow:0 8px 32px rgba(37,99,235,0.42)}',
               '.vws-pf-cta-btn:hover{background:#1d4ed8;transform:translateY(-4px);box-shadow:0 16px 44px rgba(37,99,235,0.58)}',
-              '@media(max-width:1024px){.vws-pf-grid{grid-template-columns:repeat(2,1fr)}}',
-              '@media(max-width:640px){.vws-pf-grid{grid-template-columns:1fr}.vws-pf-grid-sec{padding:60px 20px 80px}.vws-pf-hero{padding:120px 20px 60px}.vws-pf-stats{gap:20px;flex-wrap:nowrap}.vws-pf-cta-sec{padding:60px 20px 80px}.vws-pf-preview{height:160px}}',
-              '@media(max-width:420px){.vws-pf-stats{gap:10px}.vws-pf-stat-n{font-size:28px}.vws-pf-stat-l{font-size:9px;letter-spacing:.06em}}',
-              '@media(prefers-reduced-motion:reduce){.vws-pf-card{opacity:1;transform:none;transition:none}}'
+              /* Responsive */
+              '@media(max-width:900px){.vws-pf-grid{grid-template-columns:repeat(2,1fr)}}',
+              '@media(max-width:640px){.vws-pf-grid{grid-template-columns:1fr}.vws-pf-grid-sec{padding:50px 16px 70px}.vws-pf-hero{padding:120px 20px 60px}.vws-pf-stats{gap:20px;flex-wrap:nowrap}.vws-pf-cta-sec{padding:60px 20px 80px}}',
+              '@media(max-width:420px){.vws-pf-stats{gap:10px}.vws-pf-stat-n{font-size:28px}.vws-pf-stat-l{font-size:9px;letter-spacing:.06em}}'
             ].join('');
             document.head.appendChild(st);
           }
 
           /* ── Project data ── */
           var projects = [
-            { url:'precisionautodetail.com', ind:'Auto Detailing', name:'Precision Auto Detail', desc:'Booking site with a before/after gallery, package pricing, and a contact form that doubled their weekly inquiries.', tags:['Web Design','SEO','Contact Form'], bg1:'#1e3a8a', bg2:'#0f172a', hc:'#93c5fd' },
-            { url:'apexproclean.com', ind:'Cleaning Services', name:'Apex Pro Cleaning', desc:'Service area map, instant quote form, and trust badges — converted first-time visitors into repeat customers.', tags:['Web Design','Lead Gen','Mobile-First'], bg1:'#064e3b', bg2:'#0f172a', hc:'#6ee7b7' },
-            { url:'sunstatehvac.com', ind:'HVAC Services', name:'SunState HVAC', desc:'Emergency service CTAs, financing info, and technician profiles for a growing South Florida HVAC company.', tags:['Web Design','Local SEO','Speed Optimized'], bg1:'#78350f', bg2:'#0f172a', hc:'#fcd34d' },
-            { url:'ironcoremiami.com', ind:'Fitness Studio', name:'IronCore Fitness', desc:'Class schedules, membership tiers, and trainer profiles — all on a blazing-fast mobile-first design.', tags:['Web Design','Responsive','Booking'], bg1:'#7f1d1d', bg2:'#0f172a', hc:'#fca5a5' },
-            { url:'coastalroofingfl.com', ind:'Roofing Contractor', name:'Coastal Roofing Co.', desc:'Storm damage page, free inspection form, and a financing calculator driving qualified leads for a roofing crew.', tags:['Landing Page','Lead Gen','Conversion'], bg1:'#1e293b', bg2:'#0f172a', hc:'#94a3b8' },
-            { url:'vegalegalgroup.com', ind:'Law Office', name:'Vega Legal Group', desc:'Clean professional site with practice areas, attorney profiles, and a confidential consultation form.', tags:['Web Design','Professional','SEO'], bg1:'#312e81', bg2:'#0f172a', hc:'#c4b5fd' }
+            { url:'https://precisionautodetail.com', ind:'Auto Detailing' },
+            { url:'https://apexproclean.com',         ind:'Cleaning Services' },
+            { url:'https://sunstatehvac.com',          ind:'HVAC Services' },
+            { url:'https://ironcoremiami.com',         ind:'Fitness Studio' },
+            { url:'https://coastalroofingfl.com',      ind:'Roofing Contractor' },
+            { url:'https://vegalegalgroup.com',        ind:'Law Office' }
           ];
 
-          var arrowSvg = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>';
-
-          function buildCard(p, i) {
-            return '<div class="vws-pf-card" style="transition-delay:' + (i * 0.09) + 's">'
-              + '<div class="vws-pf-chrome">'
-                + '<div class="vws-pf-dots"><span class="vws-pf-dot"></span><span class="vws-pf-dot"></span><span class="vws-pf-dot"></span></div>'
-                + '<div class="vws-pf-url">' + p.url + '</div>'
-              + '</div>'
-              + '<div class="vws-pf-preview" style="background:linear-gradient(135deg,' + p.bg1 + ' 0%,' + p.bg2 + ' 100%)">'
-                + '<div class="vws-pf-mn"></div>'
-                + '<div class="vws-pf-mh" style="background:' + p.hc + ';opacity:.9;width:68%"></div>'
-                + '<div class="vws-pf-mh" style="background:' + p.hc + ';opacity:.55;width:46%;margin-bottom:22px"></div>'
-                + '<div class="vws-pf-ms"></div>'
-                + '<span class="vws-pf-mb" style="background:' + p.hc + ';opacity:.85"></span>'
-              + '</div>'
-              + '<div class="vws-pf-info">'
-                + '<p class="vws-pf-ind">' + p.ind + '</p>'
-                + '<h3 class="vws-pf-name">' + p.name + '</h3>'
-                + '<p class="vws-pf-desc">' + p.desc + '</p>'
-                + '<div class="vws-pf-tags">' + p.tags.map(function(t){return '<span class="vws-pf-tag">'+t+'</span>';}).join('') + '</div>'
-                + '<a href="/contact" class="vws-pf-link">Start a project like this ' + arrowSvg + '</a>'
+          function buildCard(p) {
+            return '<div class="vws-pf2-card">'
+              + '<span class="vws-pf2-lbl">' + p.ind + '</span>'
+              + '<div class="vws-pf2-devices">'
+                /* Phone */
+                + '<div class="vws-pf2-phone">'
+                  + '<div class="vws-pf2-ph-notch"></div>'
+                  + '<div class="vws-pf2-ph-screen">'
+                    + '<iframe src="' + p.url + '" loading="lazy" scrolling="no" title="' + p.ind + ' mobile preview" sandbox="allow-scripts allow-same-origin"></iframe>'
+                  + '</div>'
+                  + '<div class="vws-pf2-ph-bar"></div>'
+                + '</div>'
+                /* Laptop */
+                + '<div class="vws-pf2-laptop">'
+                  + '<div class="vws-pf2-laptop-lid">'
+                    + '<div class="vws-pf2-laptop-cam"></div>'
+                    + '<div class="vws-pf2-laptop-screen">'
+                      + '<iframe src="' + p.url + '" loading="lazy" scrolling="no" title="' + p.ind + ' desktop preview" sandbox="allow-scripts allow-same-origin"></iframe>'
+                    + '</div>'
+                  + '</div>'
+                  + '<div class="vws-pf2-laptop-base"></div>'
+                  + '<div class="vws-pf2-laptop-stand"></div>'
+                + '</div>'
               + '</div>'
             + '</div>';
           }
+
+          var arrowSvg = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>';
 
           var wrap = document.createElement('div');
           wrap.id = 'vws-portfolio-page';
@@ -3541,22 +3547,22 @@
               + '<span class="vws-pf-lbl">Ready?</span>'
               + '<h2 class="vws-pf-cta-h">Yours could be <em>next.</em></h2>'
               + '<span class="vws-pf-cta-p">Tell us about your business and we\'ll build something you\'re proud to show off.</span>'
-              + '<a href="/contact" class="vws-pf-cta-btn">Start a Project ' + arrowSvg.replace('14','16') + '</a>'
+              + '<a href="/contact" class="vws-pf-cta-btn">Start a Project ' + arrowSvg + '</a>'
             + '</section>';
 
           footer.parentNode.insertBefore(wrap, footer);
 
-          /* Scroll-reveal cards */
-          if (window.IntersectionObserver) {
-            window._vwsPfObs = new IntersectionObserver(function(entries) {
-              entries.forEach(function(e) {
-                if (e.isIntersecting) { e.target.classList.add('vws-pf-in'); window._vwsPfObs.unobserve(e.target); }
-              });
-            }, { threshold: 0.08, rootMargin: '0px 0px -30px 0px' });
-            document.querySelectorAll('.vws-pf-card').forEach(function(c) { window._vwsPfObs.observe(c); });
-          } else {
-            document.querySelectorAll('.vws-pf-card').forEach(function(c) { c.classList.add('vws-pf-in'); });
+          /* Scale laptop iframes to fit their containers after render */
+          function applyLaptopScales() {
+            document.querySelectorAll('.vws-pf2-laptop-screen').forEach(function(screen) {
+              var w = screen.offsetWidth;
+              if (!w) return;
+              var iframe = screen.querySelector('iframe');
+              if (iframe) iframe.style.transform = 'scale(' + (w / 1280).toFixed(5) + ')';
+            });
           }
+          setTimeout(applyLaptopScales, 300);
+          window.addEventListener('resize', applyLaptopScales);
         }
       }, 150);
     }
