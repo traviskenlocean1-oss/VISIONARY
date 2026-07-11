@@ -885,6 +885,11 @@
 
   .vws-industries-hidden{display:none!important}
   .vws-react-hidden{display:none!important}
+  /* vws-cover: instant CSS pre-hide applied the moment any /services* navigation fires.
+     Eliminates flash of React's default content before our injected sections appear.
+     Removed by the fast poll (services listing) or kept forever (service detail, where
+     our injected sections have vws- IDs and are never matched by this rule). */
+  body.vws-cover section:not([id^="vws"]){display:none!important}
   /* ══ DUAL TICKER — Cosmico Studios style ══ */
   #vws-dual-ticker{padding:0;overflow:hidden;background:#060916;border-top:1px solid rgba(255,255,255,0.06);border-bottom:1px solid rgba(255,255,255,0.06)}
   #vws-dual-ticker .vws-tk-row{display:flex;overflow:hidden;padding:14px 0}
@@ -1976,24 +1981,32 @@
       history[method] = function() {
         if (method === 'pushState') {
           _vwsDetailLocked = false;
-          /* Scroll to top instantly on every SPA navigation */
           window.scrollTo(0, 0);
-          /* When returning to the services listing, start an immediate fast-poll so
-             there is no visible delay between click and the alternating cards appearing */
           var destUrl = (arguments[2] || '').toString();
+          /* Apply vws-cover the instant any /services* navigation fires.
+             CSS hides React sections synchronously as they paint — no poll delay. */
+          if (/^\/services/.test(destUrl)) {
+            document.body.classList.add('vws-cover');
+          } else {
+            document.body.classList.remove('vws-cover');
+          }
           if (/^\/services\/?$/.test(destUrl)) {
             if (window._vwsSvcReinjectTimer) clearInterval(window._vwsSvcReinjectTimer);
+            window._vwsSvcReinjectTimer = null;
             var _fpc = 0;
             window._vwsSvcReinjectTimer = setInterval(function() {
               _fpc++;
-              if (!isServicesIndex() || _fpc > 60) { clearInterval(window._vwsSvcReinjectTimer); return; }
-              /* Hide React sections on every tick — no flash while waiting for injection */
-              Array.from(document.querySelectorAll('section')).forEach(function(s) {
-                if (s.className === 'relative border-t') s.classList.add('vws-react-hidden');
-              });
+              if (!isServicesIndex() || _fpc > 60) {
+                clearInterval(window._vwsSvcReinjectTimer);
+                window._vwsSvcReinjectTimer = null;
+                document.body.classList.remove('vws-cover');
+                return;
+              }
               if (window._vwsInjectWave) window._vwsInjectWave();
               if (window._vwsInjectListing && window._vwsInjectListing()) {
                 clearInterval(window._vwsSvcReinjectTimer);
+                window._vwsSvcReinjectTimer = null;
+                document.body.classList.remove('vws-cover');
               }
             }, 30);
           }
@@ -2007,6 +2020,11 @@
     window.addEventListener('popstate', function(){
       _vwsDetailLocked = false;
       window.scrollTo(0, 0);
+      if (/^\/services/.test(window.location.pathname)) {
+        document.body.classList.add('vws-cover');
+      } else {
+        document.body.classList.remove('vws-cover');
+      }
       setTimeout(runAll, 300);
     });
 
@@ -2107,6 +2125,9 @@
       unfreezeAll();
       setTimeout(unfreezeAll, 400);
       setTimeout(unfreezeAll, 900);
+      /* For pages that are not /services*, vws-cover must come off so React's
+         content is visible (home, about, pricing, contact, etc.) */
+      if (!slug && !isServicesIndex()) document.body.classList.remove('vws-cover');
       if (slug) {
         _vwsDetailLocked = true;
         runServiceDetail(slug);
@@ -2117,13 +2138,20 @@
           var _svcBk = 0;
           window._vwsSvcReinjectTimer = setInterval(function() {
             _svcBk++;
-            if (!isServicesIndex() || _svcBk > 25) { clearInterval(window._vwsSvcReinjectTimer); return; }
+            if (!isServicesIndex() || _svcBk > 25) {
+              clearInterval(window._vwsSvcReinjectTimer);
+              window._vwsSvcReinjectTimer = null;
+              document.body.classList.remove('vws-cover');
+              return;
+            }
             Array.from(document.querySelectorAll('section')).forEach(function(s) {
               if (s.className === 'relative border-t') s.classList.add('vws-react-hidden');
             });
             if (window._vwsInjectWave) window._vwsInjectWave();
             if (window._vwsInjectListing && window._vwsInjectListing()) {
               clearInterval(window._vwsSvcReinjectTimer);
+              window._vwsSvcReinjectTimer = null;
+              document.body.classList.remove('vws-cover');
             }
           }, 100);
         }
