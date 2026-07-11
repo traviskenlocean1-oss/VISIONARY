@@ -3782,65 +3782,6 @@
             if (ORDER[i]) el.style.color = ORDER[i].lt;
           });
 
-          /* Add wave at bottom of services listing hero section */
-          var listingSecs = document.querySelectorAll('section');
-          if (listingSecs[0] && !listingSecs[0].querySelector('[data-vws-lwave]')) {
-            listingSecs[0].style.position = 'relative';
-            listingSecs[0].style.overflow = 'visible';
-            var heroWave = document.createElement('div');
-            heroWave.setAttribute('data-vws-lwave','hero');
-            heroWave.style.cssText = 'position:absolute;bottom:-1px;left:0;right:0;height:80px;pointer-events:none;z-index:5;line-height:0';
-            heroWave.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 80" preserveAspectRatio="none" style="display:block;width:100%;height:80px"><path d="M0,40 C360,0 1080,80 1440,40 L1440,80 L0,80 Z" fill="#060916"/></svg>';
-            listingSecs[0].appendChild(heroWave);
-          }
-          /* After service cards — wave before dark grid */
-          if (listingSecs[1] && !listingSecs[1].querySelector('[data-vws-lwave]')) {
-            listingSecs[1].style.position = 'relative';
-            listingSecs[1].style.overflow = 'visible';
-            var midWave = document.createElement('div');
-            midWave.setAttribute('data-vws-lwave','mid');
-            midWave.style.cssText = 'position:absolute;bottom:-1px;left:0;right:0;height:80px;pointer-events:none;z-index:5;line-height:0';
-            midWave.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 80" preserveAspectRatio="none" style="display:block;width:100%;height:80px"><path d="M0,40 C360,80 1080,0 1440,40 L1440,80 L0,80 Z" fill="#060916"/></svg>';
-            listingSecs[1].appendChild(midWave);
-          }
-
-          /* Inject the services overview grid below the listing */
-          if (document.getElementById('vws-svc-listing')) return;
-          var grid = document.createElement('section');
-          grid.id = 'vws-svc-listing';
-          grid.style.cssText = 'display:block;background:#060916;padding:60px 24px 80px;font-family:Barlow,system-ui,sans-serif;position:relative;overflow:visible';
-          /* Wave at the bottom of the dark grid → back to white footer */
-          var gridEndWave = '<div style="position:absolute;bottom:-1px;left:0;right:0;height:80px;pointer-events:none;z-index:5;line-height:0">'
-            +'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 80" preserveAspectRatio="none" style="display:block;width:100%;height:80px"><path d="M0,40 C360,0 1080,80 1440,40 L1440,80 L0,80 Z" fill="#ffffff"/></svg></div>';
-          grid.innerHTML = gridEndWave + '<div style="max-width:960px;margin:0 auto">'
-            +'<div style="text-align:center;margin-bottom:40px">'
-            +'<div style="font-size:10px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:#60a5fa;margin-bottom:10px">Everything We Do</div>'
-            +'<div style="font-size:28px;font-weight:900;color:#fff;line-height:1.25">Six Ways We Help Local Businesses<br>Win Online</div>'
-            +'</div>'
-            +'<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px">'
-            + ORDER.map(function(cfg){
-                var label = cfg.slug.replace(/-/g,' ').replace(/\b\w/g,function(c){return c.toUpperCase();});
-                return '<a href="/services/'+cfg.slug+'" style="display:block;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.07);border-radius:12px;padding:22px;text-decoration:none;transition:border-color .2s,background .2s" '
-                  +'onmouseover="this.style.borderColor=\''+cfg.lt+'\';this.style.background=\'rgba(255,255,255,0.04)\'" '
-                  +'onmouseout="this.style.borderColor=\'rgba(255,255,255,0.07)\';this.style.background=\'rgba(255,255,255,0.02)\'">'
-                  +'<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">'
-                  +'<div style="width:36px;height:36px;border-radius:8px;background:'+cfg.color+'22;border:1px solid '+cfg.color+'55;display:flex;align-items:center;justify-content:center">'
-                  +'<div style="width:14px;height:14px;border-radius:50%;background:'+cfg.color+'"></div></div>'
-                  +'<span style="font-size:9px;font-weight:700;letter-spacing:0.1em;color:'+cfg.lt+';background:'+cfg.color+'22;border:1px solid '+cfg.color+'44;border-radius:20px;padding:3px 9px">'+cfg.tag.toUpperCase()+'</span>'
-                  +'</div>'
-                  +'<div style="font-size:14px;font-weight:800;color:#fff;margin-bottom:6px">'+label+'</div>'
-                  +'<div style="font-size:11.5px;color:rgba(255,255,255,0.45);line-height:1.5;margin-bottom:14px">Click to see full details, pricing, and the before/after comparison.</div>'
-                  +'<div style="font-size:11px;font-weight:700;color:'+cfg.lt+';display:flex;align-items:center;gap:5px">'
-                  +'View Details <span style="font-size:14px">→</span></div>'
-                  +'</a>';
-              }).join('')
-            +'</div>'
-            +'<div style="margin-top:40px;text-align:center"><a href="/contact" style="display:inline-block;background:linear-gradient(135deg,#1d4ed8,#2563eb);color:#fff;font-size:13px;font-weight:800;letter-spacing:0.1em;padding:14px 36px;border-radius:8px;text-decoration:none;text-transform:uppercase;box-shadow:0 8px 30px rgba(29,78,216,0.4)">Start a Project — Free Consultation →</a></div>'
-            +'</div>';
-
-          var root = document.getElementById('root');
-          if (root && root.parentNode) root.parentNode.insertBefore(grid, root.nextSibling);
-          else document.body.appendChild(grid);
         }
       }, 150);
     }
