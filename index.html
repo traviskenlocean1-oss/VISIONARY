@@ -1133,7 +1133,13 @@
 
 
   /* ══ TASK 4: Pricing card background → white (root fix) ══ */
-  .vws-section-light [style*="rgba(5, 8, 20, 0.65)"]{background:#ffffff!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+  .vws-section-light [style*="rgba(5, 8, 20, 0.65)"],
+  .vws-section-light [style*="rgba(5, 8, 20, 0.6)"],
+  .vws-section-light [style*="rgba(255, 255, 255, 0.06)"]{background:#ffffff!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;border:1px solid rgba(37,99,235,0.12)!important;border-radius:12px!important}
+  .vws-section-light [style*="rgba(5, 8, 20, 0.6)"] *,
+  .vws-section-light [style*="rgba(5, 8, 20, 0.65)"] *{color:#0d1117!important}
+  .vws-section-light [style*="rgba(5, 8, 20, 0.6)"] svg,
+  .vws-section-light [style*="rgba(5, 8, 20, 0.65)"] svg{color:#2563eb!important}
   /* Ghost pricing button → blue-tinted outline — button/a only, never general divs */
   .vws-section-light button[style*="rgba(255, 255, 255, 0.07)"],
   .vws-section-light a[style*="rgba(255, 255, 255, 0.07)"]{background:rgba(37,99,235,0.08)!important;color:#2563eb!important;border-color:rgba(37,99,235,0.3)!important}
