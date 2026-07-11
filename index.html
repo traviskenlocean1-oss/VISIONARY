@@ -1290,10 +1290,7 @@
   /* ══ SERVICES LISTING — wave section dividers ══ */
   #vws-listing-wave-1,#vws-listing-wave-2{position:relative;line-height:0;overflow:hidden}
 
-  /* ══ HOMEPAGE SERVICES GRID — mobile ══ */
-  @media(max-width:768px){
-    #vws-hp-services > div:first-child{grid-template-columns:1fr!important}
-  }
+  /* ══ HOMEPAGE SERVICES GRID — mobile handled in grid CSS ══ */
 
   /* ══ DROPDOWN — force all mega items white (override React colored bg) ══ */
   [data-vws-mega] .vws-mega-item{background:#ffffff!important}
@@ -1402,23 +1399,41 @@
   .vws-build-filename{margin-left:8px;color:rgba(255,255,255,0.32);font-size:11px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
   .vws-build-code{padding:26px 28px;font-size:13.5px;line-height:1.9;color:#e6edf3}
 
-  /* ══ HOME PAGE — WWO Bento Grid ══ */
-  .vws-wwo-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;max-width:1120px;margin:0 auto;padding:8px 24px 0;font-family:Barlow,system-ui,sans-serif}
-  .vws-wwo-card{position:relative;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:16px;padding:32px 28px 28px;text-decoration:none;overflow:hidden;display:flex;flex-direction:column;min-height:200px;transition:border-color .2s,box-shadow .2s,transform .2s;cursor:pointer}
-  .vws-wwo-card:hover{transform:translateY(-2px)}
-  .vws-wwo-c2{grid-column:span 2}
-  .vws-wwo-c3{grid-column:span 3;flex-direction:row;align-items:center;gap:48px;min-height:auto;padding:28px 32px}
-  .vws-wwo-c3 .vws-wwo-num{position:relative;bottom:auto;right:auto;font-size:72px;flex-shrink:0;opacity:.08}
-  .vws-wwo-c3 .vws-wwo-body{flex:1}
-  .vws-wwo-bar{position:absolute;top:0;left:0;right:0;height:2px}
-  .vws-wwo-num{position:absolute;bottom:-8px;right:16px;font-size:clamp(80px,10vw,120px);font-weight:900;color:rgba(255,255,255,0.05);line-height:1;pointer-events:none;user-select:none;font-family:inherit}
-  .vws-wwo-body{position:relative;z-index:1;display:flex;flex-direction:column;flex:1}
-  .vws-wwo-name{font-size:17px;font-weight:800;color:#f0f4ff;margin:0 0 10px;line-height:1.2}
-  .vws-wwo-desc{font-size:13px;color:rgba(240,244,255,0.5);line-height:1.65;margin:0 0 auto}
-  .vws-wwo-link{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-top:22px;display:flex;align-items:center;gap:5px}
+  /* ══ HOME PAGE — Services Card Grid ══ */
+  .vws-svc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;max-width:1140px;margin:0 auto;padding:0 24px;font-family:Barlow,system-ui,sans-serif}
+  .vws-svc-card{position:relative;border-radius:18px;padding:42px 28px 36px;text-align:center;overflow:hidden;display:flex;flex-direction:column;align-items:center;border:1px solid rgba(255,255,255,0.09);background:rgba(255,255,255,0.03);transition:transform .35s cubic-bezier(.4,0,.2,1),box-shadow .35s,border-color .35s;cursor:pointer}
+  .vws-svc-card-bg{position:absolute;inset:0;opacity:0;transition:opacity .4s cubic-bezier(.4,0,.2,1);pointer-events:none}
+  .vws-svc-card:hover .vws-svc-card-bg{opacity:1}
+  .vws-svc-card:hover{transform:translateY(-5px);box-shadow:0 28px 70px rgba(0,0,0,0.45);border-color:transparent}
+  .vws-svc-icon-wrap{width:88px;height:88px;margin:0 auto 26px;border-radius:50%;padding:3px;flex-shrink:0;position:relative;z-index:1;box-sizing:border-box}
+  .vws-svc-icon-inner{width:100%;height:100%;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:background .35s}
+  .vws-svc-card:hover .vws-svc-icon-inner{background:rgba(255,255,255,0.18)!important}
+  .vws-svc-card:hover .vws-svc-icon-inner svg{stroke:#fff!important}
+  .vws-svc-title{font-size:20px;font-weight:800;color:#e1e0cc;margin:0 0 12px;line-height:1.2;position:relative;z-index:1;transition:color .35s}
+  .vws-svc-card:hover .vws-svc-title{color:#fff}
+  .vws-svc-desc{font-size:13.5px;color:rgba(255,255,255,0.45);line-height:1.65;margin:0 0 auto;position:relative;z-index:1;transition:color .35s}
+  .vws-svc-card:hover .vws-svc-desc{color:rgba(255,255,255,0.84)}
+  .vws-svc-read{font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#fff;display:flex;align-items:center;gap:6px;margin-top:22px;opacity:0;transform:translateY(10px);transition:opacity .3s,transform .3s;position:relative;z-index:1}
+  .vws-svc-card:hover .vws-svc-read{opacity:1;transform:translateY(0)}
   #vws-hp-services{padding:0 0 60px}
-  @media(max-width:900px){.vws-wwo-grid{grid-template-columns:1fr 1fr}.vws-wwo-c3{grid-column:span 2;flex-direction:column;gap:16px}}
-  @media(max-width:600px){.vws-wwo-grid{grid-template-columns:1fr}.vws-wwo-c2,.vws-wwo-c3{grid-column:span 1;flex-direction:column}}
+  @media(max-width:900px){.vws-svc-grid{grid-template-columns:1fr 1fr}}
+  @media(max-width:580px){.vws-svc-grid{grid-template-columns:1fr;gap:14px}}
+
+  /* ══ HOME PAGE — Scroll Reveal Animations ══ */
+  .vws-reveal-l,.vws-reveal-r,.vws-reveal-u{will-change:opacity,transform}
+  .vws-reveal-l{opacity:0;transform:translateX(-55px);transition:opacity .65s cubic-bezier(.4,0,.2,1),transform .65s cubic-bezier(.4,0,.2,1)}
+  .vws-reveal-r{opacity:0;transform:translateX(55px);transition:opacity .65s cubic-bezier(.4,0,.2,1),transform .65s cubic-bezier(.4,0,.2,1)}
+  .vws-reveal-u{opacity:0;transform:translateY(38px);transition:opacity .6s cubic-bezier(.4,0,.2,1),transform .6s cubic-bezier(.4,0,.2,1)}
+  .vws-revealed{opacity:1!important;transform:none!important}
+  @media(prefers-reduced-motion:reduce){.vws-reveal-l,.vws-reveal-r,.vws-reveal-u{opacity:1;transform:none;transition:none}}
+
+  /* ══ SITEWIDE — Tighter section spacing + bigger headings ══ */
+  section[class*="py-24"]{padding-top:4.5rem!important;padding-bottom:4.5rem!important}
+  section[class*="py-28"]{padding-top:4.5rem!important;padding-bottom:4.5rem!important}
+  section[class*="py-20"]{padding-top:3.5rem!important;padding-bottom:3.5rem!important}
+  section[class*="md:py-32"]{padding-top:4.5rem!important;padding-bottom:4.5rem!important}
+  section h2{font-size:clamp(36px,5vw,66px)!important}
+  section h3{font-size:clamp(20px,3vw,28px)!important}
 
   /* ══ MOBILE HERO — hide form card, strip right-side gradient ══ */
   @media(max-width:768px){
@@ -2178,6 +2193,7 @@
       if (window._vwsSeoCodeObs) { window._vwsSeoCodeObs.disconnect(); window._vwsSeoCodeObs = null; }
       if (window._vwsWhoWeAreObs) { window._vwsWhoWeAreObs.disconnect(); window._vwsWhoWeAreObs = null; }
       if (window._vwsCompTableObs) { window._vwsCompTableObs.disconnect(); window._vwsCompTableObs = null; }
+      if (window._vwsRevealObs) { window._vwsRevealObs.disconnect(); window._vwsRevealObs = null; }
       /* Remove about-page body class and any inline overrides on React sections */
       document.body.classList.remove('vws-about');
       document.querySelectorAll('[data-vws-enh]').forEach(function(el) {
@@ -3366,63 +3382,85 @@
             return s.textContent.indexOf('What We Offer') !== -1 && !s.id;
           });
           if (wwoSec) {
-            var SVC_ITEMS = [
-              {slug:'web-development', icon:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>', name:'Website Development', desc:'Hand-coded from scratch. Zero templates.', color:'#2563eb'},
-              {slug:'website-creation',    icon:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>', name:'Website Creation', desc:'Get your business online fast in 5 days.', color:'#7c3aed'},
-              {slug:'website-redesign',    icon:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>', name:'Website Redesign', desc:'Modernize your existing site — zero downtime.', color:'#dc2626'},
-              {slug:'website-maintenance', icon:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>', name:'Website Maintenance', desc:'Unlimited updates. Same-day turnaround.', color:'#d97706'},
-              {slug:'hosting',      icon:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="8" rx="2" ry="2"/><rect x="2" y="14" width="20" height="8" rx="2" ry="2"/><line x1="6" y1="6" x2="6.01" y2="6"/><line x1="6" y1="18" x2="6.01" y2="18"/></svg>', name:'Hosting & Domain', desc:'Fast, reliable — included free with every build.', color:'#0d9488'},
-              {slug:'logo-branding',       icon:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>', name:'Logo & Branding', desc:'Professional identity that stands out.', color:'#ca8a04'}
+            var HP_SVCS = [
+              {slug:'web-development',     name:'Website Development',  desc:'Hand-coded from scratch. Every line intentional — no templates, no page builders.',  color:'#2563eb', color2:'#3b82f6'},
+              {slug:'website-creation',    name:'Website Creation',     desc:'Get your business online in 5 days without cutting corners.',                          color:'#7c3aed', color2:'#a78bfa'},
+              {slug:'website-redesign',    name:'Website Redesign',     desc:'Same domain. Completely new look, speed, and results.',                                color:'#dc2626', color2:'#f87171'},
+              {slug:'website-maintenance', name:'Website Maintenance',  desc:'Unlimited updates, same-day turnaround — always fresh.',                              color:'#d97706', color2:'#fbbf24'},
+              {slug:'hosting',             name:'Hosting & Domain',     desc:'Fast, globally distributed hosting — included free with every build.',                 color:'#0d9488', color2:'#34d399'},
+              {slug:'logo-branding',       name:'Logo & Branding',      desc:'A professional identity that makes clients trust you before you say a word.',          color:'#ca8a04', color2:'#fde047'}
             ];
-            /* Dark bento-grid layout — more complex than plain 2-col */
-            function bentoCard(svc, spanCls) {
-              return '<a href="/services/'+svc.slug+'" class="vws-wwo-card'+spanCls+'" '
-                +'onmouseover="this.style.borderColor=\''+svc.color+'55\';this.style.boxShadow=\'0 24px 60px rgba(0,0,0,0.4),inset 0 0 0 1px '+svc.color+'33\'" '
-                +'onmouseout="this.style.borderColor=\'\';this.style.boxShadow=\'\'">'
-                +'<div class="vws-wwo-bar" style="background:linear-gradient(90deg,'+svc.color+','+svc.color+'88)"></div>'
-                +'<span class="vws-wwo-num">'+svc.num+'</span>'
-                +'<div class="vws-wwo-body">'
-                  +'<div class="vws-wwo-name">'+svc.name+'</div>'
-                  +'<div class="vws-wwo-desc">'+svc.desc+'</div>'
-                  +'<div class="vws-wwo-link" style="color:'+svc.color+'">Learn More <span>→</span></div>'
+            var HP_ICONS = {
+              'web-development':    '<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>',
+              'website-creation':   '<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>',
+              'website-redesign':   '<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>',
+              'website-maintenance':'<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>',
+              'hosting':            '<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="8" rx="2" ry="2"/><rect x="2" y="14" width="20" height="8" rx="2" ry="2"/><line x1="6" y1="6" x2="6.01" y2="6"/><line x1="6" y1="18" x2="6.01" y2="18"/></svg>',
+              'logo-branding':      '<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>'
+            };
+            function hxRgb(h){var r=parseInt(h.slice(1,3),16),g=parseInt(h.slice(3,5),16),b=parseInt(h.slice(5,7),16);return r+','+g+','+b;}
+            function hpCard(s){
+              var ico=(HP_ICONS[s.slug]||'').replace('<svg','<svg width="28" height="28" style="stroke:'+s.color+';flex-shrink:0"');
+              return '<a href="/services/'+s.slug+'" class="vws-svc-card" style="text-decoration:none">'
+                +'<div class="vws-svc-card-bg" style="background:linear-gradient(135deg,'+s.color+','+s.color2+')"></div>'
+                +'<div class="vws-svc-icon-wrap" style="background:conic-gradient(from 130deg,'+s.color+' 0deg 258deg,rgba(255,255,255,0.04) 258deg 360deg)">'
+                  +'<div class="vws-svc-icon-inner" style="background:rgba('+hxRgb(s.color)+',0.13)">'
+                    +ico
+                  +'</div>'
                 +'</div>'
+                +'<div class="vws-svc-title">'+s.name+'</div>'
+                +'<div class="vws-svc-desc">'+s.desc+'</div>'
+                +'<div class="vws-svc-read">Read More <span style="font-size:16px">→</span></div>'
                 +'</a>';
             }
-            var BENTO = [
-              {slug:'web-development', num:'01', name:'Website Development', desc:'Hand-coded from scratch. Every line is intentional — no templates, no page builders, no compromise.',  color:'#2563eb'},
-              {slug:'website-creation',    num:'02', name:'Website Creation',    desc:'Get online fast in 5 days without cutting corners.',                                                         color:'#7c3aed'},
-              {slug:'website-redesign',    num:'03', name:'Website Redesign',    desc:'Same domain. Completely new results.',                                                                        color:'#dc2626'},
-              {slug:'website-maintenance', num:'04', name:'Website Maintenance', desc:'Unlimited updates, same-day turnaround.',                                                                     color:'#d97706'},
-              {slug:'hosting',      num:'05', name:'Hosting & Domain',    desc:'Fast, globally distributed — included free.',                                                                  color:'#0d9488'},
-              {slug:'logo-branding',       num:'06', name:'Logo & Branding',     desc:'A professional identity that makes clients trust you before you even say a word.',                            color:'#ca8a04'}
-            ];
-            var sGrid = document.createElement('div');
-            sGrid.id = 'vws-hp-services';
-            sGrid.innerHTML = '<div class="vws-wwo-grid">'
-              + bentoCard(BENTO[0], ' vws-wwo-c2')  /* 01 — spans 2 cols */
-              + bentoCard(BENTO[1], '')              /* 02 */
-              + bentoCard(BENTO[2], '')              /* 03 */
-              + bentoCard(BENTO[3], '')              /* 04 */
-              + bentoCard(BENTO[4], '')              /* 05 */
-              + bentoCard(BENTO[5], ' vws-wwo-c3')  /* 06 — full width */
-              +'</div>'
-              +'<div style="text-align:center;margin-top:40px">'
-              +'<a href="/services" style="display:inline-flex;align-items:center;gap:8px;background:#2563eb;color:#fff;font-size:14px;font-weight:700;padding:14px 32px;border-radius:8px;text-decoration:none;box-shadow:0 4px 20px rgba(37,99,235,0.28)">Explore All Services →</a>'
+            var sGrid=document.createElement('div');
+            sGrid.id='vws-hp-services';
+            sGrid.innerHTML='<div class="vws-svc-grid">'+HP_SVCS.map(hpCard).join('')+'</div>'
+              +'<div style="text-align:center;margin-top:44px">'
+              +'<a href="/services" style="display:inline-flex;align-items:center;gap:8px;background:#2563eb;color:#fff;font-size:15px;font-weight:700;padding:16px 36px;border-radius:10px;text-decoration:none;box-shadow:0 4px 24px rgba(37,99,235,0.30)">Explore All Services →</a>'
               +'</div>';
-            /* SPA nav — intercept clicks so no full-page reload glitch */
-            sGrid.addEventListener('click', function(e) {
-              var a = e.target.closest('a[href^="/services/"]');
-              if (!a) return;
+            sGrid.addEventListener('click',function(e){
+              var a=e.target.closest('a[href^="/services/"]');
+              if(!a)return;
               e.preventDefault();
-              history.pushState(null, '', new URL(a.href).pathname);
-              window.dispatchEvent(new PopStateEvent('popstate', {}));
+              history.pushState(null,'',new URL(a.href).pathname);
+              window.dispatchEvent(new PopStateEvent('popstate',{}));
             });
-            /* Style the parent section dark */
             wwoSec.style.setProperty('background','#060916','important');
-            /* Hide ALL React children — not just opacity:0 ones — so icon boxes don't bleed through */
             Array.from(wwoSec.children).forEach(function(c){c.style.setProperty('display','none','important');});
             wwoSec.appendChild(sGrid);
           }
+        }
+
+        /* ── Scroll reveal: animate homepage sections as they enter viewport ── */
+        if (!window._vwsRevealObs && window.IntersectionObserver) {
+          var procLeft=document.getElementById('vws-proc-left');
+          var procPhoto=document.getElementById('vws-proc-photo');
+          if(procLeft){procLeft.classList.add('vws-reveal-l');}
+          if(procPhoto){procPhoto.classList.add('vws-reveal-r');}
+          document.querySelectorAll('.vws-svc-card').forEach(function(card,i){
+            card.classList.add('vws-reveal-u');
+            card.style.transitionDelay=(i%3*0.12)+'s';
+          });
+          var trustSec=document.getElementById('vws-hp-trust');
+          if(trustSec){trustSec.classList.add('vws-reveal-u');}
+          var sliderSec=document.getElementById('vws-hp-slider');
+          if(sliderSec){sliderSec.classList.add('vws-reveal-u');}
+          var statSec=Array.from(document.querySelectorAll('section')).find(function(s){return s.textContent.indexOf('76%')!==-1;});
+          if(statSec&&statSec.firstElementChild){
+            var si=statSec.firstElementChild.children;
+            if(si[0])si[0].classList.add('vws-reveal-l');
+            if(si[1])si[1].classList.add('vws-reveal-r');
+          }
+          window._vwsRevealObs=new IntersectionObserver(function(entries){
+            entries.forEach(function(en){
+              if(en.isIntersecting){en.target.classList.add('vws-revealed');}
+              else{en.target.classList.remove('vws-revealed');}
+            });
+          },{threshold:0.08,rootMargin:'0px 0px -48px 0px'});
+          document.querySelectorAll('.vws-reveal-l,.vws-reveal-r,.vws-reveal-u').forEach(function(el){
+            window._vwsRevealObs.observe(el);
+          });
         }
 
       }
