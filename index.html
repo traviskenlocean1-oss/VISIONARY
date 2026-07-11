@@ -480,50 +480,41 @@
           return true;
         }
 
-        function injectBuiltResultsCard() {
-          if (document.getElementById('vws-build-card-wrap')) return true;
+        function injectBestServiceSection() {
+          if (document.getElementById('vws-best-svc')) return true;
           var sec = document.getElementById('react-built-results');
           if (!sec) return false;
-          var rightCol = sec.querySelector('div[class*="flex-shrink-0"]');
-          if (!rightCol) return false;
-          /* Widen right column so the card has substantial visual weight */
-          rightCol.style.cssText = 'flex-shrink:0;width:100%;max-width:440px';
-          /* Hide the SVG mascot illustration */
-          var svg = rightCol.querySelector('svg');
-          if (svg) {
-            var svgW = svg.parentElement;
-            (svgW && svgW !== rightCol ? svgW : svg).style.setProperty('display','none','important');
-          }
-          /* Find the caption element so we insert the card above it */
-          var captionEl = null;
-          Array.from(rightCol.querySelectorAll('p,span,div')).forEach(function(el) {
-            if (!captionEl && el.textContent.indexOf('dedicated builder') !== -1) captionEl = el;
-          });
-          /* Walk up to a direct child of rightCol */
-          if (captionEl) {
-            while (captionEl.parentElement && captionEl.parentElement !== rightCol) captionEl = captionEl.parentElement;
-          }
-          var wrap = document.createElement('div');
-          wrap.id = 'vws-build-card-wrap';
-          wrap.innerHTML = '<div class="vws-build-card">'
-            + '<div class="vws-build-card-bar">'
-            + '<span class="vws-build-dot" style="background:#ff5f57"></span>'
-            + '<span class="vws-build-dot" style="background:#febc2e"></span>'
-            + '<span class="vws-build-dot" style="background:#28c840"></span>'
-            + '<span class="vws-build-filename">build.js</span>'
+          var bss = document.createElement('section');
+          bss.id = 'vws-best-svc';
+          bss.innerHTML = '<div class="vws-bs-inner">'
+            + '<p class="vws-bs-label">Visionary Web Studio</p>'
+            + '<h2 class="vws-bs-h2">Best Service</h2>'
+            + '<div class="vws-bs-grid">'
+              + '<img class="vws-bs-char" src="/visionary-character.png" alt="Visionary Web Studio mascot at his desk" loading="lazy"/>'
+              + '<div class="vws-bs-features">'
+                + '<div class="vws-bs-item">'
+                  + '<div class="vws-bs-icon">V</div>'
+                  + '<div><h3 class="vws-bs-ftitle">Guaranteed Results</h3>'
+                  + '<p class="vws-bs-fbody">Our commitment to excellence ensures you\'ll achieve guaranteed results for your business online. — Visionary Web Studio</p></div>'
+                + '</div>'
+                + '<div class="vws-bs-item">'
+                  + '<div class="vws-bs-icon">V</div>'
+                  + '<div><h3 class="vws-bs-ftitle">Quality Services</h3>'
+                  + '<p class="vws-bs-fbody">Our dedication to quality sets us apart, making us the preferred choice for all your web design needs.</p></div>'
+                + '</div>'
+                + '<div class="vws-bs-item">'
+                  + '<div class="vws-bs-icon">V</div>'
+                  + '<div><h3 class="vws-bs-ftitle">Customer Support</h3>'
+                  + '<p class="vws-bs-fbody">Our dedicated support team is available 24/7 to assist you with any inquiries or concerns.</p></div>'
+                + '</div>'
+                + '<div class="vws-bs-cta">'
+                  + '<a href="/contact" class="vws-bs-btn">MORE INFO ✓</a>'
+                  + '<div><p class="vws-bs-call-label">Call Us Now</p><p class="vws-bs-phone">+1 (888) 413-8044</p></div>'
+                + '</div>'
+              + '</div>'
             + '</div>'
-            + '<div class="vws-build-code">'
-            + '<div><span style="color:#8b949e">// Built for: [Client Name]</span></div>'
-            + '<div><span style="color:#ff7b72">const</span><span style="color:#e6edf3"> site </span><span style="color:#ff7b72">=</span><span style="color:#ff7b72"> new</span> <span style="color:#79c0ff">CustomBuild</span><span style="color:#e6edf3">({</span></div>'
-            + '<div><span style="color:#e6edf3">&nbsp;&nbsp;templates</span><span style="color:#ff7b72">:</span> <span style="color:#79c0ff">false</span><span style="color:#e6edf3">,</span></div>'
-            + '<div><span style="color:#e6edf3">&nbsp;&nbsp;handCoded</span><span style="color:#ff7b72">:</span> <span style="color:#79c0ff">true</span><span style="color:#e6edf3">,</span></div>'
-            + '<div><span style="color:#e6edf3">&nbsp;&nbsp;builtBy</span><span style="color:#ff7b72">:</span> <span style="color:#a5d6ff">"you, directly"</span></div>'
-            + '<div><span style="color:#e6edf3">});</span></div>'
-            + '<div style="margin-top:18px;color:rgba(255,255,255,0.28);font-style:italic">writing your site...</div>'
-            + '</div>'
-            + '</div>';
-          if (captionEl) rightCol.insertBefore(wrap, captionEl);
-          else rightCol.appendChild(wrap);
+          + '</div>';
+          sec.parentNode.insertBefore(bss, sec.nextSibling);
           return true;
         }
 
@@ -572,12 +563,12 @@
         });
 
         injectWave();
-        var _listOk = injectListing(), _cardOk = injectBuiltResultsCard();
-        if (!_listOk || !_cardOk) {
+        var _listOk = injectListing(), _bssOk = injectBestServiceSection();
+        if (!_listOk || !_bssOk) {
           var svsPoll = 0, svsTimer = setInterval(function() {
             svsPoll++;
             injectWave();
-            var lo = injectListing(), co = injectBuiltResultsCard();
+            var lo = injectListing(), co = injectBestServiceSection();
             if ((lo && co) || svsPoll > 30) clearInterval(svsTimer);
           }, 200);
         }
@@ -1391,13 +1382,26 @@
   #react-built-results div.p-6 span,#react-built-results div.p-6 [class*="text-"]{color:#6b7280!important}
   #react-built-results [class*="text-blue"],#react-built-results [class*="text-cyan"],#react-built-results [class*="text-indigo"]{color:#2563eb!important}
 
-  /* ══ SERVICES PAGE — "Built for Results" code-editor card ══ */
-  #vws-build-card-wrap{display:flex;flex-direction:column}
-  .vws-build-card{background:#0d1117;border:1px solid rgba(255,255,255,0.1);border-radius:10px;overflow:hidden;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;box-shadow:0 20px 60px rgba(0,0,0,0.35),0 4px 20px rgba(0,0,0,0.2);width:100%}
-  .vws-build-card-bar{background:#161b22;padding:11px 16px;display:flex;align-items:center;gap:7px;border-bottom:1px solid rgba(255,255,255,0.07)}
-  .vws-build-dot{width:11px;height:11px;border-radius:50%;display:inline-block;flex-shrink:0}
-  .vws-build-filename{margin-left:8px;color:rgba(255,255,255,0.32);font-size:11px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
-  .vws-build-code{padding:26px 28px;font-size:13.5px;line-height:1.9;color:#e6edf3}
+  /* ══ SERVICES PAGE — Best Service section ══ */
+  #vws-best-svc{background:#0a1024;padding:80px 40px;font-family:Barlow,system-ui,sans-serif}
+  .vws-bs-inner{max-width:1200px;margin:0 auto}
+  .vws-bs-label{font-size:11px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:#60a5fa;margin:0 0 12px}
+  .vws-bs-h2{font-size:clamp(40px,6vw,72px);font-weight:900;color:#fff;margin:0 0 48px;line-height:1.05}
+  .vws-bs-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:start}
+  .vws-bs-char{width:100%;border-radius:16px;box-shadow:0 0 60px rgba(37,99,235,0.4);display:block}
+  .vws-bs-features{display:flex;flex-direction:column}
+  .vws-bs-item{display:flex;gap:20px;padding:24px 0;border-bottom:1px solid rgba(37,99,235,0.2)}
+  .vws-bs-item:first-child{border-top:1px solid rgba(37,99,235,0.2)}
+  .vws-bs-icon{flex-shrink:0;width:56px;height:56px;border-radius:12px;background:#2563eb;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:900;color:#fff;font-family:Barlow,system-ui,sans-serif}
+  .vws-bs-ftitle{font-size:20px;font-weight:800;color:#fff;margin:0 0 8px;line-height:1.2}
+  .vws-bs-fbody{font-size:15px;color:rgba(219,234,254,0.75);line-height:1.65;margin:0}
+  .vws-bs-cta{display:flex;align-items:center;gap:28px;padding-top:28px}
+  .vws-bs-btn{display:inline-flex;align-items:center;gap:8px;background:#2563eb;color:#fff;font-size:13px;font-weight:800;letter-spacing:.08em;padding:14px 28px;border-radius:999px;text-decoration:none;transition:background .2s,transform .2s}
+  .vws-bs-btn:hover{background:#1d4ed8;transform:translateY(-2px)}
+  .vws-bs-call-label{font-size:12px;color:rgba(219,234,254,0.6);margin:0 0 4px}
+  .vws-bs-phone{font-size:20px;font-weight:800;color:#fff;margin:0}
+  @media(max-width:900px){.vws-bs-grid{grid-template-columns:1fr;gap:36px}.vws-bs-char{max-width:480px;margin:0 auto}}
+  @media(max-width:480px){#vws-best-svc{padding:60px 20px}}
 
   /* ══ HOME PAGE — Services Card Grid ══ */
   .vws-svc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;max-width:1140px;margin:0 auto;padding:0 24px;font-family:Barlow,system-ui,sans-serif}
