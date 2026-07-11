@@ -4238,6 +4238,8 @@
     var rebuilt = false;
     function rebuild() {
       if (rebuilt) return;
+      /* Abort if user navigated away before rebuild could run */
+      if (window.location.pathname.indexOf('/services/') !== 0) return;
       var footer = document.querySelector('footer');
       if (!footer) return;
       rebuilt = true;
@@ -4315,10 +4317,16 @@
     var svcAttempts = 0;
     var svcPoll = setInterval(function(){
       svcAttempts++;
+      /* Bail if user navigated away — stops poll and 900ms timer from firing on services page */
+      if (window.location.pathname.indexOf('/services/') !== 0) { clearInterval(svcPoll); return; }
       if (document.querySelectorAll('section').length > 0 || document.querySelector('footer') || svcAttempts > 20) {
         clearInterval(svcPoll);
         rebuild();
         setTimeout(function(){
+          /* Path guard: do NOT run if user has already navigated back to /services or elsewhere.
+             Without this guard, this timeout fires on the services listing and hides the hero
+             section, leaving only the alternating cards visible (the root cause of the blank page). */
+          if (window.location.pathname.indexOf('/services/') !== 0) return;
           /* Re-hide any sections React re-rendered after our first pass */
           var reSecs = document.querySelectorAll('section:not([id^="vws"])');
           for (var k = 0; k < reSecs.length; k++) {
