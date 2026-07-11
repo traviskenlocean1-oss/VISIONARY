@@ -458,7 +458,7 @@
         /* "Built for Results" id */
         document.querySelectorAll('section').forEach(function(s) {
           var h2 = s.querySelector('h2');
-          if (h2 && h2.textContent.trim() === 'Built for Results') s.id = 'vws-built-results';
+          if (h2 && h2.textContent.trim() === 'Built for Results') s.id = 'react-built-results';
         });
 
         /* ── Wave injector — re-runs until hero exists ── */
@@ -513,6 +513,8 @@
           return true;
         }
 
+        window._vwsInjectWave = injectWave;
+        window._vwsInjectListing = injectListing;
         injectWave();
         if (!injectListing()) {
           var svsPoll = 0, svsTimer = setInterval(function() {
@@ -1321,15 +1323,15 @@
   @media(max-width:768px){.vws-sl-row,.vws-sl-row.vws-sl-flip{flex-direction:column}.vws-sl-text{padding:48px 24px}.vws-sl-visual{min-height:220px}}
 
   /* ══ SERVICES PAGE — "Built for Results" white section ══ */
-  #vws-built-results{background:#ffffff!important;border-top:1px solid #f3f4f6!important}
-  #vws-built-results h2{color:#0d1117!important}
-  #vws-built-results>div>p,#vws-built-results>div>div>p{color:#6b7280!important}
+  #react-built-results{background:#ffffff!important;border-top:1px solid #f3f4f6!important}
+  #react-built-results h2{color:#0d1117!important}
+  #react-built-results>div>p,#react-built-results>div>div>p{color:#6b7280!important}
   /* Feature cards — target div.p-6 which is what React actually renders */
-  #vws-built-results div.p-6{background:#ffffff!important;border:1px solid rgba(0,0,0,0.08)!important;border-radius:12px!important;box-shadow:0 2px 8px rgba(0,0,0,0.04)!important}
-  #vws-built-results div.p-6 h3{color:#0d1117!important}
-  #vws-built-results div.p-6 p{color:#4b5563!important}
-  #vws-built-results div.p-6 span,#vws-built-results div.p-6 [class*="text-"]{color:#6b7280!important}
-  #vws-built-results [class*="text-blue"],#vws-built-results [class*="text-cyan"],#vws-built-results [class*="text-indigo"]{color:#2563eb!important}
+  #react-built-results div.p-6{background:#ffffff!important;border:1px solid rgba(0,0,0,0.08)!important;border-radius:12px!important;box-shadow:0 2px 8px rgba(0,0,0,0.04)!important}
+  #react-built-results div.p-6 h3{color:#0d1117!important}
+  #react-built-results div.p-6 p{color:#4b5563!important}
+  #react-built-results div.p-6 span,#react-built-results div.p-6 [class*="text-"]{color:#6b7280!important}
+  #react-built-results [class*="text-blue"],#react-built-results [class*="text-cyan"],#react-built-results [class*="text-indigo"]{color:#2563eb!important}
 
   /* ══ HOME PAGE — WWO Bento Grid ══ */
   .vws-wwo-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;max-width:1120px;margin:0 auto;padding:8px 24px 0;font-family:Barlow,system-ui,sans-serif}
@@ -1954,7 +1956,7 @@
   <script>
   /* Apply background hue-rotate immediately on initial page load (no flash/transition) */
   (function(){
-    var HUE={'website-development':'sepia(1) saturate(5) hue-rotate(178deg) brightness(1.6)','hosting-domain':'hue-rotate(-60deg) saturate(1.4)','hosting':'hue-rotate(-60deg) saturate(1.4)','website-maintenance':'hue-rotate(-165deg) saturate(1.4)','website-creation':'hue-rotate(102deg) saturate(1.4)','website-redesign':'hue-rotate(120deg) saturate(1.4)','logo-branding':'hue-rotate(131deg) saturate(1.4)'};
+    var HUE={'website-development':'sepia(1) saturate(5) hue-rotate(178deg) brightness(1.6)','hosting-domain':'hue-rotate(-60deg) saturate(1.4)','hosting':'hue-rotate(-60deg) saturate(1.4)','website-maintenance':'hue-rotate(-165deg) saturate(1.4)','website-creation':'hue-rotate(30deg) saturate(1.6)','website-redesign':'hue-rotate(120deg) saturate(1.4)','logo-branding':'hue-rotate(131deg) saturate(1.4)'};
     var sl=(location.pathname.match(/\/services\/([^\/]+)/)||[])[1];
     if(sl&&HUE[sl]){var se=document.createElement('style');se.id='vws-early-hue';se.textContent='[class~="-z-10"]{filter:'+HUE[sl]+'!important}';document.head.appendChild(se);}
   })();
@@ -2084,7 +2086,15 @@
         _vwsDetailLocked = true;
         runServiceDetail(slug);
       } else if (isServicesIndex()) {
-        /* runServicesListing disabled — step 1.10 handles the services listing layout */
+        runServicesListing();
+        /* Poll to re-inject listing cards after React re-renders on back navigation */
+        var _svcReinjectCount = 0;
+        var _svcReinjectTimer = setInterval(function() {
+          _svcReinjectCount++;
+          if (!isServicesIndex() || _svcReinjectCount > 20) { clearInterval(_svcReinjectTimer); return; }
+          if (window._vwsInjectWave) window._vwsInjectWave();
+          if (window._vwsInjectListing && window._vwsInjectListing()) clearInterval(_svcReinjectTimer);
+        }, 150);
       } else if (/^\/about\/?$/.test(window.location.pathname)) {
         runAboutPage();
       } else if (/^\/?$/.test(window.location.pathname)) {
@@ -3690,7 +3700,7 @@
         gets:['Content updates handled within 24 hours','Security monitoring and patch management','Monthly performance audit and optimization','Broken link and uptime monitoring','Direct priority access to your builder','Monthly report — everything done, plain language']
       },
       'website-creation': {
-        color:'#7C3AED',lt:'#A78BFA',glow:'rgba(124,58,237,0.35)',hue:'102deg',reactRgb:'16, 185, 129',reactCrgb:'16,185,129',
+        color:'#7C3AED',lt:'#A78BFA',glow:'rgba(124,58,237,0.35)',hue:'0deg',bgFilter:'hue-rotate(30deg) saturate(1.6)',reactRgb:'16, 185, 129',reactCrgb:'16,185,129',
         name:'Website Creation',tag:'From zero to live in 5 days.',
         gets:['Complete new site built from scratch','Contact forms and booking integrations','Google Maps and social media connected','SEO-ready semantic HTML structure','Mobile-optimized on all screen sizes','30 days post-launch support included']
       },
