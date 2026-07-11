@@ -421,6 +421,62 @@
       (function() {
         var path = window.location.pathname;
 
+        /* ── Wave injector — defined early so window._vwsInjectWave is always available ── */
+        function injectWave() {
+          if (document.getElementById('vws-svc-wave')) return;
+          var hero = document.querySelectorAll('section')[0];
+          if (!hero) return;
+          hero.style.setProperty('position','relative','important');
+          hero.style.setProperty('overflow','hidden','important');
+          var wave = document.createElement('div');
+          wave.id = 'vws-svc-wave';
+          wave.style.cssText = 'position:absolute;bottom:0;left:0;right:0;line-height:0;pointer-events:none;z-index:2';
+          wave.innerHTML = '<svg viewBox="0 0 1440 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"><path d="M0,0 C360,80 1080,80 1440,0 L1440,80 L0,80 Z" fill="#060916"/><path d="M0,20 C360,80 1080,60 1440,20 L1440,80 L0,80 Z" fill="#f7f8fc" opacity="0.08"/></svg>';
+          hero.appendChild(wave);
+        }
+
+        /* ── Listing injector — defined early so window._vwsInjectListing is always available ── */
+        var SVC_DATA = [
+          {num:'01',title:'Website Development',desc:'Every site we build is hand-coded from scratch — no templates, no drag-and-drop builders. Custom design built around your brand, built to convert visitors into customers.',href:'/services/website-development',tint:'rgba(37,99,235,0.55)'},
+          {num:'02',title:'Hosting & Domain',desc:'Getting online shouldn\'t be complicated. We handle your domain setup, connect everything, and host your site on fast, globally distributed servers — included at no extra cost.',href:'/services/hosting-domain',tint:'rgba(13,148,136,0.55)'},
+          {num:'03',title:'Website Maintenance',desc:'The work doesn\'t stop at launch. We stay available for updates, fixes, and improvements so your site keeps performing at its best — month after month.',href:'/services/website-maintenance',tint:'rgba(217,119,6,0.55)'},
+          {num:'04',title:'Website Creation',desc:'Starting from zero? We build your entire online presence from the ground up — custom design, clean code, and everything in between. No shortcuts.',href:'/services/website-creation',tint:'rgba(124,58,237,0.55)'},
+          {num:'05',title:'Website Redesign',desc:'Already have a site but it\'s outdated, slow, or not converting? We rebuild it from scratch — same domain, completely new results and a design that actually works.',href:'/services/website-redesign',tint:'rgba(220,38,38,0.5)'},
+          {num:'06',title:'Logo & Branding',desc:'Your logo is the face of your business. We design custom logos and full brand identities that look professional, stand out, and last for years.',href:'/services/logo-branding',tint:'rgba(202,138,4,0.6)'}
+        ];
+
+        function injectListing() {
+          if (document.getElementById('vws-svc-list')) return true;
+          var ref = document.querySelector('section.relative.border-t');
+          if (!ref) return false;
+          Array.from(document.querySelectorAll('section')).forEach(function(s) {
+            if (s.className === 'relative border-t') s.classList.add('vws-react-hidden');
+          });
+          var rows = SVC_DATA.map(function(s, i) {
+            var flip = i % 2 === 1;
+            var text = '<div class="vws-sl-text">'
+              +'<p class="vws-sl-num">'+s.num+'</p>'
+              +'<h3 class="vws-sl-title">'+s.title+'</h3>'
+              +'<p class="vws-sl-desc">'+s.desc+'</p>'
+              +'<a href="'+s.href+'" class="vws-sl-btn">Learn More</a>'
+              +'</div>';
+            var vis = '<div class="vws-sl-visual">'
+              +'<div class="vws-sl-vtint" style="background:'+s.tint+'"></div>'
+              +'<div class="vws-sl-vinner"><span class="vws-sl-vnum">'+s.num+'</span></div>'
+              +'</div>';
+            return '<div class="vws-sl-row'+(flip?' vws-sl-flip':'')+'">'+(flip?vis+text:text+vis)+'</div>';
+          }).join('');
+          var sec = document.createElement('section');
+          sec.id = 'vws-svc-list';
+          sec.innerHTML = rows;
+          ref.parentElement.insertBefore(sec, ref);
+          return true;
+        }
+
+        /* Register BEFORE any early-return so runAll() can call them regardless of current URL */
+        window._vwsInjectWave = injectWave;
+        window._vwsInjectListing = injectListing;
+
         /* Service detail page — hide listing + React sections, scroll to detail */
         if (path.indexOf('/services/') === 0) {
           /* Hide all non-id React sections (services hero, listing cards) above our detail */
@@ -461,60 +517,6 @@
           if (h2 && h2.textContent.trim() === 'Built for Results') s.id = 'react-built-results';
         });
 
-        /* ── Wave injector — re-runs until hero exists ── */
-        function injectWave() {
-          if (document.getElementById('vws-svc-wave')) return;
-          var hero = document.querySelectorAll('section')[0];
-          if (!hero) return;
-          hero.style.setProperty('position','relative','important');
-          hero.style.setProperty('overflow','hidden','important');
-          var wave = document.createElement('div');
-          wave.id = 'vws-svc-wave';
-          wave.style.cssText = 'position:absolute;bottom:0;left:0;right:0;line-height:0;pointer-events:none;z-index:2';
-          wave.innerHTML = '<svg viewBox="0 0 1440 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"><path d="M0,0 C360,80 1080,80 1440,0 L1440,80 L0,80 Z" fill="#060916"/><path d="M0,20 C360,80 1080,60 1440,20 L1440,80 L0,80 Z" fill="#f7f8fc" opacity="0.08"/></svg>';
-          hero.appendChild(wave);
-        }
-
-        /* ── Listing injector — returns true on success, false if ref not ready yet ── */
-        var SVC_DATA = [
-          {num:'01',title:'Website Development',desc:'Every site we build is hand-coded from scratch — no templates, no drag-and-drop builders. Custom design built around your brand, built to convert visitors into customers.',href:'/services/website-development',tint:'rgba(37,99,235,0.55)'},
-          {num:'02',title:'Hosting & Domain',desc:'Getting online shouldn\'t be complicated. We handle your domain setup, connect everything, and host your site on fast, globally distributed servers — included at no extra cost.',href:'/services/hosting-domain',tint:'rgba(13,148,136,0.55)'},
-          {num:'03',title:'Website Maintenance',desc:'The work doesn\'t stop at launch. We stay available for updates, fixes, and improvements so your site keeps performing at its best — month after month.',href:'/services/website-maintenance',tint:'rgba(217,119,6,0.55)'},
-          {num:'04',title:'Website Creation',desc:'Starting from zero? We build your entire online presence from the ground up — custom design, clean code, and everything in between. No shortcuts.',href:'/services/website-creation',tint:'rgba(124,58,237,0.55)'},
-          {num:'05',title:'Website Redesign',desc:'Already have a site but it\'s outdated, slow, or not converting? We rebuild it from scratch — same domain, completely new results and a design that actually works.',href:'/services/website-redesign',tint:'rgba(220,38,38,0.5)'},
-          {num:'06',title:'Logo & Branding',desc:'Your logo is the face of your business. We design custom logos and full brand identities that look professional, stand out, and last for years.',href:'/services/logo-branding',tint:'rgba(202,138,4,0.6)'}
-        ];
-
-        function injectListing() {
-          if (document.getElementById('vws-svc-list')) return true;
-          var ref = document.querySelector('section.relative.border-t');
-          if (!ref) return false;
-          Array.from(document.querySelectorAll('section')).forEach(function(s) {
-            if (s.className === 'relative border-t') s.classList.add('vws-react-hidden');
-          });
-          var rows = SVC_DATA.map(function(s, i) {
-            var flip = i % 2 === 1;
-            var text = '<div class="vws-sl-text">'
-              +'<p class="vws-sl-num">'+s.num+'</p>'
-              +'<h3 class="vws-sl-title">'+s.title+'</h3>'
-              +'<p class="vws-sl-desc">'+s.desc+'</p>'
-              +'<a href="'+s.href+'" class="vws-sl-btn">Learn More</a>'
-              +'</div>';
-            var vis = '<div class="vws-sl-visual">'
-              +'<div class="vws-sl-vtint" style="background:'+s.tint+'"></div>'
-              +'<div class="vws-sl-vinner"><span class="vws-sl-vnum">'+s.num+'</span></div>'
-              +'</div>';
-            return '<div class="vws-sl-row'+(flip?' vws-sl-flip':'')+'">'+(flip?vis+text:text+vis)+'</div>';
-          }).join('');
-          var sec = document.createElement('section');
-          sec.id = 'vws-svc-list';
-          sec.innerHTML = rows;
-          ref.parentElement.insertBefore(sec, ref);
-          return true;
-        }
-
-        window._vwsInjectWave = injectWave;
-        window._vwsInjectListing = injectListing;
         injectWave();
         if (!injectListing()) {
           var svsPoll = 0, svsTimer = setInterval(function() {
@@ -1972,8 +1974,30 @@
     function patchHistory(method) {
       var orig = history[method];
       history[method] = function() {
-        /* User-initiated pushState = real navigation, unlock any detail lock */
-        if (method === 'pushState') _vwsDetailLocked = false;
+        if (method === 'pushState') {
+          _vwsDetailLocked = false;
+          /* Scroll to top instantly on every SPA navigation */
+          window.scrollTo(0, 0);
+          /* When returning to the services listing, start an immediate fast-poll so
+             there is no visible delay between click and the alternating cards appearing */
+          var destUrl = (arguments[2] || '').toString();
+          if (/^\/services\/?$/.test(destUrl)) {
+            if (window._vwsSvcReinjectTimer) clearInterval(window._vwsSvcReinjectTimer);
+            var _fpc = 0;
+            window._vwsSvcReinjectTimer = setInterval(function() {
+              _fpc++;
+              if (!isServicesIndex() || _fpc > 60) { clearInterval(window._vwsSvcReinjectTimer); return; }
+              /* Hide React sections on every tick — no flash while waiting for injection */
+              Array.from(document.querySelectorAll('section')).forEach(function(s) {
+                if (s.className === 'relative border-t') s.classList.add('vws-react-hidden');
+              });
+              if (window._vwsInjectWave) window._vwsInjectWave();
+              if (window._vwsInjectListing && window._vwsInjectListing()) {
+                clearInterval(window._vwsSvcReinjectTimer);
+              }
+            }, 30);
+          }
+        }
         orig.apply(this, arguments);
         setTimeout(runAll, 300);
       };
@@ -1981,7 +2005,8 @@
     patchHistory('pushState');
     patchHistory('replaceState');
     window.addEventListener('popstate', function(){
-      _vwsDetailLocked = false; /* browser back/forward = real navigation */
+      _vwsDetailLocked = false;
+      window.scrollTo(0, 0);
       setTimeout(runAll, 300);
     });
 
@@ -2087,21 +2112,21 @@
         runServiceDetail(slug);
       } else if (isServicesIndex()) {
         runServicesListing();
-        /* Cancel any stale poll from a previous runAll() call (prevents overlapping timers) */
-        if (window._vwsSvcReinjectTimer) clearInterval(window._vwsSvcReinjectTimer);
-        var _svcCount = 0;
-        window._vwsSvcReinjectTimer = setInterval(function() {
-          _svcCount++;
-          if (!isServicesIndex() || _svcCount > 25) { clearInterval(window._vwsSvcReinjectTimer); return; }
-          if (window._vwsInjectWave) window._vwsInjectWave();
-          /* Hide React sections immediately on each tick so there's no flash while waiting */
-          Array.from(document.querySelectorAll('section')).forEach(function(s) {
-            if (s.className === 'relative border-t') s.classList.add('vws-react-hidden');
-          });
-          if (window._vwsInjectListing && window._vwsInjectListing()) {
-            clearInterval(window._vwsSvcReinjectTimer);
-          }
-        }, 150);
+        /* Fast poll already started in patchHistory at T=0; only add backup if it cleared */
+        if (!window._vwsSvcReinjectTimer && !document.getElementById('vws-svc-list')) {
+          var _svcBk = 0;
+          window._vwsSvcReinjectTimer = setInterval(function() {
+            _svcBk++;
+            if (!isServicesIndex() || _svcBk > 25) { clearInterval(window._vwsSvcReinjectTimer); return; }
+            Array.from(document.querySelectorAll('section')).forEach(function(s) {
+              if (s.className === 'relative border-t') s.classList.add('vws-react-hidden');
+            });
+            if (window._vwsInjectWave) window._vwsInjectWave();
+            if (window._vwsInjectListing && window._vwsInjectListing()) {
+              clearInterval(window._vwsSvcReinjectTimer);
+            }
+          }, 100);
+        }
       } else if (/^\/about\/?$/.test(window.location.pathname)) {
         runAboutPage();
       } else if (/^\/?$/.test(window.location.pathname)) {
@@ -4012,7 +4037,7 @@
     function buildHeroHTML(slug, svc) {
       var rgb = hexToRgb(svc.color);
       /* Back breadcrumb */
-      var backLink = '<a href="/services" onclick="history.pushState({},\'\',\'/services\');window.dispatchEvent(new PopStateEvent(\'popstate\',{}));return false;" '
+      var backLink = '<a href="/services" onclick="window.scrollTo(0,0);history.pushState({},\'\',\'/services\');window.dispatchEvent(new PopStateEvent(\'popstate\',{}));return false;" '
         +'style="display:inline-flex;align-items:center;gap:6px;color:rgba(255,255,255,0.45);font-size:13px;font-weight:600;text-decoration:none;letter-spacing:0.04em;margin-bottom:32px;'
         +'background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:100px;padding:6px 14px 6px 10px;'
         +'transition:color 0.2s,background 0.2s" '
