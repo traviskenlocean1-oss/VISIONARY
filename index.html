@@ -1427,9 +1427,7 @@
   /* Scroll reveal for pricing page */
   .vws-pr-fade{opacity:0;transform:translateY(32px);transition:opacity .6s cubic-bezier(.4,0,.2,1),transform .6s cubic-bezier(.4,0,.2,1)}
   .vws-pr-fade.vws-revealed{opacity:1!important;transform:none!important}
-  .vws-pr-oval{width:220px;height:36px;border-radius:50%;background:rgba(37,99,235,0.28);filter:blur(18px);margin:6px auto 0;opacity:0;transition:opacity .9s ease .25s;display:block;pointer-events:none}
-  .vws-pr-oval.vws-revealed{opacity:1}
-  @media(prefers-reduced-motion:reduce){.vws-pr-fade{opacity:1;transform:none;transition:none}.vws-pr-oval{opacity:1}}
+  @media(prefers-reduced-motion:reduce){.vws-pr-fade{opacity:1;transform:none;transition:none}}
 
   /* ══ HOME PAGE — Services Card Grid ══ */
   .vws-svc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;max-width:1140px;margin:0 auto;padding:0 24px;font-family:Barlow,system-ui,sans-serif}
@@ -3340,16 +3338,11 @@
             card.classList.add('vws-pr-fade');
             card.style.transitionDelay = (i * 0.14) + 's';
           });
-          /* Scroll reveal + oval glow under h2 headings in middle sections */
+          /* Scroll reveal on h2 headings in middle sections */
           secs.forEach(function(s, i) {
             if (i === 0 || i === secs.length - 1) return;
             var h2 = s.querySelector('h2');
-            if (h2 && !h2.nextElementSibling?.classList.contains('vws-pr-oval')) {
-              h2.classList.add('vws-pr-fade');
-              var oval = document.createElement('div');
-              oval.className = 'vws-pr-oval';
-              h2.parentNode.insertBefore(oval, h2.nextSibling);
-            }
+            if (h2) h2.classList.add('vws-pr-fade');
           });
           /* Force white base bg on Proven Formula icon cards via JS (CSS :hover handles the rest) */
           var iconCards = Array.from(document.querySelectorAll('[class*="text-center"][class*="p-10"]'));
@@ -3375,7 +3368,7 @@
                 else en.target.classList.remove('vws-revealed');
               });
             }, {threshold: 0.08, rootMargin: '0px 0px -40px 0px'});
-            document.querySelectorAll('.vws-pr-fade,.vws-pr-oval').forEach(function(el) {
+            document.querySelectorAll('.vws-pr-fade').forEach(function(el) {
               window._vwsPrObs.observe(el);
             });
           }
