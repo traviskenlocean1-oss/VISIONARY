@@ -1412,9 +1412,12 @@
   @media(max-width:480px){#vws-best-svc{padding:60px 20px}}
 
   /* ══ PRICING PAGE — card hover + scroll reveal ══ */
-  .vws-section-light [class*="rounded-2xl"][class*="p-7"]{transition:border-color .25s,box-shadow .25s,transform .25s!important;cursor:default}
-  .vws-section-light [class*="rounded-2xl"][class*="p-7"]:hover{border-color:rgba(37,99,235,0.55)!important;box-shadow:0 8px 40px rgba(37,99,235,0.18)!important;transform:translateY(-4px)!important}
-  .vws-section-light [class*="rounded-2xl"][class*="p-7"]:hover h3{color:#2563eb!important}
+  .vws-section-light [class*="rounded-2xl"][class*="p-7"]{transition:background .3s ease,border-color .3s,box-shadow .3s,transform .3s!important;cursor:default}
+  .vws-section-light [class*="rounded-2xl"][class*="p-7"]:hover{background:#2563eb!important;border-color:#2563eb!important;box-shadow:0 16px 48px rgba(37,99,235,0.4)!important;transform:translateY(-5px)!important}
+  .vws-section-light [class*="rounded-2xl"][class*="p-7"]:hover *{color:#fff!important}
+  .vws-section-light [class*="rounded-2xl"][class*="p-7"]:hover [class*="line-through"]{color:rgba(255,255,255,0.5)!important}
+  .vws-section-light [class*="rounded-2xl"][class*="p-7"]:hover button{background:rgba(255,255,255,0.15)!important;border-color:rgba(255,255,255,0.5)!important;color:#fff!important}
+  .vws-section-light [class*="rounded-2xl"][class*="p-7"]:hover a[class*="bg-blue"]{background:#fff!important;color:#2563eb!important}
   /* Scroll reveal for pricing page */
   .vws-pr-fade{opacity:0;transform:translateY(32px);transition:opacity .6s cubic-bezier(.4,0,.2,1),transform .6s cubic-bezier(.4,0,.2,1)}
   .vws-pr-fade.vws-revealed{opacity:1!important;transform:none!important}
