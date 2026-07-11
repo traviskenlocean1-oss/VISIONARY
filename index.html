@@ -2099,11 +2099,30 @@
           }
         }
         orig.apply(this, arguments);
-        setTimeout(runAll, 300);
+        clearTimeout(window._vwsRunAllT);
+        window._vwsRunAllT = setTimeout(runAll, 300);
       };
     }
     patchHistory('pushState');
     patchHistory('replaceState');
+
+    /* Real React Router back-navigation: find the React-rendered nav link to /services
+       and click it so React Router handles the route change natively.
+       Fallback to pushState+popstate if the nav link isn't found. */
+    window._vwsNavBack = function() {
+      window.scrollTo(0, 0);
+      var ns = Array.from(document.querySelectorAll('a[href="/services"]')).find(function(a) {
+        return !a.closest('#vws-hero');
+      });
+      if (ns) {
+        ns.click();
+      } else {
+        history.pushState({}, '', '/services');
+        window.dispatchEvent(new PopStateEvent('popstate', {}));
+      }
+      return false;
+    };
+
     window.addEventListener('popstate', function(){
       _vwsDetailLocked = false;
       window.scrollTo(0, 0);
@@ -3396,6 +3415,7 @@
               if (!a) return;
               e.preventDefault();
               history.pushState(null, '', new URL(a.href).pathname);
+              window.dispatchEvent(new PopStateEvent('popstate', {}));
             });
             /* Style the parent section dark */
             wwoSec.style.setProperty('background','#060916','important');
@@ -4152,7 +4172,7 @@
     function buildHeroHTML(slug, svc) {
       var rgb = hexToRgb(svc.color);
       /* Back breadcrumb */
-      var backLink = '<a href="/services" onclick="window.scrollTo(0,0);history.pushState({},\'\',\'/services\');return false;" '
+      var backLink = '<a href="/services" onclick="return window._vwsNavBack();" '
         +'style="display:inline-flex;align-items:center;gap:6px;color:rgba(255,255,255,0.45);font-size:13px;font-weight:600;text-decoration:none;letter-spacing:0.04em;margin-bottom:32px;'
         +'background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:100px;padding:6px 14px 6px 10px;'
         +'transition:color 0.2s,background 0.2s" '
