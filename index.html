@@ -3550,7 +3550,11 @@
               + '<a href="/contact" class="vws-pf-cta-btn">Start a Project ' + arrowSvg + '</a>'
             + '</section>';
 
-          footer.parentNode.insertBefore(wrap, footer);
+          /* Hide all React-rendered portfolio sections, then insert my content at the top */
+          var reactSections = Array.from(document.querySelectorAll('section'));
+          reactSections.forEach(function(s) { s.style.display = 'none'; });
+          var insertTarget = reactSections[0] || footer;
+          insertTarget.parentNode.insertBefore(wrap, insertTarget);
 
           /* Scale laptop iframes to fit their containers after render */
           function applyLaptopScales() {
