@@ -3351,10 +3351,43 @@
               h2.parentNode.insertBefore(oval, h2.nextSibling);
             }
           });
-          /* Also fade the icon cards in "Proven Formula" section */
-          document.querySelectorAll('[class*="p-10"][style*="rgba(5, 8, 20"]').forEach(function(card, i) {
+          /* Force white bg + lift-hover animation on Proven Formula icon cards */
+          var iconCards = Array.from(document.querySelectorAll('[class*="p-10"]')).filter(function(el) {
+            var s = el.getAttribute('style') || '';
+            return s.includes('rgba(5') || s.includes('rgb(5,') || s.includes('rgb(5 ');
+          });
+          /* Broader fallback if p-10 class isn't present */
+          if (!iconCards.length) {
+            iconCards = Array.from(document.querySelectorAll('[style*="rgba(5, 8, 20"]'));
+          }
+          iconCards.forEach(function(card, i) {
+            /* Override dark inline style directly — setProperty('…','important') wins over React's inline style */
+            card.style.setProperty('background','#ffffff','important');
+            card.style.setProperty('border','1px solid rgba(37,99,235,0.15)','important');
+            card.style.setProperty('box-shadow','0 4px 20px rgba(37,99,235,0.05)','important');
+            card.style.setProperty('border-radius','16px','important');
+            card.style.setProperty('transition','transform .35s cubic-bezier(.34,1.56,.64,1),box-shadow .35s ease,border-color .35s ease','important');
+            /* Darken any light-colored child text */
+            card.querySelectorAll('*').forEach(function(el) {
+              var c = el.style.color;
+              if (c && (c.includes('rgb') || c.charAt(0)==='#')) {
+                el.style.setProperty('color','#0d1117','important');
+              }
+            });
             card.classList.add('vws-pr-fade');
             card.style.transitionDelay = (i * 0.15) + 's';
+            /* Lift on hover — JS handler runs same tick as React's and wins via !important */
+            card.addEventListener('mouseenter', function() {
+              this.style.setProperty('background','#ffffff','important');
+              this.style.setProperty('transform','translateY(-8px) scale(1.025)','important');
+              this.style.setProperty('box-shadow','0 20px 50px rgba(37,99,235,0.18),0 0 0 2px rgba(37,99,235,0.2)','important');
+              this.style.setProperty('border-color','rgba(37,99,235,0.35)','important');
+            });
+            card.addEventListener('mouseleave', function() {
+              this.style.setProperty('transform','','important');
+              this.style.setProperty('box-shadow','0 4px 20px rgba(37,99,235,0.05)','important');
+              this.style.setProperty('border-color','rgba(37,99,235,0.15)','important');
+            });
           });
           /* IntersectionObserver fires reveals */
           if (!window._vwsPrObs && window.IntersectionObserver) {
