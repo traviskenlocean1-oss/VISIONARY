@@ -446,7 +446,14 @@
         ];
 
         function injectListing() {
-          if (document.getElementById('vws-svc-list')) return true;
+          var existing = document.getElementById('vws-svc-list');
+          if (existing) {
+            /* Verify the first button href matches current SVC_DATA.
+               If stale (from a previous deploy), remove and rebuild. */
+            var chk = existing.querySelector('a.vws-sl-btn');
+            if (!chk || chk.getAttribute('href') === SVC_DATA[0].href) return true;
+            existing.remove();
+          }
           var ref = document.querySelector('section.relative.border-t');
           if (!ref) return false;
           Array.from(document.querySelectorAll('section')).forEach(function(s) {
@@ -2006,6 +2013,31 @@
               if (window._vwsInjectListing && window._vwsInjectListing()) {
                 clearInterval(window._vwsSvcReinjectTimer);
                 window._vwsSvcReinjectTimer = null;
+                document.body.classList.remove('vws-cover');
+              }
+            }, 30);
+          }
+        }
+        if (method === 'replaceState') {
+          var rsUrl = (arguments[2] || '').toString();
+          /* React Router calls replaceState('/services') when a /services/* slug is
+             unrecognised. If vws-cover is already on from the preceding pushState,
+             kick the listing fast-poll immediately so the services page is properly
+             restored and vws-cover is removed. Without this, cover gets stuck on body
+             and the page looks blank, forcing the user to click 2-3 times. */
+          if (/^\/services\/?$/.test(rsUrl) && document.body.classList.contains('vws-cover')) {
+            if (window._vwsSvcReinjectTimer) clearInterval(window._vwsSvcReinjectTimer);
+            window._vwsSvcReinjectTimer = null;
+            var _rpc = 0;
+            window._vwsSvcReinjectTimer = setInterval(function() {
+              _rpc++;
+              if (!isServicesIndex() || _rpc > 60) {
+                clearInterval(window._vwsSvcReinjectTimer); window._vwsSvcReinjectTimer = null;
+                document.body.classList.remove('vws-cover'); return;
+              }
+              if (window._vwsInjectWave) window._vwsInjectWave();
+              if (window._vwsInjectListing && window._vwsInjectListing()) {
+                clearInterval(window._vwsSvcReinjectTimer); window._vwsSvcReinjectTimer = null;
                 document.body.classList.remove('vws-cover');
               }
             }, 30);
