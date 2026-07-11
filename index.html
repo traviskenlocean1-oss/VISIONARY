@@ -437,8 +437,8 @@
 
         /* ── Listing injector — defined early so window._vwsInjectListing is always available ── */
         var SVC_DATA = [
-          {num:'01',title:'Website Development',desc:'Every site we build is hand-coded from scratch — no templates, no drag-and-drop builders. Custom design built around your brand, built to convert visitors into customers.',href:'/services/website-development',tint:'rgba(37,99,235,0.55)'},
-          {num:'02',title:'Hosting & Domain',desc:'Getting online shouldn\'t be complicated. We handle your domain setup, connect everything, and host your site on fast, globally distributed servers — included at no extra cost.',href:'/services/hosting-domain',tint:'rgba(13,148,136,0.55)'},
+          {num:'01',title:'Website Development',desc:'Every site we build is hand-coded from scratch — no templates, no drag-and-drop builders. Custom design built around your brand, built to convert visitors into customers.',href:'/services/web-development',tint:'rgba(37,99,235,0.55)'},
+          {num:'02',title:'Hosting & Domain',desc:'Getting online shouldn\'t be complicated. We handle your domain setup, connect everything, and host your site on fast, globally distributed servers — included at no extra cost.',href:'/services/hosting',tint:'rgba(13,148,136,0.55)'},
           {num:'03',title:'Website Maintenance',desc:'The work doesn\'t stop at launch. We stay available for updates, fixes, and improvements so your site keeps performing at its best — month after month.',href:'/services/website-maintenance',tint:'rgba(217,119,6,0.55)'},
           {num:'04',title:'Website Creation',desc:'Starting from zero? We build your entire online presence from the ground up — custom design, clean code, and everything in between. No shortcuts.',href:'/services/website-creation',tint:'rgba(124,58,237,0.55)'},
           {num:'05',title:'Website Redesign',desc:'Already have a site but it\'s outdated, slow, or not converting? We rebuild it from scratch — same domain, completely new results and a design that actually works.',href:'/services/website-redesign',tint:'rgba(220,38,38,0.5)'},
@@ -1963,7 +1963,7 @@
   <script>
   /* Apply background hue-rotate immediately on initial page load (no flash/transition) */
   (function(){
-    var HUE={'website-development':'sepia(1) saturate(5) hue-rotate(178deg) brightness(1.6)','hosting-domain':'hue-rotate(-60deg) saturate(1.4)','hosting':'hue-rotate(-60deg) saturate(1.4)','website-maintenance':'hue-rotate(-165deg) saturate(1.4)','website-creation':'sepia(1) saturate(5) hue-rotate(227deg) brightness(1.6)','website-redesign':'hue-rotate(120deg) saturate(1.4)','logo-branding':'hue-rotate(131deg) saturate(1.4)'};
+    var HUE={'website-development':'sepia(1) saturate(5) hue-rotate(178deg) brightness(1.6)','web-development':'sepia(1) saturate(5) hue-rotate(178deg) brightness(1.6)','hosting-domain':'hue-rotate(-60deg) saturate(1.4)','hosting':'hue-rotate(-60deg) saturate(1.4)','website-maintenance':'hue-rotate(-165deg) saturate(1.4)','website-creation':'sepia(1) saturate(5) hue-rotate(227deg) brightness(1.6)','website-redesign':'hue-rotate(120deg) saturate(1.4)','logo-branding':'hue-rotate(131deg) saturate(1.4)'};
     var sl=(location.pathname.match(/\/services\/([^\/]+)/)||[])[1];
     if(sl&&HUE[sl]){var se=document.createElement('style');se.id='vws-early-hue';se.textContent='[class~="-z-10"]{filter:'+HUE[sl]+'!important}';document.head.appendChild(se);}
   })();
