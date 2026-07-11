@@ -480,6 +480,53 @@
           return true;
         }
 
+        function injectBuiltResultsCard() {
+          if (document.getElementById('vws-build-card-wrap')) return true;
+          var sec = document.getElementById('react-built-results');
+          if (!sec) return false;
+          var rightCol = sec.querySelector('div[class*="flex-shrink-0"]');
+          if (!rightCol) return false;
+          /* Widen right column so the card has substantial visual weight */
+          rightCol.style.cssText = 'flex-shrink:0;width:100%;max-width:440px';
+          /* Hide the SVG mascot illustration */
+          var svg = rightCol.querySelector('svg');
+          if (svg) {
+            var svgW = svg.parentElement;
+            (svgW && svgW !== rightCol ? svgW : svg).style.setProperty('display','none','important');
+          }
+          /* Find the caption element so we insert the card above it */
+          var captionEl = null;
+          Array.from(rightCol.querySelectorAll('p,span,div')).forEach(function(el) {
+            if (!captionEl && el.textContent.indexOf('dedicated builder') !== -1) captionEl = el;
+          });
+          /* Walk up to a direct child of rightCol */
+          if (captionEl) {
+            while (captionEl.parentElement && captionEl.parentElement !== rightCol) captionEl = captionEl.parentElement;
+          }
+          var wrap = document.createElement('div');
+          wrap.id = 'vws-build-card-wrap';
+          wrap.innerHTML = '<div class="vws-build-card">'
+            + '<div class="vws-build-card-bar">'
+            + '<span class="vws-build-dot" style="background:#ff5f57"></span>'
+            + '<span class="vws-build-dot" style="background:#febc2e"></span>'
+            + '<span class="vws-build-dot" style="background:#28c840"></span>'
+            + '<span class="vws-build-filename">build.js</span>'
+            + '</div>'
+            + '<div class="vws-build-code">'
+            + '<div><span style="color:#8b949e">// Built for: [Client Name]</span></div>'
+            + '<div><span style="color:#ff7b72">const</span><span style="color:#e6edf3"> site </span><span style="color:#ff7b72">=</span><span style="color:#ff7b72"> new</span> <span style="color:#79c0ff">CustomBuild</span><span style="color:#e6edf3">({</span></div>'
+            + '<div><span style="color:#e6edf3">&nbsp;&nbsp;templates</span><span style="color:#ff7b72">:</span> <span style="color:#79c0ff">false</span><span style="color:#e6edf3">,</span></div>'
+            + '<div><span style="color:#e6edf3">&nbsp;&nbsp;handCoded</span><span style="color:#ff7b72">:</span> <span style="color:#79c0ff">true</span><span style="color:#e6edf3">,</span></div>'
+            + '<div><span style="color:#e6edf3">&nbsp;&nbsp;builtBy</span><span style="color:#ff7b72">:</span> <span style="color:#a5d6ff">"you, directly"</span></div>'
+            + '<div><span style="color:#e6edf3">});</span></div>'
+            + '<div style="margin-top:18px;color:rgba(255,255,255,0.28);font-style:italic">writing your site...</div>'
+            + '</div>'
+            + '</div>';
+          if (captionEl) rightCol.insertBefore(wrap, captionEl);
+          else rightCol.appendChild(wrap);
+          return true;
+        }
+
         /* Register BEFORE any early-return so runAll() can call them regardless of current URL */
         window._vwsInjectWave = injectWave;
         window._vwsInjectListing = injectListing;
@@ -525,11 +572,13 @@
         });
 
         injectWave();
-        if (!injectListing()) {
+        var _listOk = injectListing(), _cardOk = injectBuiltResultsCard();
+        if (!_listOk || !_cardOk) {
           var svsPoll = 0, svsTimer = setInterval(function() {
             svsPoll++;
             injectWave();
-            if (injectListing() || svsPoll > 30) clearInterval(svsTimer);
+            var lo = injectListing(), co = injectBuiltResultsCard();
+            if ((lo && co) || svsPoll > 30) clearInterval(svsTimer);
           }, 200);
         }
       })();
@@ -1346,6 +1395,14 @@
   #react-built-results div.p-6 p{color:#4b5563!important}
   #react-built-results div.p-6 span,#react-built-results div.p-6 [class*="text-"]{color:#6b7280!important}
   #react-built-results [class*="text-blue"],#react-built-results [class*="text-cyan"],#react-built-results [class*="text-indigo"]{color:#2563eb!important}
+
+  /* ══ SERVICES PAGE — "Built for Results" code-editor card ══ */
+  #vws-build-card-wrap{display:flex;flex-direction:column}
+  .vws-build-card{background:#0d1117;border:1px solid rgba(255,255,255,0.1);border-radius:10px;overflow:hidden;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;box-shadow:0 20px 60px rgba(0,0,0,0.35),0 4px 20px rgba(0,0,0,0.2);width:100%}
+  .vws-build-card-bar{background:#161b22;padding:11px 16px;display:flex;align-items:center;gap:7px;border-bottom:1px solid rgba(255,255,255,0.07)}
+  .vws-build-dot{width:11px;height:11px;border-radius:50%;display:inline-block;flex-shrink:0}
+  .vws-build-filename{margin-left:8px;color:rgba(255,255,255,0.32);font-size:11px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+  .vws-build-code{padding:26px 28px;font-size:13.5px;line-height:1.9;color:#e6edf3}
 
   /* ══ HOME PAGE — WWO Bento Grid ══ */
   .vws-wwo-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;max-width:1120px;margin:0 auto;padding:8px 24px 0;font-family:Barlow,system-ui,sans-serif}
