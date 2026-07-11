@@ -1027,6 +1027,26 @@
     #vws-chat-win{width:calc(100vw - 32px)!important;bottom:80px!important;right:16px!important}
   }
 
+  /* ══ MOBILE MENU — fix invisible dark text on near-black bg (rgba(3,5,14,0.98)) ══ */
+  /* All nav links */
+  .md\:hidden a{color:rgba(255,255,255,0.9)!important}
+  .md\:hidden a:hover{color:#60a5fa!important}
+  /* Services toggle button + chevron */
+  .md\:hidden button{color:rgba(255,255,255,0.9)!important}
+  .md\:hidden button:hover{color:#60a5fa!important}
+  .md\:hidden button svg{color:rgba(255,255,255,0.55)!important}
+  /* Services sub-item cards — swap white bg to dark themed */
+  .md\:hidden a[class*="rounded-lg"]{background:rgba(37,99,235,0.08)!important;border:1px solid rgba(37,99,235,0.22)!important}
+  .md\:hidden a[class*="rounded-lg"]:hover{background:rgba(37,99,235,0.2)!important}
+  .md\:hidden a[class*="rounded-lg"] p{color:rgba(255,255,255,0.6)!important}
+  .md\:hidden a[class*="rounded-lg"] svg{color:#60a5fa!important}
+  /* Icon container inside sub-items */
+  .md\:hidden a[class*="rounded-lg"] [class*="w-8"],[class*="h-8"]{background:rgba(37,99,235,0.18)!important}
+  /* Dividers between nav items */
+  .md\:hidden [class*="border-t"]{border-color:rgba(255,255,255,0.07)!important}
+  /* Hamburger icon on white header */
+  header.fixed.top-0 button svg{color:#1f2937!important}
+
   /* ══ TASK 2: White navbar — all pages, all scroll states ══ */
   header.fixed.top-0.left-0.right-0{background:#ffffff!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;border-bottom:1px solid rgba(0,0,0,0.07)!important;box-shadow:0 2px 20px rgba(0,0,0,0.06)!important}
   /* Nav links — dark on white */
