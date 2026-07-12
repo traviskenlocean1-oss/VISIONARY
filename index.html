@@ -3459,7 +3459,9 @@
             st.textContent = [
               /* Hero */
               '#vws-portfolio-page{font-family:Barlow,system-ui,sans-serif}',
-              '.vws-pf-hero{position:relative;overflow:hidden;padding:160px 40px 120px;text-align:center;background:radial-gradient(ellipse 80% 60% at 50% -10%,rgba(37,99,235,0.22) 0%,transparent 60%),linear-gradient(180deg,#040810 0%,#060916 100%)}',
+              /* Hero — transparent bg so React's fixed animated glass (z-index:-10) shows through, same as Services/Pricing */
+              '.vws-pf-hero{position:relative;overflow:hidden;padding:160px 40px 120px;text-align:center;background:transparent}',
+              '.vws-pf-hero::before{content:"";position:absolute;inset:0;background:rgba(3,6,22,0.62);z-index:0}',
               '.vws-pf-hero-wave{position:absolute;bottom:0;left:0;right:0;line-height:0;pointer-events:none;z-index:2}',
               '.vws-pf-hero-wave svg{display:block;width:100%;height:auto}',
               '.vws-pf-hero-content{position:relative;z-index:2}',
@@ -3590,6 +3592,18 @@
           insertParent.insertBefore(wrap, insertTarget);
           reactSections.forEach(function(s) { if (s.parentNode) s.parentNode.removeChild(s); });
           vwsScrollLock(500);
+
+          /* Re-insert immediately if React wipes our div while still on /work */
+          if (window.MutationObserver) {
+            var _pfObs = new MutationObserver(function() {
+              if (!/^\/work\/?$/.test(window.location.pathname)) { _pfObs.disconnect(); return; }
+              if (!document.getElementById('vws-portfolio-page')) {
+                var f = document.querySelector('footer');
+                if (f && f.parentNode) { f.parentNode.insertBefore(wrap, f); }
+              }
+            });
+            _pfObs.observe(insertParent, { childList: true });
+          }
 
           /* Scale laptop iframes to fit their containers */
           function applyLaptopScales() {
