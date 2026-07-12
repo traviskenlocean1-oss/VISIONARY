@@ -3546,13 +3546,23 @@
             + '<a href="/contact" class="vws-pf-cta-btn">Start a Project ' + arrowSvg + '</a>'
           + '</section>';
 
-      /* ── doInject: insert wrap before footer; idempotent ── */
+      /* ── doInject: insert wrap before React's /work section; hide React's native content ── */
       var _pfFirstInject = true;
+      var _pfInjectPending = false;
       function doInject() {
+        /* Hide React's native /work sections (keep them in DOM so React won't reconcile) */
+        Array.from(document.querySelectorAll('section')).forEach(function(s) {
+          if (!s.closest('#vws-portfolio-page')) s.style.display = 'none';
+        });
         if (document.getElementById('vws-portfolio-page')) return;
-        var f = document.querySelector('footer');
-        if (!f || !f.parentNode) return;
-        f.parentNode.insertBefore(wrap, f);
+        var footer = document.querySelector('footer');
+        if (!footer || !footer.parentNode) return;
+        /* Insert before the first React section (so our hero is at the top), else before footer */
+        var firstReact = Array.from(document.querySelectorAll('section')).find(function(s) {
+          return !s.closest('#vws-portfolio-page');
+        });
+        var insertBefore = firstReact || footer;
+        insertBefore.parentNode.insertBefore(wrap, insertBefore);
         if (_pfFirstInject) {
           _pfFirstInject = false;
           vwsScrollLock(500);
@@ -3560,7 +3570,7 @@
         }
       }
 
-      /* ── Guard: watch #root (always connected) for removals; re-insert within one frame ── */
+      /* ── Guard: watch #root (always connected); rAF-debounced re-insert ── */
       function startGuard() {
         if (window._vwsPfBodyObs) { window._vwsPfBodyObs.disconnect(); window._vwsPfBodyObs = null; }
         if (!window.MutationObserver) return;
@@ -3568,7 +3578,10 @@
           if (!/^\/work\/?$/.test(location.pathname)) {
             window._vwsPfBodyObs.disconnect(); window._vwsPfBodyObs = null; return;
           }
-          doInject();
+          if (!_pfInjectPending) {
+            _pfInjectPending = true;
+            requestAnimationFrame(function() { _pfInjectPending = false; doInject(); });
+          }
         });
         var root = document.getElementById('root');
         if (root) window._vwsPfBodyObs.observe(root, { childList: true, subtree: true });
