@@ -3508,23 +3508,22 @@
           ];
 
           function buildCard(p) {
+            /* Use data-src so iframes only load when scrolled into view */
             return '<div class="vws-pf2-card" onclick="window.open(\'' + p.url + '\',\'_blank\')" style="cursor:pointer">'
               + '<span class="vws-pf2-lbl">' + p.ind + '</span>'
               + '<div class="vws-pf2-devices">'
-                /* Phone */
                 + '<div class="vws-pf2-phone">'
                   + '<div class="vws-pf2-ph-notch"></div>'
                   + '<div class="vws-pf2-ph-screen">'
-                    + '<iframe src="' + p.url + '" loading="lazy" scrolling="no" title="' + p.ind + ' mobile preview" sandbox="allow-scripts allow-same-origin"></iframe>'
+                    + '<iframe data-src="' + p.url + '" scrolling="no" title="' + p.ind + ' mobile" sandbox="allow-scripts allow-same-origin"></iframe>'
                   + '</div>'
                   + '<div class="vws-pf2-ph-bar"></div>'
                 + '</div>'
-                /* Laptop */
                 + '<div class="vws-pf2-laptop">'
                   + '<div class="vws-pf2-laptop-lid">'
                     + '<div class="vws-pf2-laptop-cam"></div>'
                     + '<div class="vws-pf2-laptop-screen">'
-                      + '<iframe src="' + p.url + '" loading="lazy" scrolling="no" title="' + p.ind + ' desktop preview" sandbox="allow-scripts allow-same-origin"></iframe>'
+                      + '<iframe data-src="' + p.url + '" scrolling="no" title="' + p.ind + ' desktop" sandbox="allow-scripts allow-same-origin"></iframe>'
                     + '</div>'
                   + '</div>'
                   + '<div class="vws-pf2-laptop-base"></div>'
@@ -3573,7 +3572,7 @@
           insertParent.insertBefore(wrap, insertTarget);
           reactSections.forEach(function(s) { if (s.parentNode) s.parentNode.removeChild(s); });
 
-          /* Scale laptop iframes to fit their containers after render */
+          /* Scale laptop iframes to fit their containers */
           function applyLaptopScales() {
             document.querySelectorAll('.vws-pf2-laptop-screen').forEach(function(screen) {
               var w = screen.offsetWidth;
@@ -3582,8 +3581,29 @@
               if (iframe) iframe.style.transform = 'scale(' + (w / 1280).toFixed(5) + ')';
             });
           }
-          setTimeout(applyLaptopScales, 300);
+          setTimeout(applyLaptopScales, 400);
           window.addEventListener('resize', applyLaptopScales);
+
+          /* Lazy-load iframes — only fire src when card enters viewport */
+          if (window.IntersectionObserver) {
+            var iframeObs = new IntersectionObserver(function(entries) {
+              entries.forEach(function(entry) {
+                if (!entry.isIntersecting) return;
+                var card = entry.target;
+                card.querySelectorAll('iframe[data-src]').forEach(function(f) {
+                  f.src = f.getAttribute('data-src');
+                  f.removeAttribute('data-src');
+                });
+                /* Re-scale after each card's iframes load */
+                setTimeout(applyLaptopScales, 600);
+                iframeObs.unobserve(card);
+              });
+            }, { rootMargin: '200px 0px', threshold: 0 });
+            document.querySelectorAll('.vws-pf2-card').forEach(function(c) { iframeObs.observe(c); });
+          } else {
+            /* Fallback: load all immediately */
+            document.querySelectorAll('iframe[data-src]').forEach(function(f) { f.src = f.getAttribute('data-src'); f.removeAttribute('data-src'); });
+          }
         }
       }, 150);
     }
