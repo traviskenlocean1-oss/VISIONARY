@@ -2130,6 +2130,12 @@
           _vwsDetailLocked = false;
           window.scrollTo(0, 0);
           var destUrl = (arguments[2] || '').toString();
+          /* For /work, override React scroll-restoration with delayed calls */
+          if (/^\/work\/?$/.test(destUrl)) {
+            setTimeout(function() { window.scrollTo(0, 0); }, 80);
+            setTimeout(function() { window.scrollTo(0, 0); }, 350);
+            setTimeout(function() { window.scrollTo(0, 0); }, 800);
+          }
           /* Apply vws-cover the instant any /services* navigation fires.
              CSS hides React sections synchronously as they paint — no poll delay. */
           if (/^\/services/.test(destUrl)) {
@@ -3423,7 +3429,7 @@
 
     /* ── Portfolio page — device mockup grid ── */
     function runPortfolioPage() {
-      if (document.getElementById('vws-portfolio-page')) return;
+      if (document.getElementById('vws-portfolio-page')) { window.scrollTo(0, 0); return; }
       var att = 0;
       var poll = setInterval(function() {
         att++;
@@ -3571,6 +3577,7 @@
           var insertParent = insertTarget.parentNode;
           insertParent.insertBefore(wrap, insertTarget);
           reactSections.forEach(function(s) { if (s.parentNode) s.parentNode.removeChild(s); });
+          window.scrollTo(0, 0);
 
           /* Scale laptop iframes to fit their containers */
           function applyLaptopScales() {
