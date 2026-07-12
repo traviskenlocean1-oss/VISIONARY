@@ -3439,15 +3439,18 @@
             st.textContent = [
               /* Hero */
               '#vws-portfolio-page{font-family:Barlow,system-ui,sans-serif}',
-              '.vws-pf-hero{background:linear-gradient(180deg,#050a18 0%,#080e1a 100%);padding:140px 40px 80px;text-align:center;position:relative;overflow:hidden}',
-              '.vws-pf-hero::before{content:"";position:absolute;top:-120px;left:50%;transform:translateX(-50%);width:700px;height:700px;background:radial-gradient(circle,rgba(37,99,235,0.14) 0%,transparent 70%);pointer-events:none}',
+              '.vws-pf-hero{position:relative;overflow:hidden;padding:140px 40px 90px;text-align:center}',
+              '.vws-pf-bg-video{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;z-index:0}',
+              '.vws-pf-hero::after{content:"";position:absolute;inset:0;background:rgba(3,5,14,0.62);z-index:1}',
+              '.vws-pf-hero-content{position:relative;z-index:2}',
               '.vws-pf-lbl{font-size:11px;font-weight:700;letter-spacing:.25em;text-transform:uppercase;color:#60a5fa;display:block;margin:0 0 20px}',
               '.vws-pf-h1{font-size:clamp(52px,7vw,92px);font-weight:900;color:#f0f4ff;line-height:1;margin:0 0 24px}',
               '.vws-pf-h1 em{color:#2563eb;font-style:normal}',
               '.vws-pf-hero-p{font-size:18px;color:rgba(240,244,255,0.6);max-width:520px;margin:0 auto 52px;line-height:1.7}',
-              '.vws-pf-stats{display:flex;justify-content:center;gap:56px;flex-wrap:wrap}',
+              '.vws-pf-stats{display:flex;justify-content:center;gap:56px;flex-wrap:wrap;margin-bottom:36px}',
               '.vws-pf-stat-n{font-size:38px;font-weight:900;color:#f0f4ff;line-height:1}',
               '.vws-pf-stat-l{font-size:11px;color:rgba(240,244,255,0.42);margin-top:6px;text-transform:uppercase;letter-spacing:.12em}',
+              '.vws-pf-concept-note{font-size:13px;color:rgba(240,244,255,0.4);max-width:480px;margin:0 auto;line-height:1.7;border-top:1px solid rgba(255,255,255,0.08);padding-top:24px}',
               /* Grid section — white */
               '.vws-pf-grid-sec{background:#f3f4f6;padding:70px 40px 100px}',
               '.vws-pf-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:28px;max-width:1260px;margin:0 auto}',
@@ -3488,14 +3491,18 @@
             document.head.appendChild(st);
           }
 
-          /* ── Project data ── */
+          /* ── Project data — real demos ── */
           var projects = [
-            { url:'https://precisionautodetail.com', ind:'Auto Detailing' },
-            { url:'https://apexproclean.com',         ind:'Cleaning Services' },
-            { url:'https://sunstatehvac.com',          ind:'HVAC Services' },
-            { url:'https://ironcoremiami.com',         ind:'Fitness Studio' },
-            { url:'https://coastalroofingfl.com',      ind:'Roofing Contractor' },
-            { url:'https://vegalegalgroup.com',        ind:'Law Office' }
+            { url:'https://hvac-plumbing-demo.traviskenlocean1.workers.dev/',  ind:'HVAC & Plumbing' },
+            { url:'https://mobiledetail.traviskenlocean1.workers.dev/',        ind:'Mobile Detailing' },
+            { url:'https://contractor-demo.traviskenlocean1.workers.dev/',     ind:'Concrete Contractor' },
+            { url:'https://beauty.traviskenlocean1.workers.dev/',              ind:'Hair Salon' },
+            { url:'https://roofing-demo.traviskenlocean1.workers.dev/',        ind:'Roofing Company' },
+            { url:'https://www.lalasweetsandcakes.com/',                       ind:'Bakery & Catering' },
+            { url:'https://endeavor-evolution.vercel.app/',                    ind:'Credit Repair & Funding' },
+            { url:'https://contract.traviskenlocean1.workers.dev/',            ind:'Willpower Solutions' },
+            { url:'https://junkrepo.traviskenlocean1.workers.dev',             ind:'Junk Removal' },
+            { url:'https://meadowline.traviskenlocean1.workers.dev',           ind:'Lawn & Garden' }
           ];
 
           function buildCard(p) {
@@ -3531,13 +3538,19 @@
           wrap.id = 'vws-portfolio-page';
           wrap.innerHTML =
             '<section class="vws-pf-hero">'
-              + '<span class="vws-pf-lbl">Our Portfolio</span>'
-              + '<h1 class="vws-pf-h1">Work That <em>Wins.</em></h1>'
-              + '<p class="vws-pf-hero-p">Every site is hand-coded from scratch — zero templates. Built to rank, convert, and represent your business the right way.</p>'
-              + '<div class="vws-pf-stats">'
-                + '<div><div class="vws-pf-stat-n">20+</div><div class="vws-pf-stat-l">Sites Launched</div></div>'
-                + '<div><div class="vws-pf-stat-n">100%</div><div class="vws-pf-stat-l">Custom Code</div></div>'
-                + '<div><div class="vws-pf-stat-n">24h</div><div class="vws-pf-stat-l">Avg Turnaround</div></div>'
+              + '<video class="vws-pf-bg-video" autoplay muted loop playsinline>'
+                + '<source src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260330_145725_08886141-ed95-4a8e-8d6d-b75eaadce638.mp4" type="video/mp4">'
+              + '</video>'
+              + '<div class="vws-pf-hero-content">'
+                + '<span class="vws-pf-lbl">Our Portfolio</span>'
+                + '<h1 class="vws-pf-h1">Work That <em>Wins.</em></h1>'
+                + '<p class="vws-pf-hero-p">Every site is hand-coded from scratch — zero templates. Built to rank, convert, and represent your business the right way.</p>'
+                + '<div class="vws-pf-stats">'
+                  + '<div><div class="vws-pf-stat-n">20+</div><div class="vws-pf-stat-l">Sites Launched</div></div>'
+                  + '<div><div class="vws-pf-stat-n">100%</div><div class="vws-pf-stat-l">Custom Code</div></div>'
+                  + '<div><div class="vws-pf-stat-n">24h</div><div class="vws-pf-stat-l">Avg Turnaround</div></div>'
+                + '</div>'
+                + '<p class="vws-pf-concept-note">Every site below is a concept demo — built to show you the design quality and attention to detail you get when you work with us.</p>'
               + '</div>'
             + '</section>'
             + '<section class="vws-pf-grid-sec">'
