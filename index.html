@@ -3606,29 +3606,31 @@
         }
       }
 
-      /* ── Poll: wait until React has finished rendering /work (no non-portfolio sections) ──
-         The /work React page renders zero sections between header and footer.
-         Injecting before that state is reached means React's reconciliation wipes our wrap. */
+      /* ── Poll: wait until React has finished rendering /work ──
+         We can't assume the /work page has zero sections — it may have one.
+         Instead we wait for the section count to be STABLE for 3 consecutive polls (450ms),
+         meaning React has settled and it's safe to inject without being wiped. */
       var att = 0;
       var stableCount = 0;
+      var lastForeignCount = -1;
       var poll = setInterval(function() {
         att++;
         if (att > 80 || !/^\/work\/?$/.test(location.pathname)) { clearInterval(poll); return; }
         if (document.getElementById('vws-portfolio-page')) { clearInterval(poll); startGuard(); return; }
         var footer = document.querySelector('footer');
-        /* Count only non-portfolio sections — our own sections live inside #vws-portfolio-page */
-        var foreignSections = Array.from(document.querySelectorAll('section')).filter(function(s) {
+        var foreignCount = Array.from(document.querySelectorAll('section')).filter(function(s) {
           return !s.closest('#vws-portfolio-page');
-        });
-        if (footer && foreignSections.length === 0) {
+        }).length;
+        if (footer && foreignCount === lastForeignCount) {
           stableCount++;
-          if (stableCount >= 2) { /* two consecutive clean frames = React settled */
+          if (stableCount >= 3) { /* 3 stable polls = React settled */
             clearInterval(poll);
             doInject();
             startGuard();
           }
         } else {
           stableCount = 0;
+          lastForeignCount = foreignCount;
         }
       }, 150);
     }
