@@ -2121,8 +2121,26 @@
     var _vwsDetailLocked = false;
     /* Save original replaceState before patching — used to silently restore slug URLs */
     var _vwsOrigReplace = history.replaceState.bind(history);
-    /* Disable browser/React scroll restoration so our scrollTo(0,0) always wins */
+    /* Disable browser/React scroll restoration so our rAF lock always wins */
     if ('scrollRestoration' in history) { history.scrollRestoration = 'manual'; }
+
+    /* rAF scroll-to-top lock — patrols scroll position every frame for `ms` ms after navigation.
+       This beats any React scroll restoration regardless of when it fires in the render cycle. */
+    var _vwsRafLock = null;
+    var _vwsRafEnd = 0;
+    function vwsScrollLock(ms) {
+      _vwsRafEnd = Date.now() + (ms || 700);
+      if (_vwsRafLock) return;
+      function _tick() {
+        if (window.scrollY > 0 || document.documentElement.scrollTop > 0) {
+          window.scrollTo(0, 0);
+          document.documentElement.scrollTop = 0;
+          document.body.scrollTop = 0;
+        }
+        _vwsRafLock = Date.now() < _vwsRafEnd ? requestAnimationFrame(_tick) : null;
+      }
+      _vwsRafLock = requestAnimationFrame(_tick);
+    }
 
     /* ── Intercept React Router so enhancer re-runs on every SPA navigation ── */
     function patchHistory(method) {
@@ -2130,13 +2148,8 @@
       history[method] = function() {
         if (method === 'pushState') {
           _vwsDetailLocked = false;
-          window.scrollTo(0, 0);
+          vwsScrollLock(700);
           var destUrl = (arguments[2] || '').toString();
-          /* Belt-and-suspenders: delayed scrollTo beats any React scroll-restoration
-             that fires asynchronously after pushState — applies to every route */
-          setTimeout(function() { window.scrollTo(0, 0); }, 60);
-          setTimeout(function() { window.scrollTo(0, 0); }, 250);
-          setTimeout(function() { window.scrollTo(0, 0); }, 600);
           /* Apply vws-cover the instant any /services* navigation fires.
              CSS hides React sections synchronously as they paint — no poll delay. */
           if (/^\/services/.test(destUrl)) {
@@ -2202,7 +2215,7 @@
        and click it so React Router handles the route change natively.
        Fallback to pushState+popstate if the nav link isn't found. */
     window._vwsNavBack = function() {
-      window.scrollTo(0, 0);
+      vwsScrollLock(700);
       var ns = Array.from(document.querySelectorAll('a[href="/services"]')).find(function(a) {
         return !a.closest('#vws-hero');
       });
@@ -2217,9 +2230,7 @@
 
     window.addEventListener('popstate', function(){
       _vwsDetailLocked = false;
-      window.scrollTo(0, 0);
-      setTimeout(function() { window.scrollTo(0, 0); }, 60);
-      setTimeout(function() { window.scrollTo(0, 0); }, 250);
+      vwsScrollLock(700);
       if (/^\/services/.test(window.location.pathname)) {
         document.body.classList.add('vws-cover');
       } else {
@@ -3432,7 +3443,7 @@
 
     /* ── Portfolio page — device mockup grid ── */
     function runPortfolioPage() {
-      if (document.getElementById('vws-portfolio-page')) { window.scrollTo(0, 0); return; }
+      if (document.getElementById('vws-portfolio-page')) { vwsScrollLock(400); return; }
       var att = 0;
       var poll = setInterval(function() {
         att++;
@@ -3448,9 +3459,9 @@
             st.textContent = [
               /* Hero */
               '#vws-portfolio-page{font-family:Barlow,system-ui,sans-serif}',
-              '.vws-pf-hero{position:relative;overflow:hidden;padding:140px 40px 90px;text-align:center}',
-              '.vws-pf-bg-video{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;z-index:0}',
-              '.vws-pf-hero::after{content:"";position:absolute;inset:0;background:rgba(3,5,14,0.62);z-index:1}',
+              '.vws-pf-hero{position:relative;overflow:hidden;padding:160px 40px 120px;text-align:center;background:radial-gradient(ellipse 80% 60% at 50% -10%,rgba(37,99,235,0.22) 0%,transparent 60%),linear-gradient(180deg,#040810 0%,#060916 100%)}',
+              '.vws-pf-hero-wave{position:absolute;bottom:0;left:0;right:0;line-height:0;pointer-events:none;z-index:2}',
+              '.vws-pf-hero-wave svg{display:block;width:100%;height:auto}',
               '.vws-pf-hero-content{position:relative;z-index:2}',
               '.vws-pf-lbl{font-size:11px;font-weight:700;letter-spacing:.25em;text-transform:uppercase;color:#60a5fa;display:block;margin:0 0 20px}',
               '.vws-pf-h1{font-size:clamp(52px,7vw,92px);font-weight:900;color:#f0f4ff;line-height:1;margin:0 0 24px}',
@@ -3549,9 +3560,6 @@
           wrap.id = 'vws-portfolio-page';
           wrap.innerHTML =
             '<section class="vws-pf-hero">'
-              + '<video class="vws-pf-bg-video" autoplay muted loop playsinline>'
-                + '<source src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260330_145725_08886141-ed95-4a8e-8d6d-b75eaadce638.mp4" type="video/mp4">'
-              + '</video>'
               + '<div class="vws-pf-hero-content">'
                 + '<span class="vws-pf-lbl">Our Portfolio</span>'
                 + '<h1 class="vws-pf-h1">Work That <em>Wins.</em></h1>'
@@ -3563,6 +3571,7 @@
                 + '</div>'
                 + '<p class="vws-pf-concept-note">Every site below is a concept demo — built to show you the design quality and attention to detail you get when you work with us.</p>'
               + '</div>'
+              + '<div class="vws-pf-hero-wave"><svg viewBox="0 0 1440 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"><path d="M0,0 C360,80 1080,80 1440,0 L1440,80 L0,80 Z" fill="#f3f4f6"/></svg></div>'
             + '</section>'
             + '<section class="vws-pf-grid-sec">'
               + '<div class="vws-pf-grid">' + projects.map(buildCard).join('') + '</div>'
@@ -3580,7 +3589,7 @@
           var insertParent = insertTarget.parentNode;
           insertParent.insertBefore(wrap, insertTarget);
           reactSections.forEach(function(s) { if (s.parentNode) s.parentNode.removeChild(s); });
-          window.scrollTo(0, 0);
+          vwsScrollLock(500);
 
           /* Scale laptop iframes to fit their containers */
           function applyLaptopScales() {
