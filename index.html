@@ -2280,6 +2280,7 @@
     /* Unfreeze GSAP-frozen elements on any page — runs after every navigation */
     function unfreezeAll() {
       document.querySelectorAll('*').forEach(function(el) {
+        if (el.id && el.id.indexOf('vws-') === 0) return;
         var s = el.getAttribute('style') || '';
         var m = s.match(/(?:^|;)\s*opacity:\s*([\d.]+)/);
         if (m && parseFloat(m[1]) === 0) {
