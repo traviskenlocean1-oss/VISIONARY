@@ -1705,6 +1705,8 @@
 
     /* ── Kill React chat widget (fixed bottom-right, positive z-index only) ── */
     Array.from(document.querySelectorAll('*')).forEach(function(el) {
+      /* Skip our own VWS elements — especially the nav overlay */
+      if (el.id && el.id.indexOf('vws-') === 0) return;
       var s = window.getComputedStyle(el);
       var b = parseInt(s.bottom), r = parseInt(s.right);
       var zi = parseInt(s.zIndex);
@@ -2151,7 +2153,9 @@
       document.body.appendChild(ov);
     })();
     var _vwsNavOverlayT = null;
+    var _vwsNavReady = false; /* set true after initial runAll — prevents firing on React's startup pushState */
     function vwsFadeIn() {
+      if (!_vwsNavReady) return;
       clearTimeout(_vwsNavOverlayT);
       var ov = document.getElementById('vws-nav-overlay');
       if (!ov) return;
@@ -4992,7 +4996,7 @@
     })();
 
     /* ── Kick off on initial load ── */
-    setTimeout(runAll, 400);
+    setTimeout(function() { runAll(); _vwsNavReady = true; }, 400);
   })();
   </script>
 
