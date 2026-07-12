@@ -2316,9 +2316,12 @@
         el.style.removeProperty('border-left');
         el.style.removeProperty('border-right');
       });
-      /* Restore any React sections we previously hid */
+      /* Restore any React sections we previously hid — both inline style and CSS class */
       document.querySelectorAll('section[style]').forEach(function(s) {
         s.style.removeProperty('display');
+      });
+      document.querySelectorAll('.vws-pf-react-hidden').forEach(function(s) {
+        s.classList.remove('vws-pf-react-hidden');
       });
       /* Remove homepage light-section classes */
       document.querySelectorAll('[data-vws-hp]').forEach(function(el) {
@@ -3449,6 +3452,7 @@
         var st = document.createElement('style');
         st.id = 'vws-pf-style';
         st.textContent = [
+          '.vws-pf-react-hidden{display:none!important}',
           '#vws-portfolio-page{font-family:Barlow,system-ui,sans-serif}',
           '.vws-pf-hero{position:relative;overflow:hidden;padding:160px 40px 120px;text-align:center;background:transparent}',
           '.vws-pf-hero::before{content:"";position:absolute;inset:0;background:rgba(3,6,22,0.62);z-index:0}',
@@ -3483,7 +3487,9 @@
           '.vws-pf2-laptop-screen iframe{position:absolute;top:0;left:0;width:1280px;height:800px;transform-origin:top left;border:none;pointer-events:none;display:block}',
           '.vws-pf2-laptop-base{height:8px;background:#c0c4cc;border-radius:0 0 4px 4px;box-shadow:0 4px 10px rgba(0,0,0,0.1)}',
           '.vws-pf2-laptop-stand{width:34%;height:4px;background:#b0b4bc;margin:0 auto;border-radius:0 0 4px 4px}',
-          '.vws-pf-cta-sec{text-align:center;padding:80px 40px 120px;background:linear-gradient(180deg,#080e1a 0%,#040810 100%);border-top:1px solid rgba(255,255,255,0.05)}',
+          '.vws-pf-cta-sec{text-align:center;padding:80px 40px 120px;position:relative;background:transparent;border-top:1px solid rgba(255,255,255,0.05)}',
+          '.vws-pf-cta-sec::before{content:"";position:absolute;inset:0;background:rgba(3,6,22,0.88);z-index:0}',
+          '.vws-pf-cta-sec>*{position:relative;z-index:1}',
           '.vws-pf-cta-h{font-size:clamp(38px,5vw,66px);font-weight:900;color:#f0f4ff;margin:0 0 16px;line-height:1.05}',
           '.vws-pf-cta-h em{color:#2563eb;font-style:normal}',
           '.vws-pf-cta-p{font-size:17px;color:rgba(240,244,255,0.55);margin:0 auto 40px;max-width:440px;display:block;line-height:1.7}',
@@ -3550,9 +3556,9 @@
       var _pfFirstInject = true;
       var _pfInjectPending = false;
       function doInject() {
-        /* Hide React's native /work sections (keep them in DOM so React won't reconcile) */
+        /* Hide React's native /work sections — CSS class survives runAll() inline-style cleanup */
         Array.from(document.querySelectorAll('section')).forEach(function(s) {
-          if (!s.closest('#vws-portfolio-page')) s.style.display = 'none';
+          if (!s.closest('#vws-portfolio-page')) s.classList.add('vws-pf-react-hidden');
         });
         if (document.getElementById('vws-portfolio-page')) return;
         var footer = document.querySelector('footer');
@@ -3618,6 +3624,17 @@
           });
         }
       }
+
+      /* ── Fast-hide: suppress React's native /work sections immediately (50ms cycles) ──
+         Runs ahead of the stability poll so the old hero never flashes at page load.
+         Cleared automatically after 2 s (stability poll + guard take over). */
+      var _pfFastHide = setInterval(function() {
+        if (!/^\/work\/?$/.test(location.pathname)) { clearInterval(_pfFastHide); return; }
+        Array.from(document.querySelectorAll('section')).forEach(function(s) {
+          if (!s.closest('#vws-portfolio-page')) s.classList.add('vws-pf-react-hidden');
+        });
+      }, 50);
+      setTimeout(function() { clearInterval(_pfFastHide); }, 2000);
 
       /* ── Poll: wait until React has finished rendering /work ──
          We can't assume the /work page has zero sections — it may have one.
