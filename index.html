@@ -2286,6 +2286,7 @@
       if (window._vwsRevealObs) { window._vwsRevealObs.disconnect(); window._vwsRevealObs = null; }
       if (window._vwsPrObs) { window._vwsPrObs.disconnect(); window._vwsPrObs = null; }
       if (window._vwsPfObs) { window._vwsPfObs.disconnect(); window._vwsPfObs = null; }
+      if (window._vwsPfBodyObs) { window._vwsPfBodyObs.disconnect(); window._vwsPfBodyObs = null; }
       /* Remove about-page body class and any inline overrides on React sections */
       document.body.classList.remove('vws-about');
       document.querySelectorAll('[data-vws-enh]').forEach(function(el) {
@@ -3443,200 +3444,191 @@
 
     /* ── Portfolio page — device mockup grid ── */
     function runPortfolioPage() {
-      if (document.getElementById('vws-portfolio-page')) { vwsScrollLock(400); return; }
+      /* ── CSS injected once into <head> — survives re-injections ── */
+      if (!document.getElementById('vws-pf-style')) {
+        var st = document.createElement('style');
+        st.id = 'vws-pf-style';
+        st.textContent = [
+          '#vws-portfolio-page{font-family:Barlow,system-ui,sans-serif}',
+          '.vws-pf-hero{position:relative;overflow:hidden;padding:160px 40px 120px;text-align:center;background:transparent}',
+          '.vws-pf-hero::before{content:"";position:absolute;inset:0;background:rgba(3,6,22,0.62);z-index:0}',
+          '.vws-pf-hero-wave{position:absolute;bottom:0;left:0;right:0;line-height:0;pointer-events:none;z-index:2}',
+          '.vws-pf-hero-wave svg{display:block;width:100%;height:auto}',
+          '.vws-pf-hero-content{position:relative;z-index:2}',
+          '.vws-pf-lbl{font-size:11px;font-weight:700;letter-spacing:.25em;text-transform:uppercase;color:#60a5fa;display:block;margin:0 0 20px}',
+          '.vws-pf-h1{font-size:clamp(52px,7vw,92px);font-weight:900;color:#f0f4ff;line-height:1;margin:0 0 24px}',
+          '.vws-pf-h1 em{color:#2563eb;font-style:normal}',
+          '.vws-pf-hero-p{font-size:18px;color:rgba(240,244,255,0.6);max-width:520px;margin:0 auto 52px;line-height:1.7}',
+          '.vws-pf-stats{display:flex;justify-content:center;gap:56px;flex-wrap:wrap;margin-bottom:36px}',
+          '.vws-pf-stat-n{font-size:38px;font-weight:900;color:#f0f4ff;line-height:1}',
+          '.vws-pf-stat-l{font-size:11px;color:rgba(240,244,255,0.42);margin-top:6px;text-transform:uppercase;letter-spacing:.12em}',
+          '.vws-pf-concept-note{font-size:13px;color:rgba(240,244,255,0.4);max-width:480px;margin:0 auto;line-height:1.7;border-top:1px solid rgba(255,255,255,0.08);padding-top:24px}',
+          '.vws-pf-grid-sec{background:#f3f4f6;padding:70px 40px 100px}',
+          '.vws-pf-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:28px;max-width:1260px;margin:0 auto}',
+          '.vws-pf2-card{background:#fff;border-radius:16px;padding:22px 22px 26px;box-shadow:0 2px 20px rgba(0,0,0,0.09);transition:transform .3s ease,box-shadow .3s ease;position:relative;overflow:hidden}',
+          '.vws-pf2-card:hover{transform:translateY(-6px);box-shadow:0 18px 52px rgba(0,0,0,0.14)}',
+          '.vws-pf2-card:hover .vws-pf2-view{opacity:1}',
+          '.vws-pf2-view{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(to top,rgba(37,99,235,0.92),transparent);padding:18px 22px 18px;font-size:13px;font-weight:700;color:#fff;letter-spacing:.05em;opacity:0;transition:opacity .25s ease;pointer-events:none;text-align:right}',
+          '.vws-pf2-lbl{font-size:10px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:#2563eb;margin:0 0 14px;display:block;font-family:Barlow,system-ui,sans-serif}',
+          '.vws-pf2-devices{display:flex;align-items:flex-end}',
+          '.vws-pf2-phone{flex-shrink:0;width:72px;z-index:2;margin-right:-20px;background:#e2e4e8;border-radius:13px;padding:8px 5px 6px;box-shadow:0 6px 22px rgba(0,0,0,0.16),0 0 0 1px rgba(0,0,0,0.08)}',
+          '.vws-pf2-ph-notch{width:22px;height:3px;background:#b0b4bc;border-radius:2px;margin:0 auto 5px}',
+          '.vws-pf2-ph-screen{width:62px;height:134px;overflow:hidden;border-radius:6px;background:#0a0a0a}',
+          '.vws-pf2-ph-screen iframe{width:390px;height:844px;transform:scale(0.159);transform-origin:top left;border:none;pointer-events:none;display:block}',
+          '.vws-pf2-ph-bar{width:22px;height:3px;background:#b0b4bc;border-radius:2px;margin:5px auto 0}',
+          '.vws-pf2-laptop{flex:1;min-width:0}',
+          '.vws-pf2-laptop-lid{background:#d4d7dc;border-radius:8px 8px 0 0;padding:5px 5px 0;box-shadow:inset 0 2px 4px rgba(0,0,0,0.07)}',
+          '.vws-pf2-laptop-cam{width:4px;height:4px;background:#a0a4ac;border-radius:50%;margin:0 auto 3px}',
+          '.vws-pf2-laptop-screen{position:relative;overflow:hidden;border-radius:3px 3px 0 0;background:#0a0a0a;height:0;padding-bottom:62.5%}',
+          '.vws-pf2-laptop-screen iframe{position:absolute;top:0;left:0;width:1280px;height:800px;transform-origin:top left;border:none;pointer-events:none;display:block}',
+          '.vws-pf2-laptop-base{height:8px;background:#c0c4cc;border-radius:0 0 4px 4px;box-shadow:0 4px 10px rgba(0,0,0,0.1)}',
+          '.vws-pf2-laptop-stand{width:34%;height:4px;background:#b0b4bc;margin:0 auto;border-radius:0 0 4px 4px}',
+          '.vws-pf-cta-sec{text-align:center;padding:80px 40px 120px;background:linear-gradient(180deg,#080e1a 0%,#040810 100%);border-top:1px solid rgba(255,255,255,0.05)}',
+          '.vws-pf-cta-h{font-size:clamp(38px,5vw,66px);font-weight:900;color:#f0f4ff;margin:0 0 16px;line-height:1.05}',
+          '.vws-pf-cta-h em{color:#2563eb;font-style:normal}',
+          '.vws-pf-cta-p{font-size:17px;color:rgba(240,244,255,0.55);margin:0 auto 40px;max-width:440px;display:block;line-height:1.7}',
+          '.vws-pf-cta-btn{display:inline-flex;align-items:center;gap:10px;background:#2563eb;color:#fff;font-size:14px;font-weight:800;letter-spacing:.08em;padding:17px 40px;border-radius:999px;text-decoration:none;transition:background .2s,transform .2s,box-shadow .2s;box-shadow:0 8px 32px rgba(37,99,235,0.42)}',
+          '.vws-pf-cta-btn:hover{background:#1d4ed8;transform:translateY(-4px);box-shadow:0 16px 44px rgba(37,99,235,0.58)}',
+          '@media(max-width:900px){.vws-pf-grid{grid-template-columns:repeat(2,1fr)}}',
+          '@media(max-width:640px){.vws-pf-grid{grid-template-columns:1fr}.vws-pf-grid-sec{padding:50px 16px 70px}.vws-pf-hero{padding:120px 20px 60px}.vws-pf-stats{gap:20px;flex-wrap:nowrap}.vws-pf-cta-sec{padding:60px 20px 80px}}',
+          '@media(max-width:420px){.vws-pf-stats{gap:10px}.vws-pf-stat-n{font-size:28px}.vws-pf-stat-l{font-size:9px;letter-spacing:.06em}}'
+        ].join('');
+        document.head.appendChild(st);
+      }
+
+      /* ── Build wrap once — reuse the same node on every re-injection ── */
+      var projects = [
+        { url:'https://hvac-plumbing-demo.traviskenlocean1.workers.dev/',  ind:'HVAC & Plumbing' },
+        { url:'https://mobiledetail.traviskenlocean1.workers.dev/',        ind:'Mobile Detailing' },
+        { url:'https://contractor-demo.traviskenlocean1.workers.dev/',     ind:'Concrete Contractor' },
+        { url:'https://beauty.traviskenlocean1.workers.dev/',              ind:'Hair Salon' },
+        { url:'https://roofing-demo.traviskenlocean1.workers.dev/',        ind:'Roofing Company' },
+        { url:'https://www.lalasweetsandcakes.com/',                       ind:'Bakery & Catering' },
+        { url:'https://endeavor-evolution.vercel.app/',                    ind:'Credit Repair & Funding' },
+        { url:'https://contract.traviskenlocean1.workers.dev/',            ind:'Willpower Solutions' },
+        { url:'https://junkrepo.traviskenlocean1.workers.dev',             ind:'Junk Removal' },
+        { url:'https://meadowline.traviskenlocean1.workers.dev',           ind:'Lawn & Garden' }
+      ];
+      function buildCard(p) {
+        return '<div class="vws-pf2-card" onclick="window.open(\'' + p.url + '\',\'_blank\')" style="cursor:pointer">'
+          + '<span class="vws-pf2-lbl">' + p.ind + '</span>'
+          + '<div class="vws-pf2-devices">'
+            + '<div class="vws-pf2-phone"><div class="vws-pf2-ph-notch"></div>'
+              + '<div class="vws-pf2-ph-screen"><iframe data-src="' + p.url + '" scrolling="no" title="' + p.ind + ' mobile" sandbox="allow-scripts allow-same-origin"></iframe></div>'
+              + '<div class="vws-pf2-ph-bar"></div></div>'
+            + '<div class="vws-pf2-laptop"><div class="vws-pf2-laptop-lid"><div class="vws-pf2-laptop-cam"></div>'
+              + '<div class="vws-pf2-laptop-screen"><iframe data-src="' + p.url + '" scrolling="no" title="' + p.ind + ' desktop" sandbox="allow-scripts allow-same-origin"></iframe></div>'
+              + '</div><div class="vws-pf2-laptop-base"></div><div class="vws-pf2-laptop-stand"></div></div>'
+          + '</div><div class="vws-pf2-view">View Demo →</div></div>';
+      }
+      var arrowSvg = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>';
+      var wrap = document.createElement('div');
+      wrap.id = 'vws-portfolio-page';
+      wrap.innerHTML =
+        '<section class="vws-pf-hero"><div class="vws-pf-hero-content">'
+          + '<span class="vws-pf-lbl">Our Portfolio</span>'
+          + '<h1 class="vws-pf-h1">Work That <em>Wins.</em></h1>'
+          + '<p class="vws-pf-hero-p">Every site is hand-coded from scratch — zero templates. Built to rank, convert, and represent your business the right way.</p>'
+          + '<div class="vws-pf-stats">'
+            + '<div><div class="vws-pf-stat-n">20+</div><div class="vws-pf-stat-l">Sites Launched</div></div>'
+            + '<div><div class="vws-pf-stat-n">100%</div><div class="vws-pf-stat-l">Custom Code</div></div>'
+            + '<div><div class="vws-pf-stat-n">24h</div><div class="vws-pf-stat-l">Avg Turnaround</div></div>'
+          + '</div>'
+          + '<p class="vws-pf-concept-note">Every site below is a concept demo — built to show you the design quality and attention to detail you get when you work with us.</p>'
+          + '</div>'
+          + '<div class="vws-pf-hero-wave"><svg viewBox="0 0 1440 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"><path d="M0,0 C360,80 1080,80 1440,0 L1440,80 L0,80 Z" fill="#f3f4f6"/></svg></div>'
+          + '</section>'
+          + '<section class="vws-pf-grid-sec"><div class="vws-pf-grid">' + projects.map(buildCard).join('') + '</div></section>'
+          + '<section class="vws-pf-cta-sec">'
+            + '<span class="vws-pf-lbl">Ready?</span>'
+            + '<h2 class="vws-pf-cta-h">Yours could be <em>next.</em></h2>'
+            + '<span class="vws-pf-cta-p">Tell us about your business and we\'ll build something you\'re proud to show off.</span>'
+            + '<a href="/contact" class="vws-pf-cta-btn">Start a Project ' + arrowSvg + '</a>'
+          + '</section>';
+
+      /* ── doInject: insert wrap before footer; idempotent ── */
+      var _pfFirstInject = true;
+      function doInject() {
+        if (document.getElementById('vws-portfolio-page')) return;
+        var f = document.querySelector('footer');
+        if (!f || !f.parentNode) return;
+        f.parentNode.insertBefore(wrap, f);
+        if (_pfFirstInject) {
+          _pfFirstInject = false;
+          vwsScrollLock(500);
+          setupAfterInject();
+        }
+      }
+
+      /* ── Guard: watch #root (always connected) for removals; re-insert within one frame ── */
+      function startGuard() {
+        if (window._vwsPfBodyObs) { window._vwsPfBodyObs.disconnect(); window._vwsPfBodyObs = null; }
+        if (!window.MutationObserver) return;
+        window._vwsPfBodyObs = new MutationObserver(function() {
+          if (!/^\/work\/?$/.test(location.pathname)) {
+            window._vwsPfBodyObs.disconnect(); window._vwsPfBodyObs = null; return;
+          }
+          doInject();
+        });
+        var root = document.getElementById('root');
+        if (root) window._vwsPfBodyObs.observe(root, { childList: true, subtree: true });
+      }
+
+      /* ── setupAfterInject: lazy-load iframes + laptop scaling; runs once ── */
+      function setupAfterInject() {
+        function applyLaptopScales() {
+          document.querySelectorAll('.vws-pf2-laptop-screen').forEach(function(screen) {
+            var w = screen.offsetWidth;
+            if (!w) return;
+            var iframe = screen.querySelector('iframe');
+            if (iframe) iframe.style.transform = 'scale(' + (w / 1280).toFixed(5) + ')';
+          });
+        }
+        setTimeout(applyLaptopScales, 400);
+        window.addEventListener('resize', applyLaptopScales);
+        if (window.IntersectionObserver) {
+          var iframeObs = new IntersectionObserver(function(entries) {
+            entries.forEach(function(entry) {
+              if (!entry.isIntersecting) return;
+              var card = entry.target;
+              card.querySelectorAll('iframe[data-src]').forEach(function(f) {
+                f.src = f.getAttribute('data-src'); f.removeAttribute('data-src');
+              });
+              setTimeout(applyLaptopScales, 600);
+              iframeObs.unobserve(card);
+            });
+          }, { rootMargin: '200px 0px', threshold: 0 });
+          document.querySelectorAll('.vws-pf2-card').forEach(function(c) { iframeObs.observe(c); });
+        } else {
+          document.querySelectorAll('iframe[data-src]').forEach(function(f) {
+            f.src = f.getAttribute('data-src'); f.removeAttribute('data-src');
+          });
+        }
+      }
+
+      /* ── Poll: wait until React has finished rendering /work (no non-portfolio sections) ──
+         The /work React page renders zero sections between header and footer.
+         Injecting before that state is reached means React's reconciliation wipes our wrap. */
       var att = 0;
+      var stableCount = 0;
       var poll = setInterval(function() {
         att++;
+        if (att > 80 || !/^\/work\/?$/.test(location.pathname)) { clearInterval(poll); return; }
+        if (document.getElementById('vws-portfolio-page')) { clearInterval(poll); startGuard(); return; }
         var footer = document.querySelector('footer');
-        if (footer || att > 40) {
-          clearInterval(poll);
-          if (!footer || document.getElementById('vws-portfolio-page')) return;
-
-          /* ── CSS ── */
-          if (!document.getElementById('vws-pf-style')) {
-            var st = document.createElement('style');
-            st.id = 'vws-pf-style';
-            st.textContent = [
-              /* Hero */
-              '#vws-portfolio-page{font-family:Barlow,system-ui,sans-serif}',
-              /* Hero — transparent bg so React's fixed animated glass (z-index:-10) shows through, same as Services/Pricing */
-              '.vws-pf-hero{position:relative;overflow:hidden;padding:160px 40px 120px;text-align:center;background:transparent}',
-              '.vws-pf-hero::before{content:"";position:absolute;inset:0;background:rgba(3,6,22,0.62);z-index:0}',
-              '.vws-pf-hero-wave{position:absolute;bottom:0;left:0;right:0;line-height:0;pointer-events:none;z-index:2}',
-              '.vws-pf-hero-wave svg{display:block;width:100%;height:auto}',
-              '.vws-pf-hero-content{position:relative;z-index:2}',
-              '.vws-pf-lbl{font-size:11px;font-weight:700;letter-spacing:.25em;text-transform:uppercase;color:#60a5fa;display:block;margin:0 0 20px}',
-              '.vws-pf-h1{font-size:clamp(52px,7vw,92px);font-weight:900;color:#f0f4ff;line-height:1;margin:0 0 24px}',
-              '.vws-pf-h1 em{color:#2563eb;font-style:normal}',
-              '.vws-pf-hero-p{font-size:18px;color:rgba(240,244,255,0.6);max-width:520px;margin:0 auto 52px;line-height:1.7}',
-              '.vws-pf-stats{display:flex;justify-content:center;gap:56px;flex-wrap:wrap;margin-bottom:36px}',
-              '.vws-pf-stat-n{font-size:38px;font-weight:900;color:#f0f4ff;line-height:1}',
-              '.vws-pf-stat-l{font-size:11px;color:rgba(240,244,255,0.42);margin-top:6px;text-transform:uppercase;letter-spacing:.12em}',
-              '.vws-pf-concept-note{font-size:13px;color:rgba(240,244,255,0.4);max-width:480px;margin:0 auto;line-height:1.7;border-top:1px solid rgba(255,255,255,0.08);padding-top:24px}',
-              /* Grid section — white */
-              '.vws-pf-grid-sec{background:#f3f4f6;padding:70px 40px 100px}',
-              '.vws-pf-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:28px;max-width:1260px;margin:0 auto}',
-              /* Card */
-              '.vws-pf2-card{background:#fff;border-radius:16px;padding:22px 22px 26px;box-shadow:0 2px 20px rgba(0,0,0,0.09);transition:transform .3s ease,box-shadow .3s ease;position:relative;overflow:hidden}',
-              '.vws-pf2-card:hover{transform:translateY(-6px);box-shadow:0 18px 52px rgba(0,0,0,0.14)}',
-              '.vws-pf2-card:hover .vws-pf2-view{opacity:1}',
-              '.vws-pf2-view{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(to top,rgba(37,99,235,0.92),transparent);padding:18px 22px 18px;font-size:13px;font-weight:700;color:#fff;letter-spacing:.05em;opacity:0;transition:opacity .25s ease;pointer-events:none;text-align:right}',
-              /* Industry label */
-              '.vws-pf2-lbl{font-size:10px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:#2563eb;margin:0 0 14px;display:block;font-family:Barlow,system-ui,sans-serif}',
-              /* Device row */
-              '.vws-pf2-devices{display:flex;align-items:flex-end}',
-              /* Phone frame */
-              '.vws-pf2-phone{flex-shrink:0;width:72px;z-index:2;margin-right:-20px;background:#e2e4e8;border-radius:13px;padding:8px 5px 6px;box-shadow:0 6px 22px rgba(0,0,0,0.16),0 0 0 1px rgba(0,0,0,0.08)}',
-              '.vws-pf2-ph-notch{width:22px;height:3px;background:#b0b4bc;border-radius:2px;margin:0 auto 5px}',
-              '.vws-pf2-ph-screen{width:62px;height:134px;overflow:hidden;border-radius:6px;background:#0a0a0a}',
-              '.vws-pf2-ph-screen iframe{width:390px;height:844px;transform:scale(0.159);transform-origin:top left;border:none;pointer-events:none;display:block}',
-              '.vws-pf2-ph-bar{width:22px;height:3px;background:#b0b4bc;border-radius:2px;margin:5px auto 0}',
-              /* Laptop frame */
-              '.vws-pf2-laptop{flex:1;min-width:0}',
-              '.vws-pf2-laptop-lid{background:#d4d7dc;border-radius:8px 8px 0 0;padding:5px 5px 0;box-shadow:inset 0 2px 4px rgba(0,0,0,0.07)}',
-              '.vws-pf2-laptop-cam{width:4px;height:4px;background:#a0a4ac;border-radius:50%;margin:0 auto 3px}',
-              /* Laptop screen: height driven by padding-bottom (16:10 ratio = 62.5%) */
-              '.vws-pf2-laptop-screen{position:relative;overflow:hidden;border-radius:3px 3px 0 0;background:#0a0a0a;height:0;padding-bottom:62.5%}',
-              '.vws-pf2-laptop-screen iframe{position:absolute;top:0;left:0;width:1280px;height:800px;transform-origin:top left;border:none;pointer-events:none;display:block}',
-              '.vws-pf2-laptop-base{height:8px;background:#c0c4cc;border-radius:0 0 4px 4px;box-shadow:0 4px 10px rgba(0,0,0,0.1)}',
-              '.vws-pf2-laptop-stand{width:34%;height:4px;background:#b0b4bc;margin:0 auto;border-radius:0 0 4px 4px}',
-              /* CTA */
-              '.vws-pf-cta-sec{text-align:center;padding:80px 40px 120px;background:linear-gradient(180deg,#080e1a 0%,#040810 100%);border-top:1px solid rgba(255,255,255,0.05)}',
-              '.vws-pf-cta-h{font-size:clamp(38px,5vw,66px);font-weight:900;color:#f0f4ff;margin:0 0 16px;line-height:1.05}',
-              '.vws-pf-cta-h em{color:#2563eb;font-style:normal}',
-              '.vws-pf-cta-p{font-size:17px;color:rgba(240,244,255,0.55);margin:0 auto 40px;max-width:440px;display:block;line-height:1.7}',
-              '.vws-pf-cta-btn{display:inline-flex;align-items:center;gap:10px;background:#2563eb;color:#fff;font-size:14px;font-weight:800;letter-spacing:.08em;padding:17px 40px;border-radius:999px;text-decoration:none;transition:background .2s,transform .2s,box-shadow .2s;box-shadow:0 8px 32px rgba(37,99,235,0.42)}',
-              '.vws-pf-cta-btn:hover{background:#1d4ed8;transform:translateY(-4px);box-shadow:0 16px 44px rgba(37,99,235,0.58)}',
-              /* Responsive */
-              '@media(max-width:900px){.vws-pf-grid{grid-template-columns:repeat(2,1fr)}}',
-              '@media(max-width:640px){.vws-pf-grid{grid-template-columns:1fr}.vws-pf-grid-sec{padding:50px 16px 70px}.vws-pf-hero{padding:120px 20px 60px}.vws-pf-stats{gap:20px;flex-wrap:nowrap}.vws-pf-cta-sec{padding:60px 20px 80px}}',
-              '@media(max-width:420px){.vws-pf-stats{gap:10px}.vws-pf-stat-n{font-size:28px}.vws-pf-stat-l{font-size:9px;letter-spacing:.06em}}'
-            ].join('');
-            document.head.appendChild(st);
+        /* Count only non-portfolio sections — our own sections live inside #vws-portfolio-page */
+        var foreignSections = Array.from(document.querySelectorAll('section')).filter(function(s) {
+          return !s.closest('#vws-portfolio-page');
+        });
+        if (footer && foreignSections.length === 0) {
+          stableCount++;
+          if (stableCount >= 2) { /* two consecutive clean frames = React settled */
+            clearInterval(poll);
+            doInject();
+            startGuard();
           }
-
-          /* ── Project data — real demos ── */
-          var projects = [
-            { url:'https://hvac-plumbing-demo.traviskenlocean1.workers.dev/',  ind:'HVAC & Plumbing' },
-            { url:'https://mobiledetail.traviskenlocean1.workers.dev/',        ind:'Mobile Detailing' },
-            { url:'https://contractor-demo.traviskenlocean1.workers.dev/',     ind:'Concrete Contractor' },
-            { url:'https://beauty.traviskenlocean1.workers.dev/',              ind:'Hair Salon' },
-            { url:'https://roofing-demo.traviskenlocean1.workers.dev/',        ind:'Roofing Company' },
-            { url:'https://www.lalasweetsandcakes.com/',                       ind:'Bakery & Catering' },
-            { url:'https://endeavor-evolution.vercel.app/',                    ind:'Credit Repair & Funding' },
-            { url:'https://contract.traviskenlocean1.workers.dev/',            ind:'Willpower Solutions' },
-            { url:'https://junkrepo.traviskenlocean1.workers.dev',             ind:'Junk Removal' },
-            { url:'https://meadowline.traviskenlocean1.workers.dev',           ind:'Lawn & Garden' }
-          ];
-
-          function buildCard(p) {
-            /* Use data-src so iframes only load when scrolled into view */
-            return '<div class="vws-pf2-card" onclick="window.open(\'' + p.url + '\',\'_blank\')" style="cursor:pointer">'
-              + '<span class="vws-pf2-lbl">' + p.ind + '</span>'
-              + '<div class="vws-pf2-devices">'
-                + '<div class="vws-pf2-phone">'
-                  + '<div class="vws-pf2-ph-notch"></div>'
-                  + '<div class="vws-pf2-ph-screen">'
-                    + '<iframe data-src="' + p.url + '" scrolling="no" title="' + p.ind + ' mobile" sandbox="allow-scripts allow-same-origin"></iframe>'
-                  + '</div>'
-                  + '<div class="vws-pf2-ph-bar"></div>'
-                + '</div>'
-                + '<div class="vws-pf2-laptop">'
-                  + '<div class="vws-pf2-laptop-lid">'
-                    + '<div class="vws-pf2-laptop-cam"></div>'
-                    + '<div class="vws-pf2-laptop-screen">'
-                      + '<iframe data-src="' + p.url + '" scrolling="no" title="' + p.ind + ' desktop" sandbox="allow-scripts allow-same-origin"></iframe>'
-                    + '</div>'
-                  + '</div>'
-                  + '<div class="vws-pf2-laptop-base"></div>'
-                  + '<div class="vws-pf2-laptop-stand"></div>'
-                + '</div>'
-              + '</div>'
-              + '<div class="vws-pf2-view">View Demo →</div>'
-            + '</div>';
-          }
-
-          var arrowSvg = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>';
-
-          var wrap = document.createElement('div');
-          wrap.id = 'vws-portfolio-page';
-          wrap.innerHTML =
-            '<section class="vws-pf-hero">'
-              + '<div class="vws-pf-hero-content">'
-                + '<span class="vws-pf-lbl">Our Portfolio</span>'
-                + '<h1 class="vws-pf-h1">Work That <em>Wins.</em></h1>'
-                + '<p class="vws-pf-hero-p">Every site is hand-coded from scratch — zero templates. Built to rank, convert, and represent your business the right way.</p>'
-                + '<div class="vws-pf-stats">'
-                  + '<div><div class="vws-pf-stat-n">20+</div><div class="vws-pf-stat-l">Sites Launched</div></div>'
-                  + '<div><div class="vws-pf-stat-n">100%</div><div class="vws-pf-stat-l">Custom Code</div></div>'
-                  + '<div><div class="vws-pf-stat-n">24h</div><div class="vws-pf-stat-l">Avg Turnaround</div></div>'
-                + '</div>'
-                + '<p class="vws-pf-concept-note">Every site below is a concept demo — built to show you the design quality and attention to detail you get when you work with us.</p>'
-              + '</div>'
-              + '<div class="vws-pf-hero-wave"><svg viewBox="0 0 1440 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"><path d="M0,0 C360,80 1080,80 1440,0 L1440,80 L0,80 Z" fill="#f3f4f6"/></svg></div>'
-            + '</section>'
-            + '<section class="vws-pf-grid-sec">'
-              + '<div class="vws-pf-grid">' + projects.map(buildCard).join('') + '</div>'
-            + '</section>'
-            + '<section class="vws-pf-cta-sec">'
-              + '<span class="vws-pf-lbl">Ready?</span>'
-              + '<h2 class="vws-pf-cta-h">Yours could be <em>next.</em></h2>'
-              + '<span class="vws-pf-cta-p">Tell us about your business and we\'ll build something you\'re proud to show off.</span>'
-              + '<a href="/contact" class="vws-pf-cta-btn">Start a Project ' + arrowSvg + '</a>'
-            + '</section>';
-
-          /* Physically remove all React portfolio sections from the DOM */
-          var reactSections = Array.from(document.querySelectorAll('section'));
-          var insertTarget = reactSections[0] || footer;
-          var insertParent = insertTarget.parentNode;
-          insertParent.insertBefore(wrap, insertTarget);
-          reactSections.forEach(function(s) { if (s.parentNode) s.parentNode.removeChild(s); });
-          vwsScrollLock(500);
-
-          /* Re-insert immediately if React wipes our div while still on /work */
-          if (window.MutationObserver) {
-            var _pfObs = new MutationObserver(function() {
-              if (!/^\/work\/?$/.test(window.location.pathname)) { _pfObs.disconnect(); return; }
-              if (!document.getElementById('vws-portfolio-page')) {
-                var f = document.querySelector('footer');
-                if (f && f.parentNode) { f.parentNode.insertBefore(wrap, f); }
-              }
-            });
-            _pfObs.observe(insertParent, { childList: true });
-          }
-
-          /* Scale laptop iframes to fit their containers */
-          function applyLaptopScales() {
-            document.querySelectorAll('.vws-pf2-laptop-screen').forEach(function(screen) {
-              var w = screen.offsetWidth;
-              if (!w) return;
-              var iframe = screen.querySelector('iframe');
-              if (iframe) iframe.style.transform = 'scale(' + (w / 1280).toFixed(5) + ')';
-            });
-          }
-          setTimeout(applyLaptopScales, 400);
-          window.addEventListener('resize', applyLaptopScales);
-
-          /* Lazy-load iframes — only fire src when card enters viewport */
-          if (window.IntersectionObserver) {
-            var iframeObs = new IntersectionObserver(function(entries) {
-              entries.forEach(function(entry) {
-                if (!entry.isIntersecting) return;
-                var card = entry.target;
-                card.querySelectorAll('iframe[data-src]').forEach(function(f) {
-                  f.src = f.getAttribute('data-src');
-                  f.removeAttribute('data-src');
-                });
-                /* Re-scale after each card's iframes load */
-                setTimeout(applyLaptopScales, 600);
-                iframeObs.unobserve(card);
-              });
-            }, { rootMargin: '200px 0px', threshold: 0 });
-            document.querySelectorAll('.vws-pf2-card').forEach(function(c) { iframeObs.observe(c); });
-          } else {
-            /* Fallback: load all immediately */
-            document.querySelectorAll('iframe[data-src]').forEach(function(f) { f.src = f.getAttribute('data-src'); f.removeAttribute('data-src'); });
-          }
+        } else {
+          stableCount = 0;
         }
       }, 150);
     }
