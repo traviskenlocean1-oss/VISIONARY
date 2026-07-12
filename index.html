@@ -2121,6 +2121,8 @@
     var _vwsDetailLocked = false;
     /* Save original replaceState before patching — used to silently restore slug URLs */
     var _vwsOrigReplace = history.replaceState.bind(history);
+    /* Disable browser/React scroll restoration so our scrollTo(0,0) always wins */
+    if ('scrollRestoration' in history) { history.scrollRestoration = 'manual'; }
 
     /* ── Intercept React Router so enhancer re-runs on every SPA navigation ── */
     function patchHistory(method) {
@@ -2130,12 +2132,11 @@
           _vwsDetailLocked = false;
           window.scrollTo(0, 0);
           var destUrl = (arguments[2] || '').toString();
-          /* For /work, override React scroll-restoration with delayed calls */
-          if (/^\/work\/?$/.test(destUrl)) {
-            setTimeout(function() { window.scrollTo(0, 0); }, 80);
-            setTimeout(function() { window.scrollTo(0, 0); }, 350);
-            setTimeout(function() { window.scrollTo(0, 0); }, 800);
-          }
+          /* Belt-and-suspenders: delayed scrollTo beats any React scroll-restoration
+             that fires asynchronously after pushState — applies to every route */
+          setTimeout(function() { window.scrollTo(0, 0); }, 60);
+          setTimeout(function() { window.scrollTo(0, 0); }, 250);
+          setTimeout(function() { window.scrollTo(0, 0); }, 600);
           /* Apply vws-cover the instant any /services* navigation fires.
              CSS hides React sections synchronously as they paint — no poll delay. */
           if (/^\/services/.test(destUrl)) {
@@ -2217,6 +2218,8 @@
     window.addEventListener('popstate', function(){
       _vwsDetailLocked = false;
       window.scrollTo(0, 0);
+      setTimeout(function() { window.scrollTo(0, 0); }, 60);
+      setTimeout(function() { window.scrollTo(0, 0); }, 250);
       if (/^\/services/.test(window.location.pathname)) {
         document.body.classList.add('vws-cover');
       } else {
