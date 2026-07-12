@@ -939,6 +939,8 @@
      Removed by the fast poll (services listing) or kept forever (service detail, where
      our injected sections have vws- IDs and are never matched by this rule). */
   body.vws-cover section:not([id^="vws"]){display:none!important}
+  /* Site-wide nav crossfade overlay — covers all intermediate injection states */
+  #vws-nav-overlay{position:fixed;inset:0;z-index:8000;background:#060916;opacity:0;pointer-events:none;transition:opacity 160ms ease;will-change:opacity}
   /* ══ DUAL TICKER — Cosmico Studios style ══ */
   #vws-dual-ticker{padding:0;overflow:hidden;background:#060916;border-top:1px solid rgba(255,255,255,0.06);border-bottom:1px solid rgba(255,255,255,0.06)}
   #vws-dual-ticker .vws-tk-row{display:flex;overflow:hidden;padding:14px 0}
@@ -1458,7 +1460,7 @@
   @media(prefers-reduced-motion:reduce){.vws-pr-fade{opacity:1;transform:none;transition:none}}
 
   /* ══ HOME PAGE — Services Card Grid ══ */
-  .vws-svc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;max-width:1140px;margin:0 auto;padding:0 24px;font-family:Barlow,system-ui,sans-serif}
+  .vws-svc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;max-width:1280px;margin:0 auto;padding:0 24px;font-family:Barlow,system-ui,sans-serif}
   .vws-svc-card{position:relative;border-radius:18px;padding:42px 28px 36px;text-align:center;overflow:hidden;display:flex;flex-direction:column;align-items:center;border:1px solid rgba(255,255,255,0.09);background:rgba(255,255,255,0.03);transition:transform .35s cubic-bezier(.4,0,.2,1),box-shadow .35s,border-color .35s;cursor:pointer}
   .vws-svc-card-bg{position:absolute;inset:0;opacity:0;transition:opacity .4s cubic-bezier(.4,0,.2,1);pointer-events:none}
   .vws-svc-card:hover .vws-svc-card-bg{opacity:1}
@@ -2142,11 +2144,35 @@
       _vwsRafLock = requestAnimationFrame(_tick);
     }
 
+    /* ── Site-wide nav crossfade overlay ── */
+    (function() {
+      var ov = document.createElement('div');
+      ov.id = 'vws-nav-overlay';
+      document.body.appendChild(ov);
+    })();
+    var _vwsNavOverlayT = null;
+    function vwsFadeIn() {
+      clearTimeout(_vwsNavOverlayT);
+      var ov = document.getElementById('vws-nav-overlay');
+      if (!ov) return;
+      /* Fade old page out (160ms) */
+      ov.style.transition = 'opacity 160ms ease';
+      ov.style.opacity = '1';
+      ov.style.pointerEvents = 'all';
+      /* Fade new page in after 900ms — covers all injection windows across all pages */
+      _vwsNavOverlayT = setTimeout(function() {
+        ov.style.transition = 'opacity 200ms ease';
+        ov.style.opacity = '0';
+        setTimeout(function() { ov.style.pointerEvents = 'none'; }, 200);
+      }, 900);
+    }
+
     /* ── Intercept React Router so enhancer re-runs on every SPA navigation ── */
     function patchHistory(method) {
       var orig = history[method];
       history[method] = function() {
         if (method === 'pushState') {
+          vwsFadeIn();
           _vwsDetailLocked = false;
           vwsScrollLock(700);
           var destUrl = (arguments[2] || '').toString();
@@ -2210,6 +2236,7 @@
     }
     patchHistory('pushState');
     patchHistory('replaceState');
+    window.addEventListener('popstate', function() { vwsFadeIn(); });
 
     /* Real React Router back-navigation: find the React-rendered nav link to /services
        and click it so React Router handles the route change natively.
@@ -2271,7 +2298,7 @@
       _vwsPendingSlug = null;
       /* Clean up previous injections so switching service pages doesn't stack */
       window._vwsAboutPollActive = false;
-      ['vws-mob-cta','vws-portfolio-page','vws-pf-style','vws-ba-injected','vws-deepdive','vws-svc-theme','vws-svc-listing','vws-listing-colors','vws-early-hue','vws-ill-wrap','vws-hero','vws-problem','vws-steps','vws-included','vws-results','vws-faq','vws-cta','vws-about-diff','vws-about-sticky','vws-about-styles','vws-design-cards','vws-hero-seo-col','vws-hero-left-wrap','vws-stand-for','vws-about-cta','vws-whoweare-mockup','vws-comparison-table','vws-comparison-styles','vws-hp-trust','vws-hp-slider','vws-hp-bookend','vws-deposit-note','vws-hp-services'].forEach(function(id){
+      ['vws-mob-cta','vws-portfolio-page','vws-pf-style','vws-ba-injected','vws-deepdive','vws-svc-theme','vws-svc-listing','vws-listing-colors','vws-pricing-styles','vws-early-hue','vws-ill-wrap','vws-hero','vws-problem','vws-steps','vws-included','vws-results','vws-faq','vws-cta','vws-about-diff','vws-about-sticky','vws-about-styles','vws-design-cards','vws-hero-seo-col','vws-hero-left-wrap','vws-stand-for','vws-about-cta','vws-whoweare-mockup','vws-comparison-table','vws-comparison-styles','vws-hp-trust','vws-hp-slider','vws-hp-bookend','vws-deposit-note','vws-hp-services'].forEach(function(id){
         var el = document.getElementById(id);
         if (el) el.remove ? el.remove() : el.parentNode.removeChild(el);
       });
@@ -2287,8 +2314,9 @@
       if (window._vwsPrObs) { window._vwsPrObs.disconnect(); window._vwsPrObs = null; }
       if (window._vwsPfObs) { window._vwsPfObs.disconnect(); window._vwsPfObs = null; }
       if (window._vwsPfBodyObs) { window._vwsPfBodyObs.disconnect(); window._vwsPfBodyObs = null; }
-      /* Remove about-page body class and any inline overrides on React sections */
+      /* Remove about-page body class, services page attribute, and any inline overrides on React sections */
       document.body.classList.remove('vws-about');
+      document.body.removeAttribute('data-vws-svc');
       document.querySelectorAll('[data-vws-enh]').forEach(function(el) {
         el.removeAttribute('data-vws-enh');
         el.style.removeProperty('transform');
@@ -2471,7 +2499,10 @@
             /* How It Works — centered-top glow, wide rotation */
             'body.vws-about section.border-t::before{width:500px;height:500px;top:-50px;left:28%;background:radial-gradient(circle,rgba(59,130,246,0.06) 0%,transparent 64%);transform:rotate(31deg) scale(0.87);opacity:0.32}',
             /* CTA — bottom-right glow, scaled large */
-            'body.vws-about section.py-32::before{width:560px;height:560px;bottom:-90px;right:-50px;background:radial-gradient(circle,rgba(59,130,246,0.09) 0%,transparent 70%);transform:rotate(-9deg) scale(1.2);opacity:0.52}'
+            'body.vws-about section.py-32::before{width:560px;height:560px;bottom:-90px;right:-50px;background:radial-gradient(circle,rgba(59,130,246,0.09) 0%,transparent 70%);transform:rotate(-9deg) scale(1.2);opacity:0.52}',
+            /* Wider content containers on non-hero About sections */
+            'body.vws-about section:not(.min-h-screen) .max-w-5xl{max-width:1280px!important}',
+            'body.vws-about section:not(.min-h-screen) .max-w-4xl{max-width:1280px!important}'
           ].join('');
           document.head.appendChild(bgStyle);
         }
@@ -3719,6 +3750,13 @@
             });
           }
           document.body.setAttribute('data-vws-pricing', '1');
+          if (!document.getElementById('vws-pricing-styles')) {
+            var prStyle = document.createElement('style');
+            prStyle.id = 'vws-pricing-styles';
+            prStyle.textContent = '[data-vws-pricing] .max-w-5xl{max-width:1280px!important}'
+              + '[data-vws-pricing] .max-w-2xl.mx-auto{max-width:960px!important}';
+            document.head.appendChild(prStyle);
+          }
         }
       }, 150);
     }
@@ -4246,10 +4284,12 @@
             if (!cfg) return;
             btn.href = '/services/' + cfg.slug;
           });
+          document.body.setAttribute('data-vws-svc', '1');
           if (!document.getElementById('vws-listing-colors')) {
             var lStyle = document.createElement('style');
             lStyle.id = 'vws-listing-colors';
-            var lCss = '';
+            /* Widen Services hero container (React max-w-5xl → 1280px) */
+            var lCss = '[data-vws-svc] section .max-w-5xl{max-width:1280px!important}';
             ORDER.forEach(function(cfg) {
               /* LEARN MORE button — service accent color, beats React inline styles */
               lCss += 'a[href="/services/'+cfg.slug+'"]{background:'+cfg.color+'!important;background-color:'+cfg.color+'!important;color:#fff!important;box-shadow:0 4px 20px '+cfg.color+'55!important}';
