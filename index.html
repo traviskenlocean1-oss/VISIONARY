@@ -404,15 +404,35 @@
         function forceContactGridDark() {
           var grid = document.getElementById('vws-contact-grid');
           if (!grid) return;
-          grid.querySelectorAll('p,label,h2,h3,h4,span,div,a').forEach(function(el) {
-            if (el.closest('button') || el.closest('#vws-chat-root')) return;
-            if (el.tagName === 'A') { el.style.setProperty('color','#2563eb','important'); return; }
+          /* Force black on every visible text node — inline !important beats React CSS */
+          grid.querySelectorAll('p,label,h2,h3,h4,h5,span,li,strong,em').forEach(function(el) {
+            if (el.closest('#vws-chat-root')) return;
             el.style.setProperty('color','#111827','important');
             el.style.setProperty('text-shadow','none','important');
           });
-          /* Keep submit button white */
+          /* Input typed text + select text */
+          grid.querySelectorAll('input,textarea,select').forEach(function(el) {
+            if (el.closest('#vws-chat-root')) return;
+            el.style.setProperty('color','#111827','important');
+            el.style.setProperty('-webkit-text-fill-color','#111827','important');
+          });
+          /* Links blue */
+          grid.querySelectorAll('a').forEach(function(el) {
+            if (el.closest('#vws-chat-root')) return;
+            el.style.setProperty('color','#2563eb','important');
+          });
+          /* Submit button stays white */
           var btn = grid.querySelector('button[type="submit"]');
-          if (btn) { btn.style.setProperty('color','#fff','important'); }
+          if (btn) { btn.style.setProperty('color','#fff','important'); btn.style.setProperty('background','#2563eb','important'); }
+          /* MutationObserver: re-apply whenever React re-renders the grid */
+          if (!window._vwsContactGridObs) {
+            var _ot = null;
+            window._vwsContactGridObs = new MutationObserver(function() {
+              clearTimeout(_ot);
+              _ot = setTimeout(forceContactGridDark, 60);
+            });
+            window._vwsContactGridObs.observe(grid, {childList:true, subtree:true});
+          }
         }
         function setupContactIds() {
           var secs = document.querySelectorAll('section');
@@ -2365,6 +2385,7 @@
       document.body.classList.remove('vws-about');
       document.body.classList.remove('vws-contact');
       document.body.removeAttribute('data-vws-svc');
+      if (window._vwsContactGridObs) { window._vwsContactGridObs.disconnect(); window._vwsContactGridObs = null; }
       document.querySelectorAll('[data-vws-enh]').forEach(function(el) {
         el.removeAttribute('data-vws-enh');
         el.style.removeProperty('transform');
