@@ -1683,7 +1683,7 @@
   /* ── LEAD WEBHOOK — Make.com backup ── */
   var LEAD_WEBHOOK = 'https://hook.us2.make.com/jx5k1lnskcxy17o9lcb71hvxg6563xig';
 
-  /* ── Intercept ALL site forms → email directly to Gmail via FormSubmit ── */
+  /* ── Intercept ALL site forms → Gmail via FormSubmit, suppress React error ── */
   document.addEventListener('submit', function(e) {
     var form = e.target;
     var nameEl  = form.querySelector('[name="name"]');
@@ -1695,6 +1695,16 @@
     var phone   = phoneEl ? phoneEl.value.trim() : '';
     var msg     = msgEl   ? msgEl.value.trim()   : '';
     if (!name && !phone && !email) return;
+    /* Stop React from seeing this submit — prevents "Something went wrong" */
+    e.preventDefault();
+    e.stopPropagation();
+    /* Show success state on button immediately */
+    var btn = form.querySelector('button[type="submit"], input[type="submit"]');
+    if (btn) {
+      btn.disabled = true;
+      btn.textContent = '✓ Message Sent!';
+      btn.style.cssText = 'background:#16a34a!important;color:#fff!important;opacity:1!important;cursor:default!important';
+    }
     var payload = {
       name: name,
       email: email,
@@ -1702,6 +1712,8 @@
       message: msg,
       _subject: 'New Lead — Visionary Web Studio',
       _template: 'table',
+      _captcha: 'false',
+      _replyto: email,
       source: window.location.href,
       time: new Date().toLocaleString('en-US', { timeZone: 'America/New_York' })
     };
