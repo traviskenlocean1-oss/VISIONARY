@@ -1515,28 +1515,33 @@
     #vws-hero-rt{display:none!important}
   }
 
-  /* ══ CONTACT PAGE — premium dark agency redesign ══ */
+  /* ══ CONTACT PAGE — transparent top, white card ══ */
   #vws-contact-hero{display:none!important}
-  #vws-contact-form-sec{background:#060916!important;padding-top:60px!important}
-  #vws-contact-grid{background:rgba(255,255,255,0.03)!important;border:1px solid rgba(255,255,255,0.1)!important;border-radius:20px!important;padding:48px!important}
-  body.vws-contact h2,body.vws-contact h3{color:#f0f4ff!important}
-  body.vws-contact p:not([class*="vws-"]){color:rgba(240,244,255,0.55)!important}
-  body.vws-contact label,body.vws-contact [class*="tracking"][class*="uppercase"]{color:rgba(255,255,255,0.7)!important;font-size:11px!important;font-weight:700!important;letter-spacing:.1em!important}
-  body.vws-contact input,body.vws-contact textarea,body.vws-contact select{background:rgba(15,20,40,0.7)!important;border:1px solid rgba(255,255,255,0.15)!important;color:#e2e8f0!important;border-radius:10px!important;padding:14px 16px!important}
-  body.vws-contact input::placeholder,body.vws-contact textarea::placeholder{color:rgba(226,232,240,0.35)!important}
-  body.vws-contact select option{background:#0f1428;color:#e2e8f0}
-  /* Chat widget inputs must stay dark-on-white regardless of contact page dark theme */
+  #vws-contact-form-sec{background:transparent!important;padding-top:60px!important}
+  /* Heading above card — bright white over animated bg */
+  body.vws-contact h2{color:#fff!important;text-shadow:0 2px 20px rgba(0,0,0,0.6)!important}
+  body.vws-contact h3{color:#fff!important}
+  body.vws-contact p:not([class*="vws-"]){color:rgba(255,255,255,0.85)!important;text-shadow:0 1px 8px rgba(0,0,0,0.5)!important}
+  /* White card */
+  #vws-contact-grid{background:#fff!important;border:none!important;border-radius:20px!important;padding:48px!important;box-shadow:0 25px 80px rgba(0,0,0,0.35)!important}
+  /* Dark text inside card — override the white rules above */
+  #vws-contact-grid h2,#vws-contact-grid h3{color:#0f172a!important;text-shadow:none!important}
+  #vws-contact-grid p:not([class*="vws-"]){color:#475569!important;text-shadow:none!important}
+  #vws-contact-grid label,#vws-contact-grid [class*="tracking"][class*="uppercase"]{color:#374151!important;font-size:11px!important;font-weight:700!important;letter-spacing:.1em!important}
+  #vws-contact-grid input,#vws-contact-grid textarea,#vws-contact-grid select{background:#f8fafc!important;border:1px solid #e2e8f0!important;color:#0f172a!important;border-radius:10px!important;padding:14px 16px!important}
+  #vws-contact-grid input::placeholder,#vws-contact-grid textarea::placeholder{color:#94a3b8!important}
+  #vws-contact-grid select option{background:#fff;color:#0f172a}
+  /* Chat widget stays white-bg/dark-text */
   #vws-chat-root input,#vws-chat-root textarea{background:#fff!important;color:#374151!important;border-radius:8px!important;padding:9px 12px!important}
   #vws-chat-root input::placeholder,#vws-chat-root textarea::placeholder{color:#9ca3af!important}
-  body.vws-contact input:focus,body.vws-contact textarea:focus,body.vws-contact select:focus{border-color:rgba(37,99,235,0.8)!important;box-shadow:0 0 0 3px rgba(37,99,235,0.15)!important;outline:none!important;background:rgba(37,99,235,0.06)!important}
+  #vws-contact-grid input:focus,#vws-contact-grid textarea:focus,#vws-contact-grid select:focus{border-color:#2563eb!important;box-shadow:0 0 0 3px rgba(37,99,235,0.1)!important;outline:none!important;background:#fff!important}
   body.vws-contact button[type="submit"]{background:#2563eb!important;color:#fff!important;border:none!important;font-weight:800!important;border-radius:10px!important;letter-spacing:.05em!important;text-transform:uppercase!important;font-size:13px!important}
   body.vws-contact button[type="submit"]:hover{background:#1d4ed8!important;box-shadow:0 4px 20px rgba(37,99,235,0.35)!important}
-  body.vws-contact [class*="rounded-2xl"]{background:rgba(255,255,255,0.04)!important;border-color:rgba(255,255,255,0.1)!important}
-  body.vws-contact [class*="rounded-2xl"] p,body.vws-contact [class*="rounded-2xl"] span:not([class*="bg-"]){color:rgba(240,244,255,0.8)!important}
-  body.vws-contact [class*="rounded-2xl"] a,[class*="rounded-2xl"] [class*="text-blue"]{color:#60a5fa!important}
-  body.vws-contact [class*="rounded-xl"][class*="flex"]{background:rgba(37,99,235,0.1)!important;border:1px solid rgba(37,99,235,0.2)!important}
-  body.vws-contact [class*="text-center"]:not([id]) h2{color:#f0f4ff!important}
-  body.vws-contact [class*="text-lg"],body.vws-contact [class*="text-xl"]{color:#f0f4ff!important}
+  #vws-contact-grid [class*="rounded-2xl"]{background:#f8fafc!important;border:1px solid #e2e8f0!important}
+  #vws-contact-grid [class*="rounded-2xl"] p,#vws-contact-grid [class*="rounded-2xl"] span:not([class*="bg-"]){color:#374151!important;text-shadow:none!important}
+  #vws-contact-grid [class*="rounded-2xl"] a,#vws-contact-grid [class*="text-blue"]{color:#2563eb!important}
+  #vws-contact-grid [class*="rounded-xl"][class*="flex"]{background:#eff6ff!important;border:1px solid #bfdbfe!important}
+  #vws-contact-grid [class*="text-lg"],#vws-contact-grid [class*="text-xl"]{color:#0f172a!important}
 
   </style>
 
