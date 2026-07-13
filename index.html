@@ -401,15 +401,28 @@
       (function() {
         if (window.location.pathname.indexOf('/contact') === -1) return;
         document.body.classList.add('vws-contact');
+        function forceContactGridDark() {
+          var grid = document.getElementById('vws-contact-grid');
+          if (!grid) return;
+          grid.querySelectorAll('p,label,h2,h3,h4,span,div,a').forEach(function(el) {
+            if (el.closest('button') || el.closest('#vws-chat-root')) return;
+            if (el.tagName === 'A') { el.style.setProperty('color','#2563eb','important'); return; }
+            el.style.setProperty('color','#111827','important');
+            el.style.setProperty('text-shadow','none','important');
+          });
+          /* Keep submit button white */
+          var btn = grid.querySelector('button[type="submit"]');
+          if (btn) { btn.style.setProperty('color','#fff','important'); }
+        }
         function setupContactIds() {
           var secs = document.querySelectorAll('section');
           var heroSec = secs[0];
           var formSec = secs[1];
-          if (!formSec || formSec.id === 'vws-contact-form-sec') return true;
+          if (!formSec || formSec.id === 'vws-contact-form-sec') { forceContactGridDark(); return true; }
           if (heroSec && !heroSec.id) heroSec.id = 'vws-contact-hero';
           formSec.id = 'vws-contact-form-sec';
           var grid = formSec.querySelector('[class*="grid-cols"]');
-          if (grid) grid.id = 'vws-contact-grid';
+          if (grid) { grid.id = 'vws-contact-grid'; forceContactGridDark(); }
           return true;
         }
         if (!setupContactIds()) {
