@@ -1521,6 +1521,9 @@
   body.vws-contact label,body.vws-contact [class*="tracking"][class*="uppercase"]{color:rgba(255,255,255,0.45)!important;font-weight:700!important;letter-spacing:.1em!important}
   body.vws-contact input,body.vws-contact textarea,body.vws-contact select{background:rgba(255,255,255,0.05)!important;border-color:rgba(255,255,255,0.12)!important;color:#f0f4ff!important;border-radius:10px!important}
   body.vws-contact input::placeholder,body.vws-contact textarea::placeholder{color:rgba(255,255,255,0.22)!important}
+  /* Chat widget inputs must stay dark-on-white regardless of contact page dark theme */
+  #vws-chat-root input,#vws-chat-root textarea{background:#fff!important;color:#374151!important;border-radius:8px!important}
+  #vws-chat-root input::placeholder,#vws-chat-root textarea::placeholder{color:#9ca3af!important}
   body.vws-contact input:focus,body.vws-contact textarea:focus{border-color:rgba(37,99,235,0.6)!important;box-shadow:0 0 0 3px rgba(37,99,235,0.12)!important;outline:none!important}
   body.vws-contact button[type="submit"]{background:#2563eb!important;color:#fff!important;border:none!important;font-weight:800!important}
   body.vws-contact button[type="submit"]:hover{background:#1d4ed8!important}
