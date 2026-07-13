@@ -434,15 +434,36 @@
             window._vwsContactGridObs.observe(grid, {childList:true, subtree:true});
           }
         }
+        function injectContactPhone() {
+          if (document.getElementById('vws-phone-group')) return;
+          var form = document.querySelector('#vws-contact-grid form');
+          if (!form) return;
+          /* Insert after the name+email row (first div with two inputs) */
+          var nameEmailRow = form.querySelector('div input[name="name"]');
+          var insertAfter = nameEmailRow ? nameEmailRow.closest('div[class*="grid"],div[class*="flex"],div[class*="gap"]') : null;
+          if (!insertAfter) { insertAfter = form.children[1]; }
+          if (!insertAfter) return;
+          var group = document.createElement('div');
+          group.id = 'vws-phone-group';
+          group.style.cssText = 'display:flex;flex-direction:column;gap:6px';
+          group.innerHTML =
+            '<label for="vws-phone-inp" style="font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#111827">Phone Number</label>' +
+            '<input id="vws-phone-inp" name="phone" type="tel" placeholder="(000) 000-0000" autocomplete="tel" style="width:100%;padding:14px 16px;border:1px solid #d1d5db;border-radius:10px;font-size:15px;background:#f8fafc;color:#111827;outline:none;transition:border-color .2s,box-shadow .2s"/>';
+          insertAfter.insertAdjacentElement('afterend', group);
+          /* Focus/blur styling */
+          var inp = group.querySelector('input');
+          inp.addEventListener('focus', function(){ this.style.borderColor='#2563eb'; this.style.boxShadow='0 0 0 3px rgba(37,99,235,0.1)'; this.style.background='#fff'; });
+          inp.addEventListener('blur',  function(){ this.style.borderColor='#d1d5db'; this.style.boxShadow='none'; this.style.background='#f8fafc'; });
+        }
         function setupContactIds() {
           var secs = document.querySelectorAll('section');
           var heroSec = secs[0];
           var formSec = secs[1];
-          if (!formSec || formSec.id === 'vws-contact-form-sec') { forceContactGridDark(); return true; }
+          if (!formSec || formSec.id === 'vws-contact-form-sec') { forceContactGridDark(); injectContactPhone(); return true; }
           if (heroSec && !heroSec.id) heroSec.id = 'vws-contact-hero';
           formSec.id = 'vws-contact-form-sec';
           var grid = formSec.querySelector('[class*="grid-cols"]');
-          if (grid) { grid.id = 'vws-contact-grid'; forceContactGridDark(); }
+          if (grid) { grid.id = 'vws-contact-grid'; forceContactGridDark(); injectContactPhone(); }
           return true;
         }
         if (!setupContactIds()) {
