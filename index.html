@@ -1766,11 +1766,22 @@
       source: window.location.href,
       time: new Date().toLocaleString('en-US', { timeZone: 'America/New_York' })
     };
-    /* Primary — FormSubmit → direct Gmail delivery */
+    /* Primary — FormSubmit → direct Gmail delivery (FormData is more reliable than JSON for AJAX endpoint) */
+    var fd = new FormData();
+    fd.append('name', name);
+    fd.append('email', email);
+    fd.append('phone', phone);
+    fd.append('message', msg);
+    fd.append('source', window.location.href);
+    fd.append('time', new Date().toLocaleString('en-US', { timeZone: 'America/New_York' }));
+    fd.append('_subject', 'New Lead — Visionary Web Studio');
+    fd.append('_template', 'table');
+    fd.append('_captcha', 'false');
+    fd.append('_replyto', email);
     fetch('https://formsubmit.co/ajax/visionarywebstudio6@gmail.com', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-      body: JSON.stringify(payload)
+      headers: { 'Accept': 'application/json' },
+      body: fd
     }).catch(function(){});
     /* Backup — Make.com webhook */
     if (LEAD_WEBHOOK && LEAD_WEBHOOK !== 'YOUR_MAKE_WEBHOOK_URL') {
