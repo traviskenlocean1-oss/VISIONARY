@@ -435,7 +435,7 @@
               clearTimeout(_ot);
               _ot = setTimeout(forceContactGridDark, 60);
             });
-            window._vwsContactGridObs.observe(grid, {childList:true, subtree:true, attributes:true, attributeFilter:['class','style']});
+            window._vwsContactGridObs.observe(grid, {childList:true, subtree:true});
           }
         }
         function injectContactPhone() {
@@ -482,6 +482,15 @@
           setTimeout(forceContactGridDark, 2000);
           return true;
         }
+        /* Expose runContactPage globally so runAll() can re-invoke on SPA navigation to /contact */
+        window.runContactPage = function() {
+          document.body.classList.add('vws-contact');
+          if (!setupContactIds()) {
+            var _rcp = 0, _rct = setInterval(function() {
+              _rcp++; if (setupContactIds() || _rcp > 30) clearInterval(_rct);
+            }, 200);
+          }
+        };
         if (!setupContactIds()) {
           var _cp = 0, _ct = setInterval(function() {
             _cp++; if (setupContactIds() || _cp > 30) clearInterval(_ct);
@@ -1612,8 +1621,8 @@
   body.vws-contact form p{color:#111827!important;text-shadow:none!important}
   body.vws-contact form span:not([class*="bg-"]){color:#111827!important;text-shadow:none!important}
   body.vws-contact form h2,body.vws-contact form h3,body.vws-contact form h4{color:#111827!important;text-shadow:none!important}
-  body.vws-contact form input:not(#vws-chat-root input){color:#111827!important;-webkit-text-fill-color:#111827!important;background:#f8fafc!important}
-  body.vws-contact form textarea:not(#vws-chat-root textarea){color:#111827!important;-webkit-text-fill-color:#111827!important;background:#f8fafc!important}
+  body.vws-contact form input{color:#111827!important;-webkit-text-fill-color:#111827!important;background:#f8fafc!important}
+  body.vws-contact form textarea{color:#111827!important;-webkit-text-fill-color:#111827!important;background:#f8fafc!important}
   body.vws-contact form select{color:#111827!important;background:#f8fafc!important}
   body.vws-contact form input::placeholder,body.vws-contact form textarea::placeholder{color:#9ca3af!important}
   body.vws-contact form button[type="submit"]:not([data-vws-submitted]){background:#2563eb!important;color:#fff!important}
@@ -2543,6 +2552,8 @@
         runPricingPage();
       } else if (/^\/work\/?$/.test(window.location.pathname)) {
         runPortfolioPage();
+      } else if (/^\/contact\/?$/.test(window.location.pathname)) {
+        if (window.runContactPage) window.runContactPage();
       } else if (/^\/?$/.test(window.location.pathname)) {
         runHomePage();
         runMobileHeroCTA();
