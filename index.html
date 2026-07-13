@@ -1680,10 +1680,10 @@
     }
   };
 
-  /* ── LEAD WEBHOOK — paste your Make.com webhook URL here ── */
+  /* ── LEAD WEBHOOK — Make.com backup ── */
   var LEAD_WEBHOOK = 'https://hook.us2.make.com/jx5k1lnskcxy17o9lcb71hvxg6563xig';
 
-  /* ── Intercept ALL site forms (hero, contact, etc.) and notify via webhook ── */
+  /* ── Intercept ALL site forms → email directly to Gmail via FormSubmit ── */
   document.addEventListener('submit', function(e) {
     var form = e.target;
     var nameEl  = form.querySelector('[name="name"]');
@@ -1695,19 +1695,28 @@
     var phone   = phoneEl ? phoneEl.value.trim() : '';
     var msg     = msgEl   ? msgEl.value.trim()   : '';
     if (!name && !phone && !email) return;
+    var payload = {
+      name: name,
+      email: email,
+      phone: phone,
+      message: msg,
+      _subject: 'New Lead — Visionary Web Studio',
+      _template: 'table',
+      source: window.location.href,
+      time: new Date().toLocaleString('en-US', { timeZone: 'America/New_York' })
+    };
+    /* Primary — FormSubmit → direct Gmail delivery */
+    fetch('https://formsubmit.co/ajax/visionarywebstudio6@gmail.com', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify(payload)
+    }).catch(function(){});
+    /* Backup — Make.com webhook */
     if (LEAD_WEBHOOK && LEAD_WEBHOOK !== 'YOUR_MAKE_WEBHOOK_URL') {
       fetch(LEAD_WEBHOOK, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name: name,
-          email: email,
-          phone: phone,
-          message: msg,
-          source: 'Contact Form',
-          page: window.location.href,
-          time: new Date().toLocaleString('en-US', { timeZone: 'America/New_York' })
-        })
+        body: JSON.stringify(payload)
       }).catch(function(){});
     }
   }, true);
