@@ -402,15 +402,16 @@
         if (window.location.pathname.indexOf('/contact') === -1) return;
         document.body.classList.add('vws-contact');
         function forceContactGridDark() {
-          var grid = document.getElementById('vws-contact-grid');
+          /* Prefer #vws-contact-grid; fall back to the whole form section */
+          var grid = document.getElementById('vws-contact-grid') || document.getElementById('vws-contact-form-sec');
           if (!grid) return;
-          /* Force black on every visible text node — inline !important beats React CSS */
+          /* Force black on every visible text node — inline !important beats any stylesheet rule */
           grid.querySelectorAll('p,label,h2,h3,h4,h5,span,li,strong,em').forEach(function(el) {
             if (el.closest('#vws-chat-root')) return;
             el.style.setProperty('color','#111827','important');
             el.style.setProperty('text-shadow','none','important');
           });
-          /* Input typed text + select text */
+          /* Input typed text + select text (including -webkit-text-fill-color for Blink/WebKit) */
           grid.querySelectorAll('input,textarea,select').forEach(function(el) {
             if (el.closest('#vws-chat-root')) return;
             el.style.setProperty('color','#111827','important');
@@ -421,17 +422,20 @@
             if (el.closest('#vws-chat-root')) return;
             el.style.setProperty('color','#2563eb','important');
           });
-          /* Submit button stays white */
+          /* Submit button — skip reset if already in success state (green) */
           var btn = grid.querySelector('button[type="submit"]');
-          if (btn) { btn.style.setProperty('color','#fff','important'); btn.style.setProperty('background','#2563eb','important'); }
-          /* MutationObserver: re-apply whenever React re-renders the grid */
+          if (btn && !btn.hasAttribute('data-vws-submitted')) {
+            btn.style.setProperty('color','#fff','important');
+            btn.style.setProperty('background','#2563eb','important');
+          }
+          /* MutationObserver: re-apply whenever React re-renders anything inside the grid */
           if (!window._vwsContactGridObs) {
             var _ot = null;
             window._vwsContactGridObs = new MutationObserver(function() {
               clearTimeout(_ot);
               _ot = setTimeout(forceContactGridDark, 60);
             });
-            window._vwsContactGridObs.observe(grid, {childList:true, subtree:true});
+            window._vwsContactGridObs.observe(grid, {childList:true, subtree:true, attributes:true, attributeFilter:['class','style']});
           }
         }
         function injectContactPhone() {
@@ -457,13 +461,25 @@
         }
         function setupContactIds() {
           var secs = document.querySelectorAll('section');
-          var heroSec = secs[0];
           var formSec = secs[1];
-          if (!formSec || formSec.id === 'vws-contact-form-sec') { forceContactGridDark(); injectContactPhone(); return true; }
+          if (!formSec) return false; /* not in DOM yet — retry */
+          var heroSec = secs[0];
+          if (formSec.id === 'vws-contact-form-sec') { forceContactGridDark(); injectContactPhone(); return true; }
           if (heroSec && !heroSec.id) heroSec.id = 'vws-contact-hero';
           formSec.id = 'vws-contact-form-sec';
-          var grid = formSec.querySelector('[class*="grid-cols"]');
-          if (grid) { grid.id = 'vws-contact-grid'; forceContactGridDark(); injectContactPhone(); }
+          /* Grid detection: try specific → broad → fallback to section itself */
+          var grid = formSec.querySelector('[class*="grid-cols-2"],[class*="lg:grid-cols-2"]')
+                  || formSec.querySelector('[class*="grid-cols"]')
+                  || formSec.querySelector('[class*="grid"]')
+                  || formSec.firstElementChild
+                  || formSec;
+          if (!grid.id) grid.id = 'vws-contact-grid';
+          forceContactGridDark();
+          injectContactPhone();
+          /* Re-apply with delays to catch late React renders */
+          setTimeout(forceContactGridDark, 400);
+          setTimeout(forceContactGridDark, 900);
+          setTimeout(forceContactGridDark, 2000);
           return true;
         }
         if (!setupContactIds()) {
@@ -1591,6 +1607,17 @@
   #vws-contact-grid [class*="rounded-2xl"]{background:#f8fafc!important;border:1px solid #e2e8f0!important}
   #vws-contact-grid [class*="rounded-2xl"] a{color:#2563eb!important}
   #vws-contact-grid [class*="rounded-xl"][class*="flex"]{background:#eff6ff!important;border:1px solid #bfdbfe!important}
+  /* ── LAYER 1 FALLBACK: body.vws-contact rules fire even if #vws-contact-grid ID was never assigned ── */
+  body.vws-contact form label{color:#111827!important;text-shadow:none!important}
+  body.vws-contact form p{color:#111827!important;text-shadow:none!important}
+  body.vws-contact form span:not([class*="bg-"]){color:#111827!important;text-shadow:none!important}
+  body.vws-contact form h2,body.vws-contact form h3,body.vws-contact form h4{color:#111827!important;text-shadow:none!important}
+  body.vws-contact form input:not(#vws-chat-root input){color:#111827!important;-webkit-text-fill-color:#111827!important;background:#f8fafc!important}
+  body.vws-contact form textarea:not(#vws-chat-root textarea){color:#111827!important;-webkit-text-fill-color:#111827!important;background:#f8fafc!important}
+  body.vws-contact form select{color:#111827!important;background:#f8fafc!important}
+  body.vws-contact form input::placeholder,body.vws-contact form textarea::placeholder{color:#9ca3af!important}
+  body.vws-contact form button[type="submit"]:not([data-vws-submitted]){background:#2563eb!important;color:#fff!important}
+  body.vws-contact form input:focus,body.vws-contact form textarea:focus,body.vws-contact form select:focus{border-color:#2563eb!important;box-shadow:0 0 0 3px rgba(37,99,235,.1)!important;outline:none!important;background:#fff!important}
 
   </style>
 
@@ -1751,6 +1778,7 @@
     var btn = form.querySelector('button[type="submit"], input[type="submit"]');
     if (btn) {
       btn.disabled = true;
+      btn.setAttribute('data-vws-submitted', '1'); /* prevents MutationObserver from resetting green state */
       btn.textContent = '✓ Message Sent!';
       btn.style.cssText = 'background:#16a34a!important;color:#fff!important;opacity:1!important;cursor:default!important';
     }
