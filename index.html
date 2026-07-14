@@ -946,21 +946,59 @@
   .vws-section-dark h1,.vws-section-dark h2,.vws-section-dark h3,.vws-section-dark h4{color:var(--vws-dark-text)!important}
   .vws-section-dark p{color:var(--vws-dark-sub)!important}
 
-  /* ══ Cookie Banner ══ */
-  #vws-cookie-banner{position:fixed;bottom:24px;left:24px;z-index:2000000;width:min(380px,calc(100vw - 48px));background:#0d1117;border:1px solid rgba(59,130,246,0.22);border-radius:14px;padding:20px 22px;box-shadow:0 16px 60px rgba(0,0,0,0.7);transform:translateY(calc(100% + 40px));transition:transform 0.4s cubic-bezier(.22,1,.36,1);font-family:'Barlow',system-ui,sans-serif}
-  #vws-cookie-banner.vws-cb-in{transform:translateY(0)}
-  #vws-cookie-banner .vws-cb-logo{display:flex;align-items:center;gap:8px;margin:0 0 10px}
-  #vws-cookie-banner .vws-cb-logo svg{flex-shrink:0}
-  #vws-cookie-banner .vws-cb-brand{font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:rgba(240,244,255,0.7)}
-  #vws-cookie-banner .vws-cb-text{font-size:13px;color:rgba(240,244,255,0.55);line-height:1.55;margin:0 0 14px}
-  #vws-cookie-banner .vws-cb-text a{color:rgba(96,165,250,0.8);text-decoration:none}
-  #vws-cookie-banner .vws-cb-btns{display:flex;gap:8px;flex-wrap:wrap}
-  #vws-cookie-accept{flex:1;min-width:80px;background:#2563eb;color:#fff;border:none;border-radius:7px;padding:9px 14px;font-size:13px;font-weight:700;cursor:pointer;transition:background 0.15s}
-  #vws-cookie-accept:hover{background:#1d4ed8}
-  #vws-cookie-deny{flex:1;min-width:80px;background:transparent;color:rgba(240,244,255,0.55);border:1px solid rgba(255,255,255,0.12);border-radius:7px;padding:9px 14px;font-size:13px;font-weight:600;cursor:pointer;transition:border-color 0.15s,color 0.15s}
-  #vws-cookie-deny:hover{border-color:rgba(255,255,255,0.25);color:rgba(240,244,255,0.8)}
-  #vws-cookie-manage{background:none;border:none;color:rgba(240,244,255,0.35);font-size:12px;cursor:pointer;padding:6px 2px;font-family:inherit;text-decoration:underline;text-underline-offset:2px;width:100%;text-align:center;margin-top:2px}
-  #vws-cookie-manage:hover{color:rgba(240,244,255,0.6)}
+  /* ══ Cookie Consent Banner ══ */
+  #vws-cookie-banner{position:fixed;bottom:24px;left:24px;z-index:2000000;width:min(380px,calc(100vw - 48px));background:#fff;border:1px solid #e5e7eb;border-radius:16px;padding:22px 24px 18px;box-shadow:0 20px 60px rgba(0,0,0,0.12),0 4px 16px rgba(0,0,0,0.06);transform:translateY(calc(100% + 50px));opacity:0;transition:transform .45s cubic-bezier(.22,1,.36,1),opacity .35s ease;font-family:'Barlow',system-ui,sans-serif;pointer-events:none}
+  #vws-cookie-banner.vws-cb-in{transform:translateY(0);opacity:1;pointer-events:auto}
+  #vws-cookie-banner .vws-cb-header{display:flex;align-items:center;gap:9px;margin-bottom:10px}
+  #vws-cookie-banner .vws-cb-icon{width:34px;height:34px;background:#eff6ff;border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+  #vws-cookie-banner .vws-cb-icon svg{width:18px;height:18px}
+  #vws-cookie-banner .vws-cb-brand{font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#111827}
+  #vws-cookie-banner .vws-cb-sub{font-size:10px;font-weight:500;color:#6b7280;letter-spacing:.04em;text-transform:uppercase;margin-top:1px}
+  #vws-cookie-banner .vws-cb-title{font-size:15px;font-weight:700;color:#111827;margin:0 0 6px}
+  #vws-cookie-banner .vws-cb-text{font-size:12.5px;color:#6b7280;line-height:1.6;margin:0 0 16px}
+  #vws-cookie-banner .vws-cb-text a{color:#2563eb;text-decoration:none;font-weight:600}
+  #vws-cookie-banner .vws-cb-text a:hover{text-decoration:underline}
+  #vws-cookie-banner .vws-cb-btns{display:flex;gap:8px;margin-bottom:10px}
+  #vws-cb-accept{flex:2;background:#2563eb;color:#fff;border:none;border-radius:9px;padding:10px 14px;font-size:12.5px;font-weight:700;cursor:pointer;transition:background .15s,box-shadow .15s;letter-spacing:.03em}
+  #vws-cb-accept:hover{background:#1d4ed8;box-shadow:0 4px 16px rgba(37,99,235,.3)}
+  #vws-cb-deny{flex:1;background:#fff;color:#374151;border:1.5px solid #d1d5db;border-radius:9px;padding:10px 10px;font-size:12.5px;font-weight:600;cursor:pointer;transition:border-color .15s,color .15s}
+  #vws-cb-deny:hover{border-color:#9ca3af;color:#111827}
+  #vws-cookie-banner .vws-cb-manage-wrap{text-align:center}
+  #vws-cb-manage{background:none;border:none;color:#9ca3af;font-size:11.5px;cursor:pointer;padding:2px 4px;font-family:inherit;text-decoration:underline;text-underline-offset:3px;transition:color .15s}
+  #vws-cb-manage:hover{color:#2563eb}
+  /* ── Preferences Modal ── */
+  #vws-ck-modal{display:none;position:fixed;inset:0;z-index:2000001;background:rgba(15,23,42,.55);backdrop-filter:blur(6px);align-items:center;justify-content:center;padding:20px}
+  #vws-ck-box{background:#fff;border-radius:20px;width:100%;max-width:540px;max-height:90vh;overflow-y:auto;padding:32px;box-shadow:0 40px 100px rgba(0,0,0,.2)}
+  #vws-ck-box h2{font-size:20px;font-weight:800;color:#111827;margin:0 0 6px}
+  #vws-ck-box .vws-ck-desc{font-size:13px;color:#6b7280;line-height:1.65;margin:0 0 22px}
+  .vws-ck-cat{display:flex;align-items:flex-start;gap:16px;padding:16px 0;border-top:1px solid #f3f4f6}
+  .vws-ck-cat:first-of-type{border-top:none;padding-top:0}
+  .vws-ck-cat-info{flex:1;min-width:0}
+  .vws-ck-cat-info strong{display:flex;align-items:center;gap:6px;font-size:13.5px;font-weight:700;color:#111827;margin-bottom:4px}
+  .vws-ck-required-badge{font-size:9.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;background:#f0fdf4;color:#16a34a;border:1px solid #bbf7d0;border-radius:4px;padding:1px 6px}
+  .vws-ck-cat-info p{font-size:12px;color:#9ca3af;line-height:1.6;margin:0}
+  /* Toggle */
+  .vws-ck-toggle{position:relative;width:46px;height:26px;flex-shrink:0;margin-top:2px}
+  .vws-ck-toggle input{opacity:0;position:absolute;width:0;height:0}
+  .vws-ck-track{position:absolute;inset:0;background:#e5e7eb;border-radius:26px;cursor:pointer;transition:background .2s ease}
+  .vws-ck-track::before{content:'';position:absolute;width:20px;height:20px;background:#fff;border-radius:50%;top:3px;left:3px;box-shadow:0 1px 4px rgba(0,0,0,.2);transition:transform .2s ease}
+  .vws-ck-toggle input:checked ~ .vws-ck-track{background:#2563eb}
+  .vws-ck-toggle input:checked ~ .vws-ck-track::before{transform:translateX(20px)}
+  .vws-ck-toggle input:disabled ~ .vws-ck-track{opacity:.45;cursor:not-allowed}
+  #vws-ck-modal-actions{display:flex;gap:10px;margin-top:24px;flex-wrap:wrap}
+  #vws-ck-save{flex:2;background:#2563eb;color:#fff;border:none;border-radius:10px;padding:13px 20px;font-size:13.5px;font-weight:700;cursor:pointer;transition:background .15s}
+  #vws-ck-save:hover{background:#1d4ed8}
+  #vws-ck-acceptall{flex:1;background:#fff;color:#374151;border:1.5px solid #d1d5db;border-radius:10px;padding:13px 14px;font-size:13px;font-weight:600;cursor:pointer;transition:border-color .15s}
+  #vws-ck-acceptall:hover{border-color:#2563eb;color:#2563eb}
+  /* Mobile */
+  @media(max-width:520px){
+    #vws-cookie-banner{bottom:0;left:0;right:0;width:100%;max-width:100%;border-radius:16px 16px 0 0;border-left:none;border-right:none;border-bottom:none}
+    #vws-cookie-banner.vws-cb-in{transform:translateY(0)}
+    #vws-cookie-banner{transform:translateY(100%);opacity:1}
+    #vws-cookie-banner .vws-cb-btns{flex-direction:column}
+    #vws-cb-accept,#vws-cb-deny{flex:none;width:100%}
+    #vws-ck-box{padding:24px 20px}
+  }
 
   /* ══ Homepage — before/after slider ══ */
   #vws-hp-slider{padding:80px 24px;position:relative}
@@ -5149,59 +5187,157 @@
   })();
   </script>
 
-  <!-- ── TASK 1: Cookie consent banner (site-wide, runs once) ── -->
+  <!-- ── Cookie Consent Banner — GDPR-compliant, white/professional ── -->
   <script>
   (function() {
-    var STORE_KEY = 'vws_cookie_v1';
-    /* Don't show if already answered */
-    if (localStorage.getItem(STORE_KEY)) return;
+    var KEY = 'vws_consent_v2';
+    /* TESTING MODE: set to false once you approve the design to make it persist */
+    var ALWAYS_SHOW = true;
 
-    /* Build banner element */
-    var logoSVG = '<svg width="22" height="22" viewBox="0 0 100 100"><rect width="100" height="100" rx="16" fill="#0f172a"/><text x="50" y="78" font-family="Arial Black,sans-serif" font-size="76" font-weight="900" fill="#3b82f6" text-anchor="middle">V</text></svg>';
+    if (!ALWAYS_SHOW && localStorage.getItem(KEY)) return;
+
+    /* ── Cookie categories ── */
+    var CATS = [
+      {
+        id: 'necessary',
+        label: 'Strictly Necessary',
+        required: true,
+        checked: true,
+        desc: 'Required for the website to function. Cannot be disabled. These include session security, load balancing, and fraud prevention. No personal data is collected or shared.'
+      },
+      {
+        id: 'analytics',
+        label: 'Analytics & Statistics',
+        required: false,
+        checked: false,
+        desc: 'Help us understand how visitors interact with our site by collecting anonymized data — page views, session duration, traffic sources. Used to improve our services. No data is sold or shared with ad networks.'
+      },
+      {
+        id: 'marketing',
+        label: 'Marketing',
+        required: false,
+        checked: false,
+        desc: 'Allow us to show you relevant content about our services across partner sites. We never sell your data. You can opt out at any time and submissions will still reach us directly.'
+      },
+      {
+        id: 'functional',
+        label: 'Functional',
+        required: false,
+        checked: false,
+        desc: 'Enable enhanced features like live chat, remembering your preferences, and personalized content. Disabling these may limit certain site features.'
+      }
+    ];
+
+    /* ── Save consent ── */
+    function saveConsent(prefs) {
+      localStorage.setItem(KEY, JSON.stringify({ prefs: prefs, ts: Date.now(), v: '2' }));
+      /* Hook: gate analytics/marketing scripts here when added */
+      /* if (prefs.analytics) { loadGoogleAnalytics(); } */
+    }
+
+    /* ── Build banner ── */
+    var cookieSVG = '<svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8.5 8.5a.5.5 0 1 0 1 0 .5.5 0 0 0-1 0M15 9a.5.5 0 1 0 1 0 .5.5 0 0 0-1 0M9 15a.5.5 0 1 0 1 0 .5.5 0 0 0-1 0M13.5 13.5a.5.5 0 1 0 1 0 .5.5 0 0 0-1 0"/></svg>';
 
     var banner = document.createElement('div');
     banner.id = 'vws-cookie-banner';
-    banner.innerHTML = ''
-      +'<div class="vws-cb-logo">'+logoSVG+'<span class="vws-cb-brand">Visionary Web Studio</span></div>'
-      +'<p class="vws-cb-text">We use cookies to improve your browsing experience and understand how visitors interact with our site. <a href="/privacy-policy">Privacy Policy</a></p>'
-      +'<div class="vws-cb-btns">'
-      +'<button id="vws-cookie-accept">Accept All</button>'
-      +'<button id="vws-cookie-deny">Decline</button>'
-      +'</div>'
-      +'<button id="vws-cookie-manage">Manage preferences</button>';
+    banner.setAttribute('role', 'dialog');
+    banner.setAttribute('aria-label', 'Cookie consent');
+    banner.innerHTML =
+      '<div class="vws-cb-header">'
+      + '<div class="vws-cb-icon">' + cookieSVG + '</div>'
+      + '<div><div class="vws-cb-brand">Visionary Web Studio</div><div class="vws-cb-sub">Privacy &amp; Cookies</div></div>'
+      + '</div>'
+      + '<p class="vws-cb-title">We value your privacy</p>'
+      + '<p class="vws-cb-text">We use cookies to enhance your experience, analyze our traffic, and for marketing purposes. You are in full control of what you share. <a href="/privacy-policy" target="_blank" rel="noopener">Privacy Policy</a></p>'
+      + '<div class="vws-cb-btns">'
+      + '<button id="vws-cb-deny">Reject All</button>'
+      + '<button id="vws-cb-accept">Accept All</button>'
+      + '</div>'
+      + '<div class="vws-cb-manage-wrap"><button id="vws-cb-manage">Manage cookie preferences</button></div>';
 
-    function dismiss(choice) {
-      localStorage.setItem(STORE_KEY, choice);
-      banner.style.transform = 'translateY(calc(100% + 40px))';
-      banner.style.opacity = '0';
-      setTimeout(function() { if (banner.parentNode) banner.parentNode.removeChild(banner); }, 450);
+    /* ── Build preferences modal ── */
+    var catRows = CATS.map(function(c) {
+      return '<div class="vws-ck-cat">'
+        + '<div class="vws-ck-cat-info">'
+        + '<strong>' + c.label + (c.required ? ' <span class="vws-ck-required-badge">Always On</span>' : '') + '</strong>'
+        + '<p>' + c.desc + '</p>'
+        + '</div>'
+        + '<label class="vws-ck-toggle" aria-label="' + c.label + '">'
+        + '<input type="checkbox" id="vws-ck-' + c.id + '" ' + (c.checked ? 'checked' : '') + ' ' + (c.required ? 'disabled' : '') + '/>'
+        + '<span class="vws-ck-track"></span>'
+        + '</label>'
+        + '</div>';
+    }).join('');
+
+    var modal = document.createElement('div');
+    modal.id = 'vws-ck-modal';
+    modal.setAttribute('role', 'dialog');
+    modal.setAttribute('aria-modal', 'true');
+    modal.setAttribute('aria-label', 'Cookie preferences');
+    modal.innerHTML =
+      '<div id="vws-ck-box">'
+      + '<h2>Cookie Preferences</h2>'
+      + '<p class="vws-ck-desc">Choose which cookies you allow us to use. Strictly necessary cookies cannot be disabled as they are required for the site to function. Your choices are saved and applied immediately. You may change your preferences at any time.</p>'
+      + catRows
+      + '<div id="vws-ck-modal-actions">'
+      + '<button id="vws-ck-acceptall">Accept All</button>'
+      + '<button id="vws-ck-save">Save My Preferences</button>'
+      + '</div>'
+      + '</div>';
+
+    /* ── Mount ── */
+    function mount() {
+      /* Suppress any React-built cookie banner */
+      ['.fixed.bottom-6.left-6', '[class*="cookie"]', '[class*="consent"]'].forEach(function(sel) {
+        try { var el = document.querySelector(sel); if (el && el.id !== 'vws-cookie-banner') el.style.setProperty('display','none','important'); } catch(e){}
+      });
+
+      document.body.appendChild(banner);
+      document.body.appendChild(modal);
+
+      setTimeout(function() { banner.classList.add('vws-cb-in'); }, 800);
     }
 
-    banner.querySelector('#vws-cookie-accept').addEventListener('click', function() { dismiss('accepted'); });
-    banner.querySelector('#vws-cookie-deny').addEventListener('click', function() { dismiss('denied'); });
-    banner.querySelector('#vws-cookie-manage').addEventListener('click', function() {
-      /* Simple toggle: re-label to show state and allow re-choice */
-      var txt = banner.querySelector('.vws-cb-text');
-      txt.innerHTML = 'Essential cookies only (no analytics, no tracking). Choose below to change.<br><a href="/privacy-policy" style="color:rgba(96,165,250,0.8)">Privacy Policy</a>';
-      banner.querySelector('#vws-cookie-manage').style.display = 'none';
+    /* ── Dismiss banner ── */
+    function hideBanner() {
+      banner.classList.remove('vws-cb-in');
+      setTimeout(function() { banner.style.display = 'none'; }, 450);
+    }
+
+    function hideModal() {
+      modal.style.display = 'none';
+    }
+
+    /* ── Wire up banner buttons ── */
+    banner.querySelector('#vws-cb-accept').addEventListener('click', function() {
+      saveConsent({necessary:true, analytics:true, marketing:true, functional:true});
+      hideBanner();
     });
 
-    /* Suppress the React-rendered cookie banner once it appears */
-    function suppressReactBanner() {
-      var el = document.querySelector('.fixed.bottom-6.left-6');
-      if (el) { el.style.setProperty('display','none','important'); }
-    }
+    banner.querySelector('#vws-cb-deny').addEventListener('click', function() {
+      saveConsent({necessary:true, analytics:false, marketing:false, functional:false});
+      hideBanner();
+    });
 
-    /* Mount banner and animate in */
-    function mount() {
-      document.body.appendChild(banner);
-      suppressReactBanner();
-      /* Watch for React banner re-renders */
-      var obs = new MutationObserver(suppressReactBanner);
-      obs.observe(document.body, {childList:true, subtree:true});
-      /* Animate in after short delay */
-      setTimeout(function() { banner.classList.add('vws-cb-in'); }, 900);
-    }
+    banner.querySelector('#vws-cb-manage').addEventListener('click', function() {
+      modal.style.display = 'flex';
+    });
+
+    /* ── Wire up modal buttons ── */
+    modal.querySelector('#vws-ck-acceptall').addEventListener('click', function() {
+      CATS.forEach(function(c) { var el = document.getElementById('vws-ck-' + c.id); if (el) el.checked = true; });
+      saveConsent({necessary:true, analytics:true, marketing:true, functional:true});
+      hideModal();
+      hideBanner();
+    });
+
+    modal.querySelector('#vws-ck-save').addEventListener('click', function() {
+      var prefs = {};
+      CATS.forEach(function(c) { var el = document.getElementById('vws-ck-' + c.id); prefs[c.id] = el ? el.checked : c.required; });
+      saveConsent(prefs);
+      hideModal();
+      hideBanner();
+    });
 
     if (document.readyState === 'loading') {
       document.addEventListener('DOMContentLoaded', mount);
