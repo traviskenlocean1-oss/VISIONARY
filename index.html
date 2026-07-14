@@ -4391,6 +4391,9 @@
         /* ── Process accordion depth: inject bullet content ── */
         injectProcessDepth();
 
+        /* ── Device mockup showcase ── */
+        injectDeviceMockup();
+
         /* ── Services sneak peek — fill the "What We Offer" empty grid ── */
         if (!document.getElementById('vws-hp-services')) {
           var wwoSec = Array.from(document.querySelectorAll('section')).find(function(s){
@@ -4485,6 +4488,117 @@
           });
         }
 
+      }
+
+      /* ── Device Mockup Showcase ── */
+      function injectDeviceMockup() {
+        if (document.getElementById('vws-hp-mockup')) return true;
+
+        if (!document.getElementById('vws-mockup-css')) {
+          var st = document.createElement('style');
+          st.id = 'vws-mockup-css';
+          st.textContent = [
+            '#vws-hp-mockup{background:#f8f9fc;padding:96px 48px}',
+            '.vws-mock-inner{max-width:1200px;margin:0 auto}',
+            '.vws-mock-eyebrow{font-size:11px;font-weight:700;letter-spacing:.14em;color:#2563eb;text-transform:uppercase;margin:0 0 14px}',
+            '.vws-mock-headline{font-size:clamp(30px,3.8vw,50px);font-weight:900;color:#0d1117;line-height:1.1;margin:0 0 64px;max-width:660px}',
+            '.vws-mock-layout{display:grid;grid-template-columns:1.1fr 1fr;gap:72px;align-items:center}',
+            '.vws-mock-devices{position:relative;height:460px}',
+            /* Laptop */
+            '.vws-mock-laptop{position:absolute;left:70px;top:0;width:460px;z-index:1}',
+            '.vws-mock-laptop-lid{background:#111827;border-radius:12px 12px 0 0;padding:10px 10px 0;box-shadow:0 24px 64px rgba(0,0,0,0.22)}',
+            '.vws-mock-laptop-bar{background:#1f2937;border-radius:5px 5px 0 0;height:18px;display:flex;align-items:center;gap:5px;padding:0 10px;margin-bottom:4px}',
+            '.vws-mock-laptop-dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,0.18)}',
+            '.vws-mock-laptop-screen{overflow:hidden;border-radius:2px}',
+            '.vws-mock-laptop-screen img{width:100%;display:block;height:270px;object-fit:cover;object-position:top center}',
+            '.vws-mock-laptop-base{background:#1c2333;height:14px;border-radius:0 0 3px 3px}',
+            '.vws-mock-laptop-foot{width:55%;height:7px;background:#141d2b;margin:0 auto;border-radius:0 0 10px 10px}',
+            /* Tablet */
+            '.vws-mock-tablet{position:absolute;right:0;top:50px;width:164px;z-index:3;filter:drop-shadow(0 20px 48px rgba(0,0,0,0.28))}',
+            '.vws-mock-tablet-frame{background:#0d1117;border-radius:18px;padding:14px 10px}',
+            '.vws-mock-tablet-screen{overflow:hidden;border-radius:5px}',
+            '.vws-mock-tablet-screen img{width:100%;display:block;height:200px;object-fit:cover;object-position:top center}',
+            /* Phone */
+            '.vws-mock-phone{position:absolute;left:0;bottom:10px;width:100px;z-index:4;filter:drop-shadow(0 16px 40px rgba(0,0,0,0.35))}',
+            '.vws-mock-phone-frame{background:#0d1117;border-radius:24px;padding:8px 7px}',
+            '.vws-mock-phone-notch{width:44px;height:5px;background:#1a2035;border-radius:3px;margin:0 auto 6px}',
+            '.vws-mock-phone-screen{overflow:hidden;border-radius:6px}',
+            '.vws-mock-phone-screen img{width:100%;display:block;height:184px;object-fit:cover;object-position:top center}',
+            /* Right content */
+            '.vws-mock-content{}',
+            '.vws-mock-content h3{font-size:clamp(20px,2.2vw,28px);font-weight:800;color:#0d1117;margin:0 0 24px;line-height:1.25}',
+            '.vws-mock-list{list-style:none;padding:0;margin:0 0 36px}',
+            '.vws-mock-list li{display:flex;align-items:flex-start;gap:11px;font-size:15px;font-weight:500;color:#374151;padding:10px 0;border-bottom:1px solid rgba(0,0,0,0.07)}',
+            '.vws-mock-list li:last-child{border-bottom:none}',
+            '.vws-mock-check{width:20px;height:20px;flex-shrink:0;background:#2563eb;border-radius:50%;display:flex;align-items:center;justify-content:center;margin-top:1px}',
+            '.vws-mock-check svg{width:10px;height:10px}',
+            '.vws-mock-btn{display:inline-flex;align-items:center;gap:10px;background:#2563eb;color:#fff;font-size:15px;font-weight:700;padding:16px 36px;border-radius:10px;text-decoration:none;box-shadow:0 4px 24px rgba(37,99,235,0.28);transition:background .2s,transform .2s,box-shadow .2s}',
+            '.vws-mock-btn:hover{background:#1d4ed8;transform:translateY(-2px);box-shadow:0 8px 32px rgba(37,99,235,0.40)}',
+            '@media(max-width:960px){.vws-mock-layout{grid-template-columns:1fr}.vws-mock-devices{height:320px;margin-bottom:40px}.vws-mock-laptop{width:300px;left:40px}.vws-mock-tablet{width:114px;right:0;top:30px}.vws-mock-phone{width:70px;left:0;bottom:5px}.vws-mock-laptop-screen img{height:180px}.vws-mock-tablet-screen img{height:140px}.vws-mock-phone-screen img{height:130px}}'
+          ].join('');
+          document.head.appendChild(st);
+        }
+
+        var chk = '<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
+        var features = [
+          'Hand-coded — no WordPress, no templates',
+          'Fully responsive on every screen size',
+          'Lightning-fast load times, optimized from day one',
+          'SEO-ready structure built in from the start',
+          'Hosting &amp; domain included free with every build',
+          'Live in as little as 5 business days'
+        ];
+
+        var el = document.createElement('section');
+        el.id = 'vws-hp-mockup';
+        el.innerHTML = '<div class="vws-mock-inner">'
+          + '<p class="vws-mock-eyebrow">Your website, every device</p>'
+          + '<h2 class="vws-mock-headline">Built to look stunning on every screen.</h2>'
+          + '<div class="vws-mock-layout">'
+            /* Device group */
+            + '<div class="vws-mock-devices">'
+              + '<div class="vws-mock-laptop">'
+                + '<div class="vws-mock-laptop-lid">'
+                  + '<div class="vws-mock-laptop-bar">'
+                    + '<div class="vws-mock-laptop-dot"></div>'
+                    + '<div class="vws-mock-laptop-dot"></div>'
+                    + '<div class="vws-mock-laptop-dot"></div>'
+                  + '</div>'
+                  + '<div class="vws-mock-laptop-screen"><img src="/shot-desktop.jpeg" alt="Visionary Web Studio on desktop" loading="lazy"></div>'
+                + '</div>'
+                + '<div class="vws-mock-laptop-base"></div>'
+                + '<div class="vws-mock-laptop-foot"></div>'
+              + '</div>'
+              + '<div class="vws-mock-tablet">'
+                + '<div class="vws-mock-tablet-frame">'
+                  + '<div class="vws-mock-tablet-screen"><img src="/shot-tablet.jpeg" alt="Visionary Web Studio on tablet" loading="lazy"></div>'
+                + '</div>'
+              + '</div>'
+              + '<div class="vws-mock-phone">'
+                + '<div class="vws-mock-phone-frame">'
+                  + '<div class="vws-mock-phone-notch"></div>'
+                  + '<div class="vws-mock-phone-screen"><img src="/shot-mobile.jpeg" alt="Visionary Web Studio on mobile" loading="lazy"></div>'
+                + '</div>'
+              + '</div>'
+            + '</div>'
+            /* Right content */
+            + '<div class="vws-mock-content">'
+              + '<h3>Every device. Every client. Zero compromises.</h3>'
+              + '<ul class="vws-mock-list">'
+              + features.map(function(f){ return '<li><span class="vws-mock-check">' + chk + '</span>' + f + '</li>'; }).join('')
+              + '</ul>'
+              + '<a href="/contact" class="vws-mock-btn">Get Started Today →</a>'
+            + '</div>'
+          + '</div>'
+        + '</div>';
+
+        /* Inject after the process section */
+        var procSec = Array.from(document.querySelectorAll('section')).find(function(s) {
+          return s.textContent.indexOf('Discovery & Strategy') !== -1 && !s.id;
+        });
+        if (!procSec) return false;
+        procSec.parentNode.insertBefore(el, procSec.nextSibling);
+        return true;
       }
 
       /* ── Build: Dual ticker (Cosmico Studios style) ── */
