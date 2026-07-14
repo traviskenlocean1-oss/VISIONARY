@@ -1617,8 +1617,17 @@
   #vws-contact-grid input:focus,#vws-contact-grid textarea:focus,#vws-contact-grid select:focus{border-color:#2563eb!important;box-shadow:0 0 0 3px rgba(37,99,235,0.1)!important;outline:none!important;background:#fff!important}
   #vws-contact-grid button[type="submit"]{background:#2563eb!important;color:#fff!important;border:none!important;font-weight:800!important;border-radius:10px!important;letter-spacing:.05em!important;text-transform:uppercase!important;font-size:13px!important}
   #vws-contact-grid button[type="submit"]:hover{background:#1d4ed8!important;box-shadow:0 4px 20px rgba(37,99,235,0.35)!important}
-  #vws-contact-grid [class*="rounded-2xl"]{background:#f8fafc!important;border:1px solid #e2e8f0!important}
-  #vws-contact-grid [class*="rounded-2xl"] a{color:#2563eb!important}
+  /* Contact info cards — base styles */
+  #vws-contact-grid [class*="rounded-2xl"],body.vws-contact section [class*="rounded-2xl"]{background:#f8fafc!important;border:1px solid #e2e8f0!important;transition:transform .2s cubic-bezier(.4,0,.2,1),box-shadow .2s ease,border-color .2s ease,background .2s ease!important;cursor:pointer!important}
+  /* Card text: all p/span/strong inside must be black */
+  #vws-contact-grid [class*="rounded-2xl"] p,#vws-contact-grid [class*="rounded-2xl"] span,#vws-contact-grid [class*="rounded-2xl"] strong{color:#111827!important;text-shadow:none!important}
+  #vws-contact-grid [class*="rounded-2xl"] a{color:#111827!important}
+  /* Fallback using body class (fires even if grid ID missed) */
+  body.vws-contact section [class*="rounded-2xl"] p,body.vws-contact section [class*="rounded-2xl"] span,body.vws-contact section [class*="rounded-2xl"] strong,body.vws-contact section [class*="rounded-2xl"] a{color:#111827!important;text-shadow:none!important}
+  /* Hover: grows + turns blue */
+  #vws-contact-grid [class*="rounded-2xl"]:hover,body.vws-contact section [class*="rounded-2xl"]:hover{transform:scale(1.04) translateY(-2px)!important;background:#eff6ff!important;border-color:#93c5fd!important;box-shadow:0 12px 32px rgba(37,99,235,0.18)!important}
+  #vws-contact-grid [class*="rounded-2xl"]:hover p,#vws-contact-grid [class*="rounded-2xl"]:hover span,#vws-contact-grid [class*="rounded-2xl"]:hover strong,#vws-contact-grid [class*="rounded-2xl"]:hover a,body.vws-contact section [class*="rounded-2xl"]:hover p,body.vws-contact section [class*="rounded-2xl"]:hover span,body.vws-contact section [class*="rounded-2xl"]:hover strong,body.vws-contact section [class*="rounded-2xl"]:hover a{color:#2563eb!important}
+  /* Icon container */
   #vws-contact-grid [class*="rounded-xl"][class*="flex"]{background:#eff6ff!important;border:1px solid #bfdbfe!important}
   /* ── LAYER 1 FALLBACK: body.vws-contact rules fire even if #vws-contact-grid ID was never assigned ── */
   body.vws-contact form label{color:#111827!important;text-shadow:none!important}
