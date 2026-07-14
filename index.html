@@ -442,12 +442,7 @@
           }
         });
 
-        /* Hide React-native "proud to share" CTA (duplicate) */
-        document.querySelectorAll('section:not([id])').forEach(function(s) {
-          if (s.textContent.indexOf('proud to share') !== -1) {
-            s.classList.add('vws-react-hidden');
-          }
-        });
+        /* "proud to share" dark CTA section kept visible — has animated background */
 
         /* Hide React "What We Stand For" section — replaced by custom #vws-stand-for */
         Array.from(document.querySelectorAll('section')).forEach(function(s) {
