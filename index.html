@@ -565,37 +565,7 @@
           if (document.getElementById('vws-about-wwa-grid') || wwaPoll > 30) clearInterval(wwaTimer);
         }, 300);
 
-        /* CTA section — anchors after #vws-stand-for, else before footer */
-        function injectAboutCta() {
-          if (document.getElementById('vws-about-cta')) return;
-          var anchor = document.getElementById('vws-stand-for');
-          var footer = document.querySelector('footer');
-          if (!anchor && !footer) return;
-          var cta = document.createElement('section');
-          cta.id = 'vws-about-cta';
-          cta.className = 'vws-cta-strip';
-          cta.innerHTML = '<div class="vws-strip-inner">'
-            +'<div class="vws-strip-left">'
-            +'<p class="vws-strip-eyebrow">GET STARTED</p>'
-            +'<h2 class="vws-strip-headline">Tell us about your business today.</h2>'
-            +'</div>'
-            +'<div class="vws-strip-right">'
-            +'<a href="/contact" class="vws-strip-btn"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><circle cx="12" cy="12" r="10"/><polyline points="10,8 14,12 10,16"/></svg>Start a Project Today</a>'
-            +'<a href="tel:+15618890507" class="vws-strip-phone">or call +1 (561) 889-0507</a>'
-            +'</div>'
-            +'</div>';
-          if (anchor) {
-            anchor.parentNode.insertBefore(cta, anchor.nextSibling);
-          } else {
-            footer.parentNode.insertBefore(cta, footer);
-          }
-        }
-        injectAboutCta();
-        var ctaPoll = 0, ctaTimer = setInterval(function() {
-          ctaPoll++;
-          injectAboutCta();
-          if (document.getElementById('vws-about-cta') || ctaPoll > 30) clearInterval(ctaTimer);
-        }, 300);
+        /* CTA section — removed per user request */
       })();
 
       /* 1.11. [removed — bento grid owns its own classes, no re-tagging needed] */
@@ -954,33 +924,25 @@
       wrapper.style.position = 'relative';
 
       var megaItems = [
-        { name: 'Website Development',  desc: 'Hand-coded from scratch, no templates',       href: '/services/web-development',
+        { name: 'Website Development',  desc: 'Hand-coded from scratch, no templates',      href: '/services/web-development',
           icon: '<polyline points="16,18 22,12 16,6"/><polyline points="8,6 2,12 8,18"/>' },
-        { name: 'Website Redesign',     desc: 'Modernize and rebuild your existing site',     href: '/services/website-redesign',
-          icon: '<polyline points="1,4 1,10 7,10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/>' },
-        { name: 'E-Commerce Websites',  desc: 'Online stores built to sell 24/7',            href: '/services/ecommerce',
-          icon: '<circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>' },
-        { name: 'Landing Pages',        desc: 'High-converting single-page campaigns',       href: '/services/landing-pages',
-          icon: '<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22,4 12,14.01 9,11.01"/>' },
-        { name: 'Website Maintenance',  desc: 'Unlimited updates, same-day turnaround',      href: '/services/website-maintenance',
-          icon: '<circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/>' },
-        { name: 'Search Engine Optim.', desc: 'Rank higher, get found by local customers',   href: '/services/seo',
-          icon: '<circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>' },
-        { name: 'Logo & Branding',      desc: 'Professional identity that stands out',        href: '/services/logo-branding',
-          icon: '<path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>' },
-        { name: 'Hosting & Domain',     desc: 'Fast, secure — included free with every site', href: '/services/hosting',
-          icon: '<rect x="2" y="2" width="20" height="8" rx="2"/><rect x="2" y="14" width="20" height="8" rx="2"/><line x1="6" y1="6" x2="6.01" y2="6"/><line x1="6" y1="18" x2="6.01" y2="18"/>' },
-        { name: 'Website Creation',     desc: 'Get your business online fast',               href: '/services/website-creation',
+        { name: 'Website Creation',     desc: 'Get your business online fast',              href: '/services/website-creation',
           icon: '<circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/>' },
-        { name: 'Social Media Design',  desc: 'Branded content and graphics that convert',   href: '/services/social-media',
-          icon: '<circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>' }
+        { name: 'Website Redesign',     desc: 'Modernize your existing site',               href: '/services/website-redesign',
+          icon: '<polyline points="1,4 1,10 7,10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/>' },
+        { name: 'Website Maintenance',  desc: 'Unlimited updates, same-day turnaround',     href: '/services/website-maintenance',
+          icon: '<circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/>' },
+        { name: 'Hosting & Domain',     desc: 'Fast, reliable — included free',             href: '/services/hosting',
+          icon: '<rect x="2" y="2" width="20" height="8" rx="2"/><rect x="2" y="14" width="20" height="8" rx="2"/><line x1="6" y1="6" x2="6.01" y2="6"/><line x1="6" y1="18" x2="6.01" y2="18"/>' },
+        { name: 'Logo & Branding',      desc: 'Professional identity that stands out',      href: '/services/logo-branding',
+          icon: '<path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>' }
       ];
 
       var dd = document.createElement('div');
       dd.setAttribute('data-vws-dd', '1');
       dd.setAttribute('data-vws-mega', '1');
 
-      var arrowSVG = '<svg class="vws-mega-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7,7 17,7 17,17"/></svg>';
+      var arrowSVG = '<svg class="vws-mega-arrow" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0d1117" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7,7 17,7 17,17"/></svg>';
 
       megaItems.forEach(function(svc) {
         var a = document.createElement('a');
@@ -1376,19 +1338,19 @@
   [data-vws-mega] .vws-mega-item:hover .vws-mega-icon{background:rgba(37,99,235,0.16)}
   [data-vws-mega] .vws-mega-text{display:flex;flex-direction:column;gap:2px;flex:1;min-width:0}
   [data-vws-mega] .vws-mega-item-name{
-    font-size:14px;font-weight:700;color:#0d1117;
+    font-size:16px;font-weight:800;color:#0d1117;
     letter-spacing:0.01em;line-height:1.2;
     transition:color 0.15s
   }
   [data-vws-mega] .vws-mega-item:hover .vws-mega-item-name{color:#2563eb}
-  [data-vws-mega] .vws-mega-item-desc{font-size:11px;color:#9ca3af;line-height:1.35;margin-top:1px}
+  [data-vws-mega] .vws-mega-item-desc{font-size:12px;color:#9ca3af;line-height:1.35;margin-top:2px}
   [data-vws-mega] .vws-mega-arrow{
     flex-shrink:0;
-    opacity:0;
-    transform:translate(-5px,5px);
+    opacity:0!important;
+    transform:translate(-5px,5px)!important;
     transition:opacity 0.2s ease,transform 0.2s ease
   }
-  [data-vws-mega] .vws-mega-item:hover .vws-mega-arrow{opacity:1;transform:translate(0,0)}
+  [data-vws-mega] .vws-mega-item:hover .vws-mega-arrow{opacity:1!important;transform:translate(0,0)!important}
   [data-vws-mega] .vws-mega-footer{
     grid-column:1/-1;margin-top:16px;padding-top:16px;
     border-top:1px solid rgba(0,0,0,0.07);
@@ -2937,40 +2899,7 @@
       /* Run on every page — mobile nav expander + deposit note + contact card fix */
       runMobileServicesExpander();
       runPricingEnhancer();
-      /* CTA strip — inject before footer on about/services/pricing/portfolio */
-      (function() {
-        var _p = window.location.pathname;
-        var showOn = ['/services', '/pricing', '/work'];
-        var matches = showOn.some(function(pg) { return _p === pg || _p === pg + '/'; });
-        if (!matches) return;
-        var stripId = 'vws-cta-strip-universal';
-        if (document.getElementById(stripId)) return;
-        function _inject() {
-          if (document.getElementById(stripId)) return true;
-          var footer = document.querySelector('footer');
-          if (!footer) return false;
-          var strip = document.createElement('section');
-          strip.id = stripId;
-          strip.className = 'vws-cta-strip';
-          strip.innerHTML = '<div class="vws-strip-inner">'
-            +'<div class="vws-strip-left">'
-            +'<p class="vws-strip-eyebrow">GET STARTED</p>'
-            +'<h2 class="vws-strip-headline">Tell us about your business today.</h2>'
-            +'</div>'
-            +'<div class="vws-strip-right">'
-            +'<a href="/contact" class="vws-strip-btn"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><circle cx="12" cy="12" r="10"/><polyline points="10,8 14,12 10,16"/></svg>Start a Project Today</a>'
-            +'<a href="tel:+15618890507" class="vws-strip-phone">or call +1 (561) 889-0507</a>'
-            +'</div>'
-            +'</div>';
-          footer.parentNode.insertBefore(strip, footer);
-          return true;
-        }
-        if (!_inject()) {
-          var _si = 0, _st = setInterval(function() {
-            _si++; if (_inject() || _si > 30) clearInterval(_st);
-          }, 300);
-        }
-      })();
+      /* CTA strip — removed per user request */
       /* Dynamic per-page title + meta description for SPA SEO */
       (function() {
         var p = window.location.pathname;
@@ -5645,7 +5574,6 @@
     banner.setAttribute('aria-label', 'Cookie consent');
     banner.innerHTML =
       '<div class="vws-cb-header">'
-      + '<div class="vws-cb-icon">' + cookieSVG + '</div>'
       + '<div><div class="vws-cb-brand">Visionary Web Studio</div><div class="vws-cb-sub">Privacy &amp; Cookies</div></div>'
       + '</div>'
       + '<p class="vws-cb-title">We value your privacy</p>'
