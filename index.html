@@ -573,10 +573,16 @@
           if (!anchor && !footer) return;
           var cta = document.createElement('section');
           cta.id = 'vws-about-cta';
-          cta.innerHTML = '<div class="vws-acta-wrap">'
-            +'<p class="vws-acta-label">READY TO START?</p>'
-            +'<h2 class="vws-acta-title">Let\'s build something<br>you\'re proud to share.</h2>'
-            +'<a href="/contact" class="vws-acta-btn">Start a Project</a>'
+          cta.className = 'vws-cta-strip';
+          cta.innerHTML = '<div class="vws-strip-inner">'
+            +'<div class="vws-strip-left">'
+            +'<p class="vws-strip-eyebrow">GET STARTED</p>'
+            +'<h2 class="vws-strip-headline">Tell us about your business today.</h2>'
+            +'</div>'
+            +'<div class="vws-strip-right">'
+            +'<a href="/contact" class="vws-strip-btn"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><circle cx="12" cy="12" r="10"/><polyline points="10,8 14,12 10,16"/></svg>Start a Project Today</a>'
+            +'<a href="tel:+15618890507" class="vws-strip-phone">or call +1 (561) 889-0507</a>'
+            +'</div>'
             +'</div>';
           if (anchor) {
             anchor.parentNode.insertBefore(cta, anchor.nextSibling);
@@ -1773,12 +1779,22 @@
 
 
   /* ══ ABOUT PAGE — CTA section (transparent → video bg shows through, same as Pricing hero) ══ */
-  #vws-about-cta{position:relative;overflow:hidden;background:transparent!important;padding:120px 40px;text-align:center;font-family:inherit}
-  .vws-acta-wrap{max-width:700px;margin:0 auto;position:relative;z-index:1}
-  .vws-acta-label{font-size:10px;font-weight:700;letter-spacing:.25em;text-transform:uppercase;color:rgba(96,165,250,0.85)!important;margin:0 0 20px}
-  .vws-acta-title{font-size:clamp(32px,5vw,60px);font-weight:900;color:#e1e0cc!important;margin:0 0 36px;line-height:1.1}
-  .vws-acta-btn{display:inline-block;padding:16px 48px;background:#ffffff;color:#0d1117!important;font-size:13px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;text-decoration:none!important;border-radius:8px;transition:background .2s,box-shadow .2s,transform .2s;box-shadow:0 4px 20px rgba(255,255,255,0.15)}
-  .vws-acta-btn:hover{background:#f0f4ff!important;transform:translateY(-2px);box-shadow:0 8px 32px rgba(255,255,255,0.22)!important}
+  /* ── CTA Strip — About / Services / Pricing ── */
+  .vws-cta-strip{background:#2563eb!important;padding:56px 64px;width:100%;font-family:inherit;box-sizing:border-box}
+  .vws-strip-inner{max-width:1240px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:40px}
+  .vws-strip-left{flex:1;min-width:0}
+  .vws-strip-eyebrow{font-size:10.5px;font-weight:700;letter-spacing:0.22em;text-transform:uppercase;color:rgba(255,255,255,0.65)!important;margin:0 0 12px}
+  .vws-strip-headline{font-size:clamp(22px,3.2vw,36px);font-weight:800;color:#ffffff!important;margin:0;line-height:1.2;letter-spacing:-0.01em}
+  .vws-strip-right{display:flex;flex-direction:column;align-items:flex-end;gap:10px;flex-shrink:0}
+  .vws-strip-btn{display:inline-flex;align-items:center;gap:10px;background:#ffffff;color:#0d1117!important;font-size:15px;font-weight:700;padding:16px 36px;border-radius:100px;text-decoration:none!important;transition:background 0.2s,transform 0.2s,box-shadow 0.2s;box-shadow:0 4px 20px rgba(0,0,0,0.12);white-space:nowrap}
+  .vws-strip-btn:hover{background:#f0f4ff!important;transform:translateY(-2px);box-shadow:0 8px 32px rgba(0,0,0,0.18)!important}
+  .vws-strip-phone{color:rgba(255,255,255,0.8)!important;font-size:13px;font-weight:600;text-decoration:none!important;letter-spacing:0.02em;white-space:nowrap}
+  .vws-strip-phone:hover{color:#ffffff!important}
+  @media(max-width:768px){
+    .vws-cta-strip{padding:44px 28px}
+    .vws-strip-inner{flex-direction:column;align-items:flex-start;gap:28px}
+    .vws-strip-right{align-items:flex-start}
+  }
   /* ══ ABOUT PAGE — merged two-column section (Built to be found + icon cards) ══ */
   #vws-about-merge{background:#060916!important;padding:100px 40px;font-family:inherit}
   .vws-mgrid{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start}
@@ -1799,8 +1815,8 @@
   #vws-about-merge li,#vws-about-merge .vws-mpill{color:rgba(147,197,253,0.9)!important}
   #vws-about-merge .vws-mcard-name{color:#e1e0cc!important}
   #vws-about-merge .vws-mcard-desc{color:rgba(225,224,204,0.5)!important}
-  #vws-about-cta h2,#vws-about-cta .vws-acta-title{color:#e1e0cc!important}
-  #vws-about-cta p,#vws-about-cta .vws-acta-label{color:rgba(96,165,250,0.9)!important}
+  #vws-about-cta h2,#vws-about-cta .vws-strip-headline{color:#ffffff!important}
+  #vws-about-cta p,#vws-about-cta .vws-strip-eyebrow{color:rgba(255,255,255,0.65)!important}
   /* ══ ABOUT PAGE — What We Stand For (animated manifesto) ══ */
   #vws-stand-for{background:#ffffff!important;padding:100px 40px;font-family:inherit;overflow:hidden}
   .vws-sf-inner{max-width:1100px;margin:0 auto}
@@ -2921,6 +2937,40 @@
       /* Run on every page — mobile nav expander + deposit note + contact card fix */
       runMobileServicesExpander();
       runPricingEnhancer();
+      /* CTA strip — inject before footer on about/services/pricing/portfolio */
+      (function() {
+        var _p = window.location.pathname;
+        var showOn = ['/services', '/pricing', '/work'];
+        var matches = showOn.some(function(pg) { return _p === pg || _p === pg + '/'; });
+        if (!matches) return;
+        var stripId = 'vws-cta-strip-universal';
+        if (document.getElementById(stripId)) return;
+        function _inject() {
+          if (document.getElementById(stripId)) return true;
+          var footer = document.querySelector('footer');
+          if (!footer) return false;
+          var strip = document.createElement('section');
+          strip.id = stripId;
+          strip.className = 'vws-cta-strip';
+          strip.innerHTML = '<div class="vws-strip-inner">'
+            +'<div class="vws-strip-left">'
+            +'<p class="vws-strip-eyebrow">GET STARTED</p>'
+            +'<h2 class="vws-strip-headline">Tell us about your business today.</h2>'
+            +'</div>'
+            +'<div class="vws-strip-right">'
+            +'<a href="/contact" class="vws-strip-btn"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><circle cx="12" cy="12" r="10"/><polyline points="10,8 14,12 10,16"/></svg>Start a Project Today</a>'
+            +'<a href="tel:+15618890507" class="vws-strip-phone">or call +1 (561) 889-0507</a>'
+            +'</div>'
+            +'</div>';
+          footer.parentNode.insertBefore(strip, footer);
+          return true;
+        }
+        if (!_inject()) {
+          var _si = 0, _st = setInterval(function() {
+            _si++; if (_inject() || _si > 30) clearInterval(_st);
+          }, 300);
+        }
+      })();
       /* Dynamic per-page title + meta description for SPA SEO */
       (function() {
         var p = window.location.pathname;
