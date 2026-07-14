@@ -1273,7 +1273,11 @@
   /* Blue links stay blue */
   footer a[class*="text-blue-"],footer [class*="text-blue-"]{color:#2563eb!important}
   /* Neutral links */
-  footer a:not([class*="text-blue-"]):not([class*="bg-"]){color:#374151!important}
+  footer a:not([class*="text-blue-"]):not([class*="bg-"]):not([href="/"]){color:#374151!important}
+  /* Logo in footer gets a black background so it reads correctly on the white footer */
+  footer a[href="/"]{background:#000!important;border-radius:10px!important;padding:8px 12px!important;display:inline-flex!important;align-items:center!important;gap:10px!important;color:#fff!important}
+  footer a[href="/"] *{color:#fff!important;text-shadow:none!important}
+  footer a[href="/"]:hover{background:#111!important}
   /* tel: / mailto: links */
   footer a[href^="tel:"],footer a[href^="mailto:"]{color:#2563eb!important}
   /* Social icon circles */
