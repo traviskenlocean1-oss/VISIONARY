@@ -1234,11 +1234,14 @@
   #vws-hp-trust .vws-platform-row{display:flex;flex-wrap:wrap;justify-content:center;gap:20px;margin:0 0 52px}
   #vws-hp-trust .vws-platform-chip{display:flex;align-items:center;gap:10px;background:#fff;border:1px solid rgba(0,0,0,0.07);border-radius:40px;padding:10px 20px;box-shadow:0 2px 10px rgba(0,0,0,0.05)}
   #vws-hp-trust .vws-platform-chip span{font-size:13px;font-weight:700;color:#0d1117}
-  #vws-hp-trust .vws-trust-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:16px;margin:0 0 48px;text-align:left}
-  #vws-hp-trust .vws-trust-card{background:#fff;border:1px solid rgba(0,0,0,0.07);border-radius:12px;padding:20px;box-shadow:0 2px 8px rgba(0,0,0,0.04)}
-  #vws-hp-trust .vws-trust-card-icon{width:36px;height:36px;border-radius:8px;background:rgba(37,99,235,0.08);display:flex;align-items:center;justify-content:center;margin:0 0 12px}
-  #vws-hp-trust .vws-trust-card-title{font-size:14px;font-weight:700;color:#0d1117;margin:0 0 6px}
-  #vws-hp-trust .vws-trust-card-body{font-size:13px;color:#4b5563;line-height:1.55;margin:0}
+  #vws-hp-trust .vws-trust-grid{display:flex;flex-direction:column;gap:18px;margin:0 auto 48px;max-width:860px}
+  #vws-hp-trust .vws-trust-card{background:#fff;border:1px solid rgba(0,0,0,0.07);border-radius:14px;padding:28px 36px;box-shadow:0 2px 12px rgba(0,0,0,0.06);display:flex;align-items:center;gap:28px;text-align:left;opacity:0;transition:opacity 0.55s ease,transform 0.55s ease}
+  #vws-hp-trust .vws-trust-card.vws-slide-left{transform:translateX(-72px)}
+  #vws-hp-trust .vws-trust-card.vws-slide-right{transform:translateX(72px);flex-direction:row-reverse}
+  #vws-hp-trust .vws-trust-card.vws-card-in{opacity:1;transform:translateX(0)}
+  #vws-hp-trust .vws-trust-card-icon{width:52px;height:52px;flex-shrink:0;border-radius:12px;background:rgba(37,99,235,0.08);display:flex;align-items:center;justify-content:center}
+  #vws-hp-trust .vws-trust-card-title{font-size:17px;font-weight:700;color:#0d1117;margin:0 0 6px}
+  #vws-hp-trust .vws-trust-card-body{font-size:14px;color:#4b5563;line-height:1.65;margin:0}
 
   /* ══ Homepage — dark bookend ══ */
   #vws-hp-bookend{padding:100px 24px;text-align:center;position:relative;overflow:hidden}
@@ -1249,7 +1252,7 @@
   /* ══ Mobile responsive — homepage ══ */
   @media(max-width:640px){
     #vws-hp-slider,#vws-hp-trust,#vws-hp-bookend{padding:60px 16px}
-    #vws-hp-trust .vws-trust-grid{grid-template-columns:1fr}
+    #vws-hp-trust .vws-trust-card{flex-direction:column!important;padding:20px 22px!important;gap:14px!important}
     #vws-hp-bookend{padding:80px 20px}
   }
 
@@ -1389,8 +1392,8 @@
     #vws-ba-wrap{border-radius:8px;height:240px}
     /* Mega dropdown — full width on mobile */
     [data-vws-mega]{min-width:calc(100vw - 32px)!important;grid-template-columns:1fr!important;left:16px!important;transform:none!important;right:16px}
-    /* Trust cards stacked */
-    #vws-hp-trust .vws-trust-grid{grid-template-columns:1fr 1fr}
+    /* Trust cards stacked on tablet */
+    #vws-hp-trust .vws-trust-card{padding:22px 26px!important;gap:20px!important}
     /* Nav wordmark smaller */
     header.fixed.top-0 p[class*="font-black"]{font-size:14px!important}
     /* Process accordion mobile padding */
@@ -1537,12 +1540,6 @@
   section[class*="h-screen"] [style*="rgba(4, 8, 22, 0.92)"] button[type="submit"],
   section[class*="h-screen"] [style*="rgba(4, 8, 22, 0.92)"] button:not([type="button"]){background:#2563eb!important;color:#ffffff!important;font-weight:700!important}
 
-  /* ══ TASK 3: Larger Local SEO trust cards ══ */
-  #vws-hp-trust .vws-trust-card{padding:28px 24px!important}
-  #vws-hp-trust .vws-trust-card-icon{width:44px;height:44px;margin:0 0 16px}
-  #vws-hp-trust .vws-trust-card-title{font-size:16px!important;margin:0 0 10px!important}
-  #vws-hp-trust .vws-trust-card-body{font-size:14px!important;line-height:1.7!important}
-  #vws-hp-trust .vws-trust-grid{gap:24px!important;grid-template-columns:repeat(auto-fit,minmax(240px,1fr))!important}
 
   /* ══ TASK 1: Logo — soft depth glow, no hard box ══ */
   header.fixed.top-0 a[href="/"] svg{background:#0a0f23!important;filter:none!important;border-radius:8px;padding:4px;box-sizing:content-box}
@@ -4365,6 +4362,19 @@
           trustEl.className = 'vws-section-light';
           trustEl.innerHTML = buildHPTrust();
           secs[4].parentNode.insertBefore(trustEl, secs[4]);
+          // Slide each card in from its own side on scroll
+          (function(){
+            var tcards = trustEl.querySelectorAll('.vws-trust-card');
+            if (!window.IntersectionObserver) {
+              tcards.forEach(function(c){ c.classList.add('vws-card-in'); }); return;
+            }
+            var obs = new IntersectionObserver(function(entries){
+              entries.forEach(function(e){
+                if (e.isIntersecting){ e.target.classList.add('vws-card-in'); obs.unobserve(e.target); }
+              });
+            }, {threshold:0.18});
+            tcards.forEach(function(c){ obs.observe(c); });
+          })();
         }
 
         /* ── Task 4: Before/after slider — insert before section[5] ── */
@@ -4694,8 +4704,9 @@
 
         var iconSVG = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>';
 
-        var cards = feats.map(function(f) {
-          return '<div class="vws-trust-card"><div class="vws-trust-card-icon">'+iconSVG+'</div><p class="vws-trust-card-title">'+f.title+'</p><p class="vws-trust-card-body">'+f.body+'</p></div>';
+        var cards = feats.map(function(f, i) {
+          var dir = i % 2 === 0 ? 'vws-slide-left' : 'vws-slide-right';
+          return '<div class="vws-trust-card '+dir+'"><div class="vws-trust-card-icon">'+iconSVG+'</div><div><p class="vws-trust-card-title">'+f.title+'</p><p class="vws-trust-card-body">'+f.body+'</p></div></div>';
         }).join('');
 
         return '<div style="max-width:960px;margin:0 auto;text-align:center">'
