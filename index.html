@@ -746,8 +746,8 @@
           /* Per-service accent colors — used for the card gradients, not panel backgrounds */
           var SP_A=['rgba(37,99,235,','rgba(13,148,136,','rgba(217,119,6,','rgba(124,58,237,','rgba(220,38,38,','rgba(202,138,4,'];
           var panels = SVC_DATA.map(function(s, i) {
-            var ca='linear-gradient(145deg,'+SP_A[i]+'0.22) 0%,rgba(255,255,255,0.03) 100%)';
-            var cb='linear-gradient(145deg,rgba(255,255,255,0.07) 0%,'+SP_A[i]+'0.18) 100%)';
+            var ca='linear-gradient(145deg,#080d1a 0%,'+SP_A[i]+'0.7) 100%)';
+            var cb='linear-gradient(145deg,'+SP_A[i]+'0.45) 0%,#060a14 100%)';
             return '<div class="vws-sp-panel" style="z-index:'+(i+1)+'">'
               +'<div class="vws-sp-inner">'
                 +'<div class="vws-sp-text">'
@@ -781,28 +781,52 @@
           var bss = document.createElement('section');
           bss.id = 'vws-best-svc';
           bss.innerHTML = '<div class="vws-bs-inner">'
-            + '<p class="vws-bs-label">Visionary Web Studio</p>'
-            + '<h2 class="vws-bs-h2">Best Service</h2>'
+            + '<p class="vws-bs-label">By the Numbers</p>'
+            + '<h2 class="vws-bs-h2">Built fast.<br>Delivered right.</h2>'
             + '<div class="vws-bs-grid">'
-              + '<img class="vws-bs-char" src="/visionary-character.png" alt="Visionary Web Studio mascot at his desk" loading="lazy"/>'
-              + '<div class="vws-bs-features">'
-                + '<div class="vws-bs-item">'
-                  + '<div class="vws-bs-icon">V</div>'
-                  + '<div><h3 class="vws-bs-ftitle">Guaranteed Results</h3>'
-                  + '<p class="vws-bs-fbody">Our commitment to excellence ensures you\'ll achieve guaranteed results for your business online. — Visionary Web Studio</p></div>'
+              + '<div class="vws-bs-browser">'
+                + '<div class="vws-bs-chrome">'
+                  + '<span class="vws-bs-dot" style="background:#ff5f57"></span>'
+                  + '<span class="vws-bs-dot" style="background:#febc2e"></span>'
+                  + '<span class="vws-bs-dot" style="background:#28c840"></span>'
+                  + '<span class="vws-bs-url">analytics — visionary</span>'
                 + '</div>'
-                + '<div class="vws-bs-item">'
-                  + '<div class="vws-bs-icon">V</div>'
-                  + '<div><h3 class="vws-bs-ftitle">Quality Services</h3>'
-                  + '<p class="vws-bs-fbody">Our dedication to quality sets us apart, making us the preferred choice for all your web design needs.</p></div>'
+                + '<div class="vws-bs-screen">'
+                  + '<p class="vws-bs-chart-label">Sites Launched — Last 6 Months</p>'
+                  + '<svg class="vws-bs-chart" viewBox="0 0 264 88" fill="none" xmlns="http://www.w3.org/2000/svg">'
+                    + '<line x1="0" y1="70" x2="264" y2="70" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>'
+                    + '<line x1="0" y1="46" x2="264" y2="46" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>'
+                    + '<line x1="0" y1="23" x2="264" y2="23" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>'
+                    + '<rect x="0" y="47" width="28" height="23" fill="#2563eb" rx="3"/>'
+                    + '<rect x="44" y="29" width="28" height="41" fill="#2563eb" rx="3"/>'
+                    + '<rect x="88" y="41" width="28" height="29" fill="#2563eb" rx="3"/>'
+                    + '<rect x="132" y="17" width="28" height="53" fill="#2563eb" rx="3"/>'
+                    + '<rect x="176" y="23" width="28" height="47" fill="#2563eb" rx="3"/>'
+                    + '<rect x="220" y="0" width="28" height="70" fill="#60a5fa" rx="3"/>'
+                    + '<text x="14" y="84" fill="rgba(255,255,255,0.28)" font-size="9" text-anchor="middle" font-family="system-ui,sans-serif">Feb</text>'
+                    + '<text x="58" y="84" fill="rgba(255,255,255,0.28)" font-size="9" text-anchor="middle" font-family="system-ui,sans-serif">Mar</text>'
+                    + '<text x="102" y="84" fill="rgba(255,255,255,0.28)" font-size="9" text-anchor="middle" font-family="system-ui,sans-serif">Apr</text>'
+                    + '<text x="146" y="84" fill="rgba(255,255,255,0.28)" font-size="9" text-anchor="middle" font-family="system-ui,sans-serif">May</text>'
+                    + '<text x="190" y="84" fill="rgba(255,255,255,0.28)" font-size="9" text-anchor="middle" font-family="system-ui,sans-serif">Jun</text>'
+                    + '<text x="234" y="84" fill="rgba(255,255,255,0.55)" font-size="9" text-anchor="middle" font-family="system-ui,sans-serif">Jul</text>'
+                  + '</svg>'
+                  + '<div class="vws-bs-stats">'
+                    + '<div class="vws-bs-stat-row"><span class="vws-bs-stat-num">47+</span><span class="vws-bs-stat-label">Sites Launched</span></div>'
+                    + '<div class="vws-bs-stat-row"><span class="vws-bs-stat-num">14 Days</span><span class="vws-bs-stat-label">Avg. Turnaround</span></div>'
+                    + '<div class="vws-bs-stat-row"><span class="vws-bs-stat-num">100%</span><span class="vws-bs-stat-label">Client Satisfaction</span></div>'
+                  + '</div>'
                 + '</div>'
-                + '<div class="vws-bs-item">'
-                  + '<div class="vws-bs-icon">V</div>'
-                  + '<div><h3 class="vws-bs-ftitle">Customer Support</h3>'
-                  + '<p class="vws-bs-fbody">Our dedicated support team is available 24/7 to assist you with any inquiries or concerns.</p></div>'
-                + '</div>'
+              + '</div>'
+              + '<div class="vws-bs-copy">'
+                + '<p class="vws-bs-copy-body">Every project starts with a direct conversation — no discovery forms, no delays. We scope, design, and deliver on a fixed timeline, hand-coded from scratch with zero page-builder bloat.</p>'
+                + '<ul class="vws-bs-list">'
+                  + '<li class="vws-bs-li"><span class="vws-bs-check">&#10003;</span>Fixed-scope pricing — no scope creep, no surprise invoices</li>'
+                  + '<li class="vws-bs-li"><span class="vws-bs-check">&#10003;</span>Hosting &amp; domain included on every project</li>'
+                  + '<li class="vws-bs-li"><span class="vws-bs-check">&#10003;</span>30-day post-launch support, included — not an add-on</li>'
+                  + '<li class="vws-bs-li"><span class="vws-bs-check">&#10003;</span>SEO foundation built in from day one</li>'
+                + '</ul>'
                 + '<div class="vws-bs-cta">'
-                  + '<a href="/contact" class="vws-bs-btn">MORE INFO ✓</a>'
+                  + '<a href="/contact" class="vws-bs-btn">START A PROJECT</a>'
                   + '<div><p class="vws-bs-call-label">Call Us Now</p><p class="vws-bs-phone">(561) 889-0507</p></div>'
                 + '</div>'
               + '</div>'
@@ -1855,27 +1879,23 @@
 
   /* ══ SERVICES PAGE — sticky-stacked panels ══ */
   #vws-svc-list{display:block!important;overflow:visible!important;padding:0!important;margin:0!important;font-family:inherit}
-  /* One consistent dark background — all panels match the site theme */
-  .vws-sp-panel{position:sticky;top:0;height:100vh;width:100%;display:flex;align-items:stretch;justify-content:center;overflow:hidden;border-radius:0!important;background:#060916}
-  .vws-sp-inner{display:flex;flex-direction:row;width:100%;max-width:1360px;height:100%;padding:0 72px;border-top:1px solid rgba(255,255,255,0.06);will-change:transform,opacity,filter}
+  /* ── White background, dark-card sticky-stack ── */
+  .vws-sp-panel{position:sticky;top:0;height:100vh;width:100%;display:flex;align-items:stretch;justify-content:center;overflow:hidden;border-radius:0!important;background:#fff}
+  .vws-sp-inner{display:flex;flex-direction:row;width:100%;max-width:1360px;height:100%;padding:0 72px;border-top:1px solid rgba(0,0,0,0.07);will-change:transform,opacity,filter}
   .vws-sp-text{flex:0 0 50%;width:50%;padding:80px 64px;display:flex;flex-direction:column;justify-content:center;align-items:flex-start}
-  .vws-sp-num{display:block;font-size:11px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,0.3);margin:0 0 16px}
-  .vws-sp-title{font-size:clamp(28px,3.5vw,52px)!important;font-weight:900;color:#fff!important;line-height:1.1;margin:0 0 20px!important}
-  .vws-sp-desc{font-size:clamp(15px,1.3vw,17px)!important;color:rgba(255,255,255,0.55)!important;line-height:1.75;margin:0 0 36px!important;max-width:440px}
-  .vws-sp-btn{display:inline-block;padding:14px 32px;background:transparent!important;color:#fff!important;font-size:12px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;text-decoration:none!important;border:1px solid rgba(255,255,255,0.28);border-radius:0!important;transition:background .2s,border-color .2s;cursor:pointer;box-shadow:none!important;align-self:flex-start;width:auto!important}
-  .vws-sp-btn:hover{background:rgba(255,255,255,0.08)!important;border-color:rgba(255,255,255,0.6)}
-  /* Image side: padded container — image floats inside, not edge-to-edge */
-  .vws-sp-img{flex:0 0 50%;width:50%;height:100%;position:relative;display:flex;align-items:center;justify-content:center;padding:48px 48px 48px 32px;border-left:1px solid rgba(255,255,255,0.05);border-radius:0!important;overflow:hidden}
-  /* Card wrap: bounded area for the two-layer composition */
+  .vws-sp-num{display:block;font-size:11px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:#94a3b8;margin:0 0 16px}
+  .vws-sp-title{font-size:clamp(28px,3.5vw,52px)!important;font-weight:900;color:#0d1117!important;line-height:1.1;margin:0 0 20px!important}
+  .vws-sp-desc{font-size:clamp(15px,1.3vw,17px)!important;color:#4b5563!important;line-height:1.75;margin:0 0 36px!important;max-width:440px}
+  .vws-sp-btn{display:inline-block;padding:14px 32px;background:transparent!important;color:#0d1117!important;font-size:12px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;text-decoration:none!important;border:1px solid rgba(0,0,0,0.22);border-radius:0!important;transition:background .2s,border-color .2s;cursor:pointer;box-shadow:none!important;align-self:flex-start;width:auto!important}
+  .vws-sp-btn:hover{background:rgba(0,0,0,0.05)!important;border-color:rgba(0,0,0,0.5)}
+  .vws-sp-img{flex:0 0 50%;width:50%;height:100%;position:relative;display:flex;align-items:center;justify-content:center;padding:48px 48px 48px 32px;border-left:1px solid rgba(0,0,0,0.06);border-radius:0!important;overflow:hidden}
   .vws-sp-cards{position:relative;width:100%;max-width:540px;aspect-ratio:4/3;max-height:420px}
-  /* Primary card: large, anchored top-left of the wrap */
-  .vws-sp-card-a{position:absolute;top:0;left:0;right:56px;bottom:56px;border-radius:0!important;overflow:hidden;display:flex;align-items:flex-end;padding:20px;box-shadow:0 32px 90px rgba(0,0,0,0.7),0 8px 24px rgba(0,0,0,0.45);border:1px solid rgba(255,255,255,0.07);z-index:1}
-  /* Secondary card: smaller, offset bottom-right — overlaps primary, creates depth */
-  .vws-sp-card-b{position:absolute;bottom:0;right:0;width:50%;height:50%;border-radius:0!important;overflow:hidden;display:flex;align-items:center;justify-content:center;z-index:2;box-shadow:0 16px 50px rgba(0,0,0,0.75),0 4px 14px rgba(0,0,0,0.5);border:1px solid rgba(255,255,255,0.1)}
-  .vws-sp-card-num{font-size:clamp(48px,7vw,88px);font-weight:900;color:rgba(255,255,255,0.12);line-height:1;user-select:none;font-family:Barlow,system-ui,sans-serif}
-  .vws-sp-card-tag{font-size:10px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,0.38);text-align:center;padding:0 12px;line-height:1.5}
+  .vws-sp-card-a{position:absolute;top:0;left:0;right:56px;bottom:56px;border-radius:0!important;overflow:hidden;display:flex;align-items:flex-end;padding:20px;box-shadow:0 24px 70px rgba(0,0,0,0.22),0 6px 20px rgba(0,0,0,0.12);border:1px solid rgba(0,0,0,0.08);z-index:1}
+  .vws-sp-card-b{position:absolute;bottom:0;right:0;width:50%;height:50%;border-radius:0!important;overflow:hidden;display:flex;align-items:center;justify-content:center;z-index:2;box-shadow:0 12px 40px rgba(0,0,0,0.25),0 4px 12px rgba(0,0,0,0.14);border:1px solid rgba(0,0,0,0.08)}
+  .vws-sp-card-num{font-size:clamp(48px,7vw,88px);font-weight:900;color:rgba(255,255,255,0.18);line-height:1;user-select:none;font-family:Barlow,system-ui,sans-serif}
+  .vws-sp-card-tag{font-size:10px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,0.55);text-align:center;padding:0 12px;line-height:1.5}
   .vws-sp-panel *{border-radius:0!important}
-  @media(max-width:768px){.vws-sp-panel{position:relative;height:auto;min-height:100svh}.vws-sp-inner{flex-direction:column;height:100%;min-height:inherit;border-top:none;max-width:100%;padding:0}.vws-sp-text{flex:1 1 auto;width:100%;padding:60px 24px 40px;min-height:0}.vws-sp-img{flex:0 0 auto;width:100%;height:auto;padding:24px 24px 48px;border-left:none;border-top:1px solid rgba(255,255,255,0.06)}.vws-sp-cards{height:240px;max-width:100%;aspect-ratio:unset}}
+  @media(max-width:768px){.vws-sp-panel{position:relative;height:auto;min-height:100svh}.vws-sp-inner{flex-direction:column;height:100%;min-height:inherit;border-top:none;max-width:100%;padding:0}.vws-sp-text{flex:1 1 auto;width:100%;padding:60px 24px 40px;min-height:0}.vws-sp-img{flex:0 0 auto;width:100%;height:auto;padding:24px 24px 48px;border-left:none;border-top:1px solid rgba(0,0,0,0.06)}.vws-sp-cards{height:240px;max-width:100%;aspect-ratio:unset}}
 
   /* ══ SERVICES PAGE — "Built for Results" hidden (replaced by Best Service section) ══ */
   #react-built-results{display:none!important}
@@ -1884,21 +1904,32 @@
   #vws-best-svc{background:#ffffff;padding:80px 40px;font-family:Barlow,system-ui,sans-serif;border-top:1px solid rgba(0,0,0,0.07)}
   .vws-bs-inner{max-width:1200px;margin:0 auto}
   .vws-bs-label{font-size:11px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:#60a5fa;margin:0 0 12px}
-  .vws-bs-h2{font-size:clamp(40px,6vw,72px);font-weight:900;color:#0d1117;margin:0 0 48px;line-height:1.05}
+  .vws-bs-h2{font-size:clamp(36px,5vw,64px);font-weight:900;color:#0d1117;margin:0 0 48px;line-height:1.05}
   .vws-bs-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:start}
-  .vws-bs-char{width:100%;border-radius:16px;box-shadow:0 0 60px rgba(37,99,235,0.4);display:block}
-  .vws-bs-features{display:flex;flex-direction:column}
-  .vws-bs-item{display:flex;gap:20px;padding:24px 0;border-bottom:1px solid rgba(0,0,0,0.08)}
-  .vws-bs-item:first-child{border-top:1px solid rgba(0,0,0,0.08)}
-  .vws-bs-icon{flex-shrink:0;width:56px;height:56px;border-radius:12px;background:#2563eb;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:900;color:#fff;font-family:Barlow,system-ui,sans-serif}
-  .vws-bs-ftitle{font-size:20px;font-weight:800;color:#0d1117;margin:0 0 8px;line-height:1.2}
-  .vws-bs-fbody{font-size:15px;color:#4b5563;line-height:1.65;margin:0}
-  .vws-bs-cta{display:flex;align-items:center;gap:28px;padding-top:28px}
+  .vws-bs-browser{border-radius:12px;overflow:hidden;box-shadow:0 24px 80px rgba(0,0,0,0.18),0 4px 20px rgba(0,0,0,0.1);background:#0d1117;border:1px solid rgba(255,255,255,0.06)}
+  .vws-bs-chrome{background:#161b22;padding:12px 16px;display:flex;align-items:center;gap:8px;border-bottom:1px solid rgba(255,255,255,0.06)}
+  .vws-bs-dot{width:11px;height:11px;border-radius:50%;flex-shrink:0;display:inline-block}
+  .vws-bs-url{font-size:11px;font-family:ui-monospace,monospace;color:rgba(255,255,255,0.28);margin-left:10px;letter-spacing:.01em}
+  .vws-bs-screen{padding:24px 24px 28px}
+  .vws-bs-chart-label{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,0.35);margin:0 0 14px}
+  .vws-bs-chart{width:100%;display:block;overflow:visible}
+  .vws-bs-stats{display:grid;grid-template-columns:repeat(3,1fr);margin-top:20px;border-top:1px solid rgba(255,255,255,0.07);padding-top:18px}
+  .vws-bs-stat-row{padding:0 12px;border-right:1px solid rgba(255,255,255,0.07)}
+  .vws-bs-stat-row:first-child{padding-left:0}
+  .vws-bs-stat-row:last-child{border-right:none}
+  .vws-bs-stat-num{display:block;font-size:21px;font-weight:900;color:#fff;line-height:1.1;margin-bottom:4px;font-family:Barlow,system-ui,sans-serif}
+  .vws-bs-stat-label{font-size:10px;color:rgba(255,255,255,0.38);font-weight:600;letter-spacing:.04em;line-height:1.4;display:block}
+  .vws-bs-copy{display:flex;flex-direction:column;justify-content:center;padding-top:4px}
+  .vws-bs-copy-body{font-size:17px;color:#374151;line-height:1.75;margin:0 0 28px;max-width:420px}
+  .vws-bs-list{list-style:none;padding:0;margin:0 0 36px;display:flex;flex-direction:column;gap:14px}
+  .vws-bs-li{font-size:15px;color:#374151;display:flex;align-items:flex-start;gap:10px;line-height:1.5}
+  .vws-bs-check{color:#2563eb;font-weight:900;font-size:14px;flex-shrink:0;margin-top:1px}
+  .vws-bs-cta{display:flex;align-items:center;gap:28px}
   .vws-bs-btn{display:inline-flex;align-items:center;gap:8px;background:#2563eb;color:#fff;font-size:13px;font-weight:800;letter-spacing:.08em;padding:14px 28px;border-radius:999px;text-decoration:none;transition:background .2s,transform .2s}
   .vws-bs-btn:hover{background:#1d4ed8;transform:translateY(-2px)}
   .vws-bs-call-label{font-size:12px;color:#6b7280;margin:0 0 4px}
   .vws-bs-phone{font-size:20px;font-weight:800;color:#0d1117;margin:0}
-  @media(max-width:900px){.vws-bs-grid{grid-template-columns:1fr;gap:36px}.vws-bs-char{max-width:480px;margin:0 auto}}
+  @media(max-width:900px){.vws-bs-grid{grid-template-columns:1fr;gap:40px}}
   @media(max-width:480px){#vws-best-svc{padding:60px 20px}}
 
   /* ══ PRICING PAGE — card hover + scroll reveal ══ */
