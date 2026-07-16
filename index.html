@@ -808,7 +808,7 @@
           bss.innerHTML = '<div class="vws-bs-inner">'
             + '<div class="vws-bs-photo-grid">'
               + '<div class="vws-bs-photo-col" style="background:#fff">'
-                + '<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;padding:22px 18px;box-sizing:border-box;font-family:Barlow,system-ui,sans-serif">'
+                + '<div style="width:100%;height:100%;display:flex;align-items:flex-start;justify-content:center;padding:22px 18px;box-sizing:border-box;font-family:Barlow,system-ui,sans-serif">'
                   + '<div style="width:100%">'
                     + '<div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:13px">'
                       + '<div>'
@@ -4532,7 +4532,28 @@
               + '[data-vws-pricing] section:first-of-type::before{content:"";position:absolute;inset:0;background:rgba(3,6,22,0.55);z-index:0;pointer-events:none}'
               + '[data-vws-pricing] section:first-of-type>*{position:relative;z-index:1}'
               + '[data-vws-pricing] section:first-of-type h1,[data-vws-pricing] section:first-of-type h2,[data-vws-pricing] section:first-of-type h3{color:#f0f4ff!important}'
-              + '[data-vws-pricing] section:first-of-type p{color:rgba(240,244,255,0.65)!important}';
+              + '[data-vws-pricing] section:first-of-type h1 *,[data-vws-pricing] section:first-of-type h2 *,[data-vws-pricing] section:first-of-type h3 *{color:#f0f4ff!important}'
+              + '[data-vws-pricing] section:first-of-type span{color:#f0f4ff!important}'
+              + '[data-vws-pricing] section:first-of-type p{color:rgba(240,244,255,0.72)!important}'
+              + '[data-vws-pricing] section:first-of-type p *{color:rgba(240,244,255,0.72)!important}';
+            /* JS direct override — catches inline-styled React elements */
+            setTimeout(function() {
+              var heroSec = document.querySelector('[data-vws-pricing] section:first-of-type');
+              if (!heroSec) return;
+              var heroH1 = heroSec.querySelector('h1');
+              if (heroH1) {
+                heroH1.style.setProperty('color','#f0f4ff','important');
+                Array.from(heroH1.querySelectorAll('*')).forEach(function(el) {
+                  el.style.setProperty('color','#f0f4ff','important');
+                });
+              }
+              Array.from(heroSec.querySelectorAll('p')).forEach(function(p) {
+                p.style.setProperty('color','rgba(240,244,255,0.72)','important');
+                Array.from(p.querySelectorAll('*')).forEach(function(el) {
+                  el.style.setProperty('color','rgba(240,244,255,0.72)','important');
+                });
+              });
+            }, 250);
             document.head.appendChild(prStyle);
           }
         }
@@ -5814,10 +5835,12 @@
   <script>
   (function() {
     var KEY = 'vws_consent_v2';
-    /* TESTING MODE: set to false once you approve the design to make it persist */
-    var ALWAYS_SHOW = true;
+    var REJECT_KEY = 'vws_cb_reject_count';
 
-    if (!ALWAYS_SHOW && localStorage.getItem(KEY)) return;
+    /* Never show if user already accepted */
+    if (localStorage.getItem(KEY)) return;
+    /* After 2 rejections, stop asking */
+    if (parseInt(localStorage.getItem(REJECT_KEY) || '0', 10) >= 2) return;
 
     /* ── Cookie categories ── */
     var CATS = [
@@ -5866,10 +5889,7 @@
     banner.setAttribute('role', 'dialog');
     banner.setAttribute('aria-label', 'Cookie consent');
     banner.innerHTML =
-      '<div class="vws-cb-header">'
-      + '<div><div class="vws-cb-brand">Visionary Web Studio</div><div class="vws-cb-sub">Privacy &amp; Cookies</div></div>'
-      + '</div>'
-      + '<p class="vws-cb-title">We value your privacy</p>'
+      '<p class="vws-cb-title">We value your privacy</p>'
       + '<p class="vws-cb-text">We use cookies to enhance your experience, analyze our traffic, and for marketing purposes. You are in full control of what you share. <a href="/privacy-policy" target="_blank" rel="noopener">Privacy Policy</a></p>'
       + '<div class="vws-cb-btns">'
       + '<button id="vws-cb-deny">Reject All</button>'
@@ -5937,7 +5957,8 @@
     });
 
     banner.querySelector('#vws-cb-deny').addEventListener('click', function() {
-      saveConsent({necessary:true, analytics:false, marketing:false, functional:false});
+      var count = parseInt(localStorage.getItem(REJECT_KEY) || '0', 10) + 1;
+      localStorage.setItem(REJECT_KEY, count);
       hideBanner();
     });
 
