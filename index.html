@@ -1226,10 +1226,10 @@
   .vws-ps-h2{font-size:clamp(32px,4.5vw,58px);font-weight:900;color:#0d1117;letter-spacing:-.03em;line-height:1.05;margin:0 0 18px}
   .vws-ps-sub{font-size:17px;color:#64748b;line-height:1.7;max-width:560px;margin:0 auto}
   /* Full-bleed strip — one connected surface, images flush edge to edge */
-  .vws-ps-grid{display:flex;width:100%;padding:48px 0 0;-webkit-box-reflect:below 0px linear-gradient(transparent 30%,rgba(120,125,140,0.32) 100%)}
-  .vws-ps-card{flex:1;min-width:0;margin-right:-2px;position:relative;z-index:1}
-  .vws-ps-card:last-child{margin-right:0}
-  .vws-ps-img{width:calc(100% + 2px);display:block}
+  .vws-ps-grid{display:flex;width:100%;padding:48px 0 0;overflow:hidden;-webkit-box-reflect:below 0px linear-gradient(transparent 30%,rgba(120,125,140,0.32) 100%)}
+  .vws-ps-card{flex:1;min-width:0;position:relative}
+  .vws-ps-card:not(:first-child)::before{content:'';position:absolute;left:0;top:0;bottom:0;width:16px;background:linear-gradient(to right,#e6e6e6 0%,rgba(230,230,230,0) 100%);z-index:10;pointer-events:none}
+  .vws-ps-img{width:100%;display:block}
   @media(max-width:960px){.vws-ps-grid{flex-wrap:wrap}.vws-ps-card{flex:0 0 50%;margin-right:0}}
   @media(max-width:540px){.vws-ps-card{flex:0 0 100%};#vws-hp-slider{padding:70px 0 0}}
 
