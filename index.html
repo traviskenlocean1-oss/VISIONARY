@@ -735,18 +735,20 @@
         function injectListing() {
           var existing = document.getElementById('vws-svc-list');
           if (existing) {
-            if (existing.querySelector('.vws-sp-panel')) return true; /* already sticky panels */
-            existing.remove(); /* old Meadowline build — rebuild as sticky */
+            if (existing.querySelector('.vws-sp-card-a')) return true; /* already two-layer design */
+            existing.remove();
           }
           var ref = document.querySelector('section.relative.border-t');
           if (!ref) return false;
           Array.from(document.querySelectorAll('section')).forEach(function(s) {
             if (s.className === 'relative border-t') s.classList.add('vws-react-hidden');
           });
-          var SP_BG=['#0a0f1e','#060f0d','#130d04','#0c0820','#160608','#130f00'];
-          var SP_ACC=['rgba(37,99,235,0.15)','rgba(13,148,136,0.15)','rgba(217,119,6,0.15)','rgba(124,58,237,0.15)','rgba(220,38,38,0.15)','rgba(202,138,4,0.15)'];
+          /* Per-service accent colors — used for the card gradients, not panel backgrounds */
+          var SP_A=['rgba(37,99,235,','rgba(13,148,136,','rgba(217,119,6,','rgba(124,58,237,','rgba(220,38,38,','rgba(202,138,4,'];
           var panels = SVC_DATA.map(function(s, i) {
-            return '<div class="vws-sp-panel" style="z-index:'+(i+1)+';background:'+SP_BG[i]+'">'
+            var ca='linear-gradient(145deg,'+SP_A[i]+'0.22) 0%,rgba(255,255,255,0.03) 100%)';
+            var cb='linear-gradient(145deg,rgba(255,255,255,0.07) 0%,'+SP_A[i]+'0.18) 100%)';
+            return '<div class="vws-sp-panel" style="z-index:'+(i+1)+'">'
               +'<div class="vws-sp-inner">'
                 +'<div class="vws-sp-text">'
                   +'<span class="vws-sp-num">'+s.num+'</span>'
@@ -754,8 +756,11 @@
                   +'<p class="vws-sp-desc">'+s.desc+'</p>'
                   +'<a href="'+s.href+'" class="vws-sp-btn">More Details</a>'
                 +'</div>'
-                +'<div class="vws-sp-img" style="background:'+SP_ACC[i]+'">'
-                  +'<span class="vws-sp-img-n">'+s.num+'</span>'
+                +'<div class="vws-sp-img">'
+                  +'<div class="vws-sp-cards">'
+                    +'<div class="vws-sp-card-a" style="background:'+ca+'"><span class="vws-sp-card-num">'+s.num+'</span></div>'
+                    +'<div class="vws-sp-card-b" style="background:'+cb+'"><span class="vws-sp-card-tag">'+s.title+'</span></div>'
+                  +'</div>'
                 +'</div>'
               +'</div>'
             +'</div>';
@@ -1810,18 +1815,27 @@
 
   /* ══ SERVICES PAGE — sticky-stacked panels ══ */
   #vws-svc-list{display:block!important;overflow:visible!important;padding:0!important;margin:0!important;font-family:inherit}
-  .vws-sp-panel{position:sticky;top:0;height:100vh;width:100%;display:flex;align-items:stretch;overflow:hidden;border-radius:0!important}
-  .vws-sp-inner{display:flex;flex-direction:row;width:100%;height:100%}
+  /* One consistent dark background — all panels match the site theme */
+  .vws-sp-panel{position:sticky;top:0;height:100vh;width:100%;display:flex;align-items:stretch;overflow:hidden;border-radius:0!important;background:#060916}
+  .vws-sp-inner{display:flex;flex-direction:row;width:100%;height:100%;border-top:1px solid rgba(255,255,255,0.06)}
   .vws-sp-text{flex:0 0 50%;width:50%;padding:80px 64px;display:flex;flex-direction:column;justify-content:center;align-items:flex-start}
   .vws-sp-num{display:block;font-size:11px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,0.3);margin:0 0 16px}
   .vws-sp-title{font-size:clamp(28px,3.5vw,52px)!important;font-weight:900;color:#fff!important;line-height:1.1;margin:0 0 20px!important}
-  .vws-sp-desc{font-size:clamp(15px,1.3vw,17px)!important;color:rgba(255,255,255,0.62)!important;line-height:1.75;margin:0 0 36px!important;max-width:440px}
-  .vws-sp-btn{display:inline-block;padding:14px 32px;background:rgba(255,255,255,0.08)!important;color:#fff!important;font-size:12px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;text-decoration:none!important;border:1px solid rgba(255,255,255,0.25);border-radius:0!important;transition:background .2s,border-color .2s;cursor:pointer;box-shadow:none!important;align-self:flex-start;width:auto!important}
-  .vws-sp-btn:hover{background:rgba(255,255,255,0.18)!important;border-color:rgba(255,255,255,0.55)}
-  .vws-sp-img{flex:0 0 50%;width:50%;height:100%;position:relative;overflow:hidden;border-radius:0!important;display:flex;align-items:center;justify-content:center}
-  .vws-sp-img-n{font-size:clamp(120px,16vw,220px);font-weight:900;color:rgba(255,255,255,0.05);line-height:1;user-select:none;pointer-events:none;font-family:Barlow,system-ui,sans-serif}
+  .vws-sp-desc{font-size:clamp(15px,1.3vw,17px)!important;color:rgba(255,255,255,0.55)!important;line-height:1.75;margin:0 0 36px!important;max-width:440px}
+  .vws-sp-btn{display:inline-block;padding:14px 32px;background:transparent!important;color:#fff!important;font-size:12px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;text-decoration:none!important;border:1px solid rgba(255,255,255,0.28);border-radius:0!important;transition:background .2s,border-color .2s;cursor:pointer;box-shadow:none!important;align-self:flex-start;width:auto!important}
+  .vws-sp-btn:hover{background:rgba(255,255,255,0.08)!important;border-color:rgba(255,255,255,0.6)}
+  /* Image side: padded container — image floats inside, not edge-to-edge */
+  .vws-sp-img{flex:0 0 50%;width:50%;height:100%;position:relative;display:flex;align-items:center;justify-content:center;padding:48px 48px 48px 32px;border-left:1px solid rgba(255,255,255,0.05);border-radius:0!important;overflow:hidden}
+  /* Card wrap: bounded area for the two-layer composition */
+  .vws-sp-cards{position:relative;width:100%;max-width:540px;aspect-ratio:4/3;max-height:420px}
+  /* Primary card: large, anchored top-left of the wrap */
+  .vws-sp-card-a{position:absolute;top:0;left:0;right:56px;bottom:56px;border-radius:0!important;overflow:hidden;display:flex;align-items:flex-end;padding:20px;box-shadow:0 32px 90px rgba(0,0,0,0.7),0 8px 24px rgba(0,0,0,0.45);border:1px solid rgba(255,255,255,0.07);z-index:1}
+  /* Secondary card: smaller, offset bottom-right — overlaps primary, creates depth */
+  .vws-sp-card-b{position:absolute;bottom:0;right:0;width:50%;height:50%;border-radius:0!important;overflow:hidden;display:flex;align-items:center;justify-content:center;z-index:2;box-shadow:0 16px 50px rgba(0,0,0,0.75),0 4px 14px rgba(0,0,0,0.5);border:1px solid rgba(255,255,255,0.1)}
+  .vws-sp-card-num{font-size:clamp(48px,7vw,88px);font-weight:900;color:rgba(255,255,255,0.12);line-height:1;user-select:none;font-family:Barlow,system-ui,sans-serif}
+  .vws-sp-card-tag{font-size:10px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,0.38);text-align:center;padding:0 12px;line-height:1.5}
   .vws-sp-panel *{border-radius:0!important}
-  @media(max-width:768px){.vws-sp-panel{position:relative;height:auto;min-height:100svh}.vws-sp-inner{flex-direction:column;height:100%;min-height:inherit}.vws-sp-text{flex:1 1 auto;width:100%;padding:60px 24px 40px;min-height:0}.vws-sp-img{flex:0 0 auto;width:100%;height:50vw;min-height:220px}}
+  @media(max-width:768px){.vws-sp-panel{position:relative;height:auto;min-height:100svh}.vws-sp-inner{flex-direction:column;height:100%;min-height:inherit;border-top:none}.vws-sp-text{flex:1 1 auto;width:100%;padding:60px 24px 40px;min-height:0}.vws-sp-img{flex:0 0 auto;width:100%;height:auto;padding:24px 24px 48px;border-left:none;border-top:1px solid rgba(255,255,255,0.06)}.vws-sp-cards{height:240px;max-width:100%;aspect-ratio:unset}}
 
   /* ══ SERVICES PAGE — "Built for Results" hidden (replaced by Best Service section) ══ */
   #react-built-results{display:none!important}
