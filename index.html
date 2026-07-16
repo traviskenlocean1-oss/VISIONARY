@@ -442,8 +442,6 @@
           }
         });
 
-        /* "proud to share" dark CTA section kept visible — has animated background */
-
         /* Hide React "What We Stand For" section — replaced by custom #vws-stand-for */
         Array.from(document.querySelectorAll('section')).forEach(function(s) {
           if (!s.id && (s.textContent.indexOf('What We Stand For') !== -1 || s.textContent.indexOf('Honesty first') !== -1)) {
@@ -3091,6 +3089,12 @@
 
         /* ── TASK 1: Body class + per-section background glow variation ── */
         document.body.classList.add('vws-about');
+        /* Hide React CTA ("py-32") — replaced by custom #vws-about-cta with animated background */
+        Array.from(document.querySelectorAll('section')).forEach(function(s) {
+          if (!s.id && s.className.indexOf('py-32') !== -1 && s.textContent.indexOf('proud to share') !== -1) {
+            s.classList.add('vws-react-hidden');
+          }
+        });
         if (!document.getElementById('vws-about-styles')) {
           var bgStyle = document.createElement('style');
           bgStyle.id = 'vws-about-styles';
