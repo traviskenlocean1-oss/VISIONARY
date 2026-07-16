@@ -724,12 +724,12 @@
 
         /* ── Listing injector — defined early so window._vwsInjectListing is always available ── */
         var SVC_DATA = [
-          {num:'01',title:'Website Development',desc:'Every site we build is hand-coded from scratch — no templates, no drag-and-drop builders. Custom design built around your brand, built to convert visitors into customers.',href:'/services/web-development',tint:'rgba(37,99,235,0.55)'},
-          {num:'02',title:'Hosting & Domain',desc:'Getting online shouldn\'t be complicated. We handle your domain setup, connect everything, and host your site on fast, globally distributed servers — included at no extra cost.',href:'/services/hosting',tint:'rgba(13,148,136,0.55)'},
-          {num:'03',title:'Website Maintenance',desc:'The work doesn\'t stop at launch. We stay available for updates, fixes, and improvements so your site keeps performing at its best — month after month.',href:'/services/website-maintenance',tint:'rgba(217,119,6,0.55)'},
-          {num:'04',title:'Website Creation',desc:'Starting from zero? We build your entire online presence from the ground up — custom design, clean code, and everything in between. No shortcuts.',href:'/services/website-creation',tint:'rgba(124,58,237,0.55)'},
-          {num:'05',title:'Website Redesign',desc:'Already have a site but it\'s outdated, slow, or not converting? We rebuild it from scratch — same domain, completely new results and a design that actually works.',href:'/services/website-redesign',tint:'rgba(220,38,38,0.5)'},
-          {num:'06',title:'Logo & Branding',desc:'Your logo is the face of your business. We design custom logos and full brand identities that look professional, stand out, and last for years.',href:'/services/logo-branding',tint:'rgba(202,138,4,0.6)'}
+          {num:'01',title:'Website Development',desc:'Hand-coded from scratch — no templates, no builders. Every line written to make your site fast, clean, and built to turn visitors into paying clients.',href:'/services/web-development',tint:'rgba(37,99,235,0.55)'},
+          {num:'02',title:'Hosting & Domain',desc:'Your domain set up, DNS handled, and site hosted on Cloudflare\'s global edge network. Sub-100ms load times, 99.9% uptime — all included, nothing to manage.',href:'/services/hosting',tint:'rgba(13,148,136,0.55)'},
+          {num:'03',title:'Website Maintenance',desc:'We stay in your corner long after launch. Updates, fixes, and performance improvements handled same day — your site stays fast, fresh, and working the way it should.',href:'/services/website-maintenance',tint:'rgba(217,119,6,0.55)'},
+          {num:'04',title:'Website Creation',desc:'No site? No problem. We take you from zero to live — full custom design, clean code, and a site that actually reflects the quality of your business.',href:'/services/website-creation',tint:'rgba(124,58,237,0.55)'},
+          {num:'05',title:'Website Redesign',desc:'Your current site is losing you clients. We rebuild from the ground up — same domain, modern code, and a design that finally works as hard as you do.',href:'/services/website-redesign',tint:'rgba(220,38,38,0.5)'},
+          {num:'06',title:'Logo & Branding',desc:'Your logo is the first thing people judge. We design mark systems built to last — sharp at any size, distinct in any market, and unmistakably yours.',href:'/services/logo-branding',tint:'rgba(202,138,4,0.6)'}
         ];
 
         function injectListing() {
@@ -743,20 +743,28 @@
           Array.from(document.querySelectorAll('section')).forEach(function(s) {
             if (s.className === 'relative border-t') s.classList.add('vws-react-hidden');
           });
-          /* Per-service accent colors — card gradients */
-          var SP_A=['rgba(37,99,235,','rgba(13,148,136,','rgba(217,119,6,','rgba(124,58,237,','rgba(220,38,38,','rgba(202,138,4,'];
           /* Per-panel full background colors and dark/light flag */
-          var SP_BG=['#e9ecf6','#060f18','#f2ede5','#0a0816','#1a0a10','#180e06'];
-          var SP_DK=[0,1,0,1,1,1];
+          var SP_BG=['#e9ecf6','#060f18','#f2ede5','#0a0816','#ede8f5','#180e06'];
+          var SP_DK=[0,1,0,1,0,1];
+          /* Real Unsplash photos for right-side card visual */
+          var SP_IMG=[
+            'https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=900&auto=format&fit=crop&q=80',
+            'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=900&auto=format&fit=crop&q=80',
+            'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=900&auto=format&fit=crop&q=80',
+            'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=900&auto=format&fit=crop&q=80',
+            'https://images.unsplash.com/photo-1547658719-da2b51169166?w=900&auto=format&fit=crop&q=80',
+            'https://images.unsplash.com/photo-1561070791-2526d30994b5?w=900&auto=format&fit=crop&q=80'
+          ];
+          var SP_WORD=['WELCOME','ALWAYS ON','ALWAYS FRESH','BUILT RIGHT','REIMAGINED','YOUR MARK'];
+          var SP_STAT=[
+            {big:'100%',sub:'Hand-Coded'},
+            {big:'99.9%',sub:'Uptime SLA'},
+            {big:'Same Day',sub:'Turnaround'},
+            {big:'2 Weeks',sub:'Avg. Build'},
+            {big:'$0',sub:'Migration Fee'},
+            {big:'3+',sub:'Concepts'}
+          ];
           var panels = SVC_DATA.map(function(s, i) {
-            var ca,cb;
-            if(SP_DK[i]){
-              ca='linear-gradient(145deg,rgba(255,255,255,0.06) 0%,'+SP_A[i]+'0.58) 100%)';
-              cb='linear-gradient(145deg,'+SP_A[i]+'0.5) 0%,rgba(255,255,255,0.04) 100%)';
-            } else {
-              ca='linear-gradient(145deg,#080d1a 0%,'+SP_A[i]+'0.7) 100%)';
-              cb='linear-gradient(145deg,'+SP_A[i]+'0.45) 0%,#060a14 100%)';
-            }
             return '<div class="vws-sp-panel" style="z-index:'+(i+1)+'" data-dk="'+SP_DK[i]+'">'
               +'<div class="vws-sp-card" style="background:'+SP_BG[i]+'">'
                 +'<div class="vws-sp-inner">'
@@ -768,8 +776,17 @@
                   +'</div>'
                   +'<div class="vws-sp-img">'
                     +'<div class="vws-sp-cards">'
-                      +'<div class="vws-sp-card-a" style="background:'+ca+'"><span class="vws-sp-card-num">'+s.num+'</span></div>'
-                      +'<div class="vws-sp-card-b" style="background:'+cb+'"><span class="vws-sp-card-tag">'+s.title+'</span></div>'
+                      +'<div class="vws-sp-card-a" style="background-image:url('+SP_IMG[i]+');background-size:cover;background-position:center">'
+                        +'<div class="vws-spa-overlay">'
+                          +'<span class="vws-spa-word">'+SP_WORD[i]+'</span>'
+                        +'</div>'
+                      +'</div>'
+                      +'<div class="vws-sp-card-b">'
+                        +'<div class="vws-spb-stat">'
+                          +'<span class="vws-spb-big">'+SP_STAT[i].big+'</span>'
+                          +'<span class="vws-spb-sub">'+SP_STAT[i].sub+'</span>'
+                        +'</div>'
+                      +'</div>'
                     +'</div>'
                   +'</div>'
                 +'</div>'
@@ -792,44 +809,19 @@
           var bss = document.createElement('section');
           bss.id = 'vws-best-svc';
           bss.innerHTML = '<div class="vws-bs-inner">'
-            + '<p class="vws-bs-label">By the Numbers</p>'
-            + '<h2 class="vws-bs-h2">Built fast.<br>Delivered right.</h2>'
-            + '<div class="vws-bs-grid">'
-              + '<div class="vws-bs-browser">'
-                + '<div class="vws-bs-chrome">'
-                  + '<span class="vws-bs-dot" style="background:#ff5f57"></span>'
-                  + '<span class="vws-bs-dot" style="background:#febc2e"></span>'
-                  + '<span class="vws-bs-dot" style="background:#28c840"></span>'
-                  + '<span class="vws-bs-url">analytics — visionary</span>'
-                + '</div>'
-                + '<div class="vws-bs-screen">'
-                  + '<p class="vws-bs-chart-label">Sites Launched — Last 6 Months</p>'
-                  + '<svg class="vws-bs-chart" viewBox="0 0 264 88" fill="none" xmlns="http://www.w3.org/2000/svg">'
-                    + '<line x1="0" y1="70" x2="264" y2="70" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>'
-                    + '<line x1="0" y1="46" x2="264" y2="46" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>'
-                    + '<line x1="0" y1="23" x2="264" y2="23" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>'
-                    + '<rect x="0" y="47" width="28" height="23" fill="#2563eb" rx="3"/>'
-                    + '<rect x="44" y="29" width="28" height="41" fill="#2563eb" rx="3"/>'
-                    + '<rect x="88" y="41" width="28" height="29" fill="#2563eb" rx="3"/>'
-                    + '<rect x="132" y="17" width="28" height="53" fill="#2563eb" rx="3"/>'
-                    + '<rect x="176" y="23" width="28" height="47" fill="#2563eb" rx="3"/>'
-                    + '<rect x="220" y="0" width="28" height="70" fill="#60a5fa" rx="3"/>'
-                    + '<text x="14" y="84" fill="rgba(255,255,255,0.28)" font-size="9" text-anchor="middle" font-family="system-ui,sans-serif">Feb</text>'
-                    + '<text x="58" y="84" fill="rgba(255,255,255,0.28)" font-size="9" text-anchor="middle" font-family="system-ui,sans-serif">Mar</text>'
-                    + '<text x="102" y="84" fill="rgba(255,255,255,0.28)" font-size="9" text-anchor="middle" font-family="system-ui,sans-serif">Apr</text>'
-                    + '<text x="146" y="84" fill="rgba(255,255,255,0.28)" font-size="9" text-anchor="middle" font-family="system-ui,sans-serif">May</text>'
-                    + '<text x="190" y="84" fill="rgba(255,255,255,0.28)" font-size="9" text-anchor="middle" font-family="system-ui,sans-serif">Jun</text>'
-                    + '<text x="234" y="84" fill="rgba(255,255,255,0.55)" font-size="9" text-anchor="middle" font-family="system-ui,sans-serif">Jul</text>'
-                  + '</svg>'
-                  + '<div class="vws-bs-stats">'
-                    + '<div class="vws-bs-stat-row"><span class="vws-bs-stat-num">47+</span><span class="vws-bs-stat-label">Sites Launched</span></div>'
-                    + '<div class="vws-bs-stat-row"><span class="vws-bs-stat-num">14 Days</span><span class="vws-bs-stat-label">Avg. Turnaround</span></div>'
-                    + '<div class="vws-bs-stat-row"><span class="vws-bs-stat-num">100%</span><span class="vws-bs-stat-label">Client Satisfaction</span></div>'
-                  + '</div>'
-                + '</div>'
+            + '<div class="vws-bs-photo-grid">'
+              + '<div class="vws-bs-photo-col">'
+                + '<img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=900&auto=format&fit=crop&q=80" alt="Visionary Web Studio team at work" class="vws-bs-photo" loading="lazy">'
               + '</div>'
-              + '<div class="vws-bs-copy">'
-                + '<p class="vws-bs-copy-body">Every project starts with a direct conversation — no discovery forms, no delays. We scope, design, and deliver on a fixed timeline, hand-coded from scratch with zero page-builder bloat.</p>'
+              + '<div class="vws-bs-content-col">'
+                + '<p class="vws-bs-label">By the Numbers</p>'
+                + '<h2 class="vws-bs-h2">Built fast.<br>Delivered right.</h2>'
+                + '<div class="vws-bs-metrics">'
+                  + '<div class="vws-bs-metric"><span class="vws-bs-metric-num">47+</span><span class="vws-bs-metric-label">Sites Launched</span></div>'
+                  + '<div class="vws-bs-metric"><span class="vws-bs-metric-num">14</span><span class="vws-bs-metric-label">Day Avg. Delivery</span></div>'
+                  + '<div class="vws-bs-metric"><span class="vws-bs-metric-num">100%</span><span class="vws-bs-metric-label">Client Satisfaction</span></div>'
+                + '</div>'
+                + '<p class="vws-bs-copy-body">Every project starts with a real conversation — no forms, no delays. We scope, design, and deliver on a fixed timeline, hand-coded from scratch with zero page-builder bloat.</p>'
                 + '<ul class="vws-bs-list">'
                   + '<li class="vws-bs-li"><span class="vws-bs-check">&#10003;</span>Fixed-scope pricing — no scope creep, no surprise invoices</li>'
                   + '<li class="vws-bs-li"><span class="vws-bs-check">&#10003;</span>Hosting &amp; domain included on every project</li>'
@@ -870,9 +862,9 @@
               if (!inner) return;
               var pOut = Math.max(0, Math.min(1, (scrollY - listTop - i * vh) / vh));
               var pIn  = i === 0 ? 1 : Math.max(0, Math.min(1, (scrollY - listTop - (i - 1) * vh) / vh));
-              var scale      = Math.min(0.92 + 0.08 * pIn, 1 - 0.12 * pOut);
-              var opacity    = Math.min(0.65 + 0.35 * pIn, 1 - 0.38 * pOut);
-              var brightness = Math.min(0.72 + 0.28 * pIn, 1 - 0.28 * pOut);
+              var scale      = Math.min(0.84 + 0.16 * pIn, 1 - 0.22 * pOut);
+              var opacity    = Math.min(0.40 + 0.60 * pIn, 1 - 0.65 * pOut);
+              var brightness = Math.min(0.50 + 0.50 * pIn, 1 - 0.50 * pOut);
               inner.style.transform  = 'scale(' + scale.toFixed(4) + ')';
               inner.style.opacity    = opacity.toFixed(4);
               inner.style.filter     = 'brightness(' + brightness.toFixed(4) + ')';
@@ -1909,45 +1901,40 @@
   .vws-sp-panel[data-dk="1"] .vws-sp-btn:hover{background:rgba(255,255,255,0.09)!important;border-color:rgba(255,255,255,0.48)!important}
   .vws-sp-panel[data-dk="1"] .vws-sp-img{border-left-color:rgba(255,255,255,0.07)!important}
   .vws-sp-cards{position:relative;width:100%;max-width:540px;aspect-ratio:4/3;max-height:420px}
-  .vws-sp-card-a{position:absolute;top:0;left:0;right:56px;bottom:56px;border-radius:0!important;overflow:hidden;display:flex;align-items:flex-end;padding:20px;box-shadow:0 24px 70px rgba(0,0,0,0.22),0 6px 20px rgba(0,0,0,0.12);border:1px solid rgba(0,0,0,0.08);z-index:1}
-  .vws-sp-card-b{position:absolute;bottom:0;right:0;width:50%;height:50%;border-radius:0!important;overflow:hidden;display:flex;align-items:center;justify-content:center;z-index:2;box-shadow:0 12px 40px rgba(0,0,0,0.25),0 4px 12px rgba(0,0,0,0.14);border:1px solid rgba(0,0,0,0.08)}
-  .vws-sp-card-num{font-size:clamp(48px,7vw,88px);font-weight:900;color:rgba(255,255,255,0.18);line-height:1;user-select:none;font-family:Barlow,system-ui,sans-serif}
-  .vws-sp-card-tag{font-size:10px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,0.55);text-align:center;padding:0 12px;line-height:1.5}
+  .vws-sp-card-a{position:absolute;top:0;left:0;right:56px;bottom:56px;border-radius:0!important;overflow:hidden;z-index:1;box-shadow:0 24px 70px rgba(0,0,0,0.30),0 8px 24px rgba(0,0,0,0.16)}
+  .vws-spa-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.80) 0%,rgba(0,0,0,0.06) 55%);display:flex;align-items:flex-end;padding:24px}
+  .vws-spa-word{font-size:clamp(20px,3.2vw,44px);font-weight:900;color:#fff;letter-spacing:-0.02em;line-height:1;text-transform:uppercase;font-family:Barlow,system-ui,sans-serif}
+  .vws-sp-card-b{position:absolute;bottom:0;right:0;width:50%;height:50%;border-radius:0!important;overflow:hidden;z-index:2;background:#0d1117;display:flex;align-items:center;justify-content:center;box-shadow:0 12px 40px rgba(0,0,0,0.45)}
+  .vws-spb-stat{text-align:center;padding:0 20px}
+  .vws-spb-big{display:block;font-size:clamp(18px,2.6vw,32px);font-weight:900;color:#fff;line-height:1.1;margin-bottom:8px;font-family:Barlow,system-ui,sans-serif}
+  .vws-spb-sub{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,0.4);display:block}
   @media(max-width:768px){.vws-sp-panel{position:relative;height:auto;min-height:100svh;padding:0 16px}.vws-sp-card{border-radius:16px 16px 0 0}.vws-sp-inner{flex-direction:column;height:100%;min-height:inherit;padding:0}.vws-sp-text{flex:1 1 auto;width:100%;padding:60px 24px 40px;min-height:0}.vws-sp-img{flex:0 0 auto;width:100%;height:auto;padding:24px 24px 48px;border-left:none;border-top:1px solid rgba(0,0,0,0.06)}.vws-sp-cards{height:240px;max-width:100%;aspect-ratio:unset}}
 
   /* ══ SERVICES PAGE — "Built for Results" hidden (replaced by Best Service section) ══ */
   #react-built-results{display:none!important}
 
   /* ══ SERVICES PAGE — Best Service section ══ */
-  #vws-best-svc{background:#ffffff;padding:80px 40px;font-family:Barlow,system-ui,sans-serif;border-top:1px solid rgba(0,0,0,0.07)}
+  #vws-best-svc{background:#fff;padding:80px 40px;font-family:Barlow,system-ui,sans-serif;border-top:1px solid rgba(0,0,0,0.07)}
   .vws-bs-inner{max-width:1200px;margin:0 auto}
+  .vws-bs-photo-grid{display:grid;grid-template-columns:1fr 1fr;gap:0;min-height:600px;border-radius:20px;overflow:hidden;box-shadow:0 32px 100px rgba(0,0,0,0.14),0 8px 30px rgba(0,0,0,0.08)}
+  .vws-bs-photo-col{position:relative;overflow:hidden}
+  .vws-bs-photo{width:100%;height:100%;object-fit:cover;display:block}
+  .vws-bs-content-col{background:#0d1117;padding:64px 56px;display:flex;flex-direction:column;justify-content:center}
   .vws-bs-label{font-size:11px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:#60a5fa;margin:0 0 12px}
-  .vws-bs-h2{font-size:clamp(36px,5vw,64px);font-weight:900;color:#0d1117;margin:0 0 48px;line-height:1.05}
-  .vws-bs-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:start}
-  .vws-bs-browser{border-radius:12px;overflow:hidden;box-shadow:0 24px 80px rgba(0,0,0,0.18),0 4px 20px rgba(0,0,0,0.1);background:#0d1117;border:1px solid rgba(255,255,255,0.06)}
-  .vws-bs-chrome{background:#161b22;padding:12px 16px;display:flex;align-items:center;gap:8px;border-bottom:1px solid rgba(255,255,255,0.06)}
-  .vws-bs-dot{width:11px;height:11px;border-radius:50%;flex-shrink:0;display:inline-block}
-  .vws-bs-url{font-size:11px;font-family:ui-monospace,monospace;color:rgba(255,255,255,0.28);margin-left:10px;letter-spacing:.01em}
-  .vws-bs-screen{padding:24px 24px 28px}
-  .vws-bs-chart-label{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,0.35);margin:0 0 14px}
-  .vws-bs-chart{width:100%;display:block;overflow:visible}
-  .vws-bs-stats{display:grid;grid-template-columns:repeat(3,1fr);margin-top:20px;border-top:1px solid rgba(255,255,255,0.07);padding-top:18px}
-  .vws-bs-stat-row{padding:0 12px;border-right:1px solid rgba(255,255,255,0.07)}
-  .vws-bs-stat-row:first-child{padding-left:0}
-  .vws-bs-stat-row:last-child{border-right:none}
-  .vws-bs-stat-num{display:block;font-size:21px;font-weight:900;color:#fff;line-height:1.1;margin-bottom:4px;font-family:Barlow,system-ui,sans-serif}
-  .vws-bs-stat-label{font-size:10px;color:rgba(255,255,255,0.38);font-weight:600;letter-spacing:.04em;line-height:1.4;display:block}
-  .vws-bs-copy{display:flex;flex-direction:column;justify-content:center;padding-top:4px}
-  .vws-bs-copy-body{font-size:17px;color:#374151;line-height:1.75;margin:0 0 28px;max-width:420px}
-  .vws-bs-list{list-style:none;padding:0;margin:0 0 36px;display:flex;flex-direction:column;gap:14px}
-  .vws-bs-li{font-size:15px;color:#374151;display:flex;align-items:flex-start;gap:10px;line-height:1.5}
-  .vws-bs-check{color:#2563eb;font-weight:900;font-size:14px;flex-shrink:0;margin-top:1px}
+  .vws-bs-h2{font-size:clamp(32px,4vw,52px);font-weight:900;color:#fff;margin:0 0 32px;line-height:1.05}
+  .vws-bs-metrics{display:flex;gap:36px;margin:0 0 32px;padding:0 0 32px;border-bottom:1px solid rgba(255,255,255,0.08)}
+  .vws-bs-metric-num{display:block;font-size:clamp(26px,3vw,40px);font-weight:900;color:#fff;line-height:1;margin-bottom:6px;font-family:Barlow,system-ui,sans-serif}
+  .vws-bs-metric-label{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,0.38);display:block}
+  .vws-bs-copy-body{font-size:16px;color:rgba(255,255,255,0.60);line-height:1.75;margin:0 0 24px}
+  .vws-bs-list{list-style:none;padding:0;margin:0 0 36px;display:flex;flex-direction:column;gap:12px}
+  .vws-bs-li{font-size:14px;color:rgba(255,255,255,0.58);display:flex;align-items:flex-start;gap:10px;line-height:1.5}
+  .vws-bs-check{color:#60a5fa;font-weight:900;font-size:14px;flex-shrink:0;margin-top:1px}
   .vws-bs-cta{display:flex;align-items:center;gap:28px}
-  .vws-bs-btn{display:inline-flex;align-items:center;gap:8px;background:#2563eb;color:#fff;font-size:13px;font-weight:800;letter-spacing:.08em;padding:14px 28px;border-radius:999px;text-decoration:none;transition:background .2s,transform .2s}
+  .vws-bs-btn{display:inline-flex;align-items:center;gap:8px;background:#2563eb;color:#fff;font-size:13px;font-weight:800;letter-spacing:.08em;padding:14px 28px;border-radius:0;text-decoration:none;transition:background .2s,transform .2s}
   .vws-bs-btn:hover{background:#1d4ed8;transform:translateY(-2px)}
-  .vws-bs-call-label{font-size:12px;color:#6b7280;margin:0 0 4px}
-  .vws-bs-phone{font-size:20px;font-weight:800;color:#0d1117;margin:0}
-  @media(max-width:900px){.vws-bs-grid{grid-template-columns:1fr;gap:40px}}
+  .vws-bs-call-label{font-size:12px;color:rgba(255,255,255,0.38);margin:0 0 4px}
+  .vws-bs-phone{font-size:20px;font-weight:800;color:#fff;margin:0}
+  @media(max-width:900px){.vws-bs-photo-grid{grid-template-columns:1fr}.vws-bs-photo-col{height:320px}.vws-bs-content-col{padding:48px 36px}}
   @media(max-width:480px){#vws-best-svc{padding:60px 20px}}
 
   /* ══ PRICING PAGE — card hover + scroll reveal ══ */
