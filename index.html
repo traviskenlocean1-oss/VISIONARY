@@ -48,6 +48,22 @@
     <meta name="twitter:image" content="https://visionary.traviskenlocean1.workers.dev/og-image.png" />
 
     <!-- ═══════════════════════════════════════════════════════════
+         Mobile / PWA Hints
+    ═══════════════════════════════════════════════════════════ -->
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Visionary Web Studio" />
+    <meta name="application-name" content="Visionary Web Studio" />
+
+    <!-- ═══════════════════════════════════════════════════════════
+         Hreflang — self-referencing, updated per SPA route via JS
+    ═══════════════════════════════════════════════════════════ -->
+    <link rel="alternate" hreflang="en-US" href="https://visionary.traviskenlocean1.workers.dev/" />
+    <link rel="alternate" hreflang="x-default" href="https://visionary.traviskenlocean1.workers.dev/" />
+
+    <!-- ═══════════════════════════════════════════════════════════
          JSON-LD Structured Data
     ═══════════════════════════════════════════════════════════ -->
     <script type="application/ld+json">
@@ -232,20 +248,138 @@
         },
         {
           "@type": "BreadcrumbList",
+          "@id": "https://visionary.traviskenlocean1.workers.dev/#breadcrumb-site",
           "itemListElement": [
             { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://visionary.traviskenlocean1.workers.dev/" },
-            { "@type": "ListItem", "position": 2, "name": "About", "item": "https://visionary.traviskenlocean1.workers.dev/about" },
-            { "@type": "ListItem", "position": 3, "name": "Services", "item": "https://visionary.traviskenlocean1.workers.dev/services" },
-            { "@type": "ListItem", "position": 4, "name": "Pricing", "item": "https://visionary.traviskenlocean1.workers.dev/pricing" },
-            { "@type": "ListItem", "position": 5, "name": "Portfolio", "item": "https://visionary.traviskenlocean1.workers.dev/work" },
-            { "@type": "ListItem", "position": 6, "name": "Contact", "item": "https://visionary.traviskenlocean1.workers.dev/contact" }
+            { "@type": "ListItem", "position": 2, "name": "About", "item": "https://visionary.traviskenlocean1.workers.dev/about/" },
+            { "@type": "ListItem", "position": 3, "name": "Services", "item": "https://visionary.traviskenlocean1.workers.dev/services/" },
+            { "@type": "ListItem", "position": 4, "name": "Pricing", "item": "https://visionary.traviskenlocean1.workers.dev/pricing/" },
+            { "@type": "ListItem", "position": 5, "name": "Portfolio", "item": "https://visionary.traviskenlocean1.workers.dev/work/" },
+            { "@type": "ListItem", "position": 6, "name": "Contact", "item": "https://visionary.traviskenlocean1.workers.dev/contact/" }
           ]
+        },
+        {
+          "@type": "Service",
+          "@id": "https://visionary.traviskenlocean1.workers.dev/services/#service-web-design",
+          "name": "Custom Website Design Miami",
+          "alternateName": "Web Design Miami",
+          "serviceType": "Web Design",
+          "provider": { "@id": "https://visionary.traviskenlocean1.workers.dev/#business" },
+          "url": "https://visionary.traviskenlocean1.workers.dev/services/",
+          "description": "Fully custom websites built from scratch — no templates, no page builders. Hand-coded for speed, SEO, and conversions. Serving Miami businesses and clients nationwide.",
+          "areaServed": [
+            { "@type": "City", "name": "Miami" },
+            { "@type": "State", "name": "Florida" },
+            { "@type": "Country", "name": "United States" }
+          ],
+          "hasOfferCatalog": {
+            "@type": "OfferCatalog",
+            "name": "Website Design Packages",
+            "itemListElement": [
+              { "@type": "Offer", "name": "Starter Website", "price": "500", "priceCurrency": "USD", "description": "2–3 page custom website for small businesses" },
+              { "@type": "Offer", "name": "Standard Website", "price": "750", "priceCurrency": "USD", "description": "4–6 page website with advanced design and features" },
+              { "@type": "Offer", "name": "Full Build", "price": "1000", "priceCurrency": "USD", "description": "Complete custom build with e-commerce and premium features" }
+            ]
+          }
+        },
+        {
+          "@type": "Service",
+          "@id": "https://visionary.traviskenlocean1.workers.dev/services/#service-seo",
+          "name": "SEO Services Miami",
+          "alternateName": "Search Engine Optimization Miami",
+          "serviceType": "Search Engine Optimization",
+          "provider": { "@id": "https://visionary.traviskenlocean1.workers.dev/#business" },
+          "url": "https://visionary.traviskenlocean1.workers.dev/services/",
+          "description": "Technical SEO, on-page optimization, local SEO, structured data markup, Core Web Vitals, and Google Business Profile optimization for Miami businesses that want to rank #1.",
+          "areaServed": [
+            { "@type": "City", "name": "Miami" },
+            { "@type": "State", "name": "Florida" },
+            { "@type": "Country", "name": "United States" }
+          ]
+        },
+        {
+          "@type": "Service",
+          "@id": "https://visionary.traviskenlocean1.workers.dev/services/#service-ecommerce",
+          "name": "E-Commerce Website Development Miami",
+          "serviceType": "E-Commerce Development",
+          "provider": { "@id": "https://visionary.traviskenlocean1.workers.dev/#business" },
+          "url": "https://visionary.traviskenlocean1.workers.dev/services/",
+          "description": "High-converting online stores with seamless checkout, inventory management, and payment processing. Built from scratch — no Shopify themes or Wix stores.",
+          "areaServed": [
+            { "@type": "City", "name": "Miami" },
+            { "@type": "Country", "name": "United States" }
+          ]
+        },
+        {
+          "@type": "Service",
+          "@id": "https://visionary.traviskenlocean1.workers.dev/services/#service-branding",
+          "name": "Brand Identity Design Miami",
+          "serviceType": "Brand Identity Design",
+          "provider": { "@id": "https://visionary.traviskenlocean1.workers.dev/#business" },
+          "url": "https://visionary.traviskenlocean1.workers.dev/services/",
+          "description": "Logo design, color palettes, typography systems, and complete visual identity packages for businesses ready to stand out in their market.",
+          "areaServed": [
+            { "@type": "City", "name": "Miami" },
+            { "@type": "Country", "name": "United States" }
+          ]
+        },
+        {
+          "@type": "Product",
+          "@id": "https://visionary.traviskenlocean1.workers.dev/pricing/#starter",
+          "name": "Starter Website Package",
+          "description": "2–3 page custom website for small businesses and startups. Includes mobile-responsive design, on-page SEO, and contact form.",
+          "brand": { "@type": "Brand", "name": "Visionary Web Studio" },
+          "offers": {
+            "@type": "Offer",
+            "price": "500",
+            "priceCurrency": "USD",
+            "url": "https://visionary.traviskenlocean1.workers.dev/pricing/",
+            "availability": "https://schema.org/InStock",
+            "priceValidUntil": "2026-12-31",
+            "seller": { "@id": "https://visionary.traviskenlocean1.workers.dev/#business" }
+          }
+        },
+        {
+          "@type": "Product",
+          "@id": "https://visionary.traviskenlocean1.workers.dev/pricing/#standard",
+          "name": "Standard Website Package",
+          "description": "4–6 page custom website with advanced design, animations, and CMS integration. The most popular choice for growing businesses.",
+          "brand": { "@type": "Brand", "name": "Visionary Web Studio" },
+          "offers": {
+            "@type": "Offer",
+            "price": "750",
+            "priceCurrency": "USD",
+            "url": "https://visionary.traviskenlocean1.workers.dev/pricing/",
+            "availability": "https://schema.org/InStock",
+            "priceValidUntil": "2026-12-31",
+            "seller": { "@id": "https://visionary.traviskenlocean1.workers.dev/#business" }
+          }
+        },
+        {
+          "@type": "Product",
+          "@id": "https://visionary.traviskenlocean1.workers.dev/pricing/#full-build",
+          "name": "Full Build Website Package",
+          "description": "Complete custom website with e-commerce, premium animations, and all advanced features. Everything from design to launch — you own it all.",
+          "brand": { "@type": "Brand", "name": "Visionary Web Studio" },
+          "offers": {
+            "@type": "Offer",
+            "price": "1000",
+            "priceCurrency": "USD",
+            "url": "https://visionary.traviskenlocean1.workers.dev/pricing/",
+            "availability": "https://schema.org/InStock",
+            "priceValidUntil": "2026-12-31",
+            "seller": { "@id": "https://visionary.traviskenlocean1.workers.dev/#business" }
+          }
         }
       ]
     }
     </script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="dns-prefetch" href="https://formspree.io" />
+    <link rel="dns-prefetch" href="https://embed.tawk.to" />
+    <link rel="dns-prefetch" href="https://va.tawk.to" />
+    <link rel="dns-prefetch" href="https://www.google-analytics.com" />
     <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;800;900&family=Barlow+Condensed:wght@600;700;800;900&display=swap" rel="stylesheet" />
     <script type="module" crossorigin src="/assets/index-CNkA1Y-Q.js"></script>
     <link rel="stylesheet" crossorigin href="/assets/index-B7NQdH4D.css">
@@ -3153,6 +3287,124 @@
         if (twTitle) twTitle.setAttribute('content', meta.title);
         var twDesc = document.querySelector('meta[name="twitter:description"]');
         if (twDesc) twDesc.setAttribute('content', meta.desc);
+      })();
+      /* ── Dynamic JSON-LD: per-page WebPage, BreadcrumbList, Service, Pricing ── */
+      (function() {
+        var p = window.location.pathname;
+        var BASE = 'https://visionary.traviskenlocean1.workers.dev';
+        var slug = p.replace(/\/$/, '') || '/';
+        var BIZ = BASE + '/#business';
+        var now = new Date().toISOString().split('T')[0];
+
+        /* Per-page breadcrumb trail */
+        var crumbMap = {
+          '/':        [[1,'Home',BASE+'/']],
+          '/about':   [[1,'Home',BASE+'/'],[2,'About',BASE+'/about/']],
+          '/services':[[1,'Home',BASE+'/'],[2,'Services',BASE+'/services/']],
+          '/pricing': [[1,'Home',BASE+'/'],[2,'Pricing',BASE+'/pricing/']],
+          '/work':    [[1,'Home',BASE+'/'],[2,'Portfolio',BASE+'/work/']],
+          '/contact': [[1,'Home',BASE+'/'],[2,'Contact Us',BASE+'/contact/']]
+        };
+        var crumbs = (crumbMap[slug]||crumbMap['/']).map(function(c){
+          return {'@type':'ListItem','position':c[0],'name':c[1],'item':c[2]};
+        });
+        var breadcrumb = {'@type':'BreadcrumbList','@id':BASE+slug+'/#breadcrumb','itemListElement':crumbs};
+
+        /* Per-page WebPage schema type + content */
+        var wpTypes = {'/':'WebPage','/about':'AboutPage','/services':'CollectionPage','/pricing':'WebPage','/work':'CollectionPage','/contact':'ContactPage'};
+        var wpNames = {
+          '/':        'Visionary Web Studio | Custom Web Design Agency Miami, FL',
+          '/about':   'About Us | Visionary Web Studio — Miami Web Design Agency',
+          '/services':'Web Design Services Miami | Custom Websites, SEO & Branding',
+          '/pricing': 'Web Design Pricing Miami | Transparent & Affordable | VWS',
+          '/work':    'Portfolio | Our Web Design Work | Visionary Web Studio Miami',
+          '/contact': 'Contact Us | Start Your Project | Visionary Web Studio Miami'
+        };
+        var wpDescs = {
+          '/':        'Miami-based custom web design agency. High-converting websites built from scratch — no templates, no shortcuts. Get a free quote today.',
+          '/about':   'Meet the team behind Visionary Web Studio. Miami-based designers obsessed with helping businesses grow through powerful, custom-built websites.',
+          '/services':'Custom web design, e-commerce development, brand identity, and SEO services in Miami, FL. Every project built from scratch — no shortcuts.',
+          '/pricing': 'Clear, upfront pricing for custom web design. No hidden fees. See what you get and start building the website your business deserves.',
+          '/work':    'Browse our portfolio of custom websites built for businesses across South Florida and beyond. See what Visionary Web Studio can do for your brand.',
+          '/contact': 'Ready to transform your online presence? Contact Visionary Web Studio in Miami, FL. We respond within 24 hours — usually same day.'
+        };
+        var webPage = {
+          '@type': wpTypes[slug]||'WebPage',
+          '@id':   BASE+(slug==='/'?'':slug)+'/#webpage',
+          'url':   BASE+(slug==='/'?'/':slug+'/'),
+          'name':  wpNames[slug]||wpNames['/'],
+          'description': wpDescs[slug]||wpDescs['/'],
+          'isPartOf':  {'@id':BASE+'/#website'},
+          'about':     {'@id':BIZ},
+          'breadcrumb':{'@id':BASE+slug+'/#breadcrumb'},
+          'inLanguage':'en-US',
+          'dateModified': now
+        };
+
+        var graph = [webPage, breadcrumb];
+
+        /* /services — ItemList of all service offerings */
+        if (slug === '/services') {
+          graph.push({
+            '@type':'ItemList',
+            '@id':BASE+'/services/#service-list',
+            'name':'Web Design & Digital Services — Visionary Web Studio Miami',
+            'itemListElement':[
+              {'@type':'ListItem','position':1,'url':BASE+'/services/#web-design','name':'Custom Website Design'},
+              {'@type':'ListItem','position':2,'url':BASE+'/services/#ecommerce','name':'E-Commerce Development'},
+              {'@type':'ListItem','position':3,'url':BASE+'/services/#branding','name':'Brand Identity Design'},
+              {'@type':'ListItem','position':4,'url':BASE+'/services/#seo','name':'SEO Optimization'},
+              {'@type':'ListItem','position':5,'url':BASE+'/services/#maintenance','name':'Website Maintenance'}
+            ]
+          });
+        }
+
+        /* /pricing — Product schemas with real prices (enables price display in Google SERPs) */
+        if (slug === '/pricing') {
+          [
+            {id:'starter',   name:'Starter Website Package',   price:'500',  desc:'2–3 page custom website for small businesses. Mobile-responsive, on-page SEO, and contact form included.'},
+            {id:'standard',  name:'Standard Website Package',  price:'750',  desc:'4–6 page custom website with advanced design, animations, and CMS integration. Most popular package.'},
+            {id:'full-build',name:'Full Build Website Package', price:'1000', desc:'Complete custom website with e-commerce, premium animations, and advanced features. You own everything.'}
+          ].forEach(function(pkg) {
+            graph.push({
+              '@type':'Product',
+              '@id':BASE+'/pricing/#'+pkg.id,
+              'name':pkg.name,
+              'description':pkg.desc,
+              'brand':{'@type':'Brand','name':'Visionary Web Studio'},
+              'offers':{'@type':'Offer','price':pkg.price,'priceCurrency':'USD','url':BASE+'/pricing/','availability':'https://schema.org/InStock','priceValidUntil':'2026-12-31','seller':{'@id':BIZ}}
+            });
+          });
+        }
+
+        /* /contact — ContactPoint for rich result eligibility */
+        if (slug === '/contact') {
+          graph.push({
+            '@type':'ContactPoint',
+            'telephone':'+15618890507',
+            'contactType':'customer service',
+            'areaServed':'US',
+            'availableLanguage':'English'
+          });
+        }
+
+        /* Inject or update the dynamic LD+JSON tag */
+        var el = document.getElementById('vws-dynamic-ld');
+        if (!el) {
+          el = document.createElement('script');
+          el.type = 'application/ld+json';
+          el.id = 'vws-dynamic-ld';
+          document.head.appendChild(el);
+        }
+        el.textContent = JSON.stringify({'@context':'https://schema.org','@graph':graph});
+
+        /* Update canonical + hreflang to match current SPA route */
+        var canon = document.querySelector('link[rel="canonical"]');
+        if (canon) canon.setAttribute('href', BASE+(slug==='/'?'/':slug+'/'));
+        var hl = document.querySelector('link[rel="alternate"][hreflang="en-US"]');
+        if (hl) hl.setAttribute('href', BASE+(slug==='/'?'/':slug+'/'));
+        var hld = document.querySelector('link[rel="alternate"][hreflang="x-default"]');
+        if (hld) hld.setAttribute('href', BASE+(slug==='/'?'/':slug+'/'));
       })();
       /* Tag the footer logo link so only it gets dark background — not the nav "Home" link */
       setTimeout(function() {
