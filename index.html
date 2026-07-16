@@ -1228,7 +1228,7 @@
   /* Full-bleed strip — table layout guarantees zero sub-pixel gaps between cells */
   .vws-ps-grid{display:table;table-layout:fixed;width:100%;border-collapse:collapse;padding:48px 0 0;-webkit-box-reflect:below 0px linear-gradient(transparent 30%,rgba(120,125,140,0.32) 100%)}
   .vws-ps-card{display:table-cell;vertical-align:top;position:relative}
-  .vws-ps-card:not(:first-child)::before{content:'';position:absolute;left:0;top:0;bottom:0;width:16px;background:linear-gradient(to right,#e6e6e6 0%,rgba(230,230,230,0) 100%);z-index:10;pointer-events:none}
+  .vws-ps-card:not(:first-child)::before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;background:#e6e6e6;z-index:10;pointer-events:none}
   .vws-ps-img{width:100%;display:block}
   @media(max-width:960px){.vws-ps-grid{display:flex;flex-wrap:wrap}.vws-ps-card{display:block;flex:0 0 50%}}
   @media(max-width:540px){.vws-ps-card{flex:0 0 100%};#vws-hp-slider{padding:70px 0 0}}
