@@ -560,7 +560,27 @@
           if (document.getElementById('vws-about-wwa-grid') || wwaPoll > 30) clearInterval(wwaTimer);
         }, 300);
 
-        /* CTA section — removed per user request */
+        /* Fix About: assign ID to CTA section + move Principles (WHAT WE STAND FOR) above it */
+        (function() {
+          function doFix() {
+            var secs = Array.from(document.querySelectorAll('section'));
+            var ctaSec = null, wwasSec = null;
+            for (var i = 0; i < secs.length; i++) {
+              var s = secs[i], t = s.textContent;
+              if (!ctaSec && s.className.indexOf('py-32') !== -1 && t.indexOf('build something') !== -1) ctaSec = s;
+              if (!wwasSec && t.indexOf('WHAT WE STAND FOR') !== -1 && !s.classList.contains('vws-react-hidden')) wwasSec = s;
+            }
+            if (!ctaSec) return false;
+            ctaSec.id = 'vws-about-cta';
+            if (wwasSec && ctaSec.parentNode && ctaSec.parentNode === wwasSec.parentNode) {
+              var par = ctaSec.parentNode, kids = Array.from(par.children);
+              if (kids.indexOf(wwasSec) > kids.indexOf(ctaSec)) par.insertBefore(wwasSec, ctaSec);
+            }
+            return true;
+          }
+          doFix();
+          var n = 0, fixT = setInterval(function() { if (doFix() || ++n > 20) clearInterval(fixT); }, 300);
+        })();
       })();
 
       /* 1.11. [removed — bento grid owns its own classes, no re-tagging needed] */
@@ -817,7 +837,7 @@
                 + '<p class="vws-bs-label">By the Numbers</p>'
                 + '<h2 class="vws-bs-h2">Built fast.<br>Delivered right.</h2>'
                 + '<div class="vws-bs-metrics">'
-                  + '<div class="vws-bs-metric"><span class="vws-bs-metric-num">47+</span><span class="vws-bs-metric-label">Sites Launched</span></div>'
+                  + '<div class="vws-bs-metric"><span class="vws-bs-metric-num">20+</span><span class="vws-bs-metric-label">Sites Launched</span></div>'
                   + '<div class="vws-bs-metric"><span class="vws-bs-metric-num">14</span><span class="vws-bs-metric-label">Day Avg. Delivery</span></div>'
                   + '<div class="vws-bs-metric"><span class="vws-bs-metric-num">100%</span><span class="vws-bs-metric-label">Client Satisfaction</span></div>'
                 + '</div>'
@@ -844,31 +864,37 @@
             window.removeEventListener('scroll', window._vwsStickyFXListener);
             window._vwsStickyFXListener = null;
           }
+          if (window._vwsStickyFXResize) {
+            window.removeEventListener('resize', window._vwsStickyFXResize);
+            window._vwsStickyFXResize = null;
+          }
           var list = document.getElementById('vws-svc-list');
           if (!list || !list.querySelector('.vws-sp-panel')) return;
           var panels = Array.from(list.querySelectorAll('.vws-sp-panel'));
+          /* Cache stable refs — avoids DOM queries & layout reflow per scroll frame */
+          var innerEls = panels.map(function(p) { return p.querySelector('.vws-sp-card'); });
+          var vh = window.innerHeight;
+          var listTop = list.getBoundingClientRect().top + window.scrollY;
+          function recache() { vh = window.innerHeight; listTop = list.getBoundingClientRect().top + window.scrollY; }
+          window._vwsStickyFXResize = recache;
+          window.addEventListener('resize', recache, { passive: true });
           var _raf = false;
           function updateFX() {
-            var list2 = document.getElementById('vws-svc-list');
-            if (!list2) {
+            if (!document.getElementById('vws-svc-list')) {
               window.removeEventListener('scroll', window._vwsStickyFXListener);
               window._vwsStickyFXListener = null; return;
             }
             var scrollY = window.scrollY;
-            var listTop = list2.getBoundingClientRect().top + scrollY;
-            var vh = window.innerHeight;
-            panels.forEach(function(panel, i) {
-              var inner = panel.querySelector('.vws-sp-card');
-              if (!inner) return;
+            for (var i = 0; i < panels.length; i++) {
+              var inner = innerEls[i];
+              if (!inner) continue;
               var pOut = Math.max(0, Math.min(1, (scrollY - listTop - i * vh) / vh));
               var pIn  = i === 0 ? 1 : Math.max(0, Math.min(1, (scrollY - listTop - (i - 1) * vh) / vh));
-              var scale      = Math.min(0.84 + 0.16 * pIn, 1 - 0.22 * pOut);
-              var opacity    = Math.min(0.40 + 0.60 * pIn, 1 - 0.65 * pOut);
-              var brightness = Math.min(0.50 + 0.50 * pIn, 1 - 0.50 * pOut);
-              inner.style.transform  = 'scale(' + scale.toFixed(4) + ')';
-              inner.style.opacity    = opacity.toFixed(4);
-              inner.style.filter     = 'brightness(' + brightness.toFixed(4) + ')';
-            });
+              var scale   = Math.min(0.84 + 0.16 * pIn, 1 - 0.22 * pOut);
+              var opacity = Math.min(0.40 + 0.60 * pIn, 1 - 0.65 * pOut);
+              inner.style.transform = 'scale(' + scale.toFixed(3) + ')';
+              inner.style.opacity   = opacity.toFixed(3);
+            }
             _raf = false;
           }
           function onSvcScroll() { if (!_raf) { _raf = true; requestAnimationFrame(updateFX); } }
@@ -1449,6 +1475,13 @@
   body.vws-about section.min-h-screen{background:transparent!important}
   body.vws-about section.min-h-screen h1,body.vws-about section.min-h-screen h2{color:rgb(225,224,204)!important}
   body.vws-about section.min-h-screen p{color:rgba(225,224,204,0.6)!important}
+  /* About CTA — dark background + animated glows matching hero style */
+  #vws-about-cta{background:#060916!important;overflow:hidden}
+  #vws-about-cta h1,#vws-about-cta h2,#vws-about-cta h3{color:#e1e0cc!important}
+  #vws-about-cta p{color:rgba(225,224,204,0.65)!important;font-weight:400!important}
+  #vws-about-cta a{color:#60a5fa!important}
+  #vws-about-cta::before{content:"";position:absolute;border-radius:50%;pointer-events:none;z-index:0;width:60vw;height:60vw;max-width:680px;max-height:680px;bottom:-15%;left:-5%;background:radial-gradient(circle,rgba(59,130,246,0.22) 0%,transparent 68%);animation:vwsAboutGlowL 9s ease-in-out infinite}
+  #vws-about-cta::after{content:"";position:absolute;border-radius:50%;pointer-events:none;z-index:0;width:50vw;height:50vw;max-width:580px;max-height:580px;top:5%;right:-3%;background:radial-gradient(circle,rgba(99,102,241,0.18) 0%,transparent 68%);animation:vwsAboutGlowR 11s ease-in-out infinite}
   /* Fix "businesses." cyan gradient → match site blue/indigo */
   body.vws-about section.min-h-screen h1 span{background:linear-gradient(135deg,#60a5fa 0%,#3b82f6 50%,#818cf8 100%)!important;-webkit-background-clip:text!important;background-clip:text!important;-webkit-text-fill-color:transparent!important}
   /* Who We Are two-column grid */
