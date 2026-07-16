@@ -2884,6 +2884,7 @@
       if (window._vwsPrObs) { window._vwsPrObs.disconnect(); window._vwsPrObs = null; }
       if (window._vwsPfObs) { window._vwsPfObs.disconnect(); window._vwsPfObs = null; }
       if (window._vwsPfBodyObs) { window._vwsPfBodyObs.disconnect(); window._vwsPfBodyObs = null; }
+      if (window._vwsMobSvcObs) { window._vwsMobSvcObs.disconnect(); window._vwsMobSvcObs = null; }
       /* Remove page-specific body classes and attributes */
       document.body.classList.remove('vws-about');
       document.body.classList.remove('vws-contact');
@@ -4075,8 +4076,9 @@
           container.appendChild(a);
         });
       }
-      var obs = new MutationObserver(patch);
-      obs.observe(document.body, { childList: true, subtree: true });
+      if (window._vwsMobSvcObs) { window._vwsMobSvcObs.disconnect(); window._vwsMobSvcObs = null; }
+      window._vwsMobSvcObs = new MutationObserver(patch);
+      window._vwsMobSvcObs.observe(document.body, { childList: true, subtree: true });
       patch();
     }
 
@@ -4800,7 +4802,10 @@
         scanSteps();
         /* Also watch for future expansions */
         if (!window._vwsDepthObs) {
-          window._vwsDepthObs = new MutationObserver(function() { scanSteps(); });
+          window._vwsDepthObs = new MutationObserver(function() {
+            clearTimeout(window._vwsDepthTimer);
+            window._vwsDepthTimer = setTimeout(scanSteps, 150);
+          });
           window._vwsDepthObs.observe(document.body, { subtree:true, attributes:true, attributeFilter:['style'] });
         }
       }
@@ -5336,7 +5341,7 @@
         +'<svg viewBox="0 0 24 24" style="width:14px;height:14px;flex-shrink:0" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>'
         +'All Services</a>';
       var inner = '<div id="vws-hero-grid" style="max-width:1200px;margin:0 auto;padding:0 40px;display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;width:100%;box-sizing:border-box;'+FF+'">'
-        +'<div>'
+        +'<div style="min-width:0;overflow-wrap:break-word">'
         +backLink
         +heroIcon(slug, svc.color, svc.lt)
         +'<h1 style="font-size:clamp(52px,7vw,90px);font-weight:900;color:#fff;line-height:1;margin:0 0 20px;letter-spacing:-0.02em">'+svc.name.replace(' ','<br>')+'</h1>'
@@ -5511,10 +5516,14 @@
         var ms = document.createElement('style');
         ms.id = 'vws-svc-mobile';
         ms.textContent =
-          '@media(max-width:768px){'
+          '@media(max-width:1024px){'
+          +'#vws-hero-grid{grid-template-columns:1fr!important}'
+          +'#vws-hero-visual{display:none!important}'
+          +'}'
+          +'@media(max-width:768px){'
           /* Hero: single col, hide decorative visual, tighten padding */
           +'#vws-hero{padding:80px 0 60px!important;min-height:auto!important}'
-          +'#vws-hero-grid{grid-template-columns:1fr!important;gap:32px!important;padding:0 24px!important}'
+          +'#vws-hero-grid{gap:32px!important;padding:0 24px!important}'
           +'#vws-hero-visual{display:none!important}'
           /* All sections: narrower side padding */
           +'#vws-problem,#vws-steps,#vws-included,#vws-results,#vws-faq,#vws-cta{'
