@@ -1452,9 +1452,10 @@
   body.vws-about section.min-h-screen{background:transparent!important}
   body.vws-about section.min-h-screen h1,body.vws-about section.min-h-screen h2{color:rgb(225,224,204)!important}
   body.vws-about section.min-h-screen p{color:rgba(225,224,204,0.6)!important}
-  /* About CTA — dark background + animated glows matching hero style */
-  #vws-about-cta{background:#060916!important;overflow:hidden}
+  /* About CTA — transparent bg shows animated 3D image from React app (same as services/pricing) */
+  #vws-about-cta{background:transparent!important;overflow:hidden}
   #vws-about-cta h1,#vws-about-cta h2,#vws-about-cta h3{color:#e1e0cc!important}
+  #vws-about-cta h2{font-size:clamp(20px,2.4vw,34px)!important}
   #vws-about-cta p{color:rgba(225,224,204,0.65)!important;font-weight:400!important}
   #vws-about-cta::before{content:"";position:absolute;border-radius:50%;pointer-events:none;z-index:0;width:70vw;height:70vw;max-width:800px;max-height:800px;bottom:-20%;left:-8%;background:radial-gradient(circle,rgba(59,130,246,0.38) 0%,transparent 65%);animation:vwsAboutGlowL 9s ease-in-out infinite}
   #vws-about-cta::after{content:"";position:absolute;border-radius:50%;pointer-events:none;z-index:0;width:55vw;height:55vw;max-width:640px;max-height:640px;top:0%;right:-6%;background:radial-gradient(circle,rgba(99,102,241,0.30) 0%,transparent 65%);animation:vwsAboutGlowR 11s ease-in-out infinite}
@@ -3597,14 +3598,15 @@
           if (!footer) return;
           var cta = document.createElement('section');
           cta.id = 'vws-about-cta';
-          cta.style.cssText = 'padding:120px 40px;text-align:center;position:relative';
-          cta.innerHTML = '<div style="max-width:660px;margin:0 auto;position:relative;z-index:1">'
-            + '<p style="font-size:10.5px;font-weight:700;letter-spacing:.28em;text-transform:uppercase;color:rgba(96,165,250,0.65);margin:0 0 16px">Ready to get started?</p>'
-            + '<h2 style="font-size:clamp(28px,4vw,52px);font-weight:900;color:#e1e0cc;line-height:1.1;margin:0 0 20px;letter-spacing:-0.03em">Let\'s build something<br>you\'re proud to share.</h2>'
-            + '<p style="font-size:16px;color:rgba(225,224,204,0.6);line-height:1.7;margin:0 0 40px;max-width:500px;margin-left:auto;margin-right:auto">No templates. No shortcuts. A fast, custom site built to represent your business the right way.</p>'
-            + '<div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap">'
-              + '<a href="/contact" style="display:inline-flex;align-items:center;gap:8px;background:#ffffff;color:#0d1117!important;font-size:15px;font-weight:700;padding:16px 36px;border-radius:100px;text-decoration:none!important;box-shadow:0 8px 32px rgba(255,255,255,.18)">Start a Project</a>'
-              + '<a href="/pricing" style="display:inline-flex;align-items:center;gap:6px;color:rgba(225,224,204,0.7)!important;font-size:15px;font-weight:600;padding:16px 24px;text-decoration:none!important">See Pricing →</a>'
+          cta.style.cssText = 'padding:100px 40px;text-align:center;position:relative';
+          cta.innerHTML = '<div style="position:absolute;inset:0;background:rgba(6,9,22,0.72);z-index:0"></div>'
+            + '<div style="max-width:600px;margin:0 auto;position:relative;z-index:1">'
+            + '<p style="font-size:10.5px;font-weight:700;letter-spacing:.28em;text-transform:uppercase;color:rgba(96,165,250,0.65);margin:0 0 14px">Ready to get started?</p>'
+            + '<h2 style="font-weight:900;color:#e1e0cc;line-height:1.1;margin:0 0 18px;letter-spacing:-0.02em">Let\'s build something<br>you\'re proud to share.</h2>'
+            + '<p style="font-size:15px;color:rgba(225,224,204,0.6);line-height:1.7;margin:0 0 36px;max-width:460px;margin-left:auto;margin-right:auto">No templates. No shortcuts. A fast, custom site built to represent your business the right way.</p>'
+            + '<div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap">'
+              + '<a href="/contact" style="display:inline-flex;align-items:center;gap:8px;background:#ffffff;color:#0d1117!important;font-size:15px;font-weight:700;padding:15px 34px;border-radius:100px;text-decoration:none!important;box-shadow:0 6px 28px rgba(255,255,255,.15)">Start a Project</a>'
+              + '<a href="/pricing" style="display:inline-flex;align-items:center;gap:6px;color:rgba(225,224,204,0.7)!important;font-size:15px;font-weight:600;padding:15px 22px;text-decoration:none!important">See Pricing →</a>'
             + '</div>'
             + '</div>';
           footer.parentNode.insertBefore(cta, footer);
