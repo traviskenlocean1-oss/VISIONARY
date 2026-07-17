@@ -5373,6 +5373,10 @@
             lStyle.id = 'vws-listing-colors';
             /* Widen Services hero container (React max-w-5xl → 1280px) */
             var lCss = '[data-vws-svc] section .max-w-5xl{max-width:1280px!important}';
+            /* Fix left panel dead whitespace: stretch content to fill full height */
+            lCss += '.vws-bs-photo-col>div{align-items:stretch!important}';
+            lCss += '.vws-bs-photo-col>div>div{display:flex!important;flex-direction:column!important;height:100%!important;justify-content:space-between!important}';
+            lCss += '.vws-bs-photo-col>div>div>*{margin-bottom:0!important;margin-top:0!important}';
             ORDER.forEach(function(cfg) {
               /* LEARN MORE button — service accent color, beats React inline styles */
               lCss += 'a[href="/services/'+cfg.slug+'"]{background:'+cfg.color+'!important;background-color:'+cfg.color+'!important;color:#fff!important;box-shadow:0 4px 20px '+cfg.color+'55!important}';
