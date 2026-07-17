@@ -1746,9 +1746,9 @@
     /* FIX: Hero headline gap — reduce flex gap + kill mb-2 between the two h1 wrappers */
     section[class*="h-screen"] .flex-1.flex.flex-col.justify-center{gap:4px!important}
     section[class*="h-screen"] div[class*="overflow-hidden"][class*="mb-2"]{margin-bottom:0!important}
-    /* FIX: Feature cards (Fast Delivery / No Hidden Fees / Support Included) — white text on dark glass card */
+    /* FIX: Feature cards (Fast Delivery / No Hidden Fees / Support Included) — pure white text on dark glass card */
     .flex.items-center.gap-4.rounded-xl[style*="rgba(5, 8, 20"] p,
-    .flex.items-center.gap-4.rounded-xl[style*="rgba(5, 8, 20"] span{color:rgba(255,255,255,0.9)!important}
+    .flex.items-center.gap-4.rounded-xl[style*="rgba(5, 8, 20"] span{color:#ffffff!important}
   }
   @media(max-width:480px){
     /* Form card in hero — force visible + full width on mobile */
@@ -1765,14 +1765,9 @@
     #vws-chat-win{width:calc(100vw - 32px)!important;bottom:80px!important;right:16px!important}
   }
 
-  /* ══ "READY TO BUILD" SECTION — explicit dark bg + animated gradient when React canvas is absent ══ */
+  /* ══ "READY TO BUILD" SECTION — dark bg fallback (cloned video injected via JS) ══ */
   section[class*="py-28"][class*="text-center"]{background:rgb(6,9,22)!important}
-  section[class*="py-28"][class*="text-center"]>.absolute.inset-0[style*="radial-gradient"]{
-    background:radial-gradient(ellipse at 35% 65%,rgba(37,99,235,0.3) 0%,transparent 55%),
-               radial-gradient(ellipse at 65% 25%,rgba(99,102,241,0.2) 0%,transparent 50%)!important;
-    animation:vwsBuildGlow 8s ease-in-out infinite!important
-  }
-  @keyframes vwsBuildGlow{0%,100%{opacity:0.65;transform:scale(1)}50%{opacity:1;transform:scale(1.12)}}
+  #vws-build-bg{position:absolute!important;top:0!important;left:0!important;width:100%!important;height:100%!important;object-fit:cover!important;z-index:0!important;pointer-events:none!important;opacity:0.85!important}
 
   /* ══ MOBILE MENU — fix invisible dark text on near-black bg (rgba(3,5,14,0.98)) ══ */
   /* All nav links */
@@ -5042,6 +5037,29 @@
           });
         }
 
+        /* ── Clone sitewide background video into "Ready to build" section ── */
+        injectBuildVideo();
+
+      }
+
+      /* ── "Ready to build" section: clone the site's background video so it shows on all viewports ── */
+      function injectBuildVideo() {
+        if (document.getElementById('vws-build-bg')) return;
+        var buildSec = Array.from(document.querySelectorAll('section')).find(function(s) {
+          return s.textContent.indexOf('worth looking') !== -1;
+        });
+        if (!buildSec) return;
+        var srcVideo = document.querySelector('video');
+        if (!srcVideo || !srcVideo.src) return;
+        var vid = document.createElement('video');
+        vid.id = 'vws-build-bg';
+        vid.autoplay = true;
+        vid.loop = true;
+        vid.muted = true;
+        vid.setAttribute('playsinline', '');
+        vid.src = srcVideo.src;
+        buildSec.insertBefore(vid, buildSec.firstChild);
+        vid.play().catch(function(){});
       }
 
       /* ── Build: Dual ticker (Cosmico Studios style) ── */
