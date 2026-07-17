@@ -5406,8 +5406,8 @@
             if (ORDER[i]) el.style.color = ORDER[i].lt;
           });
 
-          /* Fix hero left panel whitespace — stretch bottom card to fill full height */
-          (function fixHeroPanel(){
+          /* Fix hero left panel whitespace — distribute cards evenly to fill full height */
+          var _vwsFixPanel = function(){
             var vw = window.innerWidth;
             var panel = Array.from(document.querySelectorAll('div')).find(function(el){
               var cs = window.getComputedStyle(el);
@@ -5423,9 +5423,17 @@
             content.style.setProperty('display','flex','important');
             content.style.setProperty('flex-direction','column','important');
             content.style.setProperty('height','100%','important');
-            var last = content.lastElementChild;
-            if (last) last.style.setProperty('flex','1','important');
-          })();
+            content.style.setProperty('justify-content','space-between','important');
+            /* Zero out child margins so space-between distributes cleanly */
+            Array.from(content.children).forEach(function(c){
+              c.style.setProperty('margin-bottom','0','important');
+              c.style.setProperty('margin-top','0','important');
+            });
+          };
+          _vwsFixPanel();
+          /* Re-apply at 600ms + 1500ms to survive React re-renders */
+          setTimeout(_vwsFixPanel, 600);
+          setTimeout(_vwsFixPanel, 1500);
 
         }
       }, 150);
