@@ -4674,7 +4674,7 @@
           + '<span class="vws-pf2-lbl">' + p.ind + '</span>'
           + '<div class="vws-pf2-devices">'
             + '<div class="vws-pf2-phone"><div class="vws-pf2-ph-notch"></div>'
-              + '<div class="vws-pf2-ph-screen"><iframe data-src="' + p.url + '" scrolling="no" title="' + p.ind + ' mobile" sandbox="allow-scripts allow-same-origin"></iframe></div>'
+              + '<div class="vws-pf2-ph-screen" style="background:linear-gradient(145deg,#0d1117,#1a2236,#0f2040)"></div>'
               + '<div class="vws-pf2-ph-bar"></div></div>'
             + '<div class="vws-pf2-laptop"><div class="vws-pf2-laptop-lid"><div class="vws-pf2-laptop-cam"></div>'
               + '<div class="vws-pf2-laptop-screen"><iframe data-src="' + p.url + '" scrolling="no" title="' + p.ind + ' desktop" sandbox="allow-scripts allow-same-origin"></iframe></div>'
@@ -4786,11 +4786,16 @@
           card.addEventListener('touchend', function() {
             if (_moved || Date.now() - _ts > 600) return;
             var url = card.getAttribute('data-url');
-            if (url) window.open(url, '_blank');
+            if (!url) return;
+            /* Unload all iframes before opening new tab — prevents memory spike that crashes Safari */
+            document.querySelectorAll('.vws-pf2-card iframe[src]').forEach(function(f) {
+              if (f.src && f.src !== 'about:blank') { f.setAttribute('data-src', f.src); f.src = 'about:blank'; }
+            });
+            setTimeout(function() { window.open(url, '_blank'); }, 80);
           });
           /* Desktop click */
           card.addEventListener('click', function(e) {
-            if (e.pointerType === 'touch') return; /* already handled above */
+            if (e.pointerType === 'touch') return;
             var url = card.getAttribute('data-url');
             if (url) window.open(url, '_blank');
           });
@@ -4807,11 +4812,17 @@
               setTimeout(applyLaptopScales, 600);
               iframeObs.unobserve(card);
             });
-          }, { rootMargin: '200px 0px', threshold: 0 });
+          }, { rootMargin: '0px', threshold: 0.1 });
           document.querySelectorAll('.vws-pf2-card').forEach(function(c) { iframeObs.observe(c); });
         } else {
-          document.querySelectorAll('iframe[data-src]').forEach(function(f) {
-            f.src = f.getAttribute('data-src'); f.removeAttribute('data-src');
+          /* No IntersectionObserver — load only 2 at a time staggered */
+          var _allCards = Array.from(document.querySelectorAll('.vws-pf2-card'));
+          _allCards.forEach(function(c, i) {
+            setTimeout(function() {
+              c.querySelectorAll('iframe[data-src]').forEach(function(f) {
+                f.src = f.getAttribute('data-src'); f.removeAttribute('data-src');
+              });
+            }, i * 400);
           });
         }
       }
