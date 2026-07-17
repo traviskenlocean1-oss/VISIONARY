@@ -4786,12 +4786,7 @@
           card.addEventListener('touchend', function() {
             if (_moved || Date.now() - _ts > 600) return;
             var url = card.getAttribute('data-url');
-            if (!url) return;
-            /* Unload all iframes before opening new tab — prevents memory spike that crashes Safari */
-            document.querySelectorAll('.vws-pf2-card iframe[src]').forEach(function(f) {
-              if (f.src && f.src !== 'about:blank') { f.setAttribute('data-src', f.src); f.src = 'about:blank'; }
-            });
-            setTimeout(function() { window.open(url, '_blank'); }, 80);
+            if (url) window.open(url, '_blank');
           });
           /* Desktop click */
           card.addEventListener('click', function(e) {
@@ -4801,28 +4796,33 @@
           });
         });
 
+        /* Throttled iframe loader — queues cards and loads one iframe every 600ms.
+           Prevents fast scrolling from triggering all 10 iframes simultaneously,
+           which is what exhausted Safari's memory budget and caused the crash. */
+        var _loadQueue = [];
+        var _loadBusy = false;
+        function drainLoadQueue() {
+          if (_loadBusy || _loadQueue.length === 0) return;
+          _loadBusy = true;
+          var next = _loadQueue.shift();
+          next.querySelectorAll('iframe[data-src]').forEach(function(f) {
+            f.src = f.getAttribute('data-src'); f.removeAttribute('data-src');
+          });
+          setTimeout(function() { applyLaptopScales(); _loadBusy = false; drainLoadQueue(); }, 600);
+        }
         if (window.IntersectionObserver) {
           var iframeObs = new IntersectionObserver(function(entries) {
             entries.forEach(function(entry) {
               if (!entry.isIntersecting) return;
-              var card = entry.target;
-              card.querySelectorAll('iframe[data-src]').forEach(function(f) {
-                f.src = f.getAttribute('data-src'); f.removeAttribute('data-src');
-              });
-              setTimeout(applyLaptopScales, 600);
-              iframeObs.unobserve(card);
+              iframeObs.unobserve(entry.target);
+              _loadQueue.push(entry.target);
+              drainLoadQueue();
             });
-          }, { rootMargin: '0px', threshold: 0.1 });
+          }, { rootMargin: '0px', threshold: 0 });
           document.querySelectorAll('.vws-pf2-card').forEach(function(c) { iframeObs.observe(c); });
         } else {
-          /* No IntersectionObserver — load only 2 at a time staggered */
-          var _allCards = Array.from(document.querySelectorAll('.vws-pf2-card'));
-          _allCards.forEach(function(c, i) {
-            setTimeout(function() {
-              c.querySelectorAll('iframe[data-src]').forEach(function(f) {
-                f.src = f.getAttribute('data-src'); f.removeAttribute('data-src');
-              });
-            }, i * 400);
+          document.querySelectorAll('.vws-pf2-card').forEach(function(c) {
+            _loadQueue.push(c); drainLoadQueue();
           });
         }
       }
