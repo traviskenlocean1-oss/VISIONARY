@@ -6126,12 +6126,36 @@
       }
     ];
 
+    /* ── Load GA4 (only after consent) ── */
+    var GA_ID = 'G-1Z6DWZY3NC';
+    function loadGA() {
+      if (window._vwsGaLoaded) return;
+      window._vwsGaLoaded = true;
+      var s = document.createElement('script');
+      s.async = true;
+      s.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA_ID;
+      document.head.appendChild(s);
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      window.gtag = gtag;
+      gtag('js', new Date());
+      gtag('config', GA_ID, { send_page_view: true });
+      window._vwsGtag = gtag;
+    }
+
     /* ── Save consent ── */
     function saveConsent(prefs) {
       localStorage.setItem(KEY, JSON.stringify({ prefs: prefs, ts: Date.now(), v: '2' }));
-      /* Hook: gate analytics/marketing scripts here when added */
-      /* if (prefs.analytics) { loadGoogleAnalytics(); } */
+      if (prefs.analytics) loadGA();
     }
+
+    /* ── Auto-load GA if already accepted in a previous visit ── */
+    (function() {
+      var stored = localStorage.getItem(KEY);
+      if (stored) {
+        try { var p = JSON.parse(stored); if (p.prefs && p.prefs.analytics) loadGA(); } catch(e) {}
+      }
+    })();
 
     /* ── Build banner ── */
     var cookieSVG = '<svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8.5 8.5a.5.5 0 1 0 1 0 .5.5 0 0 0-1 0M15 9a.5.5 0 1 0 1 0 .5.5 0 0 0-1 0M9 15a.5.5 0 1 0 1 0 .5.5 0 0 0-1 0M13.5 13.5a.5.5 0 1 0 1 0 .5.5 0 0 0-1 0"/></svg>';
