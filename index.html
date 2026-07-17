@@ -5406,28 +5406,23 @@
             if (ORDER[i]) el.style.color = ORDER[i].lt;
           });
 
-          /* Fix hero left panel whitespace — content is shorter than panel height */
+          /* Fix hero left panel whitespace — stretch bottom card to fill full height */
           (function fixHeroPanel(){
-            var anchor = Array.from(document.querySelectorAll('*')).find(function(el){
-              return el.textContent.includes('YOUR KEYWORDS CLIMBING') &&
-                     el.textContent.includes('Dominate your industry');
+            var vw = window.innerWidth;
+            var panel = Array.from(document.querySelectorAll('div')).find(function(el){
+              var cs = window.getComputedStyle(el);
+              var r = el.getBoundingClientRect();
+              return r.width > 300 && r.width < vw * 0.6 && r.height > 400 &&
+                     r.left < 50 && cs.backgroundColor === 'rgb(255, 255, 255)';
             });
-            if (!anchor) return;
-            /* Walk up to the 5-child content wrapper */
-            var content = anchor;
-            while (content && content.tagName !== 'BODY') {
-              if (content.children.length === 5) break;
-              content = content.parentElement;
-            }
-            if (!content || content.children.length !== 5) return;
-            var row = content.parentElement;
-            /* Make the flex row stretch its children to full height */
-            row.style.setProperty('align-items','stretch','important');
-            /* Make content fill the row height as a flex column */
+            if (!panel) return;
+            var inner = panel.children[0];
+            var content = inner && inner.children[0];
+            if (!content || content.children.length < 3) return;
+            inner.style.setProperty('align-items','stretch','important');
             content.style.setProperty('display','flex','important');
             content.style.setProperty('flex-direction','column','important');
             content.style.setProperty('height','100%','important');
-            /* Last card ("Dominate your industry") grows to fill remaining space */
             var last = content.lastElementChild;
             if (last) last.style.setProperty('flex','1','important');
           })();
