@@ -1176,6 +1176,34 @@
             if ((lo && co) || svsPoll > 30) clearInterval(svsTimer);
           }, 200);
         }
+
+        /* ── Intercept hero-pill (hash) + mega-menu + More-Details links to scroll to correct panel ── */
+        function addServicePillScrollers() {
+          var IDX = {'web-development':0,'hosting':1,'website-maintenance':2,'website-creation':3,'website-redesign':4,'logo-branding':5};
+          function scrollToPanel(idx) {
+            var list = document.getElementById('vws-svc-list');
+            if (!list) return;
+            var listTop = list.getBoundingClientRect().top + window.scrollY;
+            window.scrollTo({top: listTop + idx * window.innerHeight + 4, behavior: 'smooth'});
+          }
+          /* Hash links (#web-development, #hosting …) in the hero pills */
+          document.querySelectorAll('a[href^="#"]').forEach(function(a) {
+            var hash = a.getAttribute('href').replace('#','');
+            if (IDX[hash] === undefined || a._vwsPs) return;
+            a._vwsPs = true;
+            a.addEventListener('click', function(e) { e.preventDefault(); e.stopPropagation(); scrollToPanel(IDX[hash]); }, true);
+          });
+          /* /services/xxx links — mega-menu items and More Details buttons */
+          document.querySelectorAll('a[href^="/services/"]').forEach(function(a) {
+            var slug = a.getAttribute('href').replace('/services/','').replace(/\/$/,'');
+            if (IDX[slug] === undefined || a._vwsPs) return;
+            a._vwsPs = true;
+            a.addEventListener('click', function(e) { e.preventDefault(); e.stopPropagation(); scrollToPanel(IDX[slug]); }, true);
+          });
+        }
+        addServicePillScrollers();
+        setTimeout(addServicePillScrollers, 600);
+        setTimeout(addServicePillScrollers, 1800);
       })();
 
       /* ── Universal hero wave: about / pricing / portfolio pages ── */
@@ -2180,12 +2208,17 @@
   .vws-spb-big{display:block;font-size:clamp(18px,2.6vw,32px);font-weight:900;color:#fff;line-height:1.1;margin-bottom:8px;font-family:Barlow,system-ui,sans-serif}
   .vws-spb-sub{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,0.4);display:block}
   @media(max-width:768px){
-    .vws-sp-panel{position:sticky;top:0;height:100svh;overflow:hidden;padding:0 12px}
-    .vws-sp-card{border-radius:16px 16px 0 0;height:100%}
-    .vws-sp-inner{flex-direction:column;height:100%;padding:0}
-    .vws-sp-text{flex:1 1 auto;width:100%;height:100%;padding:52px 28px 40px;min-height:0;display:flex;flex-direction:column;justify-content:center}
-    .vws-sp-img{display:none!important}
-    .vws-sp-num{font-size:80px!important}
+    .vws-sp-panel{position:sticky;top:0;height:100svh;overflow:hidden;padding:0 10px}
+    .vws-sp-card{border-radius:16px 16px 0 0;height:100%;overflow:hidden}
+    .vws-sp-inner{flex-direction:column;height:100%;padding:0;overflow:hidden}
+    .vws-sp-text{flex:0 0 auto;width:100%;padding:36px 22px 16px;display:flex;flex-direction:column;justify-content:flex-start}
+    .vws-sp-num{font-size:10px!important;margin:0 0 10px;letter-spacing:.18em}
+    .vws-sp-title{font-size:clamp(22px,6.5vw,28px)!important;margin:0 0 10px!important;line-height:1.1}
+    .vws-sp-desc{font-size:13px!important;margin:0 0 16px!important;overflow:hidden;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;line-height:1.55}
+    .vws-sp-img{flex:1 1 0;min-height:0;width:100%;padding:0!important;border-left:none!important;border-top:1px solid rgba(0,0,0,0.08);display:flex!important;align-items:stretch!important;overflow:hidden}
+    .vws-sp-cards{width:100%;height:100%;max-width:100%;aspect-ratio:unset;position:relative;display:block}
+    .vws-sp-card-a{position:absolute;top:0;left:0;right:0!important;bottom:0!important;border-radius:0!important}
+    .vws-sp-card-b{display:none!important}
   }
 
   /* ══ SERVICES PAGE — "Built for Results" hidden (replaced by Best Service section) ══ */
@@ -2213,6 +2246,15 @@
   .vws-bs-call-label{font-size:12px;color:rgba(255,255,255,0.38);margin:0 0 4px}
   .vws-bs-phone{font-size:20px;font-weight:800;color:#fff;margin:0}
   @media(max-width:900px){.vws-bs-photo-grid{grid-template-columns:1fr}.vws-bs-photo-col{height:320px}.vws-bs-content-col{padding:48px 36px}}
+  @media(max-width:768px){
+    #vws-best-svc{padding:40px 16px}
+    .vws-bs-photo-col{height:220px}
+    .vws-bs-content-col{padding:28px 16px}
+    .vws-bs-h2{font-size:clamp(26px,8vw,36px);margin:0 0 20px}
+    .vws-bs-metrics{gap:12px;flex-wrap:wrap;margin:0 0 20px;padding:0 0 20px}
+    .vws-bs-cta{flex-direction:column;align-items:flex-start;gap:12px}
+    .vws-bs-btn{width:100%;justify-content:center}
+  }
   @media(max-width:480px){#vws-best-svc{padding:60px 20px}}
 
   /* ══ PRICING PAGE — card hover + scroll reveal ══ */
