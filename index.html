@@ -1743,6 +1743,12 @@
     /* Footer section group spacing — labels run into items when stacked */
     footer [class*="grid-cols-4"] > div + div,
     footer [class*="grid-cols-3"] > div + div{margin-top:28px}
+    /* FIX: Hero headline gap — reduce flex gap + kill mb-2 between the two h1 wrappers */
+    section[class*="h-screen"] .flex-1.flex.flex-col.justify-center{gap:4px!important}
+    section[class*="h-screen"] div[class*="overflow-hidden"][class*="mb-2"]{margin-bottom:0!important}
+    /* FIX: Feature cards (Fast Delivery / No Hidden Fees / Support Included) — white text on dark glass card */
+    .flex.items-center.gap-4.rounded-xl[style*="rgba(5, 8, 20"] p,
+    .flex.items-center.gap-4.rounded-xl[style*="rgba(5, 8, 20"] span{color:rgba(255,255,255,0.9)!important}
   }
   @media(max-width:480px){
     /* Form card in hero — force visible + full width on mobile */
@@ -1758,6 +1764,15 @@
     /* Chat widget smaller */
     #vws-chat-win{width:calc(100vw - 32px)!important;bottom:80px!important;right:16px!important}
   }
+
+  /* ══ "READY TO BUILD" SECTION — explicit dark bg + animated gradient when React canvas is absent ══ */
+  section[class*="py-28"][class*="text-center"]{background:rgb(6,9,22)!important}
+  section[class*="py-28"][class*="text-center"]>.absolute.inset-0[style*="radial-gradient"]{
+    background:radial-gradient(ellipse at 35% 65%,rgba(37,99,235,0.3) 0%,transparent 55%),
+               radial-gradient(ellipse at 65% 25%,rgba(99,102,241,0.2) 0%,transparent 50%)!important;
+    animation:vwsBuildGlow 8s ease-in-out infinite!important
+  }
+  @keyframes vwsBuildGlow{0%,100%{opacity:0.65;transform:scale(1)}50%{opacity:1;transform:scale(1.12)}}
 
   /* ══ MOBILE MENU — fix invisible dark text on near-black bg (rgba(3,5,14,0.98)) ══ */
   /* All nav links */
