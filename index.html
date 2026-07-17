@@ -5406,6 +5406,32 @@
             if (ORDER[i]) el.style.color = ORDER[i].lt;
           });
 
+          /* Fix hero left panel whitespace — content is shorter than panel height */
+          (function fixHeroPanel(){
+            var anchor = Array.from(document.querySelectorAll('*')).find(function(el){
+              return el.textContent.includes('YOUR KEYWORDS CLIMBING') &&
+                     el.textContent.includes('Dominate your industry');
+            });
+            if (!anchor) return;
+            /* Walk up to the 5-child content wrapper */
+            var content = anchor;
+            while (content && content.tagName !== 'BODY') {
+              if (content.children.length === 5) break;
+              content = content.parentElement;
+            }
+            if (!content || content.children.length !== 5) return;
+            var row = content.parentElement;
+            /* Make the flex row stretch its children to full height */
+            row.style.setProperty('align-items','stretch','important');
+            /* Make content fill the row height as a flex column */
+            content.style.setProperty('display','flex','important');
+            content.style.setProperty('flex-direction','column','important');
+            content.style.setProperty('height','100%','important');
+            /* Last card ("Dominate your industry") grows to fill remaining space */
+            var last = content.lastElementChild;
+            if (last) last.style.setProperty('flex','1','important');
+          })();
+
         }
       }, 150);
     }
