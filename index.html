@@ -1204,6 +1204,19 @@
         addServicePillScrollers();
         setTimeout(addServicePillScrollers, 600);
         setTimeout(addServicePillScrollers, 1800);
+
+        /* ── If user arrived via a specific service link, scroll to that panel ── */
+        var _pi = parseInt(sessionStorage.getItem('vwsPI') || '-1', 10);
+        if (_pi >= 0) {
+          sessionStorage.removeItem('vwsPI');
+          function scrollToSavedPanel() {
+            var list = document.getElementById('vws-svc-list');
+            if (!list) { setTimeout(scrollToSavedPanel, 200); return; }
+            var lt = list.getBoundingClientRect().top + window.scrollY;
+            window.scrollTo({top: lt + _pi * window.innerHeight + 4, behavior: 'instant'});
+          }
+          setTimeout(scrollToSavedPanel, 450);
+        }
       })();
 
       /* ── Universal hero wave: about / pricing / portfolio pages ── */
@@ -2248,7 +2261,9 @@
   @media(max-width:900px){.vws-bs-photo-grid{grid-template-columns:1fr}.vws-bs-photo-col{height:320px}.vws-bs-content-col{padding:48px 36px}}
   @media(max-width:768px){
     #vws-best-svc{padding:40px 16px}
-    .vws-bs-photo-col{height:220px}
+    .vws-bs-photo-grid{border-radius:12px}
+    .vws-bs-photo-col{height:auto;min-height:0;overflow:hidden}
+    .vws-bs-photo-col > div{transform:scale(0.72);transform-origin:top left;width:138.9%;margin-bottom:calc((1 - 0.72) * -100%)}
     .vws-bs-content-col{padding:28px 16px}
     .vws-bs-h2{font-size:clamp(26px,8vw,36px);margin:0 0 20px}
     .vws-bs-metrics{gap:12px;flex-wrap:wrap;margin:0 0 20px;padding:0 0 20px}
@@ -3044,6 +3059,20 @@
         ov.style.opacity = '0';
         setTimeout(function() { ov.style.pointerEvents = 'none'; }, 200);
       }, 900);
+    }
+
+    /* ── Capture service-panel intent BEFORE React routing fires ── */
+    if (!window._vwsCapture) {
+      window._vwsCapture = true;
+      var _SVC_MAP = {'web-development':0,'hosting':1,'website-maintenance':2,'website-creation':3,'website-redesign':4,'logo-branding':5};
+      document.addEventListener('click', function(e) {
+        var a = e.target.closest('a[href]');
+        if (!a) return;
+        var href = a.getAttribute('href') || '';
+        if (href.indexOf('/services/') !== 0) return;
+        var slug = href.replace('/services/','').replace(/[/#].*$/, '');
+        if (_SVC_MAP[slug] !== undefined) sessionStorage.setItem('vwsPI', String(_SVC_MAP[slug]));
+      }, true);
     }
 
     /* ── Intercept React Router so enhancer re-runs on every SPA navigation ── */
@@ -4479,6 +4508,26 @@
         } // end if !data-vws-acc-init
       }, 600);
     }
+
+    /* ── Mobile nav: make "SERVICES" accordion button navigate to /services on tap ── */
+    function patchMobileServicesBtn() {
+      if (window.innerWidth >= 768) return;
+      function findAndPatch() {
+        var btn = Array.from(document.querySelectorAll('button')).find(function(b) {
+          return b.offsetWidth > 0 && b.textContent.trim().toLowerCase() === 'services' && b.className.indexOf('tracking') !== -1;
+        });
+        if (!btn || btn._vwsNavPatch) return;
+        btn._vwsNavPatch = true;
+        btn.addEventListener('click', function(e) {
+          e.stopImmediatePropagation();
+          window.location.href = '/services';
+        }, true);
+      }
+      var _obs = new MutationObserver(findAndPatch);
+      _obs.observe(document.body, {childList:true, subtree:true});
+      findAndPatch();
+    }
+    patchMobileServicesBtn();
 
     /* ── Mobile nav: inject missing service links into the Services accordion ── */
     function runMobileServicesExpander() {
