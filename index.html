@@ -2262,8 +2262,8 @@
   @media(max-width:768px){
     #vws-best-svc{padding:40px 16px}
     .vws-bs-photo-grid{border-radius:12px}
-    .vws-bs-photo-col{height:auto;min-height:0;overflow:hidden}
-    .vws-bs-photo-col > div{transform:scale(0.72);transform-origin:top left;width:138.9%;margin-bottom:calc((1 - 0.72) * -100%)}
+    .vws-bs-photo-col{height:auto;min-height:0;overflow:hidden;background:transparent}
+    .vws-bs-photo-col > div{transform:scale(0.82);transform-origin:top left;width:122%;margin-bottom:calc((1 - 0.82) * -100%)}
     .vws-bs-content-col{padding:28px 16px}
     .vws-bs-h2{font-size:clamp(26px,8vw,36px);margin:0 0 20px}
     .vws-bs-metrics{gap:12px;flex-wrap:wrap;margin:0 0 20px;padding:0 0 20px}
@@ -4710,11 +4710,12 @@
       var _pfFirstInject = true;
       var _pfInjectPending = false;
       function doInject() {
+        /* Bail immediately if already injected — avoids DOM mutation → observer loop */
+        if (document.getElementById('vws-portfolio-page')) return;
         /* Hide React's native /work sections — CSS class survives runAll() inline-style cleanup */
         Array.from(document.querySelectorAll('section')).forEach(function(s) {
           if (!s.closest('#vws-portfolio-page')) s.classList.add('vws-pf-react-hidden');
         });
-        if (document.getElementById('vws-portfolio-page')) return;
         var footer = document.querySelector('footer');
         if (!footer || !footer.parentNode) return;
         /* Insert before the first React section (so our hero is at the top), else before footer */
@@ -4738,6 +4739,8 @@
           if (!/^\/work\/?$/.test(location.pathname)) {
             window._vwsPfBodyObs.disconnect(); window._vwsPfBodyObs = null; return;
           }
+          /* Skip if portfolio page is already in DOM — prevents mutation feedback loop */
+          if (document.getElementById('vws-portfolio-page')) return;
           if (!_pfInjectPending) {
             _pfInjectPending = true;
             requestAnimationFrame(function() { _pfInjectPending = false; doInject(); });
@@ -4783,7 +4786,9 @@
          Runs ahead of the stability poll so the old hero never flashes at page load.
          Cleared automatically after 2 s (stability poll + guard take over). */
       var _pfFastHide = setInterval(function() {
-        if (!/^\/work\/?$/.test(location.pathname)) { clearInterval(_pfFastHide); return; }
+        if (!/^\/work\/?$/.test(location.pathname) || document.getElementById('vws-portfolio-page')) {
+          clearInterval(_pfFastHide); return;
+        }
         Array.from(document.querySelectorAll('section')).forEach(function(s) {
           if (!s.closest('#vws-portfolio-page')) s.classList.add('vws-pf-react-hidden');
         });
