@@ -6013,63 +6013,189 @@
     }, 150);
     } /* end runServiceDetail */
 
-    /* ── Task 2b: Modal whitener v2 — doc-level search beats incremental React renders ── */
+    /* ── Task 2b: Modal redesign v3 — premium dark-navy header + logo injection ── */
     (function(){
       var _busy = false;
+
+      /* VWS "V" logo as inline SVG — matches the favicon exactly */
+      var VWS_LOGO_SVG = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" width="36" height="36" style="display:block;flex-shrink:0"><rect width="40" height="40" rx="8" fill="#0a0f1e"/><text x="20" y="28" font-family="Georgia,serif" font-size="24" font-weight="700" fill="#3b82f6" text-anchor="middle">V</text></svg>';
+
       function styleVwsModal() {
-        /* Find the heading in the full doc (not just the mutated node) */
         var headings = Array.from(document.querySelectorAll('h2,h3,h4')).filter(function(h){
           return h.textContent.toLowerCase().indexOf('would you like done') !== -1;
         });
         if (!headings.length) return;
         if (_busy) return;
         _busy = true;
+
         var heading = headings[0];
-        /* Walk up to the modal card container */
         var card = heading.parentElement;
         for (var i = 0; i < 5 && card && card.tagName !== 'BODY'; i++) {
           if (window.getComputedStyle(card).borderRadius && card.children.length >= 3) break;
           card = card.parentElement;
         }
         if (!card || card.tagName === 'BODY') card = heading.parentElement;
-        /* 1. Unfreeze any GSAP opacity:0 inside the modal */
+
+        /* Unfreeze GSAP-frozen elements */
         card.querySelectorAll('*').forEach(function(el){
           var s = el.getAttribute('style') || '';
           if (/opacity\s*:\s*0/.test(s)) { el.style.opacity = '1'; el.style.transform = 'none'; }
         });
-        /* 2. White card */
+
+        /* ── Outer card: clean white, strong shadow, no border radius clash ── */
         card.style.setProperty('background','#ffffff','important');
-        card.style.setProperty('border-radius','20px','important');
-        card.style.setProperty('border','1px solid rgba(37,99,235,0.12)','important');
-        card.style.setProperty('box-shadow','0 24px 60px rgba(0,0,0,0.12)','important');
-        /* 3. Text colors */
-        card.querySelectorAll('h1,h2,h3,h4,h5').forEach(function(h){
-          h.style.setProperty('color','#0d1117','important');
-          h.style.setProperty('opacity','1','important');
-        });
+        card.style.setProperty('border-radius','24px','important');
+        card.style.setProperty('border','none','important');
+        card.style.setProperty('box-shadow','0 32px 80px rgba(0,0,0,0.18), 0 0 0 1px rgba(37,99,235,0.08)','important');
+        card.style.setProperty('overflow','hidden','important');
+        card.style.setProperty('padding','0','important');
+
+        /* ── Inject logo header (once, guarded by sentinel attribute) ── */
+        if (!card.getAttribute('data-vws-styled')) {
+          card.setAttribute('data-vws-styled', '1');
+
+          /* Find the inner content wrapper (usually the direct child with padding) */
+          var inner = card.firstElementChild || card;
+
+          /* Build the dark navy header */
+          var header = document.createElement('div');
+          header.setAttribute('data-vws-header', '1');
+          header.style.cssText = [
+            'background:linear-gradient(135deg,#060b18 0%,#0d1a35 100%)',
+            'padding:28px 28px 24px',
+            'display:flex',
+            'align-items:center',
+            'gap:14px',
+            'border-bottom:1px solid rgba(59,130,246,0.15)'
+          ].join(';');
+
+          /* Logo mark */
+          var logoWrap = document.createElement('div');
+          logoWrap.innerHTML = VWS_LOGO_SVG;
+
+          /* Text block: brand + headline */
+          var textBlock = document.createElement('div');
+          textBlock.style.cssText = 'flex:1;min-width:0';
+
+          var brand = document.createElement('div');
+          brand.textContent = 'VISIONARY WEB STUDIO';
+          brand.style.cssText = [
+            'font-size:10px',
+            'font-weight:700',
+            'letter-spacing:0.12em',
+            'color:rgba(147,197,253,0.7)',
+            'font-family:system-ui,-apple-system,sans-serif',
+            'margin-bottom:4px'
+          ].join(';');
+
+          var headline = document.createElement('div');
+          headline.textContent = 'What would you like done?';
+          headline.style.cssText = [
+            'font-size:18px',
+            'font-weight:700',
+            'color:#ffffff',
+            'font-family:system-ui,-apple-system,sans-serif',
+            'line-height:1.2'
+          ].join(';');
+
+          textBlock.appendChild(brand);
+          textBlock.appendChild(headline);
+          header.appendChild(logoWrap);
+          header.appendChild(textBlock);
+
+          /* Insert header before the card's first child */
+          card.insertBefore(header, card.firstChild);
+
+          /* Add padding wrapper to the original content */
+          inner.style.setProperty('padding','20px 24px 24px','important');
+        }
+
+        /* ── Hide the original heading (now replaced by header) ── */
+        heading.style.setProperty('display','none','important');
+
+        /* ── Subtext / description paragraphs ── */
         card.querySelectorAll('p').forEach(function(p){
-          p.style.setProperty('color','#4b5563','important');
+          if (p.closest('[data-vws-header]')) return;
+          p.style.setProperty('color','#6b7280','important');
+          p.style.setProperty('font-size','13px','important');
           p.style.setProperty('opacity','1','important');
+          p.style.setProperty('margin-bottom','16px','important');
         });
-        /* 4. "GET STARTED" label → blue */
+
+        /* ── "GET STARTED" eyebrow label ── */
         card.querySelectorAll('*').forEach(function(el){
+          if (el.closest('[data-vws-header]')) return;
           if (el.children.length === 0 && el.textContent.trim() === 'GET STARTED') {
-            el.style.setProperty('color','#2563eb','important');
+            el.style.setProperty('color','#3b82f6','important');
+            el.style.setProperty('font-size','10px','important');
+            el.style.setProperty('font-weight','700','important');
+            el.style.setProperty('letter-spacing','0.1em','important');
             el.style.setProperty('opacity','1','important');
           }
         });
-        /* 5. Option buttons */
+
+        /* ── Option buttons: full-width, navy pill, arrow on right ── */
         card.querySelectorAll('button').forEach(function(btn){
-          btn.style.setProperty('background','#f0f4ff','important');
-          btn.style.setProperty('color','#1d3a6b','important');
-          btn.style.setProperty('border','1px solid rgba(37,99,235,0.22)','important');
-          btn.style.setProperty('border-radius','10px','important');
+          if (btn.closest('[data-vws-header]')) return;
+          var label = btn.textContent.trim();
+          /* Skip close/X buttons */
+          if (label === '×' || label === '✕' || label === 'X' || label.length <= 1) return;
+
+          btn.style.setProperty('background','#060b18','important');
+          btn.style.setProperty('color','#ffffff','important');
+          btn.style.setProperty('border','1px solid rgba(59,130,246,0.2)','important');
+          btn.style.setProperty('border-radius','12px','important');
           btn.style.setProperty('font-weight','600','important');
+          btn.style.setProperty('font-size','14px','important');
           btn.style.setProperty('opacity','1','important');
+          btn.style.setProperty('width','100%','important');
+          btn.style.setProperty('display','flex','important');
+          btn.style.setProperty('align-items','center','important');
+          btn.style.setProperty('justify-content','space-between','important');
+          btn.style.setProperty('padding','14px 18px','important');
+          btn.style.setProperty('margin-bottom','10px','important');
+          btn.style.setProperty('cursor','pointer','important');
+          btn.style.setProperty('transition','background 0.18s,border-color 0.18s','important');
+          btn.style.setProperty('text-align','left','important');
+
+          /* Inject arrow if not already there */
+          if (!btn.querySelector('[data-vws-arrow]')) {
+            var arrow = document.createElement('span');
+            arrow.setAttribute('data-vws-arrow','1');
+            arrow.textContent = '→';
+            arrow.style.cssText = 'color:#3b82f6;font-size:16px;flex-shrink:0;margin-left:12px';
+            btn.appendChild(arrow);
+          }
+
+          /* Hover state via event listeners (once) */
+          if (!btn.getAttribute('data-vws-hover')) {
+            btn.setAttribute('data-vws-hover','1');
+            btn.addEventListener('mouseenter', function(){
+              btn.style.setProperty('background','#0d1a35','important');
+              btn.style.setProperty('border-color','rgba(59,130,246,0.5)','important');
+            });
+            btn.addEventListener('mouseleave', function(){
+              btn.style.setProperty('background','#060b18','important');
+              btn.style.setProperty('border-color','rgba(59,130,246,0.2)','important');
+            });
+          }
         });
-        setTimeout(function(){ _busy = false; }, 6000);
+
+        /* ── "Not sure? Give us a call" link ── */
+        card.querySelectorAll('a').forEach(function(a){
+          if (a.closest('[data-vws-header]')) return;
+          a.style.setProperty('color','#3b82f6','important');
+          a.style.setProperty('font-size','13px','important');
+          a.style.setProperty('font-weight','500','important');
+          a.style.setProperty('opacity','1','important');
+          a.style.setProperty('display','block','important');
+          a.style.setProperty('text-align','center','important');
+          a.style.setProperty('margin-top','4px','important');
+        });
+
+        setTimeout(function(){ _busy = false; }, 5000);
       }
-      /* Fire on any DOM change — check the full doc for the heading */
+
       var _t = null;
       var vwsModalObs = new MutationObserver(function(){
         clearTimeout(_t);
