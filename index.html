@@ -4670,7 +4670,7 @@
         { url:'https://meadowline.traviskenlocean1.workers.dev',           ind:'Lawn & Garden' }
       ];
       function buildCard(p) {
-        return '<div class="vws-pf2-card" onclick="window.open(\'' + p.url + '\',\'_blank\')" style="cursor:pointer">'
+        return '<div class="vws-pf2-card" data-url="' + p.url + '" style="cursor:pointer">'
           + '<span class="vws-pf2-lbl">' + p.ind + '</span>'
           + '<div class="vws-pf2-devices">'
             + '<div class="vws-pf2-phone"><div class="vws-pf2-ph-notch"></div>'
@@ -4728,6 +4728,17 @@
           _pfFirstInject = false;
           vwsScrollLock(500);
           setupAfterInject();
+          /* Disconnect the subtree observer once the portfolio is stable —
+             React mutates #root on every scroll tick (animations, etc.) which
+             was flooding the callback and crashing Safari. The guard is only
+             needed during the brief window after injection; after that the
+             cleanup+reinject cycle on navigation handles re-entry. */
+          setTimeout(function() {
+            if (window._vwsPfBodyObs) {
+              window._vwsPfBodyObs.disconnect();
+              window._vwsPfBodyObs = null;
+            }
+          }, 1500);
         }
       }
 
@@ -4762,6 +4773,29 @@
         }
         setTimeout(applyLaptopScales, 400);
         window.addEventListener('resize', applyLaptopScales);
+
+        /* Touch-aware card tap — distinguishes scroll from deliberate tap on iOS */
+        document.querySelectorAll('.vws-pf2-card').forEach(function(card) {
+          var _ts = 0; var _ty = 0; var _moved = false;
+          card.addEventListener('touchstart', function(e) {
+            _ts = Date.now(); _ty = e.touches[0].clientY; _moved = false;
+          }, { passive: true });
+          card.addEventListener('touchmove', function(e) {
+            if (Math.abs(e.touches[0].clientY - _ty) > 8) _moved = true;
+          }, { passive: true });
+          card.addEventListener('touchend', function() {
+            if (_moved || Date.now() - _ts > 600) return;
+            var url = card.getAttribute('data-url');
+            if (url) window.open(url, '_blank');
+          });
+          /* Desktop click */
+          card.addEventListener('click', function(e) {
+            if (e.pointerType === 'touch') return; /* already handled above */
+            var url = card.getAttribute('data-url');
+            if (url) window.open(url, '_blank');
+          });
+        });
+
         if (window.IntersectionObserver) {
           var iframeObs = new IntersectionObserver(function(entries) {
             entries.forEach(function(entry) {
