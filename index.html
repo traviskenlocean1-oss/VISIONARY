@@ -6207,36 +6207,60 @@
     }, 150);
     } /* end runServiceDetail */
 
-    /* ── Task 2b: Modal whitener v2 — doc-level search beats incremental React renders ── */
+    /* ── Task 2b: Modal whitener + home-only + 2-show cap ── */
     (function(){
+      var POPUP_KEY = 'vws_popup_count';
       var _busy = false;
-      function styleVwsModal() {
-        /* Find the heading in the full doc (not just the mutated node) */
+      var _shownThisNav = false;
+      var _prevPath = location.pathname;
+
+      /* Detect SPA navigations — reset per-nav flag */
+      setInterval(function() {
+        if (location.pathname !== _prevPath) { _prevPath = location.pathname; _shownThisNav = false; }
+      }, 250);
+
+      function findModal() {
         var headings = Array.from(document.querySelectorAll('h2,h3,h4')).filter(function(h){
           return h.textContent.toLowerCase().indexOf('would you like done') !== -1;
         });
-        if (!headings.length) return;
+        return headings.length ? headings[0] : null;
+      }
+
+      function dismissModal(heading) {
+        /* Walk up and find the fixed overlay, then click its close button or hide it */
+        var el = heading;
+        while (el && el.tagName !== 'BODY') {
+          if (window.getComputedStyle(el).position === 'fixed') {
+            /* Try the close/X button first */
+            var btns = el.querySelectorAll('button');
+            for (var b = 0; b < btns.length; b++) {
+              var t = btns[b].textContent.trim();
+              if (t.length <= 2 || btns[b].querySelector('svg')) { btns[b].click(); return; }
+            }
+            el.style.setProperty('display','none','important');
+            return;
+          }
+          el = el.parentElement;
+        }
+      }
+
+      function styleModal(heading) {
         if (_busy) return;
         _busy = true;
-        var heading = headings[0];
-        /* Walk up to the modal card container */
         var card = heading.parentElement;
         for (var i = 0; i < 5 && card && card.tagName !== 'BODY'; i++) {
           if (window.getComputedStyle(card).borderRadius && card.children.length >= 3) break;
           card = card.parentElement;
         }
         if (!card || card.tagName === 'BODY') card = heading.parentElement;
-        /* 1. Unfreeze any GSAP opacity:0 inside the modal */
         card.querySelectorAll('*').forEach(function(el){
           var s = el.getAttribute('style') || '';
           if (/opacity\s*:\s*0/.test(s)) { el.style.opacity = '1'; el.style.transform = 'none'; }
         });
-        /* 2. White card */
         card.style.setProperty('background','#ffffff','important');
         card.style.setProperty('border-radius','20px','important');
         card.style.setProperty('border','1px solid rgba(37,99,235,0.12)','important');
         card.style.setProperty('box-shadow','0 24px 60px rgba(0,0,0,0.12)','important');
-        /* 3. Text colors */
         card.querySelectorAll('h1,h2,h3,h4,h5').forEach(function(h){
           h.style.setProperty('color','#0d1117','important');
           h.style.setProperty('opacity','1','important');
@@ -6245,14 +6269,12 @@
           p.style.setProperty('color','#4b5563','important');
           p.style.setProperty('opacity','1','important');
         });
-        /* 4. "GET STARTED" label → blue */
         card.querySelectorAll('*').forEach(function(el){
           if (el.children.length === 0 && el.textContent.trim() === 'GET STARTED') {
             el.style.setProperty('color','#2563eb','important');
             el.style.setProperty('opacity','1','important');
           }
         });
-        /* 5. Option buttons */
         card.querySelectorAll('button').forEach(function(btn){
           btn.style.setProperty('background','#f0f4ff','important');
           btn.style.setProperty('color','#1d3a6b','important');
@@ -6263,11 +6285,23 @@
         });
         setTimeout(function(){ _busy = false; }, 6000);
       }
-      /* Fire on any DOM change — check the full doc for the heading */
+
       var _t = null;
       var vwsModalObs = new MutationObserver(function(){
         clearTimeout(_t);
-        _t = setTimeout(styleVwsModal, 80);
+        _t = setTimeout(function() {
+          var heading = findModal();
+          if (!heading) return;
+          var isHome = /^\/?$/.test(location.pathname);
+          /* Dismiss immediately on any non-home page */
+          if (!isHome) { dismissModal(heading); return; }
+          /* On home: enforce 2-show lifetime cap */
+          var count = parseInt(localStorage.getItem(POPUP_KEY) || '0', 10);
+          if (count >= 2) { dismissModal(heading); return; }
+          /* Show — count once per navigation to home */
+          if (!_shownThisNav) { _shownThisNav = true; localStorage.setItem(POPUP_KEY, String(count + 1)); }
+          styleModal(heading);
+        }, 80);
       });
       vwsModalObs.observe(document.body, {childList:true, subtree:true});
     })();
