@@ -1806,10 +1806,8 @@
     #vws-chat-win{width:calc(100vw - 32px)!important;bottom:80px!important;right:16px!important}
   }
 
-  /* ══ "READY TO BUILD" SECTION — canvas animation background ══ */
-  section[class*="py-28"][class*="text-center"]{background:rgb(4,8,18)!important;position:relative!important;overflow:hidden!important}
-  #vws-build-bg{position:absolute!important;top:0!important;left:0!important;width:100%!important;height:100%!important;z-index:0!important;pointer-events:none!important}
-  section[class*="py-28"][class*="text-center"] > *:not(#vws-build-bg){position:relative!important;z-index:1!important}
+  /* ══ "READY TO BUILD" SECTION — transparent so React's animated -z-10 background shows through ══ */
+  section[class*="py-28"][class*="text-center"]{background:transparent!important}
 
   /* ══ MOBILE MENU — fix invisible dark text on near-black bg (rgba(3,5,14,0.98)) ══ */
   /* All nav links */
@@ -5184,80 +5182,6 @@
           });
         }
 
-        /* ── Canvas animation background for "Ready to build" section ── */
-        injectBuildCanvas();
-
-      }
-
-      /* ── "Ready to build" section: canvas fluid animation matching the site's hero video look ── */
-      function injectBuildCanvas() {
-        if (document.getElementById('vws-build-bg')) return;
-        var buildSec = Array.from(document.querySelectorAll('section')).find(function(s) {
-          return s.textContent.indexOf('worth looking') !== -1;
-        });
-        if (!buildSec) return;
-
-        var cvs = document.createElement('canvas');
-        cvs.id = 'vws-build-bg';
-        buildSec.insertBefore(cvs, buildSec.firstChild);
-
-        function resize() {
-          cvs.width = buildSec.offsetWidth || 390;
-          cvs.height = buildSec.offsetHeight || 560;
-        }
-        resize();
-        window.addEventListener('resize', resize, {passive:true});
-
-        var ctx = cvs.getContext('2d');
-        var t = 0;
-        var raf = null;
-
-        var blobs = [
-          {x:0.22,y:0.52,sz:0.82,r:37, g:99, b:235,ph:0   },
-          {x:0.75,y:0.28,sz:0.70,r:124,g:58, b:237,ph:2.09},
-          {x:0.48,y:0.78,sz:0.60,r:6,  g:182,b:212,ph:4.19},
-          {x:0.10,y:0.18,sz:0.48,r:79, g:70, b:229,ph:1.05},
-          {x:0.85,y:0.68,sz:0.55,r:37, g:99, b:235,ph:3.14}
-        ];
-
-        function frame() {
-          var w = cvs.width, h = cvs.height;
-          ctx.clearRect(0,0,w,h);
-          ctx.fillStyle='rgb(4,8,18)';
-          ctx.fillRect(0,0,w,h);
-          blobs.forEach(function(b) {
-            var bx=(b.x+Math.sin(t*0.27+b.ph)*0.18)*w;
-            var by=(b.y+Math.cos(t*0.21+b.ph)*0.14)*h;
-            var br=b.sz*Math.max(w,h)*0.70;
-            var g=ctx.createRadialGradient(bx,by,0,bx,by,br);
-            g.addColorStop(0,'rgba('+b.r+','+b.g+','+b.b+',0.45)');
-            g.addColorStop(0.4,'rgba('+b.r+','+b.g+','+b.b+',0.16)');
-            g.addColorStop(1,'rgba('+b.r+','+b.g+','+b.b+',0)');
-            ctx.fillStyle=g;
-            ctx.fillRect(0,0,w,h);
-          });
-          /* subtle grid overlay */
-          ctx.strokeStyle='rgba(96,165,250,0.04)';
-          ctx.lineWidth=1;
-          var gs=80;
-          for(var gx=0;gx<w;gx+=gs){ctx.beginPath();ctx.moveTo(gx,0);ctx.lineTo(gx,h);ctx.stroke();}
-          for(var gy=0;gy<h;gy+=gs){ctx.beginPath();ctx.moveTo(0,gy);ctx.lineTo(w,gy);ctx.stroke();}
-          t+=0.007;
-          raf=requestAnimationFrame(frame);
-        }
-
-        /* Only animate when section is visible — saves battery on mobile */
-        if (window.IntersectionObserver) {
-          var io = new IntersectionObserver(function(entries) {
-            entries.forEach(function(e) {
-              if (e.isIntersecting) { if (!raf) frame(); }
-              else { cancelAnimationFrame(raf); raf=null; }
-            });
-          }, {threshold:0.01});
-          io.observe(buildSec);
-        } else {
-          frame();
-        }
       }
 
       /* ── Build: Dual ticker (Cosmico Studios style) ── */
