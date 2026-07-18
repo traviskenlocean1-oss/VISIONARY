@@ -1441,8 +1441,10 @@
   <!-- ── UPGRADED CHAT WIDGET ───────────────────────────── -->
   <style>
   /* Restore hero background — React bundle leaves body black when GSAP mouse-track stalls */
-  html,body{background:#060916!important;overflow-x:hidden!important;overscroll-behavior-x:none!important}
-  html{overscroll-behavior-y:none!important}
+  html,body{background:#060916!important;overscroll-behavior-x:none!important}
+  /* clip (not hidden) — blocks horizontal overflow WITHOUT breaking position:sticky */
+  html{overflow-x:clip!important}
+  body{overflow-x:clip!important}
   /* Permanently suppress the React chat widget no matter when it renders */
   div[style*="z-index: 8990"],div[style*="z-index:8990"]{display:none!important}
   #vws-chat-root *{box-sizing:border-box;font-family:'Barlow',system-ui,sans-serif}
