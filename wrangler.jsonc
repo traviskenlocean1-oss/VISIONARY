@@ -13,5 +13,9 @@
   "compatibility_flags": [
     "nodejs_compat"
   ],
-  "workers_dev": false
+  "workers_dev": false,
+  "routes": [
+    {"pattern": "getvisionarywebstudio.com/*", "zone_name": "getvisionarywebstudio.com"},
+    {"pattern": "www.getvisionarywebstudio.com/*", "zone_name": "getvisionarywebstudio.com"}
+  ]
 }
