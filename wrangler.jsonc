@@ -12,5 +12,6 @@
   },
   "compatibility_flags": [
     "nodejs_compat"
-  ]
+  ],
+  "workers_dev": false
 }
