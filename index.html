@@ -1107,30 +1107,14 @@
           window._vwsStickyFXResize = recache;
           window.addEventListener('resize', recache, { passive: true });
           var _raf = false;
-          /* Depth fade overlay — injected once, shown only while in panels */
-          var _depthFade = document.getElementById('vws-depth-fade');
-          if (!_depthFade) {
-            _depthFade = document.createElement('div');
-            _depthFade.id = 'vws-depth-fade';
-            document.body.appendChild(_depthFade);
-          }
           function easeOutCubic(t) { return 1 - Math.pow(1 - t, 3); }
           function easeInCubic(t) { return t * t * t; }
           function updateFX() {
             if (!document.getElementById('vws-svc-list')) {
               window.removeEventListener('scroll', window._vwsStickyFXListener);
-              window._vwsStickyFXListener = null;
-              if (_depthFade) _depthFade.style.opacity = '0';
-              return;
+              window._vwsStickyFXListener = null; return;
             }
             var scrollY = window.scrollY;
-            /* Show fade only while user is scrolling through panel stack */
-            var panelEnd = listTop + panels.length * vh;
-            if (scrollY >= listTop && scrollY < panelEnd) {
-              _depthFade.style.opacity = '1';
-            } else {
-              _depthFade.style.opacity = '0';
-            }
             for (var i = 0; i < panels.length; i++) {
               var inner = innerEls[i];
               if (!inner) continue;
@@ -2228,7 +2212,6 @@
 
   /* ══ SERVICES PAGE — sticky-stacked panels ══ */
   #vws-svc-list{display:block!important;overflow:visible!important;padding:0!important;margin:0!important;font-family:inherit;position:relative}
-  #vws-depth-fade{position:fixed;bottom:0;left:0;right:0;height:160px;background:linear-gradient(to top,rgba(255,255,255,0.92) 0%,rgba(255,255,255,0.0) 100%);pointer-events:none;z-index:9999;opacity:0;transition:opacity 0.3s}
   /* ── Contained colored-card sticky-stack ── */
   .vws-sp-panel{position:sticky;top:0;height:100vh;width:100%;display:flex;align-items:stretch;justify-content:center;padding:20px 44px 0;overflow:visible;background:#fff!important}
   .vws-sp-card{width:100%;display:flex;align-items:stretch;border-radius:20px 20px 0 0;overflow:hidden;box-shadow:0 -18px 52px rgba(0,0,0,0.38),0 -4px 16px rgba(0,0,0,0.22);will-change:transform,opacity,filter}
