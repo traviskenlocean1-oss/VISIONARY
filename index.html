@@ -1810,16 +1810,9 @@
     .flex.items-center.gap-4.rounded-xl[style*="rgba(5, 8, 20"] span{color:#ffffff!important}
   }
   @media(max-width:480px){
-    /* Form card in hero — force visible + full width on mobile */
-    section[class*="h-screen"] [style*="rgba(4, 8, 22"]{display:block!important;position:relative!important;margin:24px 16px 0!important;width:calc(100vw - 32px)!important;max-width:none!important;z-index:5}
-    /* Also show any hidden parent containers of the form card */
-    section[class*="h-screen"] [style*="rgba(4, 8, 22"] ~ *,
-    section[class*="h-screen"] > div > *:last-child{display:block!important}
     /* Footer grid */
     footer [class*="grid-cols-4"]{display:block!important}
     footer [class*="grid-cols-3"]{display:block!important}
-    /* Hero layout stack on small screens */
-    section[class*="h-screen"] .flex.flex-col{gap:24px}
     /* Chat widget smaller */
     #vws-chat-win{width:calc(100vw - 32px)!important;bottom:80px!important;right:16px!important}
   }
@@ -2354,10 +2347,18 @@
   /* Nav items bigger */
   header nav a{font-size:15px!important}
 
-  /* ══ MOBILE HERO — hide form card, strip right-side gradient ══ */
+  /* ══ MOBILE HERO — stack form below headline ══ */
   @media(max-width:768px){
-    section[class*="h-screen"] [style*="rgba(4, 8, 22"]{display:none!important}
     #vws-hero-rt{display:none!important}
+    /* Let hero grow taller than 100vh to fit headline + form stacked */
+    section[class*="h-screen"]{height:auto!important;min-height:100vh!important}
+    /* Flex container: convert from absolute overlay to in-flow so section height wraps it */
+    section[class*="h-screen"]>.absolute.inset-0.flex{position:relative!important;top:auto!important;right:auto!important;bottom:auto!important;left:auto!important;padding-bottom:48px!important}
+    /* Form card: full-width, no extra margins from old rules */
+    section[class*="h-screen"] [style*="rgba(4, 8, 22"]{width:100%!important;max-width:none!important;margin:0!important;box-sizing:border-box!important}
+    /* Prevent iOS Safari auto-zoom on input focus (requires font-size >= 16px) */
+    section[class*="h-screen"] [style*="rgba(4, 8, 22"] input,
+    section[class*="h-screen"] [style*="rgba(4, 8, 22"] textarea{font-size:16px!important;min-height:44px!important}
   }
 
   /* ══ CONTACT PAGE — transparent top, white card ══ */
