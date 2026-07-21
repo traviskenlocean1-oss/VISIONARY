@@ -4679,7 +4679,8 @@
           '.vws-pf-cta-btn:hover{background:#e8ecf4;transform:translateY(-4px);box-shadow:0 16px 44px rgba(0,0,0,0.35)}',
           '@media(max-width:900px){.vws-pf-grid{grid-template-columns:repeat(2,1fr)}}',
           '@media(max-width:640px){.vws-pf-grid{grid-template-columns:1fr}.vws-pf-grid-sec{padding:50px 16px 70px}.vws-pf-hero{padding:120px 20px 60px}.vws-pf-stats{gap:20px;flex-wrap:nowrap}.vws-pf-cta-sec{padding:60px 20px 80px}}',
-          '@media(max-width:420px){.vws-pf-stats{gap:10px}.vws-pf-stat-n{font-size:28px}.vws-pf-stat-l{font-size:9px;letter-spacing:.06em}}'
+          '@media(max-width:420px){.vws-pf-stats{gap:10px}.vws-pf-stat-n{font-size:28px}.vws-pf-stat-l{font-size:9px;letter-spacing:.06em}}',
+          '@media(max-width:768px){.vws-pf2-card{touch-action:pan-y}}'
         ].join('');
         document.head.appendChild(st);
       }
@@ -4838,15 +4839,24 @@
           });
           setTimeout(function() { applyLaptopScales(); _loadBusy = false; drainLoadQueue(); }, 600);
         }
+        var _isMob = window.innerWidth <= 768 || /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
         if (window.IntersectionObserver) {
           var iframeObs = new IntersectionObserver(function(entries) {
             entries.forEach(function(entry) {
-              if (!entry.isIntersecting) return;
-              iframeObs.unobserve(entry.target);
-              _loadQueue.push(entry.target);
-              drainLoadQueue();
+              var card = entry.target;
+              if (entry.isIntersecting) {
+                /* Load if this card still has unloaded iframes */
+                if (card.querySelector('iframe[data-src]')) { _loadQueue.push(card); drainLoadQueue(); }
+              } else if (_isMob) {
+                /* On mobile: unload off-screen iframes to free Safari memory */
+                card.querySelectorAll('iframe').forEach(function(f) {
+                  if (f.src && f.src !== 'about:blank' && !f.hasAttribute('data-src')) {
+                    f.setAttribute('data-src', f.src); f.src = 'about:blank';
+                  }
+                });
+              }
             });
-          }, { rootMargin: '0px', threshold: 0 });
+          }, { rootMargin: '300px 0px', threshold: 0 });
           document.querySelectorAll('.vws-pf2-card').forEach(function(c) { iframeObs.observe(c); });
         } else {
           document.querySelectorAll('.vws-pf2-card').forEach(function(c) {
