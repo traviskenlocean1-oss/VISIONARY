@@ -4680,7 +4680,7 @@
           '@media(max-width:900px){.vws-pf-grid{grid-template-columns:repeat(2,1fr)}}',
           '@media(max-width:640px){.vws-pf-grid{grid-template-columns:1fr}.vws-pf-grid-sec{padding:50px 16px 70px}.vws-pf-hero{padding:120px 20px 60px}.vws-pf-stats{gap:20px;flex-wrap:nowrap}.vws-pf-cta-sec{padding:60px 20px 80px}}',
           '@media(max-width:420px){.vws-pf-stats{gap:10px}.vws-pf-stat-n{font-size:28px}.vws-pf-stat-l{font-size:9px;letter-spacing:.06em}}',
-          '@media(max-width:768px){.vws-pf2-card{touch-action:pan-y}}'
+          '.vws-pf2-card.vws-active iframe{pointer-events:auto!important}'
         ].join('');
         document.head.appendChild(st);
       }
@@ -4814,8 +4814,15 @@
           }, { passive: true });
           card.addEventListener('touchend', function() {
             if (_moved || Date.now() - _ts > 600) return;
-            var url = card.getAttribute('data-url');
-            if (url) window.open(url, '_blank');
+            if (!card.classList.contains('vws-active')) {
+              document.querySelectorAll('.vws-pf2-card.vws-active').forEach(function(c) {
+                c.classList.remove('vws-active');
+              });
+              card.classList.add('vws-active');
+            } else {
+              var url = card.getAttribute('data-url');
+              if (url) window.open(url, '_blank');
+            }
           });
           /* Desktop click */
           card.addEventListener('click', function(e) {
