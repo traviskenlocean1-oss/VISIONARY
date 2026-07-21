@@ -4832,18 +4832,43 @@
           });
         });
 
-        /* Throttled iframe loader — queues cards and loads one iframe every 600ms.
-           Prevents fast scrolling from triggering all 10 iframes simultaneously,
-           which is what exhausted Safari's memory budget and caused the crash. */
+        /* Iframe memory manager: removes nodes from DOM when off-screen, re-creates
+           fresh on re-entry. Hard cap of 2 live cards prevents Safari memory spikes. */
         var _loadQueue = [];
         var _loadBusy = false;
+        var _liveCount = 0;
+        var _maxLive = 2;
+        function _makeIframes(card) {
+          var url = card.getAttribute('data-url');
+          var ind = (card.querySelector('.vws-pf2-lbl') || {}).textContent || '';
+          var phScreen = card.querySelector('.vws-pf2-ph-screen');
+          var lapScreen = card.querySelector('.vws-pf2-laptop-screen');
+          if (phScreen && !phScreen.querySelector('iframe')) {
+            var ph = document.createElement('iframe');
+            ph.setAttribute('data-src', url); ph.scrolling = 'no';
+            ph.title = ind + ' mobile';
+            ph.setAttribute('sandbox', 'allow-scripts allow-same-origin');
+            phScreen.appendChild(ph);
+          }
+          if (lapScreen && !lapScreen.querySelector('iframe')) {
+            var lap = document.createElement('iframe');
+            lap.setAttribute('data-src', url); lap.scrolling = 'no';
+            lap.title = ind + ' desktop';
+            lap.setAttribute('sandbox', 'allow-scripts allow-same-origin');
+            lapScreen.appendChild(lap);
+          }
+        }
+        function _destroyIframes(card) {
+          card.querySelectorAll('iframe').forEach(function(f) { f.parentNode.removeChild(f); });
+        }
         function drainLoadQueue() {
-          if (_loadBusy || _loadQueue.length === 0) return;
+          if (_loadBusy || _loadQueue.length === 0 || _liveCount >= _maxLive) return;
           _loadBusy = true;
           var next = _loadQueue.shift();
-          next.querySelectorAll('iframe[data-src]').forEach(function(f) {
-            f.src = f.getAttribute('data-src'); f.removeAttribute('data-src');
-          });
+          var pending = next.querySelectorAll('iframe[data-src]');
+          if (pending.length === 0) { _loadBusy = false; drainLoadQueue(); return; }
+          _liveCount++;
+          pending.forEach(function(f) { f.src = f.getAttribute('data-src'); f.removeAttribute('data-src'); });
           setTimeout(function() { applyLaptopScales(); _loadBusy = false; drainLoadQueue(); }, 600);
         }
         var _isMob = window.innerWidth <= 768 || /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
@@ -4852,18 +4877,18 @@
             entries.forEach(function(entry) {
               var card = entry.target;
               if (entry.isIntersecting) {
-                /* Load if this card still has unloaded iframes */
-                if (card.querySelector('iframe[data-src]')) { _loadQueue.push(card); drainLoadQueue(); }
+                if (!card.querySelector('iframe')) _makeIframes(card);
+                if (card.querySelector('iframe[data-src]') && _loadQueue.indexOf(card) === -1) {
+                  _loadQueue.push(card); drainLoadQueue();
+                }
               } else if (_isMob) {
-                /* On mobile: unload off-screen iframes to free Safari memory */
-                card.querySelectorAll('iframe').forEach(function(f) {
-                  if (f.src && f.src !== 'about:blank' && !f.hasAttribute('data-src')) {
-                    f.setAttribute('data-src', f.src); f.src = 'about:blank';
-                  }
-                });
+                var hasLive = !!card.querySelector('iframe:not([data-src])');
+                _destroyIframes(card);
+                _loadQueue = _loadQueue.filter(function(c) { return c !== card; });
+                if (hasLive) { _liveCount = Math.max(0, _liveCount - 1); drainLoadQueue(); }
               }
             });
-          }, { rootMargin: '300px 0px', threshold: 0 });
+          }, { rootMargin: '100px 0px', threshold: 0 });
           document.querySelectorAll('.vws-pf2-card').forEach(function(c) { iframeObs.observe(c); });
         } else {
           document.querySelectorAll('.vws-pf2-card').forEach(function(c) {
