@@ -2354,6 +2354,8 @@
     section[class*="h-screen"]{height:auto!important;min-height:100vh!important}
     /* Flex container: convert from absolute overlay to in-flow so section height wraps it */
     section[class*="h-screen"]>.absolute.inset-0.flex{position:relative!important;top:auto!important;right:auto!important;bottom:auto!important;left:auto!important;padding-bottom:48px!important}
+    /* Form column: stretch children to fill available width */
+    section[class*="h-screen"] [style*="max-width: 380px"]{display:flex!important;flex-direction:column!important;align-items:stretch!important}
     /* Form card: full-width, no extra margins from old rules */
     section[class*="h-screen"] [style*="rgba(4, 8, 22"]{width:100%!important;max-width:none!important;margin:0!important;box-sizing:border-box!important}
     /* Prevent iOS Safari auto-zoom on input focus (requires font-size >= 16px) */
