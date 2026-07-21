@@ -524,28 +524,6 @@
         heroSec.insertBefore(mask, heroSec.firstChild);
       })();
 
-      /* 1.7b. Mobile: stretch hero form card to fill column width.
-         Uses measured pixel width (not %) because % doesn't resolve correctly
-         against a percentage-width flex container on this React render tree. */
-      (function() {
-        if (window.innerWidth > 768) return;
-        function applyFormWidth() {
-          var heroSec = document.querySelector('section[class*="h-screen"]');
-          if (!heroSec) return;
-          var formCard = heroSec.querySelector('[style*="rgba(4, 8, 22"]');
-          if (!formCard) return;
-          var parentCol = formCard.parentElement;
-          if (!parentCol) return;
-          var colW = parentCol.getBoundingClientRect().width;
-          if (colW <= 0) { requestAnimationFrame(applyFormWidth); return; }
-          parentCol.style.setProperty('display', 'flex', 'important');
-          parentCol.style.setProperty('flex-direction', 'column', 'important');
-          parentCol.style.setProperty('align-items', 'stretch', 'important');
-          formCard.style.setProperty('width', colW + 'px', 'important');
-          formCard.style.setProperty('box-sizing', 'border-box', 'important');
-        }
-        requestAnimationFrame(function() { requestAnimationFrame(applyFormWidth); });
-      })();
 
       /* 1.8. Enhance deposit note → "How Payment Works" 2-step trust card */
       (function() {
