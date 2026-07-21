@@ -524,6 +524,24 @@
         heroSec.insertBefore(mask, heroSec.firstChild);
       })();
 
+      /* 1.7b. Mobile: stretch hero form card to fill column width */
+      (function() {
+        if (window.innerWidth > 768) return;
+        var heroSec = document.querySelector('section[class*="h-screen"]');
+        if (!heroSec) return;
+        var formCard = heroSec.querySelector('[style*="rgba(4, 8, 22"]');
+        if (!formCard) return;
+        var parentCol = formCard.parentElement;
+        if (parentCol) {
+          parentCol.style.setProperty('display', 'flex', 'important');
+          parentCol.style.setProperty('flex-direction', 'column', 'important');
+          parentCol.style.setProperty('align-items', 'stretch', 'important');
+        }
+        formCard.style.setProperty('min-width', '0', 'important');
+        formCard.style.setProperty('width', '100%', 'important');
+        formCard.style.setProperty('box-sizing', 'border-box', 'important');
+      })();
+
       /* 1.8. Enhance deposit note → "How Payment Works" 2-step trust card */
       (function() {
         if (document.getElementById('vws-payment-trust')) return;
