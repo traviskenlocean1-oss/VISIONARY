@@ -4837,11 +4837,12 @@
         });
 
         /* Iframe memory manager: removes nodes from DOM when off-screen, re-creates
-           fresh on re-entry. Hard cap of 2 live cards prevents Safari memory spikes. */
+           fresh on re-entry. Mobile caps at 2 live cards; desktop loads all at once. */
+        var _isMob = window.innerWidth <= 768 || /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
         var _loadQueue = [];
         var _loadBusy = false;
         var _liveCount = 0;
-        var _maxLive = 2;
+        var _maxLive = _isMob ? 2 : 99;
         function _makeIframes(card) {
           var url = card.getAttribute('data-url');
           var ind = (card.querySelector('.vws-pf2-lbl') || {}).textContent || '';
@@ -4875,15 +4876,19 @@
           pending.forEach(function(f) { f.src = f.getAttribute('data-src'); f.removeAttribute('data-src'); });
           setTimeout(function() { applyLaptopScales(); _loadBusy = false; drainLoadQueue(); }, 600);
         }
-        var _isMob = window.innerWidth <= 768 || /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
         if (window.IntersectionObserver) {
           var iframeObs = new IntersectionObserver(function(entries) {
             entries.forEach(function(entry) {
               var card = entry.target;
               if (entry.isIntersecting) {
                 if (!card.querySelector('iframe')) _makeIframes(card);
-                if (card.querySelector('iframe[data-src]') && _loadQueue.indexOf(card) === -1) {
-                  _loadQueue.push(card); drainLoadQueue();
+                if (card.querySelector('iframe[data-src]')) {
+                  if (_isMob) {
+                    if (_loadQueue.indexOf(card) === -1) { _loadQueue.push(card); drainLoadQueue(); }
+                  } else {
+                    card.querySelectorAll('iframe[data-src]').forEach(function(f) { f.src = f.getAttribute('data-src'); f.removeAttribute('data-src'); });
+                    setTimeout(applyLaptopScales, 400);
+                  }
                 }
               } else if (_isMob) {
                 var hasLive = !!card.querySelector('iframe:not([data-src])');
