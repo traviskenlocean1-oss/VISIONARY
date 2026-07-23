@@ -1193,7 +1193,7 @@
           }, 200);
         }
 
-        /* ── Intercept hero-pill (hash) + mega-menu + More-Details links to scroll to correct panel ── */
+        /* ── Intercept hero-pill (hash) links to scroll to correct panel ── */
         function addServicePillScrollers() {
           var IDX = {'web-development':0,'hosting':1,'website-maintenance':2,'website-creation':3,'website-redesign':4,'logo-branding':5};
           function scrollToPanel(idx) {
@@ -1209,13 +1209,11 @@
             a._vwsPs = true;
             a.addEventListener('click', function(e) { e.preventDefault(); e.stopPropagation(); scrollToPanel(IDX[hash]); }, true);
           });
-          /* /services/xxx links — mega-menu items and More Details buttons */
-          document.querySelectorAll('a[href^="/services/"]').forEach(function(a) {
-            var slug = a.getAttribute('href').replace('/services/','').replace(/\/$/,'');
-            if (IDX[slug] === undefined || a._vwsPs) return;
-            a._vwsPs = true;
-            a.addEventListener('click', function(e) { e.preventDefault(); e.stopPropagation(); scrollToPanel(IDX[slug]); }, true);
-          });
+          /* NOTE: /services/xxx links (mega-menu + "More Details" buttons) used to be
+             intercepted here to scroll to the matching panel instead of navigating.
+             That made "More Details" behave differently from "Read More" on the home
+             page (which does a real navigation to the dedicated detail page). Removed
+             so both links now go to the same place the same way. */
         }
         addServicePillScrollers();
         setTimeout(addServicePillScrollers, 600);
