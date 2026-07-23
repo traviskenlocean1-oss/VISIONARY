@@ -3091,17 +3091,11 @@
         var slug = href.replace('/services/','').replace(/[/#].*$/, '');
         if (_SVC_MAP[slug] === undefined) return;
         sessionStorage.setItem('vwsPI', String(_SVC_MAP[slug]));
-        /* If already on the services listing page, scroll to the panel instead of navigating */
-        if (/^\/services\/?$/.test(window.location.pathname)) {
-          e.preventDefault();
-          e.stopPropagation();
-          var list = document.getElementById('vws-svc-list');
-          if (list) {
-            var idx = _SVC_MAP[slug];
-            var listTop = list.getBoundingClientRect().top + window.scrollY;
-            window.scrollTo({top: listTop + idx * window.innerHeight + 4, behavior: 'smooth'});
-          }
-        }
+        /* Previously: if already on the services listing page, this intercepted the
+           click to scroll to the matching panel instead of navigating. That made
+           "More Details" behave differently from "Read More" on the home page
+           (a real navigation to the dedicated detail page). Now lets the click
+           navigate normally either way, same as every other entry point. */
       }, true);
     }
 
