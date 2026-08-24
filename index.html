@@ -2869,7 +2869,26 @@
       userData = { name: name, phone: phone };
       addMsg('Name: ' + name + '\nPhone: ' + phone, true, now());
       document.getElementById('vws-form').style.display = 'none';
-      /* Fire webhook — non-blocking, fails silently so chat always completes */
+      var chatTime = new Date().toLocaleString('en-US', { timeZone: 'America/New_York' });
+      /* Primary — FormSubmit → direct Gmail delivery, same path the Contact
+         Us form uses. The chat widget previously only fired the Make.com
+         webhook below, so a chat lead only reached Gmail if that Make.com
+         scenario was configured and running -- this guarantees delivery
+         even if Make.com is broken/paused/unset. */
+      var chatFd = new FormData();
+      chatFd.append('name', name);
+      chatFd.append('phone', phone);
+      chatFd.append('source', 'Chat widget — ' + window.location.href);
+      chatFd.append('time', chatTime);
+      chatFd.append('_subject', 'New Chat Lead — Visionary Web Studio');
+      chatFd.append('_template', 'table');
+      chatFd.append('_captcha', 'false');
+      fetch('https://formsubmit.co/ajax/visionarywebstudio6@gmail.com', {
+        method: 'POST',
+        headers: { 'Accept': 'application/json' },
+        body: chatFd
+      }).catch(function(){});
+      /* Backup — Make.com webhook, non-blocking, fails silently so chat always completes */
       if (LEAD_WEBHOOK && LEAD_WEBHOOK !== 'YOUR_MAKE_WEBHOOK_URL') {
         fetch(LEAD_WEBHOOK, {
           method: 'POST',
@@ -2878,7 +2897,7 @@
             name: name,
             phone: phone,
             page: window.location.href,
-            time: new Date().toLocaleString('en-US', { timeZone: 'America/New_York' })
+            time: chatTime
           })
         }).catch(function(){});
       }
