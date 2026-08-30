@@ -19,8 +19,12 @@ const PAGES = {
 };
 
 class TextContentRewriter {
-  constructor(text) { this.text = text; }
-  element(element) { element.setInnerContent(this.text); }
+  // NOTE: do not name this field "text" — HTMLRewriter's handler binding
+  // treats any "text" property on a handler object as the text-node
+  // callback slot and throws if it isn't a function (this broke every
+  // route through the title rewriter in production the first time).
+  constructor(value) { this.value = value; }
+  element(element) { element.setInnerContent(this.value); }
 }
 class AttrRewriter {
   constructor(attr, value) { this.attr = attr; this.value = value; }
