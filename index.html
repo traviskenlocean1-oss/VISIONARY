@@ -4693,14 +4693,14 @@
           '.vws-pf2-devices{display:flex;align-items:flex-end}',
           '.vws-pf2-phone{flex-shrink:0;width:72px;z-index:2;margin-right:-20px;background:#e2e4e8;border-radius:13px;padding:8px 5px 6px;box-shadow:0 6px 22px rgba(0,0,0,0.16),0 0 0 1px rgba(0,0,0,0.08)}',
           '.vws-pf2-ph-notch{width:22px;height:3px;background:#b0b4bc;border-radius:2px;margin:0 auto 5px}',
-          '.vws-pf2-ph-screen{width:62px;height:134px;overflow:hidden;border-radius:6px;background:#0a0a0a}',
-          '.vws-pf2-ph-screen iframe{width:390px;height:844px;transform:scale(0.159);transform-origin:top left;border:none;pointer-events:none;display:block}',
+          '.vws-pf2-ph-screen{position:relative;width:62px;height:134px;overflow:hidden;border-radius:6px;background:#0a0a0a}',
+          '.vws-pf2-ph-screen img{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;object-position:top center;display:block}',
           '.vws-pf2-ph-bar{width:22px;height:3px;background:#b0b4bc;border-radius:2px;margin:5px auto 0}',
           '.vws-pf2-laptop{flex:1;min-width:0}',
           '.vws-pf2-laptop-lid{background:#d4d7dc;border-radius:8px 8px 0 0;padding:5px 5px 0;box-shadow:inset 0 2px 4px rgba(0,0,0,0.07)}',
           '.vws-pf2-laptop-cam{width:4px;height:4px;background:#a0a4ac;border-radius:50%;margin:0 auto 3px}',
           '.vws-pf2-laptop-screen{position:relative;overflow:hidden;border-radius:3px 3px 0 0;background:#0a0a0a;height:0;padding-bottom:62.5%}',
-          '.vws-pf2-laptop-screen iframe{position:absolute;top:0;left:0;width:1280px;height:800px;transform-origin:top left;border:none;pointer-events:none;display:block}',
+          '.vws-pf2-laptop-screen img{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;object-position:top center;display:block}',
           '.vws-pf2-laptop-base{height:8px;background:#c0c4cc;border-radius:0 0 4px 4px;box-shadow:0 4px 10px rgba(0,0,0,0.1)}',
           '.vws-pf2-laptop-stand{width:34%;height:4px;background:#b0b4bc;margin:0 auto;border-radius:0 0 4px 4px}',
           '.vws-pf-cta-sec{text-align:center;padding:80px 40px 120px;position:relative;background:transparent;border-top:1px solid rgba(255,255,255,0.05)}',
@@ -4713,39 +4713,39 @@
           '.vws-pf-cta-btn:hover{background:#e8ecf4;transform:translateY(-4px);box-shadow:0 16px 44px rgba(0,0,0,0.35)}',
           '@media(max-width:900px){.vws-pf-grid{grid-template-columns:repeat(2,1fr)}}',
           '@media(max-width:640px){.vws-pf-grid{grid-template-columns:1fr}.vws-pf-grid-sec{padding:50px 16px 70px}.vws-pf-hero{padding:120px 20px 60px}.vws-pf-stats{gap:20px;flex-wrap:nowrap}.vws-pf-cta-sec{padding:60px 20px 80px}}',
-          '@media(max-width:420px){.vws-pf-stats{gap:10px}.vws-pf-stat-n{font-size:28px}.vws-pf-stat-l{font-size:9px;letter-spacing:.06em}}',
-          '.vws-pf2-card.vws-active iframe{pointer-events:auto!important}'
+          '@media(max-width:420px){.vws-pf-stats{gap:10px}.vws-pf-stat-n{font-size:28px}.vws-pf-stat-l{font-size:9px;letter-spacing:.06em}}'
         ].join('');
         document.head.appendChild(st);
       }
 
       /* ── Build wrap once — reuse the same node on every re-injection ── */
       var projects = [
-        { url:'https://hvac-plumbing-demo.traviskenlocean1.workers.dev/',  ind:'HVAC & Plumbing' },
-        { url:'https://mobiledetail.traviskenlocean1.workers.dev/',        ind:'Mobile Detailing' },
-        { url:'https://contractor-demo.traviskenlocean1.workers.dev/',     ind:'Concrete Contractor' },
-        { url:'https://beauty.traviskenlocean1.workers.dev/',              ind:'Hair Salon' },
-        { url:'https://roofing-demo.traviskenlocean1.workers.dev/',        ind:'Roofing Company' },
-        { url:'https://www.lalasweetsandcakes.com/',                       ind:'Bakery & Catering' },
-        { url:'https://endeavor-evolution.vercel.app/',                    ind:'Credit Repair & Funding' },
-        { url:'https://contract.traviskenlocean1.workers.dev/',            ind:'Demolition Contractor' },
-        { url:'https://junkrepo.traviskenlocean1.workers.dev',             ind:'Junk Removal' },
-        { url:'https://meadowline.traviskenlocean1.workers.dev',           ind:'Lawn & Garden' },
-        { url:'https://aqualine-pools.traviskenlocean1.workers.dev',       ind:'Custom Pool Builder' },
-        { url:'https://meridian-estates.traviskenlocean1.workers.dev',     ind:'Real Estate' },
-        { url:'https://psychoticlove.net',                                 ind:'Streetwear Apparel' },
-        { url:'https://ironclad.traviskenlocean1.workers.dev',             ind:'Home Builder' },
-        { url:'https://cloudefy.traviskenlocean1.workers.dev',             ind:'Marketing Agency' }
+        { url:'https://hvac-plumbing-demo.traviskenlocean1.workers.dev/',  ind:'HVAC & Plumbing',         img:'/assets/portfolio/hvac-plumbing.jpg' },
+        { url:'https://mobiledetail.traviskenlocean1.workers.dev/',        ind:'Mobile Detailing',        img:'/assets/portfolio/mobile-detailing.jpg' },
+        { url:'https://contractor-demo.traviskenlocean1.workers.dev/',     ind:'Concrete Contractor',     img:'/assets/portfolio/concrete-contractor.jpg' },
+        { url:'https://beauty.traviskenlocean1.workers.dev/',              ind:'Hair Salon',              img:'/assets/portfolio/hair-salon.jpg' },
+        { url:'https://roofing-demo.traviskenlocean1.workers.dev/',        ind:'Roofing Company',         img:'/assets/portfolio/roofing.jpg' },
+        { url:'https://www.lalasweetsandcakes.com/',                       ind:'Bakery & Catering',       img:'/assets/portfolio/bakery.jpg' },
+        { url:'https://endeavor-evolution.vercel.app/',                    ind:'Credit Repair & Funding', img:'/assets/portfolio/credit-repair.jpg' },
+        { url:'https://contract.traviskenlocean1.workers.dev/',            ind:'Demolition Contractor',   img:'/assets/portfolio/demolition.jpg' },
+        { url:'https://junkrepo.traviskenlocean1.workers.dev',             ind:'Junk Removal',            img:'/assets/portfolio/junk-removal.jpg' },
+        { url:'https://meadowline.traviskenlocean1.workers.dev',           ind:'Lawn & Garden',           img:'/assets/portfolio/lawn-garden.jpg' },
+        { url:'https://aqualine-pools.traviskenlocean1.workers.dev',       ind:'Custom Pool Builder',     img:'/assets/portfolio/pool-builder.jpg' },
+        { url:'https://meridian-estates.traviskenlocean1.workers.dev',     ind:'Real Estate',             img:'/assets/portfolio/real-estate.jpg' },
+        { url:'https://psychoticlove.net',                                 ind:'Streetwear Apparel',      img:'/assets/portfolio/streetwear.jpg' },
+        { url:'https://ironclad.traviskenlocean1.workers.dev',             ind:'Home Builder',            img:'/assets/portfolio/home-builder.jpg' },
+        { url:'https://cloudefy.traviskenlocean1.workers.dev',             ind:'Marketing Agency',        img:'/assets/portfolio/marketing-agency.jpg' }
       ];
       function buildCard(p) {
+        var imgTag = '<img src="' + p.img + '" alt="' + p.ind + ' website preview" loading="lazy">';
         return '<div class="vws-pf2-card" data-url="' + p.url + '" style="cursor:pointer">'
           + '<span class="vws-pf2-lbl">' + p.ind + '</span>'
           + '<div class="vws-pf2-devices">'
             + '<div class="vws-pf2-phone"><div class="vws-pf2-ph-notch"></div>'
-              + '<div class="vws-pf2-ph-screen"><iframe data-src="' + p.url + '" scrolling="no" title="' + p.ind + ' mobile" sandbox="allow-scripts allow-same-origin"></iframe></div>'
+              + '<div class="vws-pf2-ph-screen">' + imgTag + '</div>'
               + '<div class="vws-pf2-ph-bar"></div></div>'
             + '<div class="vws-pf2-laptop"><div class="vws-pf2-laptop-lid"><div class="vws-pf2-laptop-cam"></div>'
-              + '<div class="vws-pf2-laptop-screen"><iframe data-src="' + p.url + '" scrolling="no" title="' + p.ind + ' desktop" sandbox="allow-scripts allow-same-origin"></iframe></div>'
+              + '<div class="vws-pf2-laptop-screen">' + imgTag + '</div>'
               + '</div><div class="vws-pf2-laptop-base"></div><div class="vws-pf2-laptop-stand"></div></div>'
           + '</div><div class="vws-pf2-view">View Demo →</div></div>';
       }
@@ -4829,19 +4829,13 @@
         if (root) window._vwsPfBodyObs.observe(root, { childList: true, subtree: true });
       }
 
-      /* ── setupAfterInject: lazy-load iframes + laptop scaling; runs once ── */
+      /* ── setupAfterInject: card click-through; runs once ──
+         Cards used to lazy-load live iframes here (mobile+desktop previews of
+         the actual target site). Replaced with static screenshots (see the
+         `img` field on each project + buildCard) — a live embedded copy of
+         every project loading at once was what made this page laggy. Cards
+         still open the real site on click/tap, just via a plain link now. */
       function setupAfterInject() {
-        function applyLaptopScales() {
-          document.querySelectorAll('.vws-pf2-laptop-screen').forEach(function(screen) {
-            var w = screen.offsetWidth;
-            if (!w) return;
-            var iframe = screen.querySelector('iframe');
-            if (iframe) iframe.style.transform = 'scale(' + (w / 1280).toFixed(5) + ')';
-          });
-        }
-        setTimeout(applyLaptopScales, 400);
-        window.addEventListener('resize', applyLaptopScales);
-
         /* Touch-aware card tap — distinguishes scroll from deliberate tap on iOS */
         document.querySelectorAll('.vws-pf2-card').forEach(function(card) {
           var _ts = 0; var _ty = 0; var _moved = false;
@@ -4853,15 +4847,8 @@
           }, { passive: true });
           card.addEventListener('touchend', function() {
             if (_moved || Date.now() - _ts > 600) return;
-            if (!card.classList.contains('vws-active')) {
-              document.querySelectorAll('.vws-pf2-card.vws-active').forEach(function(c) {
-                c.classList.remove('vws-active');
-              });
-              card.classList.add('vws-active');
-            } else {
-              var url = card.getAttribute('data-url');
-              if (url) window.open(url, '_blank');
-            }
+            var url = card.getAttribute('data-url');
+            if (url) window.open(url, '_blank');
           });
           /* Desktop click */
           card.addEventListener('click', function(e) {
@@ -4870,75 +4857,6 @@
             if (url) window.open(url, '_blank');
           });
         });
-
-        /* Iframe memory manager: removes nodes from DOM when off-screen, re-creates
-           fresh on re-entry. Mobile caps at 2 live cards; desktop loads all at once. */
-        var _isMob = window.innerWidth <= 768 || /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-        var _loadQueue = [];
-        var _loadBusy = false;
-        var _liveCount = 0;
-        var _maxLive = _isMob ? 2 : 6;
-        function _makeIframes(card) {
-          var url = card.getAttribute('data-url');
-          var ind = (card.querySelector('.vws-pf2-lbl') || {}).textContent || '';
-          var phScreen = card.querySelector('.vws-pf2-ph-screen');
-          var lapScreen = card.querySelector('.vws-pf2-laptop-screen');
-          if (phScreen && !phScreen.querySelector('iframe')) {
-            var ph = document.createElement('iframe');
-            ph.setAttribute('data-src', url); ph.scrolling = 'no';
-            ph.title = ind + ' mobile';
-            ph.setAttribute('sandbox', 'allow-scripts allow-same-origin');
-            phScreen.appendChild(ph);
-          }
-          if (lapScreen && !lapScreen.querySelector('iframe')) {
-            var lap = document.createElement('iframe');
-            lap.setAttribute('data-src', url); lap.scrolling = 'no';
-            lap.title = ind + ' desktop';
-            lap.setAttribute('sandbox', 'allow-scripts allow-same-origin');
-            lapScreen.appendChild(lap);
-          }
-        }
-        function _destroyIframes(card) {
-          card.querySelectorAll('iframe').forEach(function(f) { f.parentNode.removeChild(f); });
-        }
-        function drainLoadQueue() {
-          if (_loadBusy || _loadQueue.length === 0 || _liveCount >= _maxLive) return;
-          _loadBusy = true;
-          var next = _loadQueue.shift();
-          var pending = next.querySelectorAll('iframe[data-src]');
-          if (pending.length === 0) { _loadBusy = false; drainLoadQueue(); return; }
-          _liveCount++;
-          pending.forEach(function(f) { f.src = f.getAttribute('data-src'); f.removeAttribute('data-src'); });
-          setTimeout(function() { applyLaptopScales(); _loadBusy = false; drainLoadQueue(); }, 600);
-        }
-        if (window.IntersectionObserver) {
-          var iframeObs = new IntersectionObserver(function(entries) {
-            entries.forEach(function(entry) {
-              var card = entry.target;
-              if (entry.isIntersecting) {
-                if (!card.querySelector('iframe')) _makeIframes(card);
-                if (card.querySelector('iframe[data-src]')) {
-                  /* Always queue+throttle (not just on mobile) — desktop used to load every
-                     card's iframes instantly and never free them, so scrolling the whole
-                     portfolio page accumulated dozens of live embedded sites at once. */
-                  if (_loadQueue.indexOf(card) === -1) { _loadQueue.push(card); drainLoadQueue(); }
-                }
-              } else {
-                /* Always release iframes once scrolled away (not just on mobile), so the
-                   live count actually frees up instead of only ever growing. */
-                var hasLive = !!card.querySelector('iframe:not([data-src])');
-                _destroyIframes(card);
-                _loadQueue = _loadQueue.filter(function(c) { return c !== card; });
-                if (hasLive) { _liveCount = Math.max(0, _liveCount - 1); drainLoadQueue(); }
-              }
-            });
-          }, { rootMargin: '100px 0px', threshold: 0 });
-          document.querySelectorAll('.vws-pf2-card').forEach(function(c) { iframeObs.observe(c); });
-        } else {
-          document.querySelectorAll('.vws-pf2-card').forEach(function(c) {
-            _loadQueue.push(c); drainLoadQueue();
-          });
-        }
       }
 
       /* ── Fast-hide: suppress React's native /work sections immediately (50ms cycles) ──
