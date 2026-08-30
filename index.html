@@ -4877,7 +4877,7 @@
         var _loadQueue = [];
         var _loadBusy = false;
         var _liveCount = 0;
-        var _maxLive = _isMob ? 2 : 99;
+        var _maxLive = _isMob ? 2 : 6;
         function _makeIframes(card) {
           var url = card.getAttribute('data-url');
           var ind = (card.querySelector('.vws-pf2-lbl') || {}).textContent || '';
@@ -4918,14 +4918,14 @@
               if (entry.isIntersecting) {
                 if (!card.querySelector('iframe')) _makeIframes(card);
                 if (card.querySelector('iframe[data-src]')) {
-                  if (_isMob) {
-                    if (_loadQueue.indexOf(card) === -1) { _loadQueue.push(card); drainLoadQueue(); }
-                  } else {
-                    card.querySelectorAll('iframe[data-src]').forEach(function(f) { f.src = f.getAttribute('data-src'); f.removeAttribute('data-src'); });
-                    setTimeout(applyLaptopScales, 400);
-                  }
+                  /* Always queue+throttle (not just on mobile) — desktop used to load every
+                     card's iframes instantly and never free them, so scrolling the whole
+                     portfolio page accumulated dozens of live embedded sites at once. */
+                  if (_loadQueue.indexOf(card) === -1) { _loadQueue.push(card); drainLoadQueue(); }
                 }
-              } else if (_isMob) {
+              } else {
+                /* Always release iframes once scrolled away (not just on mobile), so the
+                   live count actually frees up instead of only ever growing. */
                 var hasLive = !!card.querySelector('iframe:not([data-src])');
                 _destroyIframes(card);
                 _loadQueue = _loadQueue.filter(function(c) { return c !== card; });
