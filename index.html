@@ -214,7 +214,7 @@
               "name": "How much does a custom website cost in Miami?",
               "acceptedAnswer": {
                 "@type": "Answer",
-                "text": "Our custom websites start at $500 for a 2–3 page business site, $750 for a 4–6 page site with advanced features, and $1,000+ for full custom builds with e-commerce or premium functionality. Every package includes custom design, mobile optimization, on-page SEO, and a contact form — one flat price, no monthly fees, no hidden charges."
+                "text": "Our custom websites range from $500–750 for a 2–3 page business site, $750–1,000 for a 4–6 page site with advanced features, up to $1,000–2,000 for full custom builds with e-commerce or premium functionality. Every package includes custom design, mobile optimization, on-page SEO, and a contact form — one flat price, no monthly fees, no hidden charges."
               }
             },
             {
@@ -289,9 +289,9 @@
             "@type": "OfferCatalog",
             "name": "Website Design Packages",
             "itemListElement": [
-              { "@type": "Offer", "name": "Starter Website", "price": "500", "priceCurrency": "USD", "description": "2–3 page custom website for small businesses" },
-              { "@type": "Offer", "name": "Standard Website", "price": "750", "priceCurrency": "USD", "description": "4–6 page website with advanced design and features" },
-              { "@type": "Offer", "name": "Full Build", "price": "1000", "priceCurrency": "USD", "description": "Complete custom build with e-commerce and premium features" }
+              { "@type": "Offer", "name": "Starter Website", "price": "500", "priceCurrency": "USD", "description": "2–3 page custom website for small businesses. Ranges $500–750 based on scope." },
+              { "@type": "Offer", "name": "Standard Website", "price": "750", "priceCurrency": "USD", "description": "4–6 page website with advanced design and features. Ranges $750–1,000 based on scope." },
+              { "@type": "Offer", "name": "Full Build", "price": "1000", "priceCurrency": "USD", "description": "Complete custom build with e-commerce and premium features. Ranges $1,000–2,000 based on scope." }
             ]
           }
         },
@@ -340,12 +340,13 @@
           "@type": "Product",
           "@id": "https://getvisionarywebstudio.com/pricing/#starter",
           "name": "Starter Website Package",
-          "description": "2–3 page custom website for small businesses and startups. Includes mobile-responsive design, on-page SEO, and contact form.",
+          "description": "2–3 page custom website for small businesses and startups. Includes mobile-responsive design, on-page SEO, and contact form. Priced $500–750 based on scope.",
           "brand": { "@type": "Brand", "name": "Visionary Web Studio" },
           "offers": {
             "@type": "Offer",
             "price": "500",
             "priceCurrency": "USD",
+            "priceSpecification": { "@type": "PriceSpecification", "minPrice": "500", "maxPrice": "750", "priceCurrency": "USD" },
             "url": "https://getvisionarywebstudio.com/pricing/",
             "availability": "https://schema.org/InStock",
             "priceValidUntil": "2026-12-31",
@@ -356,12 +357,13 @@
           "@type": "Product",
           "@id": "https://getvisionarywebstudio.com/pricing/#standard",
           "name": "Standard Website Package",
-          "description": "4–6 page custom website with advanced design, animations, and CMS integration. The most popular choice for growing businesses.",
+          "description": "4–6 page custom website with advanced design, animations, and CMS integration. The most popular choice for growing businesses. Priced $750–1,000 based on scope.",
           "brand": { "@type": "Brand", "name": "Visionary Web Studio" },
           "offers": {
             "@type": "Offer",
             "price": "750",
             "priceCurrency": "USD",
+            "priceSpecification": { "@type": "PriceSpecification", "minPrice": "750", "maxPrice": "1000", "priceCurrency": "USD" },
             "url": "https://getvisionarywebstudio.com/pricing/",
             "availability": "https://schema.org/InStock",
             "priceValidUntil": "2026-12-31",
@@ -372,12 +374,13 @@
           "@type": "Product",
           "@id": "https://getvisionarywebstudio.com/pricing/#full-build",
           "name": "Full Build Website Package",
-          "description": "Complete custom website with e-commerce, premium animations, and all advanced features. Everything from design to launch — you own it all.",
+          "description": "Complete custom website with e-commerce, premium animations, and all advanced features. Everything from design to launch — you own it all. Priced $1,000–2,000 based on scope.",
           "brand": { "@type": "Brand", "name": "Visionary Web Studio" },
           "offers": {
             "@type": "Offer",
             "price": "1000",
             "priceCurrency": "USD",
+            "priceSpecification": { "@type": "PriceSpecification", "minPrice": "1000", "maxPrice": "2000", "priceCurrency": "USD" },
             "url": "https://getvisionarywebstudio.com/pricing/",
             "availability": "https://schema.org/InStock",
             "priceValidUntil": "2026-12-31",
@@ -2453,7 +2456,7 @@
       ]
     },
     svc_biz: {
-      bot: "Service businesses are our specialty — we've built for detailers, cleaners, contractors, trainers, and more.\n\nMost service businesses go with our Standard package:\n\n💰 <b>$750 one-time</b> — up to 5 pages, full SEO, contact form, Google Maps, mobile-first.\n\nWant our team to reach out to you?",
+      bot: "Service businesses are our specialty — we've built for detailers, cleaners, contractors, trainers, and more.\n\nMost service businesses go with our Standard package:\n\n💰 <b>$750–1,000 one-time</b> — up to 5 pages, full SEO, contact form, Google Maps, mobile-first.\n\nWant our team to reach out to you?",
       replies: [
         {label:"Yes, have the team reach out", next:'capture'},
         {label:'Tell me more about pricing',  next:'pricing'},
@@ -2461,14 +2464,14 @@
       ]
     },
     retail: {
-      bot: "Retail and shop sites are great — product showcases, hours, location, trust-building design.\n\nOur Standard package ($750 one-time) covers everything a local shop needs to dominate Google.\n\nWant a quote? Our team will reach out.",
+      bot: "Retail and shop sites are great — product showcases, hours, location, trust-building design.\n\nOur Standard package ($750–1,000 one-time) covers everything a local shop needs to dominate Google.\n\nWant a quote? Our team will reach out.",
       replies: [
         {label:"Yes, get me a quote", next:'capture'},
         {label:'Show me pricing',     next:'pricing'}
       ]
     },
     pro: {
-      bot: "Professional services need a trust-first design — clear credentials, strong copy, easy contact.\n\nWe specialize in exactly that. Starting at $750 one-time with full ownership of your site.\n\nWant our team to send you a proposal?",
+      bot: "Professional services need a trust-first design — clear credentials, strong copy, easy contact.\n\nWe specialize in exactly that. Starting at $750–1,000 one-time with full ownership of your site.\n\nWant our team to send you a proposal?",
       replies: [
         {label:"Yes, send a proposal", next:'capture'},
         {label:'See pricing first',    next:'pricing'}
@@ -2505,15 +2508,15 @@
       ]
     },
     pricing: {
-      bot: "Here's the quick breakdown:\n\n💰 <b>Starter — $500</b> · 2–3 pages, perfect for getting online fast\n💰 <b>Standard — $750</b> · Up to 5 pages, most popular for service businesses\n💰 <b>Full Build — $1,000</b> · Up to 10 pages, blog, advanced SEO\n🔧 <b>Maintenance — $100/mo</b> · Unlimited updates, same-day turnaround\n\n<b>Deposits:</b> We require a 50% deposit to begin. Remainder due at launch.\n\nAll plans are one-time fees. You own the site outright.\n\nAny of these stand out for you?",
+      bot: "Here's the quick breakdown:\n\n💰 <b>Starter — $500–750</b> · 2–3 pages, perfect for getting online fast\n💰 <b>Standard — $750–1,000</b> · Up to 5 pages, most popular for service businesses\n💰 <b>Full Build — $1,000–2,000</b> · Up to 10 pages, blog, advanced SEO\n🔧 <b>Maintenance — $100/mo</b> · Unlimited updates, same-day turnaround\n\n<b>Deposits:</b> We require a 50% deposit to begin. Remainder due at launch.\n\nAll plans are one-time fees. You own the site outright.\n\nAny of these stand out for you?",
       replies: [
-        {label:'Standard sounds right — $750', next:'capture'},
+        {label:'Standard sounds right', next:'capture'},
         {label:'Tell me about Full Build',      next:'fullbuild'},
         {label:'What about maintenance?',       next:'maintenance'}
       ]
     },
     fullbuild: {
-      bot: "Full Build at $1,000 gets you:\n\n✅ Up to 10 custom pages\n✅ Custom animations\n✅ Blog or portfolio section\n✅ Advanced SEO + schema markup\n✅ Logo design included\n✅ Unlimited revisions for 30 days\n\nBest value if you want the full treatment.\n\nWant to get started?",
+      bot: "Full Build at $1,000–2,000 gets you:\n\n✅ Up to 10 custom pages\n✅ Custom animations\n✅ Blog or portfolio section\n✅ Advanced SEO + schema markup\n✅ Logo design included\n✅ Unlimited revisions for 30 days\n\nBest value if you want the full treatment.\n\nWant to get started?",
       replies: [
         {label:"Yes, I want Full Build", next:'capture'},
         {label:"Back to pricing",        next:'pricing'}
@@ -2929,7 +2932,7 @@
 
       /* "how can you help / what do you do / tell me about you" — lead with value prop */
       if (/\b(help|what do you|what can you|what you do|tell me about|about you|who are you|what is this|what's this)\b/.test(t)) {
-        return { msg: "Great question — here's exactly what we do:\n\n✅ <b>Custom websites built from scratch</b> — no templates, no WordPress bloat\n✅ <b>First draft in 48 hours</b> — seriously\n✅ <b>Full SEO included</b> — so customers find you on Google\n✅ <b>Mobile-first</b> — looks perfect on every device\n✅ <b>You own it outright</b> — no ongoing platform fees\n\nWe specialize in local service businesses — contractors, detailers, trainers, professionals. Sites that rank <i>and</i> actually get you calls.\n\nStarting at $500 one-time. Want to see what we can build for you?", next: 'capture' };
+        return { msg: "Great question — here's exactly what we do:\n\n✅ <b>Custom websites built from scratch</b> — no templates, no WordPress bloat\n✅ <b>First draft in 48 hours</b> — seriously\n✅ <b>Full SEO included</b> — so customers find you on Google\n✅ <b>Mobile-first</b> — looks perfect on every device\n✅ <b>You own it outright</b> — no ongoing platform fees\n\nWe specialize in local service businesses — contractors, detailers, trainers, professionals. Sites that rank <i>and</i> actually get you calls.\n\nStarting at $500–750 one-time. Want to see what we can build for you?", next: 'capture' };
       }
 
       /* Why choose us / are you good / best / number one */
@@ -2939,7 +2942,7 @@
 
       /* Price / cost */
       if (/\b(price|cost|how much|charge|fee|rate|afford|cheap|expensive|budget|pay|payment)\b/.test(t)) {
-        return { msg: "Here's the pricing breakdown:\n\n💰 <b>Starter — $500</b> · 2–3 pages, fast launch\n💰 <b>Standard — $750</b> · Up to 5 pages, most popular for service businesses\n💰 <b>Full Build — $1,000</b> · Up to 10 pages, blog, advanced SEO, logo included\n🔧 <b>Maintenance — $100/mo</b> · Unlimited updates, same-day turnaround\n\n<b>50% deposit</b> to start — remainder due at launch.\nOne-time fees. You own the site outright — no subscriptions, no platform lock-in.\n\nWhich package sounds right for you?", next: 'pricing' };
+        return { msg: "Here's the pricing breakdown:\n\n💰 <b>Starter — $500–750</b> · 2–3 pages, fast launch\n💰 <b>Standard — $750–1,000</b> · Up to 5 pages, most popular for service businesses\n💰 <b>Full Build — $1,000–2,000</b> · Up to 10 pages, blog, advanced SEO, logo included\n🔧 <b>Maintenance — $100/mo</b> · Unlimited updates, same-day turnaround\n\n<b>50% deposit</b> to start — remainder due at launch.\nOne-time fees. You own the site outright — no subscriptions, no platform lock-in.\n\nWhich package sounds right for you?", next: 'pricing' };
       }
 
       /* Timeline / turnaround */
@@ -3506,9 +3509,9 @@
         /* /pricing — Product schemas with real prices (enables price display in Google SERPs) */
         if (slug === '/pricing') {
           [
-            {id:'starter',   name:'Starter Website Package',   price:'500',  desc:'2–3 page custom website for small businesses. Mobile-responsive, on-page SEO, and contact form included.'},
-            {id:'standard',  name:'Standard Website Package',  price:'750',  desc:'4–6 page custom website with advanced design, animations, and CMS integration. Most popular package.'},
-            {id:'full-build',name:'Full Build Website Package', price:'1000', desc:'Complete custom website with e-commerce, premium animations, and advanced features. You own everything.'}
+            {id:'starter',   name:'Starter Website Package',   price:'500',  desc:'2–3 page custom website for small businesses. Mobile-responsive, on-page SEO, and contact form included. Priced $500–750 based on scope.'},
+            {id:'standard',  name:'Standard Website Package',  price:'750',  desc:'4–6 page custom website with advanced design, animations, and CMS integration. Most popular package. Priced $750–1,000 based on scope.'},
+            {id:'full-build',name:'Full Build Website Package', price:'1000', desc:'Complete custom website with e-commerce, premium animations, and advanced features. You own everything. Priced $1,000–2,000 based on scope.'}
           ].forEach(function(pkg) {
             graph.push({
               '@type':'Product',
