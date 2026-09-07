@@ -470,11 +470,11 @@
         });
       })();
 
-      /* 1.4. Pricing price numerals — find any $NNN leaf and make it big */
+      /* 1.4. Pricing price numerals — find any $NNN or $NNN–NNN leaf and make it big */
       Array.from(document.querySelectorAll('section *')).forEach(function(el) {
         if (el.children.length > 0) return;
         var txt = el.textContent.trim();
-        if (!/^\$[\d,]+$/.test(txt)) return;
+        if (!/^\$[\d,]+(?:[–-][\d,]+)?$/.test(txt)) return;
         /* Skip strikethrough prices — check element itself AND ancestors */
         if ((el.className||'').indexOf('line-through') !== -1) return;
         var par = el.parentElement;
@@ -484,7 +484,7 @@
           par = par.parentElement;
         }
         if (!isStrike) {
-          el.style.setProperty('font-size','3rem','important');
+          el.style.setProperty('font-size','4rem','important');
           el.style.setProperty('font-weight','900','important');
           el.style.setProperty('line-height','1','important');
         }
@@ -2111,7 +2111,7 @@
   .vws-section-light [style*="rgba(5, 8, 20"] [class*="text-7xl"]:not([class*="line-through"]),
   .vws-section-light [class*="rounded-2xl"] [class*="text-4xl"]:not([class*="line-through"]),
   .vws-section-light [class*="rounded-2xl"] [class*="text-5xl"]:not([class*="line-through"]),
-  .vws-section-light [class*="rounded-2xl"] [class*="text-6xl"]:not([class*="line-through"]){font-size:3rem!important;font-weight:900!important;line-height:1!important}
+  .vws-section-light [class*="rounded-2xl"] [class*="text-6xl"]:not([class*="line-through"]){font-size:4rem!important;font-weight:900!important;line-height:1!important}
   /* Strikethrough (original) prices stay compact */
   .vws-section-light [class*="rounded-2xl"] [class*="line-through"]{font-size:1.25rem!important;font-weight:400!important;line-height:1.4!important}
 
