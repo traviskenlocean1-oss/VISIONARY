@@ -1497,7 +1497,7 @@
   #vws-msgs::-webkit-scrollbar{width:3px}
   #vws-msgs::-webkit-scrollbar-track{background:transparent}
   #vws-msgs::-webkit-scrollbar-thumb{background:rgba(0,0,0,.15);border-radius:3px}
-  #vws-fname:focus,#vws-fphone:focus,#vws-input:focus{border-color:rgba(59,130,246,.6)!important;box-shadow:0 0 0 3px rgba(59,130,246,.12)!important}
+  #vws-fname:focus,#vws-fphone:focus,#vws-femail:focus,#vws-input:focus{border-color:rgba(59,130,246,.6)!important;box-shadow:0 0 0 3px rgba(59,130,246,.12)!important}
 
   /* ── Suppress React's built-in cookie consent (replaced by our custom banner) ── */
   [style*="calc(-48px + 100vw)"]{display:none!important}
@@ -2552,13 +2552,13 @@
       ]
     },
     capture: {
-      bot: "Great! What's your name and the best number to reach you?\n\n🔒 Your info is private and never shared — only our team sees it.",
+      bot: "Great! What's your name, and a phone or email we can reach you at?\n\n🔒 Your info is private and never shared — only our team sees it.",
       replies: [],
       input: true,
-      inputFields: ['name','phone']
+      inputFields: ['name','phone','email']
     },
     done: {
-      bot: "Got it, {name}! ✅\n\nYour info was sent securely to our team. We'll reach out to {phone} within a few hours — usually same day.\n\nYou can also call or text directly:\n📞 <a href=\"tel:+15618890507\" style=\"color:#60a5fa\">(561) 889-0507</a>",
+      bot: "Got it, {name}! ✅\n\nYour info was sent securely to our team. We'll reach out via {contact} within a few hours — usually same day.\n\nYou can also call or text directly:\n📞 <a href=\"tel:+15618890507\" style=\"color:#60a5fa\">(561) 889-0507</a>",
       replies: [],
       final: true
     }
@@ -2695,7 +2695,9 @@
       /* ── Lead form ── */
       '<div id="vws-form" style="display:none;padding:14px;background:#f8fafc;border-top:1px solid rgba(0,0,0,.08)">',
         '<input id="vws-fname"  placeholder="Your name"         style="width:100%;background:#fff;border:1px solid rgba(0,0,0,.15);border-radius:8px;padding:10px 13px;font-size:13px;color:#1a1a2e;outline:none;margin-bottom:9px;transition:border-color .2s,box-shadow .2s"/>',
-        '<input id="vws-fphone" placeholder="Your phone number" style="width:100%;background:#fff;border:1px solid rgba(0,0,0,.15);border-radius:8px;padding:10px 13px;font-size:13px;color:#1a1a2e;outline:none;margin-bottom:12px;transition:border-color .2s,box-shadow .2s"/>',
+        '<input id="vws-fphone" placeholder="Your phone number" style="width:100%;background:#fff;border:1px solid rgba(0,0,0,.15);border-radius:8px;padding:10px 13px;font-size:13px;color:#1a1a2e;outline:none;margin-bottom:9px;transition:border-color .2s,box-shadow .2s"/>',
+        '<input id="vws-femail" placeholder="Your email"        style="width:100%;background:#fff;border:1px solid rgba(0,0,0,.15);border-radius:8px;padding:10px 13px;font-size:13px;color:#1a1a2e;outline:none;margin-bottom:6px;transition:border-color .2s,box-shadow .2s"/>',
+        '<p style="font-size:10px;color:rgba(0,0,0,.4);margin:0 0 12px 2px">Give us a phone or an email — whichever\'s easiest for us to reach you.</p>',
         '<button id="vws-fsub" style="width:100%;background:linear-gradient(135deg,#1d4ed8,#2563eb);border:none;border-radius:8px;padding:11px;font-size:12px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#fff;cursor:pointer">Send — We\'ll Reach Out →</button>',
         '<div style="display:flex;align-items:center;justify-content:center;gap:5px;margin-top:9px">',
           '<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="rgba(37,99,235,0.7)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>',
@@ -2883,34 +2885,50 @@
     document.getElementById('vws-fsub').addEventListener('click', function() {
       var name  = document.getElementById('vws-fname').value.trim();
       var phone = document.getElementById('vws-fphone').value.trim();
-      if (!name || !phone) {
+      var email = document.getElementById('vws-femail').value.trim();
+      /* Require name plus at least one real contact method — a bad/missing
+         phone number used to mean zero way to reach the lead at all (see
+         the Matteo/Crypto Officiel near-miss: his only contact info bounced
+         and there was no fallback). Phone alone is no longer required. */
+      var hasContact = !!(phone || email);
+      if (!name || !hasContact) {
         document.getElementById('vws-fname').style.borderColor = name ? 'rgba(0,0,0,.15)' : '#ef4444';
-        document.getElementById('vws-fphone').style.borderColor = phone ? 'rgba(0,0,0,.15)' : '#ef4444';
+        document.getElementById('vws-fphone').style.borderColor = hasContact ? 'rgba(0,0,0,.15)' : '#ef4444';
+        document.getElementById('vws-femail').style.borderColor = hasContact ? 'rgba(0,0,0,.15)' : '#ef4444';
         return;
       }
-      userData = { name: name, phone: phone };
-      addMsg('Name: ' + name + '\nPhone: ' + phone, true, now());
+      var contactStr = phone && email ? (phone + ' / ' + email) : (phone || email);
+      userData = { name: name, phone: phone, email: email, contact: contactStr };
+      addMsg('Name: ' + name + (phone ? '\nPhone: ' + phone : '') + (email ? '\nEmail: ' + email : ''), true, now());
       document.getElementById('vws-form').style.display = 'none';
       var chatTime = new Date().toLocaleString('en-US', { timeZone: 'America/New_York' });
       /* Primary — FormSubmit → direct Gmail delivery, same path the Contact
          Us form uses. The chat widget previously only fired the Make.com
          webhook below, so a chat lead only reached Gmail if that Make.com
          scenario was configured and running -- this guarantees delivery
-         even if Make.com is broken/paused/unset. */
+         even if Make.com is broken/paused/unset. _replyto set to the lead's
+         own email (when given) so replying to the notification goes straight
+         back to them — no separate live-chat channel needed for that. */
       var chatFd = new FormData();
       chatFd.append('name', name);
       chatFd.append('phone', phone);
+      chatFd.append('email', email);
       chatFd.append('source', 'Chat widget — ' + window.location.href);
       chatFd.append('time', chatTime);
       chatFd.append('_subject', 'New Chat Lead — Visionary Web Studio');
       chatFd.append('_template', 'table');
       chatFd.append('_captcha', 'false');
+      if (email) chatFd.append('_replyto', email);
       fetch('https://formsubmit.co/ajax/visionarywebstudio6@gmail.com', {
         method: 'POST',
         headers: { 'Accept': 'application/json' },
         body: chatFd
       }).catch(function(){});
-      /* Backup — Make.com webhook, non-blocking, fails silently so chat always completes */
+      /* Backup — Make.com webhook, non-blocking, fails silently so chat always completes.
+         NOTE: this payload has always included `phone` in full — if a past lead's
+         Make.com notification showed no phone, that's the Make.com scenario's own
+         notification/message template not being mapped to this field, not a drop
+         happening here. Check the scenario's notification module, not this code. */
       if (LEAD_WEBHOOK && LEAD_WEBHOOK !== 'YOUR_MAKE_WEBHOOK_URL') {
         fetch(LEAD_WEBHOOK, {
           method: 'POST',
@@ -2918,6 +2936,7 @@
           body: JSON.stringify({
             name: name,
             phone: phone,
+            email: email,
             page: window.location.href,
             time: chatTime
           })
