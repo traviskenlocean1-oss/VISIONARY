@@ -76,7 +76,8 @@
     flex-direction:column;
     justify-content:center;
     padding:26px clamp(20px,5vw,64px) 40px;
-    max-width:1180px;
+    max-width:1760px;
+    width:100%;
   }
   .hero-copy{ max-width:640px; }
   .eyebrow{
@@ -125,9 +126,9 @@
   /* ---- two-column row: deal card + site preview ---- */
   .hero-grid{
     display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:36px;
-    align-items:start;
+    grid-template-columns:minmax(340px,460px) 1fr;
+    gap:90px;
+    align-items:stretch;
     margin-top:30px;
   }
 
@@ -135,7 +136,7 @@
     opacity:0;
     padding:30px 32px;
     border-radius:6px;
-    background:rgba(255,255,255,.035);
+    background:#111a2e;
     border:1px solid rgba(255,255,255,.14);
     box-shadow:0 24px 48px -28px rgba(0,0,0,.65);
   }
@@ -212,8 +213,12 @@
     display:block;
     text-decoration:none;
     color:inherit;
+    height:100%;
   }
   .preview-frame{
+    display:flex;
+    flex-direction:column;
+    height:100%;
     border-radius:8px;
     overflow:hidden;
     border:1px solid rgba(244,243,236,.14);
@@ -232,6 +237,7 @@
     padding:10px 14px;
     background:rgba(255,255,255,.045);
     border-bottom:1px solid rgba(244,243,236,.08);
+    flex-shrink:0;
   }
   .preview-chrome .dot{ width:8px; height:8px; border-radius:50%; background:rgba(244,243,236,.25); }
   .preview-chrome .url{
@@ -239,15 +245,22 @@
     font-size:.74rem;
     color:var(--ink-dim);
   }
-  .preview-frame img{
-    width:100%;
-    display:block;
+  .preview-frame .preview-image{
+    flex:1;
+    min-height:0;
+    background-image:url('assets/site-preview.jpg');
+    background-size:cover;
+    background-position:top center;
   }
   .preview-caption{
     display:flex;
     align-items:center;
+    justify-content:center;
     gap:7px;
-    margin-top:14px;
+    padding:14px;
+    flex-shrink:0;
+    background:rgba(255,255,255,.045);
+    border-top:1px solid rgba(244,243,236,.08);
     font-family:'Poppins',sans-serif;
     font-weight:600;
     font-size:.9rem;
@@ -313,7 +326,10 @@
   }
 
   @media(max-width:900px){
-    .hero-grid{ grid-template-columns:1fr; }
+    .hero-grid{ grid-template-columns:1fr; gap:32px; }
+    .site-preview{ height:auto; }
+    .preview-frame{ height:auto; }
+    .preview-frame .preview-image{ min-height:260px; }
   }
   @media(max-width:640px){
     header{padding-top:22px;}
@@ -358,7 +374,7 @@
             <span class="icon-badge">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
             </span>
-            Paid the moment your referral signs with us
+            Paid the moment your referral signs on
           </li>
           <li>
             <span class="icon-badge">
@@ -391,9 +407,9 @@
             <span class="dot"></span><span class="dot"></span><span class="dot"></span>
             <span class="url">getvisionarywebstudio.com</span>
           </div>
-          <img src="assets/site-preview.jpg" alt="Visionary Web Studio website preview" />
+          <div class="preview-image" role="img" aria-label="Visionary Web Studio website preview"></div>
+          <div class="preview-caption">See Our Work ↗</div>
         </div>
-        <div class="preview-caption">See Our Work ↗</div>
       </a>
     </div>
 
