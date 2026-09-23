@@ -68,11 +68,19 @@
     align-items:center;
     padding:26px clamp(20px,5vw,64px) 0;
   }
-  header img{
+  header svg.vws-logo{
     height:56px;
     width:auto;
     opacity:0;
   }
+  /* Real logo -- pulled live from getvisionarywebstudio.com's own nav
+     component (inline SVG, genuinely transparent, no baked background),
+     not the flawed raster/corrupted-SVG files sitting in the repo root.
+     Shared across both instances (header + preview tile). */
+  .v-glow-outer{ stroke-dasharray:55,37; animation:flowDown 2.2s ease-in-out infinite; }
+  .v-glow-mid{ stroke-dasharray:40,52; animation:flowDown 2.2s ease-in-out infinite; }
+  .v-glow-core{ stroke-dasharray:24,68; animation:flowDown 2.2s ease-in-out infinite; }
+  @keyframes flowDown{ 0%{ stroke-dashoffset:92; } 100%{ stroke-dashoffset:-92; } }
   main{
     position:relative;
     z-index:2;
@@ -250,33 +258,15 @@
   .preview-logo-box{
     flex:1;
     min-height:0;
-    position:relative;
-    overflow:hidden;
+    display:flex;
+    align-items:center;
+    justify-content:center;
     background:#0a0f1e;
   }
-  .preview-logo-box img{
-    position:absolute;
-    inset:0;
-    width:100%;
-    height:100%;
-    object-fit:cover;
-    animation: logoBreathe 6s ease-in-out infinite;
-  }
-  .preview-logo-box::after{
-    content:'';
-    position:absolute;
-    inset:0;
-    background:radial-gradient(circle at 50% 42%, rgba(96,165,250,.3), transparent 60%);
-    mix-blend-mode:screen;
-    animation: logoGlow 6s ease-in-out infinite;
-  }
-  @keyframes logoBreathe{
-    0%,100%{ transform:scale(1) translateY(0); }
-    50%{ transform:scale(1.045) translateY(-6px); }
-  }
-  @keyframes logoGlow{
-    0%,100%{ opacity:.4; }
-    50%{ opacity:.9; }
+  .preview-logo-box svg.vws-logo{
+    height:42%;
+    min-height:110px;
+    width:auto;
   }
   .preview-panel{ flex-shrink:0; padding:26px 30px 28px; }
   .preview-eyebrow{
@@ -376,7 +366,7 @@
   }
   @media(max-width:640px){
     header{padding-top:22px;}
-    header img{height:42px;}
+    header svg.vws-logo{height:42px;}
     main{padding-top:18px;padding-bottom:32px;}
     footer{flex-direction:column;align-items:flex-start;gap:14px;}
   }
@@ -391,7 +381,22 @@
   <div id="bg-scrim"></div>
 
   <header>
-    <img src="../vws-logo.png" alt="Visionary Web Studio" />
+    <svg class="vws-logo" width="62" height="73" viewBox="0 0 80 94" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Visionary Web Studio logo">
+      <defs>
+        <filter id="vws-glow-a-hdr" x="-150%" y="-150%" width="400%" height="400%"><feGaussianBlur stdDeviation="9" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+        <filter id="vws-glow-b-hdr" x="-80%" y="-80%" width="260%" height="260%"><feGaussianBlur stdDeviation="4.5" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+        <filter id="vws-glow-c-hdr" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="1.8" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+      </defs>
+      <path d="M 11,2 L 69,2 L 78,11 L 78,67 L 40,91 L 2,67 L 2,11 Z" stroke="rgba(225,224,204,0.18)" stroke-width="1.5" fill="rgba(255,255,255,0.02)"/>
+      <path d="M 15,7 L 65,7 L 73,15 L 73,64 L 40,86 L 7,64 L 7,15 Z" stroke="rgba(225,224,204,0.07)" stroke-width="1" fill="none"/>
+      <path d="M 2,11 L 11,2 L 25,2 L 25,7 L 15,7 L 7,15 Z" fill="rgba(225,224,204,0.09)" stroke="rgba(225,224,204,0.15)" stroke-width="0.5"/>
+      <path d="M 78,11 L 69,2 L 55,2 L 55,7 L 65,7 L 73,15 Z" fill="rgba(225,224,204,0.09)" stroke="rgba(225,224,204,0.15)" stroke-width="0.5"/>
+      <polygon points="77,4 61,4 40,80 37,80" fill="rgba(225,224,204,0.28)"/>
+      <polygon points="3,4 19,4 40,80 37,80" fill="rgba(225,224,204,0.08)"/>
+      <polygon points="3,4 19,4 40,80 37,80" fill="#1d4ed8" filter="url(#vws-glow-a-hdr)" class="v-glow-outer"/>
+      <polygon points="5,4 17,4 40,78 38,78" fill="#3b82f6" filter="url(#vws-glow-b-hdr)" class="v-glow-mid"/>
+      <line x1="19" y1="4" x2="40" y2="80" stroke="#e0f2fe" stroke-width="2" stroke-linecap="round" filter="url(#vws-glow-c-hdr)" class="v-glow-core"/>
+    </svg>
   </header>
 
   <main>
@@ -443,7 +448,22 @@
 
       <a class="site-preview" href="https://getvisionarywebstudio.com" target="_blank" rel="noopener">
         <div class="preview-logo-box">
-          <img src="../vws-logo.png" alt="Visionary Web Studio" />
+          <svg class="vws-logo" width="62" height="73" viewBox="0 0 80 94" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Visionary Web Studio logo">
+            <defs>
+              <filter id="vws-glow-a-pv" x="-150%" y="-150%" width="400%" height="400%"><feGaussianBlur stdDeviation="9" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+              <filter id="vws-glow-b-pv" x="-80%" y="-80%" width="260%" height="260%"><feGaussianBlur stdDeviation="4.5" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+              <filter id="vws-glow-c-pv" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="1.8" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+            </defs>
+            <path d="M 11,2 L 69,2 L 78,11 L 78,67 L 40,91 L 2,67 L 2,11 Z" stroke="rgba(225,224,204,0.18)" stroke-width="1.5" fill="rgba(255,255,255,0.02)"/>
+            <path d="M 15,7 L 65,7 L 73,15 L 73,64 L 40,86 L 7,64 L 7,15 Z" stroke="rgba(225,224,204,0.07)" stroke-width="1" fill="none"/>
+            <path d="M 2,11 L 11,2 L 25,2 L 25,7 L 15,7 L 7,15 Z" fill="rgba(225,224,204,0.09)" stroke="rgba(225,224,204,0.15)" stroke-width="0.5"/>
+            <path d="M 78,11 L 69,2 L 55,2 L 55,7 L 65,7 L 73,15 Z" fill="rgba(225,224,204,0.09)" stroke="rgba(225,224,204,0.15)" stroke-width="0.5"/>
+            <polygon points="77,4 61,4 40,80 37,80" fill="rgba(225,224,204,0.28)"/>
+            <polygon points="3,4 19,4 40,80 37,80" fill="rgba(225,224,204,0.08)"/>
+            <polygon points="3,4 19,4 40,80 37,80" fill="#1d4ed8" filter="url(#vws-glow-a-pv)" class="v-glow-outer"/>
+            <polygon points="5,4 17,4 40,78 38,78" fill="#3b82f6" filter="url(#vws-glow-b-pv)" class="v-glow-mid"/>
+            <line x1="19" y1="4" x2="40" y2="80" stroke="#e0f2fe" stroke-width="2" stroke-linecap="round" filter="url(#vws-glow-c-pv)" class="v-glow-core"/>
+          </svg>
         </div>
         <div class="preview-panel">
           <div class="preview-eyebrow">Our Work</div>
@@ -471,7 +491,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/gsap.min.js"></script>
 <script>
   gsap.timeline({defaults:{ease:'power3.out'}})
-    .to('header img', {opacity:1, y:0, duration:.9}, .1)
+    .to('header svg.vws-logo', {opacity:1, y:0, duration:.9}, .1)
     .fromTo('.eyebrow', {y:14}, {opacity:1, y:0, duration:.7}, .3)
     .fromTo('h1', {y:26}, {opacity:1, y:0, duration:.9}, .45)
     .fromTo('p.lede', {y:20}, {opacity:1, y:0, duration:.8}, .65)
