@@ -231,64 +231,84 @@
     color:var(--card-ink-faint);
   }
 
+  /* Site preview -- matched white card (same surface as deal-card), animated
+     logo tile on top, info panel below. */
   .site-preview{
     opacity:0;
-    display:block;
-    text-decoration:none;
-    color:inherit;
-  }
-  .preview-frame{
     display:flex;
     flex-direction:column;
-    height:100%;
-    border-radius:8px;
+    border-radius:28px;
     overflow:hidden;
-    border:1px solid rgba(244,243,236,.14);
-    box-shadow:0 30px 60px -30px rgba(0,0,0,.75);
-    background:#000;
-    transition:transform .45s cubic-bezier(.16,1,.3,1), box-shadow .45s ease;
+    background:#ffffff;
+    border:1px solid var(--card-line);
+    box-shadow:0 24px 48px -28px rgba(0,0,0,.5);
+    text-decoration:none;
+    color:inherit;
+    transition:transform .45s cubic-bezier(.16,1,.3,1);
   }
-  .site-preview:hover .preview-frame{
-    transform:translateY(-5px);
-    box-shadow:0 36px 70px -28px rgba(0,0,0,.8);
-  }
-  .preview-chrome{
-    display:flex;
-    align-items:center;
-    gap:6px;
-    padding:10px 14px;
-    background:rgba(255,255,255,.045);
-    border-bottom:1px solid rgba(244,243,236,.08);
-    flex-shrink:0;
-  }
-  .preview-chrome .dot{ width:8px; height:8px; border-radius:50%; background:rgba(244,243,236,.25); }
-  .preview-chrome .url{
-    margin-left:8px;
-    font-size:.74rem;
-    color:var(--ink-dim);
-  }
-  .preview-frame .preview-image{
+  .site-preview:hover{ transform:translateY(-5px); }
+  .preview-logo-box{
     flex:1;
     min-height:0;
-    background-color:#000;
-    background-image:url('assets/site-preview.jpg');
-    background-size:contain;
-    background-repeat:no-repeat;
-    background-position:center;
+    position:relative;
+    overflow:hidden;
+    background:#0a0f1e;
   }
-  .preview-caption{
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    gap:7px;
-    padding:14px;
-    flex-shrink:0;
-    background:rgba(255,255,255,.045);
-    border-top:1px solid rgba(244,243,236,.08);
+  .preview-logo-box img{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    animation: logoBreathe 6s ease-in-out infinite;
+  }
+  .preview-logo-box::after{
+    content:'';
+    position:absolute;
+    inset:0;
+    background:radial-gradient(circle at 50% 42%, rgba(96,165,250,.3), transparent 60%);
+    mix-blend-mode:screen;
+    animation: logoGlow 6s ease-in-out infinite;
+  }
+  @keyframes logoBreathe{
+    0%,100%{ transform:scale(1) translateY(0); }
+    50%{ transform:scale(1.045) translateY(-6px); }
+  }
+  @keyframes logoGlow{
+    0%,100%{ opacity:.4; }
+    50%{ opacity:.9; }
+  }
+  .preview-panel{ flex-shrink:0; padding:26px 30px 28px; }
+  .preview-eyebrow{
     font-family:'Poppins',sans-serif;
     font-weight:600;
-    font-size:.9rem;
-    color:var(--ink);
+    font-size:.78rem;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    color:var(--card-ink-faint);
+    margin-bottom:8px;
+  }
+  .preview-title{
+    font-family:'Poppins',sans-serif;
+    font-weight:600;
+    font-size:1.1rem;
+    color:var(--card-ink);
+    margin-bottom:8px;
+  }
+  .preview-desc{
+    font-size:.88rem;
+    line-height:1.5;
+    color:var(--card-ink-dim);
+    margin-bottom:16px;
+  }
+  .preview-caption{
+    display:inline-flex;
+    align-items:center;
+    gap:7px;
+    font-family:'Poppins',sans-serif;
+    font-weight:600;
+    font-size:.88rem;
+    color:var(--card-ink);
     transition:gap .3s ease;
   }
   .site-preview:hover .preview-caption{ gap:11px; }
@@ -352,8 +372,7 @@
   @media(max-width:900px){
     .hero-grid{ flex-direction:column; gap:32px; }
     .deal-card, .site-preview{ width:100%; }
-    .preview-frame{ height:auto; }
-    .preview-frame .preview-image{ min-height:260px; }
+    .preview-logo-box{ min-height:220px; }
   }
   @media(max-width:640px){
     header{padding-top:22px;}
@@ -423,12 +442,13 @@
       </div>
 
       <a class="site-preview" href="https://getvisionarywebstudio.com" target="_blank" rel="noopener">
-        <div class="preview-frame">
-          <div class="preview-chrome">
-            <span class="dot"></span><span class="dot"></span><span class="dot"></span>
-            <span class="url">getvisionarywebstudio.com</span>
-          </div>
-          <div class="preview-image" role="img" aria-label="Visionary Web Studio website preview"></div>
+        <div class="preview-logo-box">
+          <img src="../vws-logo.png" alt="Visionary Web Studio" />
+        </div>
+        <div class="preview-panel">
+          <div class="preview-eyebrow">Our Work</div>
+          <div class="preview-title">getvisionarywebstudio.com</div>
+          <p class="preview-desc">See the real, live site we build client work on — same quality your referrals get.</p>
           <div class="preview-caption">See Our Work ↗</div>
         </div>
       </a>
