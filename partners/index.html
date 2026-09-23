@@ -53,18 +53,18 @@
     inset:0;
     z-index:1;
     background:
-      linear-gradient(180deg, rgba(10,15,30,.72) 0%, rgba(10,15,30,.55) 38%, rgba(10,15,30,.82) 78%, rgba(10,15,30,.96) 100%),
-      linear-gradient(90deg, rgba(10,15,30,.55) 0%, rgba(10,15,30,.15) 45%, rgba(10,15,30,.55) 100%);
+      linear-gradient(180deg, rgba(10,15,30,.78) 0%, rgba(10,15,30,.62) 30%, rgba(10,15,30,.86) 82%, rgba(10,15,30,.97) 100%),
+      linear-gradient(90deg, rgba(10,15,30,.5) 0%, rgba(10,15,30,.1) 45%, rgba(10,15,30,.5) 100%);
   }
   header{
     position:relative;
     z-index:2;
     display:flex;
     align-items:center;
-    padding:28px clamp(20px,5vw,64px) 0;
+    padding:26px clamp(20px,5vw,64px) 0;
   }
   header img{
-    height:34px;
+    height:32px;
     width:auto;
     opacity:0;
   }
@@ -75,9 +75,10 @@
     display:flex;
     flex-direction:column;
     justify-content:center;
-    padding:32px clamp(20px,5vw,64px) 48px;
-    max-width:760px;
+    padding:26px clamp(20px,5vw,64px) 40px;
+    max-width:1180px;
   }
+  .hero-copy{ max-width:640px; }
   .eyebrow{
     display:inline-flex;
     align-items:center;
@@ -89,7 +90,7 @@
     font-size:.8rem;
     color:var(--blue-light);
     opacity:0;
-    margin-bottom:22px;
+    margin-bottom:18px;
   }
   .eyebrow::before{
     content:'';
@@ -99,12 +100,12 @@
   h1{
     font-family:'Poppins',sans-serif;
     font-weight:600;
-    font-size:clamp(2rem,5vw,3.3rem);
-    line-height:1.16;
+    font-size:clamp(1.9rem,4.2vw,2.9rem);
+    line-height:1.18;
     letter-spacing:-.01em;
     color:var(--ink);
     opacity:0;
-    margin-bottom:26px;
+    margin-bottom:18px;
   }
   h1 em{
     font-style:normal;
@@ -114,96 +115,170 @@
     color:transparent;
   }
   p.lede{
-    font-size:clamp(1.02rem,1.6vw,1.2rem);
-    line-height:1.65;
+    font-size:clamp(.98rem,1.4vw,1.08rem);
+    line-height:1.6;
     color:var(--ink-dim);
-    max-width:600px;
+    max-width:560px;
     opacity:0;
-    margin-bottom:14px;
   }
+
+  /* ---- two-column row: deal card + site preview ---- */
+  .hero-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:36px;
+    align-items:start;
+    margin-top:30px;
+  }
+
   .deal-card{
     opacity:0;
-    margin-top:26px;
     padding:30px 32px;
-    max-width:430px;
-    border-radius:10px;
+    border-radius:6px;
     background:rgba(255,255,255,.035);
-    border:1px solid rgba(255,255,255,.12);
+    border:1px solid rgba(255,255,255,.14);
     box-shadow:0 24px 48px -28px rgba(0,0,0,.65);
   }
-  .deal-card .price-row{
+  .deal-card .card-head{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    margin-bottom:12px;
+  }
+  .deal-card .card-icon{ color:var(--ink); flex-shrink:0; }
+  .deal-card .card-title{
+    font-family:'Poppins',sans-serif;
+    font-weight:600;
+    font-size:1.28rem;
+    color:var(--ink);
+  }
+  .deal-card .card-desc{
+    font-size:.9rem;
+    line-height:1.55;
+    color:var(--ink-dim);
+    margin-bottom:20px;
+  }
+  .deal-card .divider{
+    border-top:1px dotted rgba(244,243,236,.3);
+    margin-bottom:20px;
+  }
+  .deal-card .checklist{
+    list-style:none;
+    display:flex;
+    flex-direction:column;
+    gap:15px;
+  }
+  .deal-card .checklist li{
+    display:flex;
+    align-items:center;
+    gap:13px;
+    font-size:.9rem;
+    line-height:1.4;
+    color:var(--ink-dim);
+  }
+  .icon-badge{
+    flex-shrink:0;
+    width:34px;
+    height:34px;
+    border-radius:50%;
+    border:1px solid rgba(244,243,236,.26);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:var(--blue-light);
+  }
+  .deal-card .price-foot{
+    margin-top:24px;
+    padding-top:20px;
+    border-top:1px solid rgba(244,243,236,.1);
     display:flex;
     align-items:baseline;
-    gap:10px;
-    margin-bottom:4px;
+    gap:9px;
   }
   .deal-card .amount{
     font-family:'Poppins',sans-serif;
     font-weight:700;
-    font-size:clamp(2.1rem,3.8vw,2.6rem);
+    font-size:clamp(1.9rem,3.2vw,2.3rem);
     color:var(--ink);
     line-height:1;
   }
   .deal-card .amount-label{
-    font-family:'Hanken Grotesk',sans-serif;
-    font-size:.92rem;
+    font-size:.86rem;
     color:var(--ink-dim);
   }
-  .deal-card .checklist{
-    list-style:none;
-    margin-top:20px;
-    display:flex;
-    flex-direction:column;
-    gap:13px;
+
+  .site-preview{
+    opacity:0;
+    display:block;
+    text-decoration:none;
+    color:inherit;
   }
-  .deal-card .checklist li{
+  .preview-frame{
+    border-radius:8px;
+    overflow:hidden;
+    border:1px solid rgba(244,243,236,.14);
+    box-shadow:0 30px 60px -30px rgba(0,0,0,.75);
+    background:#0d1526;
+    transition:transform .45s cubic-bezier(.16,1,.3,1), box-shadow .45s ease;
+  }
+  .site-preview:hover .preview-frame{
+    transform:translateY(-5px);
+    box-shadow:0 36px 70px -28px rgba(0,0,0,.8);
+  }
+  .preview-chrome{
     display:flex;
-    align-items:flex-start;
-    gap:11px;
-    font-size:.95rem;
-    line-height:1.45;
+    align-items:center;
+    gap:6px;
+    padding:10px 14px;
+    background:rgba(255,255,255,.045);
+    border-bottom:1px solid rgba(244,243,236,.08);
+  }
+  .preview-chrome .dot{ width:8px; height:8px; border-radius:50%; background:rgba(244,243,236,.25); }
+  .preview-chrome .url{
+    margin-left:8px;
+    font-size:.74rem;
     color:var(--ink-dim);
   }
-  .deal-card .checklist svg{
-    flex-shrink:0;
-    margin-top:3px;
+  .preview-frame img{
+    width:100%;
+    display:block;
   }
+  .preview-caption{
+    display:flex;
+    align-items:center;
+    gap:7px;
+    margin-top:14px;
+    font-family:'Poppins',sans-serif;
+    font-weight:600;
+    font-size:.9rem;
+    color:var(--ink);
+    transition:gap .3s ease;
+  }
+  .site-preview:hover .preview-caption{ gap:11px; }
+
   .cta-row{
     opacity:0;
-    display:flex;
-    flex-wrap:wrap;
-    gap:16px;
-    margin-top:34px;
-    align-items:center;
+    margin-top:26px;
   }
   .btn{
-    font-family:'Barlow',sans-serif;
-    font-weight:700;
-    font-size:.98rem;
-    padding:15px 30px;
-    border-radius:3px;
+    font-family:'Poppins',sans-serif;
+    font-weight:600;
+    font-size:.92rem;
+    padding:13px 26px;
+    border-radius:4px;
     text-decoration:none;
     display:inline-flex;
     align-items:center;
     gap:10px;
-    transition:transform .35s cubic-bezier(.16,1,.3,1), background .35s ease;
-  }
-  .btn-primary{
-    background:var(--cream);
-    color:var(--navy-deep);
-  }
-  .btn-primary:hover{
-    transform:translateY(-2px);
-    background:#fff;
-  }
-  .btn-ghost{
     color:var(--ink);
     border:1px solid rgba(244,243,236,.28);
+    transition:transform .35s cubic-bezier(.16,1,.3,1), border-color .35s ease;
   }
-  .btn-ghost:hover{
+  .btn:hover{
     transform:translateY(-2px);
     border-color:rgba(244,243,236,.6);
   }
+
   footer{
     position:relative;
     z-index:2;
@@ -212,7 +287,7 @@
     gap:8px 22px;
     justify-content:space-between;
     align-items:center;
-    padding:22px clamp(20px,5vw,64px) 28px;
+    padding:20px clamp(20px,5vw,64px) 26px;
     border-top:1px solid rgba(244,243,236,.1);
     opacity:0;
   }
@@ -220,7 +295,7 @@
     display:flex;
     gap:22px;
     flex-wrap:wrap;
-    font-size:.9rem;
+    font-size:.88rem;
     color:var(--ink-dim);
   }
   footer a{
@@ -236,10 +311,14 @@
     font-size:.85rem;
     color:rgba(244,243,236,.45);
   }
+
+  @media(max-width:900px){
+    .hero-grid{ grid-template-columns:1fr; }
+  }
   @media(max-width:640px){
     header{padding-top:22px;}
     header img{height:26px;}
-    main{padding-top:20px;padding-bottom:36px;}
+    main{padding-top:18px;padding-bottom:32px;}
     footer{flex-direction:column;align-items:flex-start;gap:14px;}
   }
 </style>
@@ -257,26 +336,69 @@
   </header>
 
   <main>
-    <div class="eyebrow">Partner Program</div>
-    <h1>Thank you for wanting to <em>partner</em> with Visionary Web Studio.</h1>
-    <p class="lede">We design and build custom, animated websites for local businesses — and we're growing that list with people like you. Any time a client of yours needs a website, send them our way. We'll take it from there.</p>
+    <div class="hero-copy">
+      <div class="eyebrow">Partner Program</div>
+      <h1>Thank you for wanting to <em>partner</em> with Visionary Web Studio.</h1>
+      <p class="lede">We design and build custom, animated websites for local businesses — and we're growing that list with people like you. Any time a client of yours needs a website, send them our way. We'll take it from there.</p>
+    </div>
 
-    <div class="deal-card">
-      <div class="price-row">
-        <span class="amount">$150</span>
-        <span class="amount-label">per client referred</span>
+    <div class="hero-grid">
+      <div class="deal-card">
+        <div class="card-head">
+          <svg class="card-icon" width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+            <circle cx="5" cy="5" r="2.1"/><circle cx="15" cy="5" r="2.1"/>
+            <circle cx="5" cy="15" r="2.1"/><circle cx="15" cy="15" r="2.1"/>
+          </svg>
+          <span class="card-title">Partner Referral</span>
+        </div>
+        <p class="card-desc">Refer a client, we build them a site, you get paid — no strings attached.</p>
+        <div class="divider"></div>
+        <ul class="checklist">
+          <li>
+            <span class="icon-badge">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+            </span>
+            Paid the moment your referral signs with us
+          </li>
+          <li>
+            <span class="icon-badge">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </span>
+            No cost or work required from you
+          </li>
+          <li>
+            <span class="icon-badge">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M18.178 8c5.096 0 5.096 8 0 8-5.095 0-7.133-8-12.739-8-4.585 0-4.585 8 0 8 5.606 0 7.644-8 12.739-8z"/></svg>
+            </span>
+            Unlimited — refer as many as you'd like
+          </li>
+          <li>
+            <span class="icon-badge">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            </span>
+            A genuine thank-you for trusting us with your network
+          </li>
+        </ul>
+        <div class="price-foot">
+          <span class="amount">$150</span>
+          <span class="amount-label">per referral</span>
+        </div>
       </div>
-      <ul class="checklist">
-        <li><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7.25" stroke="#60a5fa" stroke-width="1.3"/><path d="M4.8 8.2L6.9 10.3L11.2 5.7" stroke="#60a5fa" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Paid the moment your referral signs with us</li>
-        <li><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7.25" stroke="#60a5fa" stroke-width="1.3"/><path d="M4.8 8.2L6.9 10.3L11.2 5.7" stroke="#60a5fa" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>No cost or work required from you</li>
-        <li><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7.25" stroke="#60a5fa" stroke-width="1.3"/><path d="M4.8 8.2L6.9 10.3L11.2 5.7" stroke="#60a5fa" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Unlimited — refer as many as you'd like</li>
-        <li><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7.25" stroke="#60a5fa" stroke-width="1.3"/><path d="M4.8 8.2L6.9 10.3L11.2 5.7" stroke="#60a5fa" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>A genuine thank-you for trusting us with your network</li>
-      </ul>
+
+      <a class="site-preview" href="https://getvisionarywebstudio.com" target="_blank" rel="noopener">
+        <div class="preview-frame">
+          <div class="preview-chrome">
+            <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+            <span class="url">getvisionarywebstudio.com</span>
+          </div>
+          <img src="assets/site-preview.jpg" alt="Visionary Web Studio website preview" />
+        </div>
+        <div class="preview-caption">See Our Work ↗</div>
+      </a>
     </div>
 
     <div class="cta-row">
-      <a class="btn btn-primary" href="https://getvisionarywebstudio.com" target="_blank" rel="noopener">See Our Work</a>
-      <a class="btn btn-ghost" href="tel:+15618890507">Call or Text 561-889-0507</a>
+      <a class="btn" href="tel:+15618890507">Call or Text 561-889-0507</a>
     </div>
   </main>
 
@@ -295,9 +417,10 @@
     .to('header img', {opacity:1, y:0, duration:.9}, .1)
     .fromTo('.eyebrow', {y:14}, {opacity:1, y:0, duration:.7}, .3)
     .fromTo('h1', {y:26}, {opacity:1, y:0, duration:.9}, .45)
-    .fromTo('p.lede', {y:20}, {opacity:1, y:0, duration:.8}, .68)
-    .fromTo('.deal-card', {y:20}, {opacity:1, y:0, duration:.8}, .85)
-    .fromTo('.cta-row', {y:16}, {opacity:1, y:0, duration:.7}, 1.05)
+    .fromTo('p.lede', {y:20}, {opacity:1, y:0, duration:.8}, .65)
+    .fromTo('.deal-card', {y:20}, {opacity:1, y:0, duration:.8}, .8)
+    .fromTo('.site-preview', {y:20}, {opacity:1, y:0, duration:.8}, .92)
+    .fromTo('.cta-row', {y:16}, {opacity:1, y:0, duration:.7}, 1.08)
     .fromTo('footer', {y:10}, {opacity:1, y:0, duration:.7}, 1.2);
 </script>
 
