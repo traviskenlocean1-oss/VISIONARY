@@ -34,6 +34,22 @@ class AttrRewriter {
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
+
+    // Path-like routes (no file extension) must be case-normalized before
+    // anything else. Workers static-asset matching is case-sensitive, and
+    // this site's not_found_handling is "single-page-application" -- so a
+    // mis-cased route (e.g. /Partners) doesn't 404, it silently falls
+    // through to serving the homepage's own content and OG tags instead of
+    // a real 404 or the intended page. Redirecting to the canonical
+    // lowercase path avoids that entirely. Scoped to extension-less paths
+    // only: hashed asset filenames (e.g. assets/index-CNkA1Y-Q.js)
+    // legitimately contain uppercase letters and must not be touched.
+    const looksLikePage = !url.pathname.match(/\.[a-z0-9]{2,8}(\?.*)?$/i);
+    if (looksLikePage && url.pathname !== url.pathname.toLowerCase()) {
+      url.pathname = url.pathname.toLowerCase();
+      return Response.redirect(url.toString(), 301);
+    }
+
     const response = await env.ASSETS.fetch(request);
 
     // HTML routes (no file extension, or ends with .html) must stay fresh.
