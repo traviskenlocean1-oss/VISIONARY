@@ -63,7 +63,7 @@ export default {
     // Short, safe cache instead of no-store: lets repeat visits/crawls reuse
     // the page for a minute instead of re-downloading the full ~1MB bundle
     // every single time, while still catching edits within minutes.
-    headers.set('Cache-Control', 'public, max-age=60, stale-while-revalidate=300');
+    headers.set('Cache-Control', 'no-cache, must-revalidate');
     headers.delete('Pragma');
 
     const slug = url.pathname.replace(/\/$/, '') || '/';
