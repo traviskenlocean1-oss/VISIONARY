@@ -39,7 +39,7 @@
   @keyframes up{to{opacity:1;transform:none}}
 
   .rail{position:absolute;left:0;top:50%;transform:translateY(-50%);width:2px;height:340px;background:var(--border);border-radius:2px;overflow:hidden}
-  .rail-fill{position:absolute;top:0;left:0;width:100%;height:0;background:var(--accent);transition:height .3s linear}
+  .rail-fill{position:absolute;top:0;left:0;width:100%;height:100%;background:var(--accent);transform:scaleY(0);transform-origin:top;will-change:transform}
 
   .features{position:relative;padding:120px 40px 120px 0}
   .features-head{font-size:clamp(34px,4vw,52px);font-weight:800;letter-spacing:-.02em;line-height:1.1;margin-bottom:64px;max-width:20ch;opacity:0;transform:translateY(20px);transition:opacity .9s ease,transform .9s ease}
@@ -51,8 +51,8 @@
   .feature.is-active .dot{background:var(--accent);border-color:var(--accent);transform:scale(1.2)}
   .feature .num{font-size:14px;font-weight:800;color:var(--accent);letter-spacing:.14em;margin-bottom:12px}
   .feature h3{font-size:clamp(28px,3vw,40px);font-weight:800;letter-spacing:-.02em;line-height:1.1;margin-bottom:18px;position:relative;display:inline-block}
-  .feature h3::after{content:'';position:absolute;left:0;bottom:-8px;height:3px;width:0;background:var(--accent);border-radius:2px;transition:width 1s .3s cubic-bezier(.2,.8,.2,1)}
-  .feature.is-visible h3::after{width:100%}
+  .feature h3::after{content:"";position:absolute;left:0;bottom:-8px;height:3px;width:100%;background:var(--accent);border-radius:2px;transform:scaleX(0);transform-origin:left;transition:transform 1s .3s cubic-bezier(.2,.8,.2,1)}
+  .feature.is-visible h3::after{transform:scaleX(1)}
   .feature p{color:var(--sub);font-size:19px;line-height:1.7;max-width:60ch}
 
   .closing{padding:0 40px 140px 0;text-align:left}
@@ -63,7 +63,7 @@
   .closing .cta{display:inline-flex;align-items:center;gap:12px;background:var(--accent);color:#fff;font-weight:800;font-size:17px;padding:20px 40px;border-radius:999px;box-shadow:0 16px 40px rgba(37,99,235,.3);transition:transform .25s,box-shadow .25s}
   .closing .cta:hover{transform:translateY(-3px);box-shadow:0 24px 54px rgba(37,99,235,.42)}
 
-  @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.pinned *,.feature,.features-head,.closing-inner{opacity:1!important;transform:none!important;filter:none!important}.feature h3::after{width:100%}}
+  @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.pinned *,.feature,.features-head,.closing-inner{opacity:1!important;transform:none!important;filter:none!important}.feature h3::after{transform:scaleX(1)}}
   @media(max-width:900px){
     .nav{padding:14px 20px}
     .back-btn{font-size:13px;padding:10px 16px}
@@ -186,7 +186,7 @@
       var last = features[features.length - 1].getBoundingClientRect();
       var span = last.bottom - first.top;
       var p = Math.min(1, Math.max(0, (window.innerHeight * 0.5 - first.top) / span));
-      rail.style.height = (p * 100) + '%';
+      rail.style.transform = "scaleY(" + p + ")";
 
       features.forEach(function(f) {
         var r = f.getBoundingClientRect();
