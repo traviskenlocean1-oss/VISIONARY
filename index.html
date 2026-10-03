@@ -3153,6 +3153,7 @@
         if (cta) {
           cta.textContent = data.ctaText;
           cta.setAttribute('href', data.href);
+          cta.setAttribute('data-vws-pricing-href', data.href);
         }
 
         card.setAttribute('data-vws-pricing-updated', '1');
@@ -3160,6 +3161,16 @@
       });
       return applied === Object.keys(PRICING_CONTENT).length;
     }
+
+    /* React Router's own click handler on these links ignores the href we
+       swapped in, so route the click ourselves before it reaches React. */
+    document.addEventListener('click', function(e) {
+      var link = e.target.closest && e.target.closest('a[data-vws-pricing-href]');
+      if (!link) return;
+      e.preventDefault();
+      e.stopImmediatePropagation();
+      window.location.assign(link.getAttribute('data-vws-pricing-href'));
+    }, true);
 
     var pricingAttempts = 0;
     var pricingPoll = setInterval(function() {
