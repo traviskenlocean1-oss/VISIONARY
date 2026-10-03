@@ -3078,6 +3078,96 @@
   }, 150);
   })();
   </script>
+  <!-- ── PRICING CARD CONTENT ENHANCER ──────────────────────────
+       The pricing cards are React-rendered, so there's no source to edit
+       directly -- same "wait for mount, then find and update" technique
+       already used above for the chat widget. Swaps in the stronger
+       copy/taglines, expands the feature bullets, and points each CTA
+       at its own new detail page instead of /contact directly. ── -->
+  <script>
+  (function() {
+    var PRICING_CONTENT = {
+      'Starter': {
+        tagline: 'Launch fast with a site that actually looks like you — not a template.',
+        bullets: [
+          'Custom single-page site, not a theme with your logo swapped in',
+          'Mobile-first build — looks right on every phone, not just desktop',
+          'Real on-page SEO: proper meta titles, descriptions, structured data',
+          'Contact form that lands straight in your inbox',
+          'Subtle scroll animations',
+          '2 revision rounds, delivered in 5 days'
+        ],
+        ctaText: 'See What\'s Included',
+        href: '/pricing-starter.html'
+      },
+      'Standard': {
+        tagline: 'The full picture of your business, built to convert, not just exist.',
+        bullets: [
+          'Up to 6 pages — room for a real About, Services breakdown, and contact page',
+          'Scroll-triggered animations that reveal content as visitors move down the page',
+          'Page-by-page SEO — each page gets its own structured data',
+          'Google Business Profile optimization, so your Maps listing and site work together',
+          '3 revision rounds, delivered in 10 days'
+        ],
+        ctaText: 'See What\'s Included',
+        href: '/pricing-standard.html'
+      },
+      'Full Build': {
+        tagline: 'Custom-built for exactly how your business runs — no shortcuts, no plugins pretending to fit.',
+        bullets: [
+          'Real custom functionality — booking, e-commerce, membership — built around your business',
+          'Signature animated hero — the scroll-driven build sequence that stops visitors from bouncing',
+          'Full technical SEO pass — sitemap, schema across every page, performance tuning',
+          'Priority turnaround',
+          'Unlimited revisions until it\'s right'
+        ],
+        ctaText: 'See What\'s Included',
+        href: '/pricing-full-build.html'
+      }
+    };
+    var CHECK_SVG = '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check mt-0.5 flex-shrink-0" style="color:rgb(74,222,128)"><path d="M20 6 9 17l-5-5"></path></svg>';
+
+    function applyPricingContent() {
+      var cards = document.querySelectorAll('[class*="rounded-2xl"][class*="p-7"]');
+      if (!cards.length) return false;
+      var applied = 0;
+      cards.forEach(function(card) {
+        var nameEl = card.querySelector('p');
+        if (!nameEl) return;
+        var tier = nameEl.textContent.trim();
+        var data = PRICING_CONTENT[tier];
+        if (!data || card.getAttribute('data-vws-pricing-updated')) return;
+
+        var paragraphs = card.querySelectorAll('p');
+        var taglineEl = paragraphs[paragraphs.length - 1]; /* the description line is always the last <p> before the <ul> */
+        if (taglineEl) taglineEl.textContent = data.tagline;
+
+        var ul = card.querySelector('ul');
+        if (ul) {
+          ul.innerHTML = data.bullets.map(function(b) {
+            return '<li class="flex items-start gap-3 text-sm" style="color:rgba(225,224,204,0.7)">' + CHECK_SVG + b + '</li>';
+          }).join('');
+        }
+
+        var cta = card.querySelector('a');
+        if (cta) {
+          cta.textContent = data.ctaText;
+          cta.setAttribute('href', data.href);
+        }
+
+        card.setAttribute('data-vws-pricing-updated', '1');
+        applied++;
+      });
+      return applied === Object.keys(PRICING_CONTENT).length;
+    }
+
+    var pricingAttempts = 0;
+    var pricingPoll = setInterval(function() {
+      pricingAttempts++;
+      if (applyPricingContent() || pricingAttempts > 80) clearInterval(pricingPoll);
+    }, 150);
+  })();
+  </script>
   <!-- ── SERVICE PAGE ENHANCER ──────────────────────────────── -->
   <script>
   /* Apply background hue-rotate immediately on initial page load (no flash/transition) */
