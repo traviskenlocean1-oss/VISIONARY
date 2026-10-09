@@ -376,6 +376,154 @@
     color:rgba(244,243,236,.45);
   }
 
+  /* ---- Details below the hero: how it works, who to send, FAQ. Answers
+     the questions partners kept asking in DMs (tracking, payout timing,
+     payout method) so the link stands on its own. ---- */
+  .details{
+    background:var(--navy-deep);
+    padding:clamp(64px,9vw,120px) clamp(20px,5vw,64px);
+    border-top:1px solid rgba(244,243,236,.08);
+  }
+  .details-inner{ max-width:1100px; margin:0 auto; }
+  .section{ margin-bottom:clamp(64px,8vw,104px); }
+  .section:last-child{ margin-bottom:0; }
+  .section-head{ max-width:620px; margin-bottom:34px; }
+  .section-head .eyebrow{ opacity:1; margin-bottom:14px; }
+  .section-head h2{
+    font-family:'Poppins',sans-serif;
+    font-weight:600;
+    font-size:clamp(1.6rem,3vw,2.2rem);
+    line-height:1.2;
+    letter-spacing:-.01em;
+    margin-bottom:12px;
+  }
+  .section-head p{ color:var(--ink-dim); line-height:1.6; }
+
+  .steps{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:16px;
+    list-style:none;
+    counter-reset:step;
+  }
+  .step{
+    background:#ffffff;
+    color:var(--card-ink);
+    border-radius:20px;
+    padding:26px 24px 28px;
+    border:1px solid var(--card-line);
+  }
+  .step-num{
+    font-family:'Fraunces',serif;
+    font-size:1.9rem;
+    line-height:1;
+    color:var(--blue-mid);
+    margin-bottom:16px;
+    display:block;
+  }
+  .step h3{
+    font-family:'Poppins',sans-serif;
+    font-weight:600;
+    font-size:1.02rem;
+    margin-bottom:8px;
+  }
+  .step p{ font-size:.9rem; line-height:1.55; color:var(--card-ink-dim); }
+
+  .fit-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:16px;
+  }
+  .fit-card{
+    border:1px solid rgba(244,243,236,.12);
+    border-radius:20px;
+    padding:28px 28px 30px;
+    background:rgba(255,255,255,.02);
+  }
+  .fit-card h3{
+    font-family:'Poppins',sans-serif;
+    font-weight:600;
+    font-size:1.05rem;
+    margin-bottom:16px;
+  }
+  .fit-card ul{ list-style:none; display:flex; flex-direction:column; gap:12px; }
+  .fit-card li{
+    display:flex;
+    gap:12px;
+    font-size:.94rem;
+    line-height:1.5;
+    color:var(--ink-dim);
+  }
+  .fit-card li::before{
+    content:'';
+    flex-shrink:0;
+    width:6px;height:6px;border-radius:50%;
+    background:var(--blue-light);
+    margin-top:.55em;
+  }
+
+  .faq{ border-top:1px solid rgba(244,243,236,.12); }
+  .faq details{ border-bottom:1px solid rgba(244,243,236,.12); }
+  .faq summary{
+    list-style:none;
+    cursor:pointer;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:20px;
+    padding:22px 0;
+    font-family:'Poppins',sans-serif;
+    font-weight:500;
+    font-size:1.02rem;
+    color:var(--ink);
+  }
+  .faq summary::-webkit-details-marker{ display:none; }
+  .faq summary::after{
+    content:'+';
+    flex-shrink:0;
+    font-size:1.4rem;
+    font-weight:400;
+    color:var(--blue-light);
+    transition:transform .3s cubic-bezier(.16,1,.3,1);
+  }
+  .faq details[open] summary::after{ transform:rotate(45deg); }
+  .faq .answer{
+    padding:0 0 24px;
+    max-width:720px;
+    color:var(--ink-dim);
+    line-height:1.65;
+    font-size:.96rem;
+  }
+
+  .closing{
+    text-align:center;
+    padding-top:8px;
+  }
+  .closing h2{
+    font-family:'Poppins',sans-serif;
+    font-weight:600;
+    font-size:clamp(1.5rem,2.8vw,2rem);
+    margin-bottom:12px;
+  }
+  .closing p{ color:var(--ink-dim); margin-bottom:26px; }
+  .closing .btn-row{ display:flex; gap:12px; justify-content:center; flex-wrap:wrap; }
+  .btn.btn-solid{ background:var(--blue-mid); border-color:var(--blue-mid); }
+  .btn.btn-solid:hover{ border-color:var(--blue-light); }
+
+  .reveal{ opacity:0; transform:translateY(22px); transition:opacity .8s cubic-bezier(.16,1,.3,1), transform .8s cubic-bezier(.16,1,.3,1); }
+  .reveal.in{ opacity:1; transform:none; }
+  @media (prefers-reduced-motion: reduce){
+    .reveal{ opacity:1; transform:none; transition:none; }
+  }
+
+  @media(max-width:900px){
+    .steps{ grid-template-columns:1fr 1fr; }
+    .fit-grid{ grid-template-columns:1fr; }
+  }
+  @media(max-width:560px){
+    .steps{ grid-template-columns:1fr; }
+  }
+
   @media(max-width:900px){
     .hero-grid{ flex-direction:column; gap:32px; }
     .deal-card, .site-preview{ width:100%; }
@@ -495,7 +643,118 @@
       <a class="btn" href="tel:+15618890507">Call or Text 561-889-0507</a>
     </div>
   </main>
+</div>
 
+<div class="details">
+  <div class="details-inner">
+
+    <section class="section">
+      <div class="section-head reveal">
+        <div class="eyebrow">How it works</div>
+        <h2>Four simple steps. No work on your end.</h2>
+        <p>You make the introduction. We handle everything else.</p>
+      </div>
+      <ol class="steps">
+        <li class="step reveal">
+          <span class="step-num">01</span>
+          <h3>Spot a client who needs a site</h3>
+          <p>Someone with no website, an outdated one, or customers who can't find them online.</p>
+        </li>
+        <li class="step reveal">
+          <span class="step-num">02</span>
+          <h3>Send them our way</h3>
+          <p>Share our number, our Instagram, or getvisionarywebstudio.com, whatever's easiest.</p>
+        </li>
+        <li class="step reveal">
+          <span class="step-num">03</span>
+          <h3>Give us a quick heads up</h3>
+          <p>Message us their name, and have them mention you when they reach out. That's how we know they came from you.</p>
+        </li>
+        <li class="step reveal">
+          <span class="step-num">04</span>
+          <h3>Get paid $150</h3>
+          <p>Once they sign on as a client, we let you know and send your $150 right away.</p>
+        </li>
+      </ol>
+    </section>
+
+    <section class="section">
+      <div class="section-head reveal">
+        <div class="eyebrow">Who to send</div>
+        <h2>What we build, and who it's for.</h2>
+      </div>
+      <div class="fit-grid">
+        <div class="fit-card reveal">
+          <h3>Great referrals</h3>
+          <ul>
+            <li>Business owners with no website at all</li>
+            <li>Businesses with an outdated or template-looking site</li>
+            <li>New businesses getting their brand set up</li>
+            <li>Owners who want online booking, payments, or more calls from Google</li>
+          </ul>
+        </div>
+        <div class="fit-card reveal">
+          <h3>What your client gets</h3>
+          <ul>
+            <li>A custom-designed website, built from scratch for their brand</li>
+            <li>Mobile-friendly design with smooth, modern animations</li>
+            <li>SEO setup so they show up on Google</li>
+            <li>Booking, payments, contact forms, and their own domain, set up for them</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head reveal">
+        <div class="eyebrow">Questions</div>
+        <h2>Everything partners usually ask.</h2>
+      </div>
+      <div class="faq reveal">
+        <details>
+          <summary>How do you know the referral came from me?</summary>
+          <p class="answer">When you send someone our way, message us their name, and have them mention you when they reach out. Checking from both sides makes sure you always get credit.</p>
+        </details>
+        <details>
+          <summary>When do I get paid?</summary>
+          <p class="answer">As soon as your referral signs on as a client. We'll message you to let you know, then send your $150 right away.</p>
+        </details>
+        <details>
+          <summary>How do I get paid?</summary>
+          <p class="answer">Cash App, Zelle, or whatever works best for you. Just let us know your preference.</p>
+        </details>
+        <details>
+          <summary>Does it cost me anything, or do I have to do any work?</summary>
+          <p class="answer">No. There's no cost and no sign-up. Your only part is the introduction. We handle the consultation, the design, the build, and everything after.</p>
+        </details>
+        <details>
+          <summary>Is there a limit on referrals?</summary>
+          <p class="answer">No limit. Every client you send who signs on is another $150.</p>
+        </details>
+        <details>
+          <summary>What if my referral decides not to move forward?</summary>
+          <p class="answer">No problem at all. There's no pressure on you or them. We'll always treat anyone you send with care, because your name is attached to the introduction.</p>
+        </details>
+        <details>
+          <summary>What kinds of businesses do you work with?</summary>
+          <p class="answer">Local service businesses, contractors, salons and beauty brands, clothing brands, real estate, restaurants, and more. If they need a professional website, we can help.</p>
+        </details>
+      </div>
+    </section>
+
+    <section class="section closing reveal">
+      <h2>Have someone in mind?</h2>
+      <p>Reach out anytime. We're happy to answer any questions.</p>
+      <div class="btn-row">
+        <a class="btn btn-solid" href="tel:+15618890507">Call or Text 561-889-0507</a>
+        <a class="btn" href="https://ig.me/m/visionarywebstudio" target="_blank" rel="noopener">Message on Instagram</a>
+      </div>
+    </section>
+
+  </div>
+</div>
+
+<div>
   <footer>
     <div class="contact">
       <a href="tel:+15618890507">561-889-0507</a>
@@ -516,6 +775,23 @@
     .fromTo('.site-preview', {y:20}, {opacity:1, y:0, duration:.8}, .92)
     .fromTo('.cta-row', {y:16}, {opacity:1, y:0, duration:.7}, 1.08)
     .fromTo('footer', {y:10}, {opacity:1, y:0, duration:.7}, 1.2);
+
+  // Scroll reveals for the details section, staggered within each row.
+  (function(){
+    var els = document.querySelectorAll('.reveal');
+    if (!('IntersectionObserver' in window)) { els.forEach(function(el){ el.classList.add('in'); }); return; }
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        if (!entry.isIntersecting) return;
+        var siblings = entry.target.parentElement.querySelectorAll(':scope > .reveal');
+        var i = Array.prototype.indexOf.call(siblings, entry.target);
+        entry.target.style.transitionDelay = (Math.max(i, 0) * 80) + 'ms';
+        entry.target.classList.add('in');
+        io.unobserve(entry.target);
+      });
+    }, { threshold: 0.15 });
+    els.forEach(function(el){ io.observe(el); });
+  })();
 </script>
 
 </body>
