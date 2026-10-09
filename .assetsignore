@@ -11,3 +11,24 @@ recovered-index.html
 .assetsignore
 .dev.vars*
 .env*
+
+# Local scratch/working files (GBP covers, social posts, screenshots,
+# base64 dumps, helper scripts). Not part of the site; keep them off the CDN.
+Userslocea_zau6ejaDownloadsmarlow-interiors-hero.png
+bg-b64.txt
+logo-b64.txt
+bg-desk.jpg
+cover-photo.png
+fb-cover.html
+fb-cover.png
+gbp-*.html
+gbp-*.png
+ig-post.html
+ig-post.png
+maps-listing.png
+mobile-*.png
+mobile-*.jpg
+modal-redesign.png
+services-panel-fix.png
+serve-fb.js
+vws-logo.svg
