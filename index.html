@@ -3090,7 +3090,7 @@
       'Starter': {
         tagline: 'Launch fast with a site that actually looks like you — not a template.',
         bullets: [
-          'Custom single-page site, not a theme with your logo swapped in',
+          '2–3 custom pages, not a theme with your logo swapped in',
           'Mobile-first build — looks right on every phone, not just desktop',
           'Real on-page SEO: proper meta titles, descriptions, structured data',
           'Contact form that lands straight in your inbox',
@@ -3172,11 +3172,16 @@
       window.location.assign(link.getAttribute('data-vws-pricing-href'));
     }, true);
 
-    var pricingAttempts = 0;
-    var pricingPoll = setInterval(function() {
-      pricingAttempts++;
-      if (applyPricingContent() || pricingAttempts > 80) clearInterval(pricingPoll);
-    }, 150);
+    /* React re-renders fresh (un-enhanced) cards on every SPA visit to
+       /pricing, so a one-time poll after first load misses nav-clicks from
+       other pages. Watch the DOM and re-apply whenever new cards appear. */
+    var pricingQueued = false;
+    new MutationObserver(function() {
+      if (pricingQueued) return;
+      pricingQueued = true;
+      requestAnimationFrame(function() { pricingQueued = false; applyPricingContent(); });
+    }).observe(document.body, { childList: true, subtree: true });
+    applyPricingContent();
   })();
   </script>
   <!-- ── SERVICE PAGE ENHANCER ──────────────────────────────── -->
