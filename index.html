@@ -2567,6 +2567,41 @@
   /* ── LEAD WEBHOOK — Make.com backup ── */
   var LEAD_WEBHOOK = 'https://hook.us2.make.com/jx5k1lnskcxy17o9lcb71hvxg6563xig';
 
+  /* ── Spam-bot traps for every lead form and the chat form ──
+     1. Honeypot: a hidden field real visitors never see; bots that fill
+        every input fill it too. Also sent to FormSubmit as _honey, which
+        drops any submission where it has a value.
+     2. Time trap: nothing a person types arrives within 3s of page load.
+     Bot submissions still get the normal "sent" UI so bots learn nothing;
+     they just never reach Gmail or Make.com. */
+  var VWS_LOADED_AT = Date.now();
+  function vwsAddHoneypot(box) {
+    if (!box || box.querySelector('.vws-hp')) return;
+    var hp = document.createElement('input');
+    hp.type = 'text'; hp.name = '_hp_website'; hp.className = 'vws-hp';
+    hp.tabIndex = -1; hp.autocomplete = 'off';
+    hp.setAttribute('aria-hidden', 'true');
+    hp.style.cssText = 'position:absolute!important;left:-9999px!important;width:1px!important;height:1px!important;opacity:0!important;pointer-events:none!important';
+    box.appendChild(hp);
+  }
+  function vwsHoneypotValue(box) {
+    var hp = box && box.querySelector('.vws-hp');
+    return hp ? hp.value : '';
+  }
+  function vwsLooksLikeBot(box) {
+    return !!vwsHoneypotValue(box) || (Date.now() - VWS_LOADED_AT < 3000);
+  }
+  (function watchForms() {
+    var queued = false;
+    function tag() { queued = false; document.querySelectorAll('form, #vws-form').forEach(vwsAddHoneypot); }
+    tag();
+    new MutationObserver(function() {
+      if (queued) return;
+      queued = true;
+      requestAnimationFrame(tag);
+    }).observe(document.body, { childList: true, subtree: true });
+  })();
+
   /* ── Intercept ALL site forms → Gmail via FormSubmit, suppress React error ── */
   document.addEventListener('submit', function(e) {
     var form = e.target;
@@ -2590,6 +2625,7 @@
       btn.textContent = '✓ Message Sent!';
       btn.style.cssText = 'background:#16a34a!important;color:#fff!important;opacity:1!important;cursor:default!important';
     }
+    if (vwsLooksLikeBot(form)) return;
     var payload = {
       name: name,
       email: email,
@@ -2613,6 +2649,7 @@
     fd.append('_subject', 'New Lead — Visionary Web Studio');
     fd.append('_template', 'table');
     fd.append('_captcha', 'false');
+    fd.append('_honey', vwsHoneypotValue(form));
     fd.append('_replyto', email);
     fetch('https://formsubmit.co/ajax/visionarywebstudio6@gmail.com', {
       method: 'POST',
@@ -2901,6 +2938,8 @@
       userData = { name: name, phone: phone, email: email, contact: contactStr };
       addMsg('Name: ' + name + (phone ? '\nPhone: ' + phone : '') + (email ? '\nEmail: ' + email : ''), true, now());
       document.getElementById('vws-form').style.display = 'none';
+      var chatBox = document.getElementById('vws-form');
+      if (vwsLooksLikeBot(chatBox)) return;
       var chatTime = new Date().toLocaleString('en-US', { timeZone: 'America/New_York' });
       /* Primary — FormSubmit → direct Gmail delivery, same path the Contact
          Us form uses. The chat widget previously only fired the Make.com
@@ -2918,6 +2957,7 @@
       chatFd.append('_subject', 'New Chat Lead — Visionary Web Studio');
       chatFd.append('_template', 'table');
       chatFd.append('_captcha', 'false');
+      chatFd.append('_honey', vwsHoneypotValue(chatBox));
       if (email) chatFd.append('_replyto', email);
       fetch('https://formsubmit.co/ajax/visionarywebstudio6@gmail.com', {
         method: 'POST',
