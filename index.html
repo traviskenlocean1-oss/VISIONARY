@@ -7399,5 +7399,21 @@
     var q = 0; new MutationObserver(function () { if (!q) q = requestAnimationFrame(function () { q = 0; mount(); }); }).observe(document.documentElement, { childList: true, subtree: true });
   })();
   </script>
+  <!-- ── CHAT WIDGET IN BLACK (2026-11-05, Travis) ─────────────────────────
+       Header, accent line, avatar, quick replies, lead-form button and the
+       "Chat with us" pill go black; only the send button stays blue. Green
+       status dots become blue. Overrides the widget's inline styles. ── -->
+  <style>
+  #vws-chat-root [style*="#1a3da8"]{background:#0b0f19!important}
+  #vws-chat-root [style*="linear-gradient(90deg,#60a5fa"]{background:rgba(255,255,255,.08)!important}
+  #vws-chat-root [style*="linear-gradient(135deg,#1e3a8a,#1d4ed8)"]{background:#0b0f19!important}
+  #vws-chat-root #vws-fsub{background:#0b0f19!important}
+  #vws-chat-root #vws-qr button{border-color:rgba(11,15,25,.22)!important;color:#0b0f19!important;background:#fff!important}
+  #vws-chat-root #vws-qr button:hover{border-color:rgba(11,15,25,.5)!important;background:rgba(11,15,25,.05)!important}
+  #vws-chat-root svg[stroke="rgba(37,99,235,0.7)"]{stroke:rgba(11,15,25,.55)}
+  #vws-chat-root [style*="#4ade80"]{background:#3b82f6!important;box-shadow:0 0 6px rgba(59,130,246,.7)!important}
+  #vws-chat-btn{background:#0b0f19!important;border-color:rgba(255,255,255,.14)!important;box-shadow:0 8px 32px rgba(0,0,0,.35),0 2px 8px rgba(0,0,0,.35)!important}
+  #vws-chat-btn:hover{box-shadow:0 12px 40px rgba(0,0,0,.45),0 2px 8px rgba(0,0,0,.4)!important}
+  </style>
   </body>
 </html>
