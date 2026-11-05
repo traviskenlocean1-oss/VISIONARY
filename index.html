@@ -399,6 +399,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;800;900&family=Barlow+Condensed:wght@600;700;800;900&display=swap" rel="stylesheet" />
     <script type="module" crossorigin src="/assets/index-CNkA1Y-Q.js"></script>
     <link rel="stylesheet" crossorigin href="/assets/index-B7NQdH4D.css">
+    <link rel="preload" href="/assets/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
   </head>
   <body>
     <div id="root"></div>
@@ -6698,6 +6699,17 @@
   })();
   </script>
 
+  <!-- ── SITE FONT (2026-11-05): every page uses "VWS Sans" = self-hosted Inter
+       sized to TWK Lausanne (KOTA's font, paid/licensed so not copied).
+       Overrides the old Almarai/Barlow stacks; monospace + code untouched.
+       To revert: delete this block. ── -->
+  <style id="vws-site-font">
+  @font-face{font-family:"VWS Sans";src:url(/assets/fonts/inter-latin.woff2) format("woff2");font-weight:100 900;font-display:swap;size-adjust:95.2%}
+  /* headlines that used the narrow Barlow Condensed keep their old line breaks: same font, scaled to its width */
+  @font-face{font-family:"VWS Sans Display";src:url(/assets/fonts/inter-latin.woff2) format("woff2");font-weight:100 900;font-display:swap;size-adjust:73%}
+  html body, html body *:not(code):not(pre):not(kbd):not(samp):not(svg):not(svg *){font-family:"VWS Sans",Inter,system-ui,-apple-system,"Segoe UI",sans-serif!important}
+  html body [style*="Barlow Condensed"], html body [style*="Barlow Condensed"] *{font-family:"VWS Sans Display","VWS Sans",Inter,system-ui,sans-serif!important}
+  </style>
   <!-- ── PRICING SHOWCASE (KOTA-style pinned services section) ──────────
        Replaces the React 3-card pricing grid on / and /pricing with a
        pinned 300vh section: tier copy on the left (line-by-line reveal),
