@@ -473,6 +473,7 @@
       /* 1.4. Pricing price numerals — find any $NNN or $NNN–NNN leaf and make it big */
       Array.from(document.querySelectorAll('section *')).forEach(function(el) {
         if (el.children.length > 0) return;
+        if (el.closest('.vws-svc')) return; /* pricing showcase styles its own prices */
         var txt = el.textContent.trim();
         if (!/^\$[\d,]+(?:[–-][\d,]+)?$/.test(txt)) return;
         /* Skip strikethrough prices — check element itself AND ancestors */
@@ -6694,6 +6695,273 @@
     } else {
       mount();
     }
+  })();
+  </script>
+
+  <!-- ── PRICING SHOWCASE (KOTA-style pinned services section) ──────────
+       Replaces the React 3-card pricing grid on / and /pricing with a
+       pinned 300vh section: tier copy on the left (line-by-line reveal),
+       a rounded video frame on the right that crossfades between real
+       portfolio recordings. Switches at 25% / 75% of the scroll, same as
+       the reference. Phone (<900px) stacks each tier with its own video.
+       The old grid stays in the DOM (hidden) so the other patches that
+       target it keep working. ── -->
+  <style>
+  @font-face{font-family:"VWS Sans";src:url(/assets/fonts/inter-latin.woff2) format("woff2");font-weight:100 900;font-display:swap;size-adjust:95.2%}
+  .vws-svc{--ink:rgba(10,14,26,.96);--sub:rgba(10,14,26,.6);--line:rgba(10,14,26,.1);--panel:#0a0a0f;--accent:#3b82f6;position:relative;width:100vw;margin-left:calc(50% - 50vw);font-family:"VWS Sans",Inter,system-ui,sans-serif;color:var(--ink);text-align:left;-webkit-font-smoothing:antialiased}
+  .vws-svc *{box-sizing:border-box;font-family:inherit!important}
+  .vws-svc p{margin:0!important;color:var(--ink)!important}
+  .vws-svc .t-label{font-size:12px!important;line-height:16px!important;font-weight:430!important;letter-spacing:-.005em!important}
+  .vws-svc .t-name{font-size:64px!important;line-height:72px!important;font-weight:400!important;letter-spacing:-.03em!important;margin-top:16px!important}
+  .vws-svc .t-k{font-size:12px!important;line-height:16px!important;font-weight:430!important;letter-spacing:-.005em!important;color:var(--sub)!important}
+  .vws-svc .t-v{font-size:12px!important;line-height:16px!important;font-weight:430!important;letter-spacing:-.005em!important;margin-top:8px!important}
+  .vws-svc .t-desc{font-size:14px!important;line-height:20px!important;font-weight:370!important;letter-spacing:-.005em!important}
+  .vws-svc .t-from{font-size:14px!important;line-height:20px!important;font-weight:370!important;letter-spacing:-.005em!important;color:var(--sub)!important}
+  .vws-svc .t-price{font-size:64px!important;line-height:64px!important;font-weight:400!important;letter-spacing:-.03em!important;margin-top:8px!important;white-space:nowrap!important;display:flex!important;align-items:baseline!important}
+  .vws-svc .t-price small{font-size:20px!important;line-height:1!important;letter-spacing:-.01em!important;color:var(--sub)!important;margin-left:6px!important;font-weight:370!important}
+  .vws-svc .spec-row{display:flex;gap:24px;margin-top:64px;border-top:1px solid var(--line);padding-top:23px}
+  .vws-svc .specs{width:208px;flex:none}
+  .vws-svc .specs .t-k+.t-v+.t-k{margin-top:24px!important}
+  .vws-svc .desc{flex:1;min-width:0}
+  .vws-svc .price-row{display:flex;justify-content:space-between;align-items:flex-end}
+  /* glass pill button (same 5-layer build as the reference), tinted to the brand blue */
+  .vws-svc .btn{position:relative;display:inline-flex;align-items:center;justify-content:center;width:160px;height:53px;border-radius:1000px;text-decoration:none;color:#fff;font-size:14px;line-height:20px;font-weight:450;letter-spacing:-.005em;isolation:isolate;flex:none}
+  .vws-svc .btn i{position:absolute;inset:0;border-radius:100px;pointer-events:none}
+  .vws-svc .btn .b-bg{background:var(--accent);z-index:-3}
+  .vws-svc .btn .b-in{box-shadow:inset 20px 0 20px -30px rgba(0,0,0,.25),inset -20px 0 20px -30px rgba(0,0,0,.25);z-index:-2}
+  .vws-svc .btn .b-hl{box-shadow:inset 0 -40px 10px -40px rgba(255,255,255,.55),inset 0 40px 10px -40px rgba(255,255,255,.7);z-index:-1}
+  .vws-svc .btn .b-edge{box-shadow:1px 0 0 0 rgba(10,14,26,.14),-1px 0 0 0 rgba(10,14,26,.14),0 1px 0 0 rgba(10,14,26,.14),0 -1px 0 0 rgba(10,14,26,.08),0 8px 24px -8px rgba(59,130,246,.55)}
+  .vws-svc .btn{transition:transform .25s cubic-bezier(.2,.8,.2,1)}
+  .vws-svc .btn:hover{transform:translateY(-1px)}
+  .vws-svc .btn:active{transform:scale(.97)}
+  /* line-by-line reveal: every word of a line moves together; lines stagger */
+  .vws-svc .w{font:inherit!important;color:inherit!important;letter-spacing:inherit!important;display:inline-block;opacity:0;transform:translateY(24px);white-space:pre}
+  .vws-svc .on .w{opacity:1;transform:none;transition:opacity 1s cubic-bezier(.16,1,.3,1),transform 1s cubic-bezier(.16,1,.3,1)}
+  @media (prefers-reduced-motion:reduce){.vws-svc .w{opacity:1;transform:none;transition:none!important}}
+
+  /* ── desktop: pinned ── */
+  .vws-svc-d{height:300vh}
+  .vws-svc-m{display:none}
+  .vws-svc-sticky{position:sticky;top:var(--vws-navh,0px);height:calc(100vh - var(--vws-navh,0px));overflow:hidden}
+  .vws-svc-d{height:calc(300vh - 3 * var(--vws-navh,0px))}
+  .vws-svc-left{position:absolute;left:40px;top:0;width:555px;height:100%}
+  .vws-svc-tier{position:absolute;inset:0;visibility:hidden}
+  .vws-svc-tier.on{visibility:visible}
+  .vws-svc-tier .spacer{height:31.03%}
+  .vws-svc-tier .price-block{position:absolute;left:0;right:0;bottom:40px}
+  .vws-svc-frame{position:absolute;left:50%;top:8px;right:8px;bottom:8px;border-radius:40px;background:var(--panel);overflow:hidden;transform:translateZ(0)}
+  .vws-svc-frame video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .3s cubic-bezier(.44,0,.56,1)}
+  .vws-svc-frame video.on{opacity:1}
+  .vws-svc-list{position:absolute;right:24px;bottom:88px;display:flex;flex-direction:column;align-items:flex-end;gap:4px;z-index:2;padding:12px 16px;border-radius:16px;background:rgba(10,10,15,.5);-webkit-backdrop-filter:blur(14px) saturate(1.2);backdrop-filter:blur(14px) saturate(1.2);box-shadow:inset 0 0 0 1px rgba(255,255,255,.08)}
+  .vws-svc-list a{display:flex;align-items:center;color:rgba(255,255,255,.96);text-decoration:none;font-size:14px;line-height:20px;font-weight:370;letter-spacing:-.005em;cursor:pointer}
+  .vws-svc-list a .dash{display:block;width:0;height:1px;overflow:hidden;transition:width .4s cubic-bezier(.16,1,.3,1)}
+  .vws-svc-list a .dash:after{content:"";display:block;margin-left:4px;width:10px;height:1px;background:#fff}
+  .vws-svc-list a.on .dash{width:14px}
+
+  /* ── phone / small tablet: stacked ── */
+  @media (max-width:899px){
+    .vws-svc-d{display:none}
+    .vws-svc-m{display:block;padding:0 16px}
+    .vws-svc .t-name{font-size:40px!important;line-height:48px!important;letter-spacing:-.03em!important}
+    .vws-svc .t-price{font-size:40px!important;line-height:44px!important}
+    .vws-svc .t-price small{font-size:16px!important}
+    .vws-svc-mt{padding:48px 0 56px}
+    .vws-svc-mt+.vws-svc-mt{border-top:1px solid var(--line)}
+    .vws-svc-mt .t-name{margin-top:12px}
+    .vws-svc .spec-row{margin-top:24px;gap:20px}
+    .vws-svc .specs{width:38%}
+    .vws-svc-mt .vid{position:relative;margin-top:32px;border-radius:20px;overflow:hidden;background:var(--panel);aspect-ratio:1/.95;transform:translateZ(0)}
+    .vws-svc-mt .vid video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+    .vws-svc-mt .price-row{margin-top:24px}
+    .vws-svc .btn{width:148px;height:50px}
+  }
+  </style>
+  <script>
+  (function () {
+    var TIERS = [
+      { key: 'Starter', name: 'Starter', time: 'About 5 days', deliv: '2–3 custom pages',
+        desc: 'Launch fast with a site that actually looks like you, not a template. Mobile-first, real on-page SEO, and a contact form that lands straight in your inbox.',
+        price: '$500', range: '–750', cta: 'Choose Starter', href: '/pricing-starter.html', video: '/assets/pricing/tier-starter.mp4', poster: '/assets/pricing/tier-starter.jpg' },
+      { key: 'Standard', name: 'Standard', time: 'About 10 days', deliv: 'Up to 6 pages',
+        desc: 'The full picture of your business, built to convert, not just exist. Scroll-triggered animations, page-by-page SEO, and your Google Business Profile tuned to match.',
+        price: '$750', range: '–1,000', cta: 'Choose Standard', href: '/pricing-standard.html', video: '/assets/pricing/tier-standard.mp4', poster: '/assets/pricing/tier-standard.jpg' },
+      { key: 'Full Build', name: 'Full Build', time: 'Priority turnaround', deliv: 'Up to 10 pages',
+        desc: 'Custom-built for exactly how your business runs: booking, e-commerce, membership. A signature animated hero, a full technical SEO pass, and revisions until it’s right.',
+        price: '$1,000', range: '–2,000', cta: 'Choose Full Build', href: '/pricing-full-build.html', video: '/assets/pricing/tier-full-build.mp4', poster: '/assets/pricing/tier-full-build.jpg' }
+    ];
+    var LABEL = 'Our Packages';
+
+    function esc(s) { return s.replace(/&/g, '&amp;').replace(/</g, '&lt;'); }
+    function btn(t) { return '<a class="btn" href="' + t.href + '"><i class="b-bg"></i><i class="b-in"></i><i class="b-hl"></i><i class="b-edge"></i><span class="a" data-r="2">' + esc(t.cta) + '</span></a>'; }
+    function copy(t) {
+      return '<p class="t-label a" data-r="0">' + LABEL + '</p>'
+        + '<p class="t-name a" data-r="0">' + esc(t.name) + '</p>'
+        + '<div class="spec-row"><div class="specs">'
+        + '<p class="t-k a" data-r="1">Timeline</p><p class="t-v a" data-r="1">' + esc(t.time) + '</p>'
+        + '<p class="t-k a" data-r="1">Deliverables</p><p class="t-v a" data-r="1">' + esc(t.deliv) + '</p>'
+        + '</div><div class="desc"><p class="t-desc a" data-r="1">' + esc(t.desc) + '</p></div></div>';
+    }
+    function priceBlock(t) {
+      return '<p class="t-from a" data-r="2">Starting from</p><div class="price-row"><p class="t-price a" data-r="2">' + esc(t.price) + '<small>' + esc(t.range) + '</small></p>' + btn(t) + '</div>';
+    }
+    function build() {
+      var root = document.createElement('div');
+      root.className = 'vws-svc';
+      root.setAttribute('data-vws-svc', '1');
+      var d = '<div class="vws-svc-d"><div class="vws-svc-sticky"><div class="vws-svc-left">';
+      TIERS.forEach(function (t, i) {
+        d += '<div class="vws-svc-tier' + (i ? '' : ' on') + '" data-i="' + i + '"><div class="spacer"></div>' + copy(t) + '<div class="price-block">' + priceBlock(t) + '</div></div>';
+      });
+      d += '</div><div class="vws-svc-frame">';
+      TIERS.forEach(function (t, i) { d += '<video muted loop playsinline preload="none" poster="' + t.poster + '" data-src="' + t.video + '"' + (i ? '' : ' class="on"') + '></video>'; });
+      d += '<nav class="vws-svc-list" aria-label="Packages">';
+      TIERS.forEach(function (t, i) { d += '<a data-i="' + i + '"' + (i ? '' : ' class="on"') + '>' + esc(t.name) + '<span class="dash"></span></a>'; });
+      d += '</nav></div></div></div>';
+      var m = '<div class="vws-svc-m">';
+      TIERS.forEach(function (t) {
+        m += '<div class="vws-svc-mt">' + copy(t) + '<div class="vid"><video muted loop playsinline preload="none" poster="' + t.poster + '" data-src="' + t.video + '"></video></div>' + priceBlock(t) + '</div>';
+      });
+      m += '</div>';
+      root.innerHTML = d + m;
+      return root;
+    }
+
+    /* Split each animated element into word spans, grouped by rendered line.
+       Delay = row base + line index * 55ms (measured on the reference). */
+    var ROW_BASE = [0, 0.06, 0.12];
+    function prepWords(scope) {
+      scope.querySelectorAll('.a').forEach(function (el) {
+        if (el.getAttribute('data-split')) return;
+        var parts = [];
+        el.childNodes.forEach(function (n) { parts.push(n); });
+        el.innerHTML = '';
+        parts.forEach(function (n) {
+          if (n.nodeType === 3) {
+            n.textContent.split(/(\s+)/).forEach(function (tok) {
+              if (!tok) return;
+              if (/^\s+$/.test(tok)) { el.appendChild(document.createTextNode(tok)); return; }
+              var s = document.createElement('span'); s.className = 'w'; s.textContent = tok; el.appendChild(s);
+            });
+          } else {
+            var s = document.createElement('span'); s.className = 'w'; s.appendChild(n); el.appendChild(s);
+          }
+        });
+        el.setAttribute('data-split', '1');
+      });
+    }
+    function setDelays(scope) {
+      scope.querySelectorAll('.a').forEach(function (el) {
+        var base = ROW_BASE[+el.getAttribute('data-r') || 0];
+        var top = null, line = -1;
+        el.querySelectorAll('.w').forEach(function (w) {
+          var y = w.offsetTop;
+          if (top === null || y > top + 2) { top = y; line++; }
+          var dl = (base + line * 0.055).toFixed(3) + 's';
+          w.style.transitionDelay = dl + ',' + dl;
+        });
+      });
+    }
+    function replay(el) { el.classList.remove('on'); void el.offsetWidth; el.classList.add('on'); }
+
+    /* Workers static assets don't serve byte ranges reliably for Safari:
+       fetch the whole file once and play it from a blob URL. */
+    var blobCache = {};
+    function loadVideo(v) {
+      if (v.getAttribute('data-loaded')) return;
+      v.setAttribute('data-loaded', '1');
+      var src = v.getAttribute('data-src');
+      (blobCache[src] || (blobCache[src] = fetch(src).then(function (r) { return r.blob(); }).then(function (b) { return URL.createObjectURL(b); })))
+        .then(function (u) { v.src = u; if (v.getAttribute('data-want')) v.play().catch(function () {}); })
+        .catch(function () { v.src = src; });
+    }
+    function play(v) { v.setAttribute('data-want', '1'); loadVideo(v); if (v.src) v.play().catch(function () {}); }
+    function pause(v) { v.removeAttribute('data-want'); if (v.src) v.pause(); }
+
+    /* the site header is a solid fixed bar: pin the section just below it */
+    function navH() {
+      var h = document.querySelector('header.fixed, header');
+      var v = h && getComputedStyle(h).position === 'fixed' ? Math.round(h.getBoundingClientRect().height) : 0;
+      if (v !== navH.last) { navH.last = v; document.documentElement.style.setProperty('--vws-navh', v + 'px'); }
+      return v;
+    }
+    function wire(root) {
+      navH();
+      prepWords(root);
+      var tiers = root.querySelectorAll('.vws-svc-tier');
+      var vids = root.querySelectorAll('.vws-svc-frame video');
+      var links = root.querySelectorAll('.vws-svc-list a');
+      var desk = root.querySelector('.vws-svc-d');
+      var active = -1, inView = false;
+
+      function activate(i) {
+        if (i === active) return;
+        active = i;
+        tiers.forEach(function (t, k) { if (k === i) { t.classList.add('on'); setDelays(t); replay(t); } else t.classList.remove('on'); });
+        vids.forEach(function (v, k) { v.classList.toggle('on', k === i); if (k === i && inView) play(v); });
+        setTimeout(function () { vids.forEach(function (v, k) { if (k !== active) pause(v); }); }, 320);
+        links.forEach(function (a, k) { a.classList.toggle('on', k === i); });
+      }
+      function onScroll() {
+        if (!desk.offsetHeight) return;
+        var r = desk.getBoundingClientRect(), nh = navH();
+        var range = r.height - (innerHeight - nh);
+        var p = Math.min(1, Math.max(0, (nh - r.top) / range));
+        activate(p < 0.25 ? 0 : p < 0.75 ? 1 : 2);
+      }
+      links.forEach(function (a) {
+        a.addEventListener('click', function () {
+          var i = +a.getAttribute('data-i');
+          var r = desk.getBoundingClientRect(), nh = navH();
+          window.scrollTo({ top: scrollY + r.top - nh + (r.height - (innerHeight - nh)) * (i * 0.5) + 2, behavior: 'smooth' });
+        });
+      });
+      var io = new IntersectionObserver(function (es) {
+        es.forEach(function (e) {
+          if (e.target === desk) {
+            inView = e.isIntersecting;
+            vids.forEach(function (v, k) { if (inView) loadVideo(v); if (inView && k === active) play(v); else if (!inView) pause(v); });
+          } else {
+            var v = e.target.querySelector('video');
+            if (e.isIntersecting) { play(v); if (!e.target.classList.contains('on')) { setDelays(e.target); replay(e.target); } } else pause(v);
+          }
+        });
+      }, { rootMargin: '400px 0px' });
+      io.observe(desk);
+      root.querySelectorAll('.vws-svc-mt').forEach(function (b) { io.observe(b); });
+      addEventListener('scroll', onScroll, { passive: true });
+      addEventListener('resize', function () { var a = active; active = -1; onScroll(); if (active === -1) activate(a < 0 ? 0 : a); }, { passive: true });
+      activate(0);
+      onScroll();
+    }
+
+    /* Find the React pricing grid (the parent holding the three tier cards). */
+    function findGrid() {
+      var cards = Array.prototype.filter.call(document.querySelectorAll('[class*="rounded-2xl"][class*="p-7"]'), function (c) {
+        var p = c.querySelector('p'); return p && /^(Starter|Standard|Full Build)$/.test(p.textContent.trim());
+      });
+      if (cards.length < 3) return null;
+      var g = cards[0].parentElement;
+      while (g && !(g.contains(cards[1]) && g.contains(cards[2]))) g = g.parentElement;
+      return g;
+    }
+    function mount() {
+      var g = findGrid();
+      if (!g || g.getAttribute('data-vws-svc-done')) return;
+      g.setAttribute('data-vws-svc-done', '1');
+      g.style.display = 'none';
+      var root = build();
+      g.parentNode.insertBefore(root, g);
+      /* position:sticky dies inside overflow:hidden ancestors -> switch them to clip (no scroll container). */
+      for (var n = root.parentElement; n && n !== document.body; n = n.parentElement) {
+        var cs = getComputedStyle(n);
+        if (/(hidden|auto|scroll)/.test(cs.overflow + cs.overflowX + cs.overflowY)) { n.style.overflow = 'clip'; n.style.overflowClipMargin = '0px'; }
+      }
+      wire(root);
+    }
+    var t = setInterval(mount, 250);
+    var q = 0;
+    new MutationObserver(function () { if (!q) q = requestAnimationFrame(function () { q = 0; mount(); }); }).observe(document.documentElement, { childList: true, subtree: true });
+    setTimeout(function () { clearInterval(t); }, 20000);
   })();
   </script>
   </body>
