@@ -7272,6 +7272,7 @@
            1px rule, full-width wordmark, credit + back-to-top. ── -->
   <style>
   [data-vws-end-hide],footer:not(.vws-kf){display:none!important}
+  #vws-best-svc{display:none!important}   /* services: Built fast. Delivered right. (removed 11-05) */
   .vws-kend{--b:#0b0f19;--bg:#eeeff2;position:relative;width:100%;font-family:"VWS Sans",Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased;text-align:left}
   .vws-kend *{box-sizing:border-box}
   .vws-kend p,.vws-kend h2{margin:0!important}
@@ -7465,6 +7466,9 @@
   .vws-ab-hero .price s{font-size:14px;line-height:20px;font-weight:370;color:rgba(255,255,255,.6)}
   .vws-ab-btn{position:relative;display:inline-flex;align-items:center;justify-content:center;width:160px;height:53px;margin-top:32px;border-radius:1000px;color:#fff!important;text-decoration:none!important;font-size:14px;line-height:21px;font-weight:430;isolation:isolate;transition:transform .25s cubic-bezier(.2,.8,.2,1)}
   .vws-ab-btn:hover{transform:translateY(-1px)}
+  /* black bubble (Travis 11-05) */
+  html body .vws-ab .vws-ab-btn .b1{background:#0b0f19!important;box-shadow:0 0 0 1px rgba(255,255,255,.14),0 10px 30px rgba(0,0,0,.45)!important;-webkit-backdrop-filter:none;backdrop-filter:none}
+  html body .vws-ab .vws-ab-btn .b3{opacity:.18}
   .vws-ab-btn i{position:absolute;inset:0;border-radius:100px;pointer-events:none}
   .vws-ab-btn .b1{z-index:-3;background:rgba(153,153,153,.16);box-shadow:1px 0 0 0 rgba(0,0,0,.25),-1px 0 0 0 rgba(0,0,0,.25),0 0 0 1px rgba(0,0,0,.25),0 8px 16px 0 rgba(0,0,0,.04);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)}
   .vws-ab-btn .b2{z-index:-2;box-shadow:inset -20px 0 20px -30px rgba(0,0,0,.3),inset 20px 0 20px -30px rgba(0,0,0,.3)}
@@ -7593,7 +7597,7 @@
         + '<div class="vws-ab-screen vws-ab-hero"><div class="box"><p class="cap">About Visionary</p>'
         + '<h1 class="t">Visionary Web Studio</h1>'
         + '<p class="lead">We’re a Miami web design studio building custom, hand-coded websites for local businesses. Sites that look like a $10k build, load fast, and turn local searches into calls. One flat price, and you own everything.</p>'
-        + '<div class="price"><b>From $500</b><s>$3,000+</s></div>' + glass('vws-ab-btn', '/pricing', 'See pricing') + '</div></div>'
+        + '<div class="price"><b>From $500</b><s>$3,000+</s></div>' + glass('vws-ab-btn', '/contact', 'Start a project') + '</div></div>'
         + '<div class="vws-ab-screen vws-ab-intro"><div class="box"><h2 class="t">Premium website without<br>the premium price tag</h2>'
         + '<p class="lead">Because you shouldn’t have to spend thousands or wait months for a website that actually works for your business.</p></div></div>'
         + '<div class="vws-ab-feat"><div class="vws-ab-fpin"><div class="vws-ab-chain">';
