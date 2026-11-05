@@ -6761,8 +6761,9 @@
   .vws-svc-tier.on{visibility:visible}
   .vws-svc-tier .spacer{height:31.03%}
   .vws-svc-tier .price-block{position:absolute;left:0;right:0;bottom:40px}
-  .vws-svc-frame{position:absolute;left:50%;top:8px;right:8px;bottom:8px;border-radius:40px;background:var(--panel);overflow:hidden;transform:translateZ(0)}
-  .vws-svc-frame video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .3s cubic-bezier(.44,0,.56,1)}
+  .vws-svc-frame{position:absolute;left:50%;top:8px;right:8px;bottom:8px;border-radius:40px;background:radial-gradient(90% 70% at 50% 45%,#161a2a,var(--panel) 70%);overflow:hidden;transform:translateZ(0);container-type:size}
+  /* each site floats as a 16:10 screen, fully visible at any frame size */
+  .vws-svc-frame video{position:absolute;left:50%;top:50%;width:min(calc(100cqw - 64px),calc((100cqh - 64px) * 1.6));aspect-ratio:16/10;height:auto;transform:translate(-50%,-50%);object-fit:cover;border-radius:14px;box-shadow:0 0 0 1px rgba(255,255,255,.08),0 30px 80px -20px rgba(0,0,0,.8);opacity:0;transition:opacity .3s cubic-bezier(.44,0,.56,1)}
   .vws-svc-frame video.on{opacity:1}
   .vws-svc-list{position:absolute;right:24px;bottom:88px;display:flex;flex-direction:column;align-items:flex-end;gap:4px;z-index:2;padding:12px 16px;border-radius:16px;background:rgba(10,10,15,.5);-webkit-backdrop-filter:blur(14px) saturate(1.2);backdrop-filter:blur(14px) saturate(1.2);box-shadow:inset 0 0 0 1px rgba(255,255,255,.08)}
   .vws-svc-list a{display:flex;align-items:center;color:rgba(255,255,255,.96);text-decoration:none;font-size:14px;line-height:20px;font-weight:370;letter-spacing:-.005em;cursor:pointer}
@@ -6782,7 +6783,7 @@
     .vws-svc-mt .t-name{margin-top:12px}
     .vws-svc .spec-row{margin-top:24px;gap:20px}
     .vws-svc .specs{width:38%}
-    .vws-svc-mt .vid{position:relative;margin-top:32px;border-radius:20px;overflow:hidden;background:var(--panel);aspect-ratio:1/.95;transform:translateZ(0)}
+    .vws-svc-mt .vid{position:relative;margin-top:32px;border-radius:16px;overflow:hidden;background:var(--panel);aspect-ratio:16/10;transform:translateZ(0)}
     .vws-svc-mt .vid video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
     .vws-svc-mt .price-row{margin-top:24px}
     .vws-svc .btn{width:148px;height:50px}
@@ -6974,6 +6975,136 @@
     var q = 0;
     new MutationObserver(function () { if (!q) q = requestAnimationFrame(function () { q = 0; mount(); }); }).observe(document.documentElement, { childList: true, subtree: true });
     setTimeout(function () { clearInterval(t); }, 20000);
+  })();
+  </script>
+
+  <!-- ── WHAT WE OFFER: KOTA "Featured Templates" structure ──────────────
+       Replaces the 6 glow cards inside #vws-hp-services (built by the
+       homepage patch above, which keeps its SPA click handler).
+       Structure copied from the reference:
+         · a pinned overlay (z8): label, ring of 6 arcs (2px white circle
+           outlines cut by a conic mask, fixed radii), numbers, button
+         · 6 stacked 1-screen panels (z6), each overflow:clip, holding a
+           dimmed full-bleed background and a 3-screen-tall "content" with
+           its OWN pinned lens image + name. Because every panel clips its
+           own pinned copy, scrolling wipes one service into the next
+           through the circle.
+       Active arc/number switch at the half-way point between panels. ── -->
+  <style>
+  .vws-ft{--U:calc(100vh - var(--vws-navh,0px));--s:1;position:relative;width:100vw;margin-left:calc(50% - 50vw);height:calc(var(--U) * 6);background:#05060a;color:#fff;font-family:"VWS Sans",Inter,system-ui,sans-serif;overflow:clip;-webkit-font-smoothing:antialiased;text-align:left}
+  #vws-hp-services.vws-ft{padding:0!important}
+  .vws-ft *{box-sizing:border-box}
+  .vws-ft p{margin:0!important}
+  .vws-ft-over{position:sticky;top:var(--vws-navh,0px);height:var(--U);margin-bottom:calc(var(--U) * -1);z-index:8;pointer-events:none}
+  .vws-ft-over a{pointer-events:auto}
+  .vws-ft-label{position:absolute;left:40px;top:calc(50% - 8px);font-size:12px!important;line-height:16px!important;font-weight:430!important;letter-spacing:-.005em!important;color:rgba(255,255,255,.96)!important}
+  .vws-ft-ring{position:absolute;left:50%;top:50%;width:696px;height:696px;transform:translate(-50%,-50%) scale(var(--s))}
+  .vws-ft-ring .arc,.vws-ft-ring .num{position:absolute;left:50%;top:50%;border-radius:1000px;transition:opacity .45s cubic-bezier(.44,0,.56,1);opacity:.2}
+  .vws-ft-ring .arc{-webkit-mask:conic-gradient(transparent 6deg,#000 6deg,#000 54deg,transparent 54deg);mask:conic-gradient(transparent 6deg,#000 6deg,#000 54deg,transparent 54deg)}
+  .vws-ft-ring .arc:after{content:"";position:absolute;inset:0;border:2px solid #fff;border-radius:1000px}
+  .vws-ft-ring .num p{position:absolute;left:50%;top:-28px;font-size:12px!important;line-height:16px!important;font-weight:430!important;color:#fff!important}
+  .vws-ft-ring .on{opacity:1}
+  .vws-ft-btn{position:absolute;left:50%;bottom:40px;transform:translateX(-50%);display:inline-flex;align-items:center;justify-content:center;height:41px;padding:0 24px;border-radius:1000px;color:#fff!important;text-decoration:none!important;font-size:14px;line-height:21px;font-weight:430;letter-spacing:-.005em;isolation:isolate;white-space:nowrap}
+  .vws-ft-btn i{position:absolute;inset:0;border-radius:100px;pointer-events:none}
+  .vws-ft-btn .b1{z-index:-3;background:rgba(153,153,153,.16);box-shadow:1px 0 0 0 rgba(0,0,0,.25),-1px 0 0 0 rgba(0,0,0,.25),0 0 0 1px rgba(0,0,0,.25),0 8px 16px 0 rgba(0,0,0,.04);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)}
+  .vws-ft-btn .b2{z-index:-2;box-shadow:inset -20px 0 20px -30px rgba(0,0,0,.3),inset 20px 0 20px -30px rgba(0,0,0,.3)}
+  .vws-ft-btn .b3{z-index:-1;opacity:.3;box-shadow:inset 0 4px 1px -4px #fff,inset 0 -4px 1px -4px #fff,inset 0 1px 0 0 rgba(255,255,255,.88),inset 0 -1px 0 0 rgba(255,255,255,.88)}
+  .vws-ft-btn:hover .b1{background:rgba(153,153,153,.26)}
+  .vws-ft-panels{position:absolute;inset:0;z-index:6}
+  .vws-ft-panel{position:relative;height:var(--U);overflow:clip}
+  @supports not (overflow:clip){.vws-ft-panel,.vws-ft{overflow:hidden}}
+  .vws-ft-bg{position:absolute;inset:0;opacity:.3;z-index:0}
+  .vws-ft-bg img{width:100%;height:100%;object-fit:cover;display:block}
+  .vws-ft-content{position:absolute;left:0;right:0;top:calc(var(--U) * -1);height:calc(var(--U) * 3);z-index:1}
+  .vws-ft-main{position:sticky;top:var(--vws-navh,0px);height:var(--U);overflow:clip}
+  .vws-ft-lens{position:absolute;left:50%;top:50%;width:450px;height:450px;border-radius:1000px;overflow:hidden;transform:translate(-50%,-50%) scale(var(--s));display:block}
+  .vws-ft-lens img{width:100%;height:100%;object-fit:cover;display:block}
+  .vws-ft-name{position:absolute;right:40px;top:50%;transform:translateY(-50%);text-align:right;text-decoration:none!important}
+  .vws-ft-name .n{font-size:72px!important;line-height:80px!important;font-weight:400!important;letter-spacing:-.03em!important;color:rgba(255,255,255,.96)!important}
+  .vws-ft-name .m{margin-top:8px!important;font-size:12px!important;line-height:16px!important;font-weight:430!important;letter-spacing:-.005em!important;color:rgba(255,255,255,.6)!important}
+  @media (max-width:1199px){.vws-ft-name .n{font-size:56px!important;line-height:62px!important}}
+  @media (max-width:899px){
+    .vws-ft-label{top:24px}
+    .vws-ft-name{right:auto;left:16px;top:auto;bottom:100px;transform:none;text-align:left}
+    .vws-ft-name .n{font-size:40px!important;line-height:44px!important}
+    .vws-ft-btn{bottom:28px}
+    .vws-ft-label{left:16px}
+  }
+  </style>
+  <script>
+  (function () {
+    var SVCS = [
+      { slug: 'web-development',     name: 'Website<br>Development', tag: 'Most Popular',  site: 'Aurelia Med Spa' },
+      { slug: 'website-creation',    name: 'Website<br>Creation',    tag: 'Start Here',    site: 'Marlow Interior' },
+      { slug: 'website-redesign',    name: 'Website<br>Redesign',    tag: 'Transform It',  site: 'The Altura Collection' },
+      { slug: 'website-maintenance', name: 'Website<br>Maintenance', tag: 'Keep It Sharp', site: 'Psychotic Love' },
+      { slug: 'hosting',             name: 'Hosting<br>&amp; Domain', tag: 'Included Free', site: 'Meridian Estates' },
+      { slug: 'logo-branding',       name: 'Logo &amp;<br>Branding', tag: 'Look the Part', site: 'STACK' }
+    ];
+    var N = SVCS.length, STEP = 360 / N;
+    /* fixed radii, mirrored like the reference's 5-arc ring */
+    var ARC_D = [498, 628, 696, 696, 628, 498];
+    var NUM_D = [696, 628, 498, 498, 628, 696];
+
+    function html() {
+      var o = '<div class="vws-ft-over"><p class="vws-ft-label">What We Offer</p><div class="vws-ft-ring">';
+      SVCS.forEach(function (s, i) {
+        var a = i * STEP, d = ARC_D[i], dn = NUM_D[i], mid = a + STEP / 2;
+        o += '<div class="arc" data-i="' + i + '" style="width:' + d + 'px;height:' + d + 'px;margin:' + (-d / 2) + 'px 0 0 ' + (-d / 2) + 'px;transform:rotate(' + a + 'deg)"></div>';
+        o += '<div class="num" data-i="' + i + '" style="width:' + dn + 'px;height:' + dn + 'px;margin:' + (-dn / 2) + 'px 0 0 ' + (-dn / 2) + 'px;transform:rotate(' + mid + 'deg)"><p style="transform:translateX(-50%) rotate(' + (-mid) + 'deg)">' + (i + 1) + '</p></div>';
+      });
+      o += '</div><a class="vws-ft-btn" href="/services"><i class="b1"></i><i class="b2"></i><i class="b3"></i>Explore all services</a></div><div class="vws-ft-panels">';
+      SVCS.forEach(function (s) {
+        var href = '/services/' + s.slug, base = '/assets/featured/' + s.slug;
+        o += '<div class="vws-ft-panel"><div class="vws-ft-bg"><img src="' + base + '-bg.jpg" alt="" loading="lazy" decoding="async"></div>'
+          + '<div class="vws-ft-content"><div class="vws-ft-main">'
+          + '<a class="vws-ft-lens" href="' + href + '" aria-label="' + s.name.replace(/<br>/g, ' ').replace('&amp;', '&') + '"><img src="' + base + '-lens.jpg" alt="' + s.site + ' website shown on a ' + (SVCS.indexOf(s) % 2 ? 'monitor' : 'laptop') + '" loading="lazy" decoding="async"></a>'
+          + '<a class="vws-ft-name" href="' + href + '"><p class="n">' + s.name + '</p><p class="m">' + s.tag + ' &nbsp;/&nbsp; ' + s.site + '</p></a>'
+          + '</div></div></div>';
+      });
+      return o + '</div>';
+    }
+
+    function wire(root) {
+      var arcs = root.querySelectorAll('.arc'), nums = root.querySelectorAll('.num'), active = -1;
+      function navH() { var h = document.querySelector('header'); return h && getComputedStyle(h).position === 'fixed' ? Math.round(h.getBoundingClientRect().height) : 0; }
+      function layout() {
+        var nh = navH(); document.documentElement.style.setProperty('--vws-navh', nh + 'px');
+        var U = innerHeight - nh;
+        root.style.setProperty('--s', Math.min(1, U / 696, (innerWidth - 32) / 696).toFixed(3));
+      }
+      function onScroll() {
+        var r = root.getBoundingClientRect(), U = innerHeight - navH();
+        var p = (navH() - r.top) / U;
+        var i = Math.max(0, Math.min(N - 1, Math.round(p)));
+        if (i === active) return; active = i;
+        arcs.forEach(function (e, k) { e.classList.toggle('on', k === i); });
+        nums.forEach(function (e, k) { e.classList.toggle('on', k === i); });
+      }
+      layout(); onScroll();
+      addEventListener('scroll', onScroll, { passive: true });
+      addEventListener('resize', function () { layout(); active = -1; onScroll(); }, { passive: true });
+    }
+
+    function mount() {
+      var g = document.getElementById('vws-hp-services');
+      if (!g || g.getAttribute('data-ft')) return;
+      g.setAttribute('data-ft', '1');
+      g.className = 'vws-ft';
+      g.innerHTML = html();
+      var sec = g.parentElement;
+      if (sec) { sec.style.setProperty('padding', '0', 'important'); sec.style.setProperty('border', '0', 'important'); }
+      /* sticky needs no scrolling ancestors: hidden/auto -> clip */
+      for (var n = sec; n && n !== document.body; n = n.parentElement) {
+        var cs = getComputedStyle(n);
+        if (/(hidden|auto|scroll)/.test(cs.overflow + cs.overflowX + cs.overflowY)) { n.style.overflow = 'clip'; }
+      }
+      wire(g);
+    }
+    var t = setInterval(mount, 300);
+    setTimeout(function () { clearInterval(t); }, 25000);
+    var q = 0;
+    new MutationObserver(function () { if (!q) q = requestAnimationFrame(function () { q = 0; mount(); }); }).observe(document.documentElement, { childList: true, subtree: true });
   })();
   </script>
   </body>
