@@ -7157,9 +7157,9 @@
   <script>
   (function () {
     var STEPS = [
-      { name: 'Discovery &amp; Strategy',  tags: 'Call, Audit, Plan', img: 'discovery',   alt: 'Laptop on a bright desk beside a potted plant' },
+      { name: 'Discovery &amp; Strategy',  tags: 'Call, Audit, Plan', img: 'discovery',   alt: 'Clean white desk with a desktop computer and a laptop' },
       { name: 'Design &amp; Prototype',    tags: 'Mockups, Brand',    img: 'design',      alt: 'Desktop computer on a calm, lamp-lit desk' },
-      { name: 'Development &amp; Testing', tags: 'Code, SEO, Speed',  img: 'development', alt: 'Desktop computer in warm evening light' },
+      { name: 'Development &amp; Testing', tags: 'Code, SEO, Speed',  img: 'development', alt: 'Bright desk with two monitors and a potted plant' },
       { name: 'Launch &amp; Support',      tags: 'Hosting, Support',  img: 'launch',      alt: 'Smartphone on a wooden table in a beam of sunlight' }
     ];
     var N = STEPS.length;
@@ -7272,11 +7272,12 @@
            1px rule, full-width wordmark, credit + back-to-top. ── -->
   <style>
   [data-vws-end-hide],footer:not(.vws-kf){display:none!important}
-  .vws-kend{--b:#1d4ed8;position:relative;width:100%;font-family:"VWS Sans",Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased;text-align:left}
+  .vws-kend{--b:#0b0f19;--bg:#eeeff2;position:relative;width:100%;font-family:"VWS Sans",Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased;text-align:left}
   .vws-kend *{box-sizing:border-box}
   .vws-kend p,.vws-kend h2{margin:0!important}
-  .vws-kcta{position:relative;height:110vh;overflow:hidden;background:#e6e8ed}
-  .vws-kstage{position:absolute;left:50%;top:50%;width:1740px;height:1080px;transform:translate(-50%,-50%) scale(var(--k,1));background:radial-gradient(58% 68% at 50% 44%,#fbfbfc 0%,#eef0f3 52%,#dcdfe5 100%)}
+  .vws-kcta{position:relative;height:110vh;overflow:hidden;background:var(--bg)}
+  .vws-kcta:after{content:"";position:absolute;left:0;right:0;bottom:0;height:42%;background:linear-gradient(to bottom,rgba(238,239,242,0),var(--bg) 78%);z-index:1;pointer-events:none}
+  .vws-kstage{position:absolute;left:50%;top:50%;width:1740px;height:1080px;transform:translate(-50%,-50%) scale(var(--k,1));background:radial-gradient(58% 68% at 50% 44%,#fbfbfc 0%,#f2f3f5 52%,#eeeff2 100%)}
   .vws-kstage .lap{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
   .vws-kstage video{position:absolute;z-index:1;left:28.5%;top:22.934%;width:43%;height:43.299%;object-fit:cover;border-radius:4px;background:#000}
   html body .vws-kend h2.vws-kh{position:absolute;left:0;right:0;text-align:center;z-index:2;font-size:64px;line-height:1!important;font-weight:400!important;letter-spacing:-.03em!important;color:#0b0f19!important}
@@ -7288,7 +7289,8 @@
   .vws-kbtn .b4{z-index:-1;box-shadow:inset 0 -40px 10px -40px rgba(255,255,255,.96),inset 0 40px 10px -40px rgba(255,255,255,.96)}
   .vws-kbtn{transition:transform .25s cubic-bezier(.2,.8,.2,1)}
   .vws-kbtn:hover{transform:translateX(-50%) translateY(-1px)}
-  footer.vws-kf{background:#e6e8ed;color:var(--b);padding:72px 40px 20px}
+  html body .vws-kend footer.vws-kf{background:var(--bg)!important;border:0!important;box-shadow:none!important;margin:0!important}
+  footer.vws-kf{background:var(--bg);color:var(--b);padding:72px 40px 20px}
   html body footer.vws-kf a,html body footer.vws-kf a:visited{color:var(--b)!important;text-decoration:none!important}
   html body footer.vws-kf a.val{color:var(--b)!important}
   .vws-kf-top{display:grid;grid-template-columns:1fr calc((100% - 40px) * .16) calc((100% - 40px) * .16);column-gap:20px;min-height:244px;padding-bottom:48px}
@@ -7299,12 +7301,13 @@
   .vws-kf .col ul{list-style:none;margin:16px 0 0;padding:0;display:flex;flex-direction:column;gap:8px}
   html body footer.vws-kf .col ul li a{font-size:24px!important;line-height:32px!important;font-weight:400!important;letter-spacing:-.02em!important;color:var(--b)!important}
   .vws-kf .col li a:hover{opacity:.6}
-  .vws-kf-bot{margin-top:0;border-top:1px solid rgba(29,78,216,.22);padding-top:60px}
+  .vws-kf-bot{margin-top:0;border-top:1px solid rgba(11,15,25,.14);padding-top:60px;position:relative}
+  .vws-kf-bot:after{content:"";position:absolute;left:-40px;right:-40px;bottom:-20px;height:46%;background:linear-gradient(to bottom,rgba(238,239,242,0),rgba(238,239,242,.55) 55%,var(--bg));pointer-events:none}
   .vws-kf-word{display:block;width:100%;height:auto;overflow:visible}
-  .vws-kf-word text{fill:var(--b);font-family:"VWS Sans",Inter,system-ui,sans-serif;font-weight:400;letter-spacing:-.04em}
-  .vws-kf-row{display:flex;justify-content:space-between;align-items:flex-end;margin-top:20px}
+  .vws-kf-word text{fill:url(#vws-kf-grad);font-family:"VWS Sans",Inter,system-ui,sans-serif;font-weight:400;letter-spacing:-.04em}
+  .vws-kf-row{display:flex;justify-content:space-between;align-items:flex-end;margin-top:20px;position:relative;z-index:1}
   .vws-kf-row .lbl{opacity:1}
-  .vws-kf-up{position:relative;width:40px;height:40px;border-radius:100px;display:flex;align-items:center;justify-content:center;cursor:pointer;border:0;padding:0;background:rgba(153,153,153,.16);box-shadow:0 0 0 1px rgba(29,78,216,.18),inset 0 1px 0 0 rgba(255,255,255,.7)}
+  .vws-kf-up{position:relative;width:40px;height:40px;border-radius:100px;display:flex;align-items:center;justify-content:center;cursor:pointer;border:0;padding:0;background:rgba(153,153,153,.16);box-shadow:0 0 0 1px rgba(11,15,25,.14),inset 0 1px 0 0 rgba(255,255,255,.7)}
   .vws-kf-up svg{width:16px;height:16px;stroke:var(--b)}
   @media (max-width:899px){
     .vws-kcta{height:auto;min-height:520px}
@@ -7330,13 +7333,14 @@
         + '<p class="lbl">Prefer to talk?</p><a class="val" href="tel:5618890507">Call (561) 889-0507</a></div>'
         + '<div class="col"><p class="col-h">Index</p><ul>' + LINKS.map(function (l) { return '<li><a href="' + l[1] + '" data-spa>' + l[0] + '</a></li>'; }).join('') + '</ul></div>'
         + '<div class="col"><p class="col-h">Socials</p><ul>' + SOCIAL.map(function (l) { return '<li><a href="' + l[1] + '"' + (l[1].indexOf('http') === 0 ? ' target="_blank" rel="noopener"' : '') + '>' + l[0] + '</a></li>'; }).join('') + '</ul></div>'
-        + '</div><div class="vws-kf-bot"><svg class="vws-kf-word" role="img" aria-label="Visionary"><text x="0" y="0">Visionary</text></svg>'
+        + '</div><div class="vws-kf-bot"><svg class="vws-kf-word" role="img" aria-label="Visionary"><defs><linearGradient id="vws-kf-grad" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0b0f19"/><stop offset=".55" stop-color="#0b0f19" stop-opacity=".85"/><stop offset="1" stop-color="#0b0f19" stop-opacity=".18"/></linearGradient></defs><text x="0" y="0">Visionary</text></svg>'
         + '<div class="vws-kf-row"><p class="lbl">© ' + new Date().getFullYear() + ' Visionary Web Studio · Miami, FL</p>'
         + '<button class="vws-kf-up" type="button" aria-label="Back to top"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button></div></div></footer>';
     }
     /* stage behaves like object-fit:cover; on phones it fits the laptop instead */
     function layout(root) {
-      var cta = root.querySelector('.vws-kcta'), W = cta.clientWidth, H, k;
+      var cta = root.querySelector('.vws-kcta'); if (!cta) return;
+      var W = cta.clientWidth, H, k;
       if (innerWidth < 900) { k = (W - 8) / 960; H = Math.max(520, Math.round(1080 * k + 150)); cta.style.height = H + 'px'; }
       else { cta.style.height = ''; H = cta.clientHeight; k = Math.max(W / 1740, H / 1080); }
       cta.style.setProperty('--k', k.toFixed(4));
@@ -7354,7 +7358,7 @@
       layout(root); fitWord(root);
       addEventListener('resize', function () { layout(root); }, { passive: true });
       var v = root.querySelector('video'), loaded = false;
-      new IntersectionObserver(function (es) {
+      if (v) new IntersectionObserver(function (es) {
         es.forEach(function (e) {
           if (e.isIntersecting) {
             if (!loaded) { loaded = true; fetch(v.getAttribute('data-src')).then(function (r) { return r.blob(); }).then(function (b) { v.src = URL.createObjectURL(b); v.play().catch(function () {}); }).catch(function () { v.src = v.getAttribute('data-src'); v.play().catch(function () {}); }); }
@@ -7382,9 +7386,12 @@
       }
       var mine = document.querySelector('.vws-kend');
       /* sits AFTER the hidden old footer: other patches inject their page content right before the footer */
-      if (mine && mine.previousElementSibling === old) return;
+      var isContact = location.pathname.replace(/\/+$/, '') === '/contact' ? '1' : '0';
+      if (mine && mine.previousElementSibling === old && mine.getAttribute('data-c') === isContact) return;
       if (mine) mine.remove();
       var root = document.createElement('div'); root.className = 'vws-kend'; root.innerHTML = html();
+      root.setAttribute('data-c', isContact);
+      if (isContact === '1') root.querySelector('.vws-kcta').remove();
       old.parentNode.insertBefore(root, old.nextSibling);
       wire(root);
     }
