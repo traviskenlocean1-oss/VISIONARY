@@ -1687,7 +1687,7 @@
   /* Site-wide nav crossfade overlay — covers all intermediate injection states */
   #vws-nav-overlay{position:fixed;inset:0;z-index:8000;background:#060916;opacity:0;pointer-events:none;transition:opacity 160ms ease;will-change:opacity}
   /* ══ DUAL TICKER — Cosmico Studios style ══ */
-  #vws-dual-ticker{padding:0;overflow:hidden;background:#060916;border-top:1px solid rgba(255,255,255,0.06);border-bottom:1px solid rgba(255,255,255,0.06)}
+  #vws-dual-ticker{display:none!important;padding:0;overflow:hidden;background:#060916;border-top:1px solid rgba(255,255,255,0.06);border-bottom:1px solid rgba(255,255,255,0.06)}
   #vws-dual-ticker .vws-tk-row{display:flex;overflow:hidden;padding:14px 0}
   #vws-dual-ticker .vws-tk-track{display:flex;gap:0;white-space:nowrap;will-change:transform}
   #vws-dual-ticker .vws-tk-track--left{animation:vws-tk-left 28s linear infinite}
@@ -6925,7 +6925,8 @@
         a.addEventListener('click', function () {
           var i = +a.getAttribute('data-i');
           var r = desk.getBoundingClientRect(), nh = navH();
-          window.scrollTo({ top: scrollY + r.top - nh + (r.height - (innerHeight - nh)) * (i * 0.5) + 2, behavior: 'smooth' });
+          var ty = scrollY + r.top - nh + (r.height - (innerHeight - nh)) * (i * 0.5) + 2;
+          if (window.lenis) window.lenis.scrollTo(ty); else window.scrollTo({ top: ty, behavior: 'smooth' });
         });
       });
       var io = new IntersectionObserver(function (es) {
@@ -6991,7 +6992,7 @@
            through the circle.
        Active arc/number switch at the half-way point between panels. ── -->
   <style>
-  .vws-ft{--U:calc(100vh - var(--vws-navh,0px));--s:1;position:relative;width:100vw;margin-left:calc(50% - 50vw);height:calc(var(--U) * 6);background:#05060a;color:#fff;font-family:"VWS Sans",Inter,system-ui,sans-serif;overflow:clip;-webkit-font-smoothing:antialiased;text-align:left}
+  .vws-ft{--U:calc(100vh - var(--vws-navh,0px));--P:100vh;--s:1;position:relative;width:100vw;margin-left:calc(50% - 50vw);height:calc(var(--P) * 6);background:#05060a;color:#fff;font-family:"VWS Sans",Inter,system-ui,sans-serif;overflow:clip;-webkit-font-smoothing:antialiased;text-align:left}
   #vws-hp-services.vws-ft{padding:0!important}
   .vws-ft *{box-sizing:border-box}
   .vws-ft p{margin:0!important}
@@ -7011,11 +7012,11 @@
   .vws-ft-btn .b3{z-index:-1;opacity:.3;box-shadow:inset 0 4px 1px -4px #fff,inset 0 -4px 1px -4px #fff,inset 0 1px 0 0 rgba(255,255,255,.88),inset 0 -1px 0 0 rgba(255,255,255,.88)}
   .vws-ft-btn:hover .b1{background:rgba(153,153,153,.26)}
   .vws-ft-panels{position:absolute;inset:0;z-index:6}
-  .vws-ft-panel{position:relative;height:var(--U);overflow:clip}
+  .vws-ft-panel{position:relative;height:var(--P);overflow:clip}
   @supports not (overflow:clip){.vws-ft-panel,.vws-ft{overflow:hidden}}
   .vws-ft-bg{position:absolute;inset:0;opacity:.3;z-index:0}
   .vws-ft-bg img{width:100%;height:100%;object-fit:cover;display:block}
-  .vws-ft-content{position:absolute;left:0;right:0;top:calc(var(--U) * -1);height:calc(var(--U) * 3);z-index:1}
+  .vws-ft-content{position:absolute;left:0;right:0;top:calc(var(--P) * -1);height:calc(var(--P) * 3);z-index:1}
   .vws-ft-main{position:sticky;top:var(--vws-navh,0px);height:var(--U);overflow:clip}
   .vws-ft-lens{position:absolute;left:50%;top:50%;width:450px;height:450px;border-radius:1000px;overflow:hidden;transform:translate(-50%,-50%) scale(var(--s));display:block}
   .vws-ft-lens img{width:100%;height:100%;object-fit:cover;display:block}
@@ -7034,12 +7035,12 @@
   <script>
   (function () {
     var SVCS = [
-      { slug: 'web-development',     name: 'Website<br>Development', tag: 'Most Popular',  site: 'Aurelia Med Spa' },
-      { slug: 'website-creation',    name: 'Website<br>Creation',    tag: 'Start Here',    site: 'Marlow Interior' },
-      { slug: 'website-redesign',    name: 'Website<br>Redesign',    tag: 'Transform It',  site: 'The Altura Collection' },
-      { slug: 'website-maintenance', name: 'Website<br>Maintenance', tag: 'Keep It Sharp', site: 'Psychotic Love' },
-      { slug: 'hosting',             name: 'Hosting<br>&amp; Domain', tag: 'Included Free', site: 'Meridian Estates' },
-      { slug: 'logo-branding',       name: 'Logo &amp;<br>Branding', tag: 'Look the Part', site: 'STACK' }
+      { slug: 'web-development',     name: 'Website<br>Development', tag: 'Most Popular',  site: 'SOLE Residence' },
+      { slug: 'website-creation',    name: 'Website<br>Creation',    tag: 'Start Here',    site: 'Steadfast' },
+      { slug: 'website-redesign',    name: 'Website<br>Redesign',    tag: 'Transform It',  site: 'Clearwell' },
+      { slug: 'website-maintenance', name: 'Website<br>Maintenance', tag: 'Keep It Sharp', site: 'Aurelia Med Spa' },
+      { slug: 'hosting',             name: 'Hosting<br>&amp; Domain', tag: 'Included Free', site: 'Psychotic Love' },
+      { slug: 'logo-branding',       name: 'Logo &amp;<br>Branding', tag: 'Look the Part', site: 'Marlow Interior' }
     ];
     var N = SVCS.length, STEP = 360 / N;
     /* fixed radii, mirrored like the reference's 5-arc ring */
@@ -7058,7 +7059,7 @@
         var href = '/services/' + s.slug, base = '/assets/featured/' + s.slug;
         o += '<div class="vws-ft-panel"><div class="vws-ft-bg"><img src="' + base + '-bg.jpg" alt="" loading="lazy" decoding="async"></div>'
           + '<div class="vws-ft-content"><div class="vws-ft-main">'
-          + '<a class="vws-ft-lens" href="' + href + '" aria-label="' + s.name.replace(/<br>/g, ' ').replace('&amp;', '&') + '"><img src="' + base + '-lens.jpg" alt="' + s.site + ' website shown on a ' + (SVCS.indexOf(s) % 2 ? 'monitor' : 'laptop') + '" loading="lazy" decoding="async"></a>'
+          + '<a class="vws-ft-lens" href="' + href + '" aria-label="' + s.name.replace(/<br>/g, ' ').replace('&amp;', '&') + '"><img src="' + base + '-lens.jpg" alt="' + s.site + ' website shown on a ' + (SVCS.indexOf(s) % 2 ? 'laptop' : 'monitor') + '" loading="lazy" decoding="async"></a>'
           + '<a class="vws-ft-name" href="' + href + '"><p class="n">' + s.name + '</p><p class="m">' + s.tag + ' &nbsp;/&nbsp; ' + s.site + '</p></a>'
           + '</div></div></div>';
       });
@@ -7071,11 +7072,11 @@
       function layout() {
         var nh = navH(); document.documentElement.style.setProperty('--vws-navh', nh + 'px');
         var U = innerHeight - nh;
-        root.style.setProperty('--s', Math.min(1, U / 696, (innerWidth - 32) / 696).toFixed(3));
+        root.style.setProperty('--s', Math.min(1, (innerWidth - 32) / 696).toFixed(3));
       }
       function onScroll() {
-        var r = root.getBoundingClientRect(), U = innerHeight - navH();
-        var p = (navH() - r.top) / U;
+        var r = root.getBoundingClientRect();
+        var p = (navH() - r.top) / innerHeight;
         var i = Math.max(0, Math.min(N - 1, Math.round(p)));
         if (i === active) return; active = i;
         arcs.forEach(function (e, k) { e.classList.toggle('on', k === i); });
@@ -7105,6 +7106,162 @@
     setTimeout(function () { clearInterval(t); }, 25000);
     var q = 0;
     new MutationObserver(function () { if (!q) q = requestAnimationFrame(function () { q = 0; mount(); }); }).observe(document.documentElement, { childList: true, subtree: true });
+  })();
+  </script>
+  <!-- ── OUR PROCESS: neutomni.com "Selected Work" structure ─────────────
+       Replaces the React process section (step cards + "Typical Project
+       Timeline"). A pinned screen: 2-line title top-left, paragraph at 50%,
+       numbered list bottom-left (inactive rows 30% opacity), and a right
+       panel (60% / 55% at 1920+) where each step's image grows out of the
+       bottom-right corner (clip-path polygon) while easing 1.1 -> 1 scale;
+       the image underneath keeps zooming to 1.2. One screen of scroll per
+       step, driven straight off the scroll position. ── -->
+  <style>
+  @font-face{font-family:"VWS Serif";src:url(/assets/fonts/instrument-serif-latin.woff2) format("woff2");font-style:italic;font-weight:400;font-display:swap}
+  @font-face{font-family:"VWS Mono";src:url(/assets/fonts/fira-code-latin.woff2) format("woff2");font-weight:500;font-display:swap}
+  [data-vws-proc2]{padding:0!important;border:0!important;background:#f7f8fc!important}
+  [data-vws-proc2] > :not(.vws-pr){display:none!important}
+  .vws-pr{--U:calc(100vh - var(--vws-navh,0px));--c:#2563eb;--rw:.6;position:relative;width:100vw;margin-left:calc(50% - 50vw);height:calc(var(--U) + 400vh);color:var(--c);text-align:left;font-family:"VWS Sans",Inter,system-ui,sans-serif}
+  @media (min-width:1920px){.vws-pr{--rw:.55}}
+  .vws-pr *{box-sizing:border-box}
+  .vws-pr p,.vws-pr h2{margin:0!important}
+  .vws-pr-pin{position:sticky;top:var(--vws-navh,0px);height:var(--U);overflow:hidden}
+  html body .vws-pr h2.vws-pr-title{position:absolute;left:20px;top:70px;z-index:3;font-size:118px!important;line-height:118px!important;font-weight:400!important;letter-spacing:-.03em!important;color:var(--c)!important}
+  html body .vws-pr h2.vws-pr-title span{display:block;color:var(--c)!important}
+  .vws-pr-title .it{font-family:"VWS Serif",Georgia,serif!important;font-style:italic;letter-spacing:0!important;line-height:90%}
+  .vws-pr-para{position:absolute;left:calc(20px + (100% - 20px) * .5);bottom:11%;width:300px;z-index:1;font-size:16px!important;line-height:19.2px!important;font-weight:400!important;color:var(--c)!important}
+  .vws-pr-list{position:absolute;left:20px;bottom:10px;width:calc((100% - 20px) * (1 - var(--rw)) - 20px);z-index:3;display:flex;flex-direction:column}
+  .vws-pr-item{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;padding:24px 0;border-bottom:1px solid var(--c);opacity:.3;transition:opacity .45s cubic-bezier(.44,0,.56,1);cursor:pointer;text-decoration:none!important;color:var(--c)!important}
+  .vws-pr-list .vws-pr-item:nth-last-child(2){border-bottom:0}
+  .vws-pr-item.on{opacity:1}
+  .vws-pr-ttl{display:flex;align-items:baseline;gap:16px}
+  .vws-pr-num{font-family:"VWS Mono",ui-monospace,monospace!important;font-size:16px!important;line-height:19.2px!important;font-weight:500!important}
+  .vws-pr-name{font-family:"VWS Serif",Georgia,serif!important;font-style:italic;font-size:32px!important;line-height:35.2px!important;font-weight:400!important;letter-spacing:0!important}
+  .vws-pr-tags{font-family:"VWS Mono",ui-monospace,monospace!important;font-size:16px!important;line-height:19.2px!important;font-weight:500!important;text-transform:uppercase;text-align:right;white-space:nowrap}
+  .vws-pr-right{position:absolute;right:0;top:0;bottom:0;width:calc((100% - 20px) * var(--rw));overflow:hidden;z-index:2}
+  .vws-pr-mask{position:absolute;inset:0;overflow:hidden;clip-path:polygon(100% 100%,100% 100%,100% 100%,100% 100%);will-change:clip-path}
+  .vws-pr-mask img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transform:scale(1.1);transform-origin:50% 50%;will-change:transform}
+  .vws-pr-mimg{display:none}
+  @media (max-height:760px) and (min-width:900px){html body .vws-pr h2.vws-pr-title{top:40px}.vws-pr-item{padding:20px 0}}
+  @media (max-width:899px){
+    .vws-pr{height:auto;padding:64px 16px 40px}
+    .vws-pr-pin{position:static;height:auto;overflow:visible}
+    html body .vws-pr h2.vws-pr-title{position:static;font-size:72px!important;line-height:72px!important}
+    .vws-pr-para{position:static;width:auto;margin-top:24px!important}
+    .vws-pr-list{position:static;width:auto;margin-top:32px}
+    .vws-pr-item{opacity:1;flex-direction:column;align-items:flex-start;gap:6px;padding:20px 0;border-bottom:0}
+    .vws-pr-tags{text-align:left;font-size:13px!important}
+    .vws-pr-name{font-size:28px!important}
+    .vws-pr-right{display:none}
+    .vws-pr-mimg{display:block;width:100%;aspect-ratio:9/7;object-fit:cover;margin-bottom:12px;border-bottom:1px solid var(--c);padding-bottom:20px}
+  }
+  </style>
+  <script>
+  (function () {
+    var STEPS = [
+      { name: 'Discovery &amp; Strategy',  tags: 'Call, Audit, Plan', img: 'discovery',   alt: 'Meridian Estates website on a monitor' },
+      { name: 'Design &amp; Prototype',    tags: 'Mockups, Brand',    img: 'design',      alt: 'The Altura Collection website on a laptop' },
+      { name: 'Development &amp; Testing', tags: 'Code, SEO, Speed',  img: 'development', alt: 'Ironclad website on a monitor' },
+      { name: 'Launch &amp; Support',      tags: 'Hosting, Support',  img: 'launch',      alt: 'STACK website on a phone' }
+    ];
+    var N = STEPS.length;
+    function html() {
+      var o = '<div class="vws-pr-pin"><h2 class="vws-pr-title"><span class="ln">Our</span><span class="ln it">Process</span></h2>'
+        + '<p class="vws-pr-para">How we transform your vision into reality: one clear path from the first call to launch day, and support after.</p>'
+        + '<div class="vws-pr-list">';
+      STEPS.forEach(function (s, i) {
+        o += '<a class="vws-pr-item" data-i="' + i + '"><span class="vws-pr-ttl"><span class="vws-pr-num">0' + (i + 1) + '.</span><span class="vws-pr-name">' + s.name + '</span></span><span class="vws-pr-tags">' + s.tags + '</span></a>'
+          + '<img class="vws-pr-mimg" src="/assets/process/' + s.img + '.jpg" alt="' + s.alt + '" loading="lazy" decoding="async">';
+      });
+      o += '</div><div class="vws-pr-right">';
+      STEPS.forEach(function (s) { o += '<div class="vws-pr-mask"><img src="/assets/process/' + s.img + '.jpg" alt="' + s.alt + '" loading="lazy" decoding="async"></div>'; });
+      return o + '</div></div>';
+    }
+    var ease = function (t) { return 1 - Math.pow(1 - t, 3); };
+    var clamp = function (v) { return v < 0 ? 0 : v > 1 ? 1 : v; };
+    function navH() { var h = document.querySelector('header'); return h && getComputedStyle(h).position === 'fixed' ? Math.round(h.getBoundingClientRect().height) : 0; }
+    function wire(root) {
+      var masks = root.querySelectorAll('.vws-pr-mask'), imgs = root.querySelectorAll('.vws-pr-mask img'), items = root.querySelectorAll('.vws-pr-item');
+      var active = -2, queued = false;
+      function frame() {
+        queued = false;
+        if (innerWidth < 900) return;
+        var p = (navH() - root.getBoundingClientRect().top) / innerHeight;
+        var e = [], k;
+        for (k = 0; k < N; k++) e[k] = ease(clamp((p - k) / 0.6));
+        for (k = 0; k < N; k++) {
+          var L = (100 * (1 - e[k])).toFixed(3);
+          masks[k].style.clipPath = 'polygon(' + L + '% ' + L + '%, 100% ' + L + '%, 100% 101%, ' + L + '% 101%)';
+          var next = k + 1 < N ? e[k + 1] : 0;
+          imgs[k].style.transform = 'scale(' + (next > 0 ? 1 + 0.2 * next : 1.1 - 0.1 * e[k]).toFixed(4) + ')';
+        }
+        var a = p < 0.05 ? -1 : Math.min(N - 1, Math.floor(p - 0.05));
+        if (a !== active) { active = a; items.forEach(function (it, j) { it.classList.toggle('on', j === a); }); }
+      }
+      function req() { if (!queued) { queued = true; requestAnimationFrame(frame); } }
+      items.forEach(function (it) {
+        it.addEventListener('click', function () {
+          if (innerWidth < 900) return;
+          var i = +it.getAttribute('data-i'), y = scrollY + root.getBoundingClientRect().top - navH() + i * innerHeight + innerHeight * 0.65;
+          if (window.lenis) window.lenis.scrollTo(y); else scrollTo({ top: y, behavior: 'smooth' });
+        });
+      });
+      addEventListener('scroll', req, { passive: true });
+      addEventListener('resize', req, { passive: true });
+      frame();
+    }
+    function mount() {
+      if (document.querySelector('.vws-pr')) return;
+      var h = Array.prototype.find.call(document.querySelectorAll('section h2'), function (e) { return /Transform Your Vision/i.test(e.textContent); });
+      var sec = h && h.closest('section');
+      if (!sec) return;
+      sec.setAttribute('data-vws-proc2', '1');
+      var root = document.createElement('div');
+      root.className = 'vws-pr';
+      root.innerHTML = html();
+      sec.appendChild(root);
+      for (var n = sec; n && n !== document.body; n = n.parentElement) {
+        var cs = getComputedStyle(n);
+        if (/(hidden|auto|scroll)/.test(cs.overflow + cs.overflowX + cs.overflowY)) n.style.overflow = 'clip';
+      }
+      wire(root);
+    }
+    var t = setInterval(mount, 300);
+    setTimeout(function () { clearInterval(t); }, 25000);
+    var q = 0;
+    new MutationObserver(function () { if (!q) q = requestAnimationFrame(function () { q = 0; mount(); }); }).observe(document.documentElement, { childList: true, subtree: true });
+  })();
+  </script>
+
+  <!-- ── SMOOTH SCROLL: Lenis (the library KOTA runs) ──
+       Keeps the native scroll position, so pinned sections and every
+       scroll listener keep working. Chat, menu and cookie panels scroll
+       on their own; Lenis pauses while the site locks the page. ── -->
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js"></script>
+  <style>
+  html.lenis,html.lenis body{height:auto}
+  .lenis.lenis-smooth{scroll-behavior:auto!important}
+  .lenis.lenis-smooth [data-lenis-prevent]{overscroll-behavior:contain}
+  .lenis.lenis-stopped{overflow:hidden}
+  </style>
+  <script>
+  (function () {
+    if (!window.Lenis || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    var lenis = new Lenis({
+      lerp: 0.1,
+      prevent: function (node) { return !!(node.closest && node.closest('#vws-chat-root, #vws-nav-overlay, #vws-cookie-banner, [data-lenis-prevent], [role="dialog"]')); }
+    });
+    window.lenis = lenis;
+    function raf(t) { lenis.raf(t); requestAnimationFrame(raf); }
+    requestAnimationFrame(raf);
+    /* the site locks scrolling with overflow:hidden for its popups/menus: follow it */
+    setInterval(function () {
+      var locked = getComputedStyle(document.body).overflow === 'hidden';
+      if (locked && !lenis.isStopped) lenis.stop();
+      else if (!locked && lenis.isStopped) lenis.start();
+    }, 250);
+    /* SPA route change: land at the top instantly, as before */
+    addEventListener('popstate', function () { lenis.scrollTo(0, { immediate: true }); });
   })();
   </script>
   </body>
