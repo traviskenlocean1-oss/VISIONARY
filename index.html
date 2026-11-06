@@ -397,7 +397,7 @@
     <link rel="dns-prefetch" href="https://va.tawk.to" />
     <link rel="dns-prefetch" href="https://www.google-analytics.com" />
     <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;800;900&family=Barlow+Condensed:wght@600;700;800;900&display=swap" rel="stylesheet" />
-    <script type="module" crossorigin src="/assets/index-CNkA1Y-Q-np1.js"></script>
+    <script type="module" crossorigin src="/assets/index-CNkA1Y-Q-np2.js"></script>
     <link rel="stylesheet" crossorigin href="/assets/index-B7NQdH4D.css">
     <link rel="preload" href="/assets/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
   </head>
@@ -798,7 +798,7 @@
           var btn = grid.querySelector('button[type="submit"]');
           if (btn && !btn.hasAttribute('data-vws-submitted')) {
             btn.style.setProperty('color','#fff','important');
-            btn.style.setProperty('background','#2563eb','important');
+            btn.style.setProperty('background','#0b0f19','important');
           }
           /* MutationObserver: re-apply whenever React re-renders anything inside the grid */
           if (!window._vwsContactGridObs) {
@@ -1959,7 +1959,7 @@
   section[class*="h-screen"] [style*="rgba(4, 8, 22, 0.92)"] input::placeholder,
   section[class*="h-screen"] [style*="rgba(4, 8, 22, 0.92)"] textarea::placeholder{color:#9ca3af!important}
   section[class*="h-screen"] [style*="rgba(4, 8, 22, 0.92)"] button[type="submit"],
-  section[class*="h-screen"] [style*="rgba(4, 8, 22, 0.92)"] button:not([type="button"]){background:#2563eb!important;color:#ffffff!important;font-weight:700!important}
+  section[class*="h-screen"] [style*="rgba(4, 8, 22, 0.92)"] button:not([type="button"]){background:#0b0f19!important;color:#ffffff!important;font-weight:700!important}
 
 
   /* ══ TASK 1: Logo — soft depth glow, no hard box ══ */
@@ -2399,8 +2399,8 @@
   #vws-chat-root input,#vws-chat-root textarea{background:#fff!important;color:#374151!important;border-radius:8px!important;padding:9px 12px!important}
   #vws-chat-root input::placeholder,#vws-chat-root textarea::placeholder{color:#9ca3af!important}
   #vws-contact-grid input:focus,#vws-contact-grid textarea:focus,#vws-contact-grid select:focus{border-color:#2563eb!important;box-shadow:0 0 0 3px rgba(37,99,235,0.1)!important;outline:none!important;background:#fff!important}
-  #vws-contact-grid button[type="submit"]{background:#2563eb!important;color:#fff!important;border:none!important;font-weight:800!important;border-radius:10px!important;letter-spacing:.05em!important;text-transform:uppercase!important;font-size:13px!important}
-  #vws-contact-grid button[type="submit"]:hover{background:#1d4ed8!important;box-shadow:0 4px 20px rgba(37,99,235,0.35)!important}
+  #vws-contact-grid button[type="submit"]{background:#0b0f19!important;color:#fff!important;border:none!important;font-weight:800!important;border-radius:10px!important;letter-spacing:.05em!important;text-transform:uppercase!important;font-size:13px!important}
+  #vws-contact-grid button[type="submit"]:hover{background:#1c2333!important;box-shadow:0 4px 20px rgba(0,0,0,0.3)!important}
   /* Contact info cards — base styles */
   #vws-contact-grid [class*="rounded-2xl"],body.vws-contact section [class*="rounded-2xl"]{background:#f8fafc!important;border:1px solid #e2e8f0!important;transition:transform .2s cubic-bezier(.4,0,.2,1),box-shadow .2s ease,border-color .2s ease,background .2s ease!important;cursor:pointer!important}
   /* Card text: all p/span/strong inside must be black */
@@ -2422,7 +2422,7 @@
   body.vws-contact form textarea{color:#111827!important;-webkit-text-fill-color:#111827!important;background:#f8fafc!important}
   body.vws-contact form select{color:#111827!important;background:#f8fafc!important}
   body.vws-contact form input::placeholder,body.vws-contact form textarea::placeholder{color:#9ca3af!important}
-  body.vws-contact form button[type="submit"]:not([data-vws-submitted]){background:#2563eb!important;color:#fff!important}
+  body.vws-contact form button[type="submit"]:not([data-vws-submitted]){background:#0b0f19!important;color:#fff!important}
   body.vws-contact form input:focus,body.vws-contact form textarea:focus,body.vws-contact form select:focus{border-color:#2563eb!important;box-shadow:0 0 0 3px rgba(37,99,235,.1)!important;outline:none!important;background:#fff!important}
 
   </style>
@@ -7303,13 +7303,14 @@
   </script>
   <!-- ── CHAT WIDGET IN BLACK (2026-11-05, Travis) ─────────────────────────
        Header, accent line, avatar, quick replies, lead-form button and the
-       "Chat with us" pill go black; only the send button stays blue. Green
+       "Chat with us" pill go black, send button too (2026-11-06). Green
        status dots become blue. Overrides the widget's inline styles. ── -->
   <style>
   #vws-chat-root [style*="#1a3da8"]{background:#0b0f19!important}
   #vws-chat-root [style*="linear-gradient(90deg,#60a5fa"]{background:rgba(255,255,255,.08)!important}
   #vws-chat-root [style*="linear-gradient(135deg,#1e3a8a,#1d4ed8)"]{background:#0b0f19!important}
   #vws-chat-root #vws-fsub{background:#0b0f19!important}
+  #vws-chat-root #vws-send{background:#0b0f19!important;box-shadow:0 0 0 1px rgba(255,255,255,.12)!important}
   #vws-chat-root #vws-qr button{border-color:rgba(11,15,25,.22)!important;color:#0b0f19!important;background:#fff!important}
   #vws-chat-root #vws-qr button:hover{border-color:rgba(11,15,25,.5)!important;background:rgba(11,15,25,.05)!important}
   #vws-chat-root svg[stroke="rgba(37,99,235,0.7)"]{stroke:rgba(11,15,25,.55)}
