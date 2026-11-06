@@ -307,7 +307,7 @@
       btn.addEventListener('click', function () {
         var open = !card.classList.contains('open');
         card.classList.toggle('open', open); btn.setAttribute('aria-expanded', open);
-        ans.style.height = open ? ans.scrollHeight + 'px' : '0px';
+        /* opening is pure CSS (grid rows 0fr -> 1fr) */
       });
     });
     $$('button[title="Copy email"]').forEach(function (b) {
