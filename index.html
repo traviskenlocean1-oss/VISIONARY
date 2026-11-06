@@ -7581,5 +7581,254 @@
     addEventListener('popstate', function () { setTimeout(mount, 50); });
   })();
   </script>
+  <!-- ── KOTA HEADER + HOME HERO (2026-11-06, Travis): madebykota.com structure ──
+       Header on every page (replaces the white React nav bar): logo pill, centered
+       2-line menu button with the glass dropdown card, "Start a Project" pill.
+       Homepage hero replaces the old React hero. All sizes/colors/glass layers are
+       copied from madebykota.com's live DOM at 1512x696, 1920x1080 and 390x844. ── -->
+  <style>
+  header.fixed.top-0{display:none!important}
+  .vws-kn,.vws-kh{font-family:"VWS Sans",Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+  .vws-kn *,.vws-kh *{box-sizing:border-box}
+  /* glass: their fill + shadow / fog / inner shadow / highlights layers */
+  .vws-g{position:relative;isolation:isolate}
+  .vws-g>i{position:absolute;inset:0;border-radius:inherit;pointer-events:none;overflow:clip}
+  .vws-g>i.f{z-index:-4;background:rgba(153,153,153,.16);box-shadow:1px 0 0 0 rgba(0,0,0,.25),-1px 0 0 0 rgba(0,0,0,.25),0 0 0 1px rgba(0,0,0,.25),0 8px 16px 0 rgba(0,0,0,.04);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);transition:background .3s}
+  .vws-g>i.o{z-index:-3;background:rgba(0,0,0,.01);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);opacity:.64}
+  .vws-g>i.s{z-index:-2;background:rgba(0,0,0,.01);box-shadow:inset -20px 0 20px -30px rgba(0,0,0,.3),inset 20px 0 20px -30px rgba(0,0,0,.3)}
+  .vws-g>i.h{z-index:-1;opacity:.3;box-shadow:inset 0 4px 1px -4px #fff,inset 0 -4px 1px -4px #fff,inset 0 1px 0 0 rgba(255,255,255,.88),inset 0 -1px 0 0 rgba(255,255,255,.88),inset 0 40px 10px -40px rgba(255,255,255,.96),inset 0 -40px 10px -40px rgba(255,255,255,.96)}
+  /* header */
+  .vws-kn{position:fixed;top:0;left:0;right:0;height:85px;z-index:9990;padding:0 40px;pointer-events:none}
+  .vws-kn-row{position:relative;height:85px;display:flex;align-items:center;justify-content:space-between;padding-top:32px}
+  .vws-kn a,.vws-kn button{pointer-events:auto;color:#fff;text-decoration:none!important;font:inherit;border:0;background:none;cursor:pointer;-webkit-tap-highlight-color:transparent}
+  .vws-kn-logo{height:52px;border-radius:100px;padding:8px 22px 8px 16px;display:flex;align-items:center;gap:10px;transition:transform .25s cubic-bezier(.2,.8,.2,1)}
+  .vws-kn-logo svg{width:28px;height:33px;display:block;flex:none}
+  .vws-kn-logo span{font-size:24px!important;line-height:36px!important;font-weight:500!important;letter-spacing:-.24px!important;color:#fff!important;white-space:nowrap}
+  .vws-kn-cta{height:53px;border-radius:100px;padding:0 36px;display:flex;align-items:center;font-size:14px!important;line-height:21px!important;letter-spacing:-.07px!important;white-space:nowrap;transition:transform .25s cubic-bezier(.2,.8,.2,1)}
+  .vws-kn-logo:hover,.vws-kn-cta:hover{transform:translateY(-1px)}
+  .vws-kn-mid{position:absolute;left:50%;top:33px;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center}
+  .vws-kn-menu{width:52px;height:52px;border-radius:1000px;display:block;transition:transform .3s cubic-bezier(.2,.8,.2,1)}
+  .vws-kn-menu b{position:absolute;left:18.5px;width:15px;background:#fff;border-radius:100px;transition:transform .35s cubic-bezier(.2,.8,.2,1),top .35s cubic-bezier(.2,.8,.2,1),height .2s,width .35s}
+  .vws-kn-menu b.t{top:22px;height:2px}
+  .vws-kn-menu b.b{top:29px;height:1px}
+  .vws-kn.open .vws-kn-menu{transform:scale(1.03)}
+  .vws-kn.open .vws-kn-menu b{top:25.5px;height:1px;width:13px;left:19.5px}
+  .vws-kn.open .vws-kn-menu b.t{transform:rotate(45deg)}
+  .vws-kn.open .vws-kn-menu b.b{transform:rotate(-45deg)}
+  .vws-kn-card{position:absolute;top:64px;width:416px;border-radius:24px;padding:24px 32px 44px;background:rgba(0,0,0,.6);display:flex;flex-direction:column;gap:20px;opacity:0;visibility:hidden;transform:translateY(-8px) scale(.98);transform-origin:50% 0;transition:opacity .25s cubic-bezier(.2,.8,.2,1),transform .35s cubic-bezier(.2,.8,.2,1),visibility 0s .35s;pointer-events:none}
+  .vws-kn.open .vws-kn-card{opacity:1;visibility:visible;transform:none;transition:opacity .25s cubic-bezier(.2,.8,.2,1),transform .35s cubic-bezier(.2,.8,.2,1);pointer-events:auto}
+  .vws-kn-card>i.f{background:rgba(153,153,153,.16);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+  .vws-kn-card>i.o{-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);background:none}
+  .vws-kn-links{position:relative;z-index:5;display:flex;flex-direction:column}
+  .vws-kn-links a{display:flex;align-items:center;height:64px;padding:16px 0;font-size:24px!important;line-height:32px!important;letter-spacing:-.24px!important;border-bottom:1px solid rgba(255,255,255,.05);transition:opacity .2s}
+  .vws-kn-links a:hover,.vws-kn-soc a:hover{opacity:.7}
+  .vws-kn-soc{position:relative;z-index:5;display:flex;gap:16px}
+  .vws-kn-soc a{font-size:14px!important;line-height:21px!important;letter-spacing:-.07px!important;color:rgba(255,255,255,.6)!important;transition:opacity .2s}
+  /* over light sections the glass would be white-on-white: make the pills solid black */
+  .vws-kn.light .vws-kn-logo>i.f,.vws-kn.light .vws-kn-cta>i.f,.vws-kn.light .vws-kn-menu>i.f{background:rgba(11,15,25,.92)}
+  /* hero */
+  .vws-kh{position:relative;height:100vh;height:100svh;min-height:560px;background:#000;display:flex;align-items:center;justify-content:center;padding:0 40px;overflow:clip;color:#fff}
+  .vws-kh-bg{position:absolute;inset:0;z-index:1;will-change:opacity}
+  .vws-kh-bg img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+  .vws-kh-ov{position:absolute;left:0;right:0;top:-56px;bottom:0;z-index:2;background:linear-gradient(rgba(0,0,0,0) 0%,rgba(0,0,0,.03) 13.3543%,rgba(0,0,0,.09) 24.6929%,rgba(0,0,0,.19) 38.0633%,rgba(0,0,0,.31) 50.3937%,rgba(0,0,0,.46) 63%,rgba(0,0,0,.62) 76%,rgba(0,0,0,.8) 87.6529%,#000 100%)}
+  .vws-kh-ct{position:relative;z-index:4;width:100%;height:100%;display:flex;align-items:center;justify-content:center;padding-bottom:5px}
+  .vws-kh-hd{display:flex;flex-direction:column;align-items:center;gap:16px}
+  .vws-kh-ttl{width:100%;display:flex;align-items:center}
+  .vws-kh-bdg{display:flex;align-items:center;gap:7px;padding:7px 9px;border-radius:12px;border:1px solid rgba(255,255,255,.22);background:rgba(255,255,255,.04);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);font-size:12px!important;line-height:16px!important;letter-spacing:-.06px!important;color:#fff!important;text-decoration:none!important}
+  .vws-kh-bdg svg{width:11px;height:11px;flex:none}
+  .vws-kh-sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;margin:0}
+  .vws-kh-mh{display:flex;flex-direction:column;align-items:center}
+  .vws-kh-r{display:flex;align-items:center;justify-content:center;height:96px}
+  .vws-kh-r p{margin:0!important;font-size:88px!important;line-height:96px!important;letter-spacing:-2.64px!important;font-weight:400!important;color:#fff!important;white-space:nowrap}
+  .vws-kh-r1{gap:56px}.vws-kh-r2{gap:16px}.vws-kh-r3{gap:12px}
+  .vws-kh-vid{width:142px;height:80px;flex:none;overflow:hidden;background:#000}
+  .vws-kh-vid video{width:100%;height:100%;object-fit:cover;display:block}
+  .vws-kh-ic{width:80px;height:80px;flex:none;display:flex;align-items:center;justify-content:center}
+  .vws-kh-ic svg{width:68px;height:80px;display:block}
+  .vws-kh-av{width:100%;display:flex;justify-content:flex-end}
+  .vws-kh-av p{position:relative;margin:0!important;font-size:14px!important;line-height:20px!important;letter-spacing:-.07px!important;color:#6d6d6d!important}
+  .vws-kh-av p span{position:absolute;inset:0;color:transparent!important;background:linear-gradient(120deg,rgba(0,0,0,0) 0%,rgba(0,0,0,0) 40%,#fff 50%,rgba(0,0,0,0) 60%,rgba(0,0,0,0) 100%);background-size:200% 100%;-webkit-background-clip:text;background-clip:text;animation:vws-kh-shim 2.6s linear infinite}
+  @keyframes vws-kh-shim{0%{background-position:150% 0}100%{background-position:-50% 0}}
+  .vws-kh-tz{position:absolute;left:0;bottom:40px;display:flex;flex-direction:column;gap:2px;z-index:9}
+  .vws-kh-tz p{margin:0!important;font-size:14px!important;line-height:20px!important;font-weight:300!important;letter-spacing:-.07px!important;color:rgba(255,255,255,.6)!important}
+  .vws-kh-tz a{font-size:14px!important;line-height:21px!important;letter-spacing:-.07px!important;color:#fff!important;text-decoration:none!important}
+  .vws-kh-ds{position:absolute;left:0;right:0;bottom:40px;width:max-content;margin:0 auto!important;max-width:360px;text-align:center;font-size:14px!important;line-height:20px!important;font-weight:300!important;letter-spacing:-.07px!important;color:rgba(255,255,255,.6)!important;z-index:9}
+  .vws-kh-ds b{font-weight:300!important;color:#fff!important}
+  .vws-kh-sc{position:absolute;right:0;bottom:40px;width:30px;height:90px;display:flex;align-items:center;gap:8px;z-index:9}
+  .vws-kh-sc p{margin:0!important;width:20px;height:90px;position:relative}
+  .vws-kh-sc p span{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) rotate(-90deg);white-space:nowrap;font-size:14px!important;line-height:20px!important;font-weight:300!important;letter-spacing:-.07px!important;color:rgba(255,255,255,.6)!important}
+  .vws-kh-sc p span b{font-weight:300!important;color:#fff!important}
+  .vws-kh-sc i{width:2px;height:90px;background:rgba(255,255,255,.2);position:relative;overflow:hidden}
+  .vws-kh-sc i::after{content:"";position:absolute;left:0;top:0;width:100%;height:60%;background:#fff;animation:vws-kh-line 2.4s cubic-bezier(.65,0,.35,1) infinite}
+  @keyframes vws-kh-line{0%{transform:translateY(-100%)}60%,100%{transform:translateY(170%)}}
+  .vws-kh .rv{opacity:0;transform:translateY(18px);transition:opacity .9s cubic-bezier(.2,.8,.2,1),transform .9s cubic-bezier(.2,.8,.2,1)}
+  .vws-kh.in .rv{opacity:1;transform:none}
+  @media (prefers-reduced-motion:reduce){.vws-kh .rv{opacity:1;transform:none;transition:none}.vws-kh-av p span,.vws-kh-sc i::after{animation:none}}
+  @media (max-width:809px){
+    .vws-kn{padding:0 20px;height:69px}
+    .vws-kn-row{height:69px;padding-top:20px}
+    .vws-kn-logo{height:49px;padding:8px 16px 8px 12px;gap:8px}
+    .vws-kn-logo svg{width:24px;height:28px}
+    .vws-kn-logo span{font-size:20px!important;line-height:28px!important}
+    .vws-kn-right{display:flex;align-items:center;gap:8px}
+    .vws-kn-cta{height:49px;padding:0 22px}
+    .vws-kn-mid{position:static;transform:none}
+    .vws-kn-menu{width:48px;height:48px}
+    .vws-kn-menu b{left:16.5px}.vws-kn-menu b.t{top:20px}.vws-kn-menu b.b{top:27px}
+    .vws-kn.open .vws-kn-menu b{top:23.5px;left:17.5px}
+    .vws-kn-card{position:fixed;top:81px;left:20px;right:20px;width:auto;padding:16px 24px 32px}
+    .vws-kn-links a{height:56px;font-size:22px!important}
+    .vws-kh{padding:0 20px;align-items:flex-start}
+    .vws-kh-ct{align-items:flex-start;padding-top:314px}
+    .vws-kh-hd{width:100%;gap:16px}
+    .vws-kh-mh{width:100%}
+    .vws-kh-r{width:100%;height:48px;justify-content:space-between}
+    .vws-kh-r p{font-size:40px!important;line-height:48px!important;letter-spacing:-.8px!important}
+    .vws-kh-r1,.vws-kh-r2,.vws-kh-r3{gap:8px}
+    .vws-kh-vid{width:71px;height:40px}
+    .vws-kh-ic{width:40px;height:40px}.vws-kh-ic svg{width:32px;height:38px}
+    .vws-kh-tz{display:none}
+    .vws-kh-ds{bottom:20px;width:100%;max-width:326px}
+    .vws-kh-sc{right:0;left:0;margin:0 auto;bottom:112px;width:2px;justify-content:center}
+    .vws-kh-sc p{display:none}
+  }
+  @media (max-width:809px) and (max-height:760px){.vws-kh-ct{padding-top:calc(50svh - 110px)}}
+  </style>
+  <script>
+  (function () {
+    var LINKS = [['Home', '/'], ['About', '/about'], ['Services', '/services'], ['Pricing', '/pricing'], ['Portfolio', '/work'], ['Contact', '/contact']];
+    var SOC = [['Instagram', 'https://www.instagram.com/visionarywebstudio'], ['Facebook', 'https://www.facebook.com/VisionaryWebStudio'], ['Google', 'https://www.google.com/maps/search/?api=1&query=Visionary+Web+Studio']];
+    var G = '<i class="f"></i><i class="o"></i><i class="s"></i><i class="h"></i>';
+    var uid = 0;
+    /* the brand mark: cloned from the (hidden) React header so it stays identical; ids made unique */
+    function mark() {
+      var src = document.querySelector('header a[href="/"] svg');
+      if (!src) return '';
+      var s = src.cloneNode(true), n = ++uid;
+      s.removeAttribute('width'); s.removeAttribute('height'); s.removeAttribute('style'); s.setAttribute('aria-hidden', 'true');
+      var h = s.outerHTML.replace(/id="([^"]+)"/g, 'id="$1-k' + n + '"').replace(/url\(#([^)]+)\)/g, 'url(#$1-k' + n + ')').replace(/href="#([^"]+)"/g, 'href="#$1-k' + n + '"');
+      return h;
+    }
+    function go(href) { if (location.pathname === href) { scrollTo({ top: 0, behavior: 'smooth' }); return; } history.pushState(null, '', href); dispatchEvent(new PopStateEvent('popstate', {})); scrollTo(0, 0); }
+
+    /* ── header ── */
+    function mountHeader() {
+      if (document.querySelector('.vws-kn')) return true;
+      var m = mark(); if (!m) return false;
+      var el = document.createElement('div'); el.className = 'vws-kn';
+      el.innerHTML = '<div class="vws-kn-row">'
+        + '<a class="vws-kn-logo vws-g" href="/" data-kn aria-label="Visionary Web Studio home">' + G + m + '<span>Visionary</span></a>'
+        + '<div class="vws-kn-mid"><button class="vws-kn-menu vws-g" type="button" aria-label="Menu" aria-expanded="false">' + G + '<b class="t"></b><b class="b"></b></button>'
+        + '<nav class="vws-kn-card vws-g" aria-label="Main">' + G + '<div class="vws-kn-links">' + LINKS.map(function (l) { return '<a href="' + l[1] + '" data-kn>' + l[0] + '</a>'; }).join('') + '</div>'
+        + '<div class="vws-kn-soc">' + SOC.map(function (s) { return '<a href="' + s[1] + '" target="_blank" rel="noopener">' + s[0] + '</a>'; }).join('') + '</div></nav></div>'
+        + '<div class="vws-kn-right"><a class="vws-kn-cta vws-g" href="/contact" data-kn>' + G + 'Start a Project</a></div>'
+        + '</div>';
+      document.body.appendChild(el);
+      var btn = el.querySelector('.vws-kn-menu');
+      function setOpen(o) { el.classList.toggle('open', o); btn.setAttribute('aria-expanded', o); }
+      btn.addEventListener('click', function (e) { e.stopPropagation(); setOpen(!el.classList.contains('open')); });
+      document.addEventListener('click', function (e) { if (!e.target.closest('.vws-kn-card')) setOpen(false); });
+      document.addEventListener('keydown', function (e) { if (e.key === 'Escape') setOpen(false); });
+      el.addEventListener('click', function (e) { var a = e.target.closest('a[data-kn]'); if (!a) return; e.preventDefault(); setOpen(false); go(a.getAttribute('href')); });
+      /* phone: menu sits at the far right, after the CTA (their mobile order) */
+      var mq = matchMedia('(max-width:809px)'), mid = el.querySelector('.vws-kn-mid'), right = el.querySelector('.vws-kn-right'), row = el.querySelector('.vws-kn-row');
+      function place() { if (mq.matches) { if (mid.parentNode !== right) right.appendChild(mid); } else if (mid.parentNode !== row) row.insertBefore(mid, right); }
+      mq.addEventListener ? mq.addEventListener('change', place) : mq.addListener(place); place();
+      /* light or dark under the header? */
+      var q = 0;
+      function tone() {
+        q = 0;
+        var x = innerWidth / 2, y = mq.matches ? 44 : 58, list = document.elementsFromPoint(x, y), lum = 0;
+        for (var i = 0; i < list.length; i++) {
+          var n = list[i]; if (n.closest('.vws-kn')) continue;
+          for (; n && n !== document.documentElement; n = n.parentElement) {
+            var c = getComputedStyle(n).backgroundColor.match(/[\d.]+/g);
+            if (c && (c.length < 4 || +c[3] > 0.5)) { lum = (0.299 * c[0] + 0.587 * c[1] + 0.114 * c[2]) / 255; break; }
+            /* photos/videos: unknown brightness, so use the solid pills (they read on dark too); our own hero stays glass */
+            if (n.closest('.vws-kh')) { lum = 0.1; break; }
+            if (getComputedStyle(n).backgroundImage !== 'none' || n.tagName === 'IMG' || n.tagName === 'VIDEO') { lum = 0.7; break; }
+          }
+          break;
+        }
+        el.classList.toggle('light', lum > 0.6);
+      }
+      function req() { if (!q) q = requestAnimationFrame(tone); }
+      addEventListener('scroll', req, { passive: true }); addEventListener('resize', req, { passive: true }); addEventListener('popstate', function () { setTimeout(tone, 300); });
+      setInterval(tone, 1200); tone();
+      return true;
+    }
+
+    /* ── heroes: one KOTA hero per page, same build, page words ── */
+    var PAGES = {
+      '': { badge: '5.0 on Google', badgeHref: 'https://www.google.com/maps/search/?api=1&query=Visionary+Web+Studio', h1: 'Websites that turn searches into calls and clients',
+        r: [['Websites that', 'turn'], 'searches — into', ['calls', '&amp; clients']],
+        ds: '<b>Visionary Web Studio</b> builds fast, mobile-friendly websites that help local businesses get found and get calls.' },
+      'services': { badge: '6 services, one team', h1: 'Everything we do: websites built, hosted and handled',
+        r: [['Everything we', 'do'], 'built — hosted', ['&amp;', 'handled']],
+        ds: '<b>Custom websites,</b> hosting and ongoing support, everything your business needs online, handled by one team.' },
+      'pricing': { badge: 'No monthly fees', h1: 'Simple, flat-rate pricing from $500, one time',
+        r: [['Simple,', 'flat-rate'], 'pricing — from', ['$500', 'one time']],
+        ds: '<b>One-time payment.</b> No surprises. You own everything on day one.' },
+      'work': { badge: '20+ sites launched', h1: 'Work that wins, built to rank and convert',
+        r: [['Work that', 'wins'], 'built to — rank', ['&amp;', 'convert']],
+        ds: '<b>Every site is hand-coded</b> from scratch, zero templates. Built to rank, convert, and represent your business the right way.' }
+    };
+    function route() { return location.pathname.replace(/^\/+|\/+$/g, ''); }
+    function heroHTML() { return heroFor(PAGES[route()]); }
+    function heroFor(c) {
+      var star = '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#fff" d="M12 2.5l2.94 6.04 6.56.82-4.82 4.6 1.2 6.54L12 17.3l-5.88 3.2 1.2-6.54-4.82-4.6 6.56-.82z"/></svg>';
+      var badge = c.badgeHref ? '<a class="vws-kh-bdg" href="' + c.badgeHref + '" target="_blank" rel="noopener">' + star + c.badge + '</a>' : '<span class="vws-kh-bdg">' + star + c.badge + '</span>';
+      return '<div class="vws-kh-bg"><img src="/assets/hero/kh-bg.jpg" alt="" decoding="async" fetchpriority="high"><div class="vws-kh-ov"></div></div>'
+        + '<div class="vws-kh-ct"><div class="vws-kh-hd">'
+        + '<div class="vws-kh-ttl rv">' + badge + '</div>'
+        + '<h1 class="vws-kh-sr">' + c.h1 + '</h1>'
+        + '<div class="vws-kh-mh" aria-hidden="true">'
+        + '<div class="vws-kh-r vws-kh-r1 rv" style="transition-delay:.08s"><p>' + c.r[0][0] + '</p><p>' + c.r[0][1] + '</p></div>'
+        + '<div class="vws-kh-r vws-kh-r2 rv" style="transition-delay:.16s"><div class="vws-kh-vid"><video src="/assets/hero/kh-reel.mp4" autoplay muted loop playsinline preload="auto"></video></div><p>' + c.r[1] + '</p></div>'
+        + '<div class="vws-kh-r vws-kh-r3 rv" style="transition-delay:.24s"><p>' + c.r[2][0] + '</p><div class="vws-kh-ic">' + mark() + '</div><p>' + c.r[2][1] + '</p></div>'
+        + '</div>'
+        + '<div class="vws-kh-av rv" style="transition-delay:.32s"><p>Available for new projects<span aria-hidden="true">Available for new projects</span></p></div>'
+        + '</div>'
+        + '<div class="vws-kh-tz rv" style="transition-delay:.4s"><p>For inquiries</p><a href="tel:+15618890507">(561) 889-0507</a></div>'
+        + '<p class="vws-kh-ds rv" style="transition-delay:.4s">' + c.ds + '</p>'
+        + '<div class="vws-kh-sc rv" style="transition-delay:.4s"><p><span><b>Scroll</b> for more</span></p><i></i></div>'
+        + '</div>';
+    }
+    function oldHero() {
+      var o = document.querySelector('[data-vws-kh-old]');
+      if (o && document.contains(o)) return o;
+      if (route() === '') o = document.querySelector('section[class*="h-screen"]');
+      else if (route() === 'work') o = document.querySelector('section.vws-pf-hero');
+      else { var h = [...document.querySelectorAll('#root h1')].find(function (e) { return !e.closest('.vws-kh') && !e.closest('.vws-kn'); }); o = h && h.closest('section'); }
+      if (o) o.setAttribute('data-vws-kh-old', '');
+      return o;
+    }
+    var heroRoute = null;
+    function mountHero() {
+      var mine = document.querySelector('.vws-kh');
+      if (mine && heroRoute !== route()) { mine.remove(); mine = null; }
+      if (!PAGES[route()]) return;
+      var old = oldHero();
+      if (!old || !document.querySelector('header a[href="/"] svg')) return;
+      heroRoute = route();
+      old.style.setProperty('display', 'none', 'important');
+      if (mine && mine.nextElementSibling === old) return;
+      if (mine) mine.remove();
+      /* a div, not a <section>: page scripts style "section:first-of-type" */
+      var s = document.createElement('div'); s.className = 'vws-kh'; s.setAttribute('role', 'region'); s.setAttribute('aria-label', 'Introduction'); s.innerHTML = heroHTML();
+      old.parentNode.insertBefore(s, old);
+      var v = s.querySelector('video'); if (v) { v.muted = true; var pl = v.play(); if (pl && pl.catch) pl.catch(function () {}); }
+      requestAnimationFrame(function () { requestAnimationFrame(function () { s.classList.add('in'); }); });
+      /* scroll: the wall fades to black like theirs */
+      var bg = s.querySelector('.vws-kh-bg'), q = 0;
+      function f() { q = 0; var p = Math.min(1, Math.max(0, scrollY / (innerHeight * 0.6))); bg.style.opacity = (1 - p * 0.85).toFixed(3); }
+      addEventListener('scroll', function () { if (!q) q = requestAnimationFrame(f); }, { passive: true }); f();
+    }
+    function mount() { mountHeader(); mountHero(); }
+    var t = setInterval(mount, 300); setTimeout(function () { clearInterval(t); }, 25000);
+    var qq = 0; new MutationObserver(function () { if (!qq) qq = requestAnimationFrame(function () { qq = 0; mount(); }); }).observe(document.documentElement, { childList: true, subtree: true });
+    addEventListener('popstate', function () { setTimeout(mount, 50); });
+  })();
+  </script>
   </body>
 </html>
