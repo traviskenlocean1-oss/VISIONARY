@@ -67,7 +67,7 @@ const CONTACT_FAQ = JSON.parse(fs.readFileSync(path.join(__dirname, 'contact-faq
           provider: { '@id': SITE + '/#business' }, areaServed: [{ '@type': 'City', name: 'Miami' }, { '@type': 'State', name: 'Florida' }] });
         document.head.lastChild.setAttribute('data-seo', 'service'); log.push('service');
       }
-      if (r === '/services/' && !document.querySelector('script[data-seo="services"]')) {
+      if (false && r === '/services/') {   /* /services/ already has its own ItemList */
         add({ '@context': 'https://schema.org', '@type': 'ItemList', name: 'Web design services', itemListElement: Object.entries(SERVICES).map(([s, [n]], i) => ({ '@type': 'ListItem', position: i + 1, url: SITE + '/services/' + s + '/', name: n })) });
         document.head.lastChild.setAttribute('data-seo', 'services'); log.push('service-list');
       }
