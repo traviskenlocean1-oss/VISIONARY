@@ -25,3 +25,40 @@
 .vws-cfaq.open button > span:first-child { color: #E1E0CC !important; }
 .vws-cfaq button > span:last-child { transition: transform .3s, background .3s, color .3s; }
 .vws-cfaq.open button > span:last-child { transform: rotate(45deg); background: rgba(59, 130, 246, .2) !important; color: #60a5fa !important; }
+
+/* ───────────── Motion borrowed from our own builds (11-06) ───────────── */
+
+/* Marlow Interior: headings rise word by word out of a mask
+   (yPercent 115 + rotate 8deg -> 0, 1.3s power3.out, 45ms stagger, leaves again above) */
+.vw{display:inline-block;overflow:hidden;vertical-align:top;padding:.1em 0 .14em;margin:-.1em 0 -.14em}
+.vw-i{display:inline-block;transform:translateY(115%) rotate(8deg);transform-origin:left bottom;transition:transform 1.3s cubic-bezier(.215,.61,.355,1);transition-delay:calc(var(--wi,0) * 45ms)}
+.vw-on .vw-i{transform:none}
+
+/* Altura: titles arrive letter by letter (translateY(i*10%) rotate 2deg, 1.4s, 20ms/letter) */
+.hw{display:inline-block;white-space:nowrap}
+.hc{display:inline-block;opacity:0;transform:translateY(calc(var(--cy,0) * 10%)) rotate(2deg);transition:opacity 1.4s cubic-bezier(.29,.52,.5,1),transform 1.4s cubic-bezier(.29,.52,.5,1);transition-delay:calc(var(--ci,0) * 20ms)}
+.hc-on .hc{opacity:1;transform:none}
+
+/* SOLE Residence: a slow marquee band (speeds up with your scroll) */
+.vws-mq{position:relative;overflow:clip;background:#000;color:#fff;padding:44px 0;border-top:1px solid rgba(255,255,255,.08);border-bottom:1px solid rgba(255,255,255,.08);font-family:"VWS Sans",Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased;pointer-events:none}
+.vws-mq-t{display:flex;width:max-content;will-change:transform}
+.vws-mq-l{display:flex;flex:none;align-items:center}
+html body .vws-mq-l span{font-size:72px!important;line-height:1!important;font-weight:400!important;letter-spacing:-.03em!important;color:#fff!important;white-space:nowrap;padding:0 .45em}
+html body .vws-mq-l i{display:block;width:12px;height:12px;border-radius:50%;background:rgba(255,255,255,.35);flex:none}
+@media (max-width:809px){.vws-mq{padding:26px 0}html body .vws-mq-l span{font-size:40px!important}html body .vws-mq-l i{width:8px;height:8px}}
+
+/* Marlow Interior: frame growth - the card's frame opens out as it scrolls in (the image never scales) */
+.vws-fg{will-change:clip-path}
+
+/* Aurelia Med Spa: sky reveal - a circle opens from below */
+.vws-cr{clip-path:circle(30% at 50% 150%);transition:clip-path 1.4s cubic-bezier(.29,.52,.5,1)}
+.vws-cr.vws-cr-on{clip-path:circle(150% at 50% 50%)}
+
+/* Harbor Mind: the closing line under the footer, uncovered as the footer scrolls away */
+html body .vws-kend .vws-kcta,html body .vws-kend footer.vws-kf{position:relative;z-index:1}
+.vws-fr{position:sticky;bottom:0;z-index:0;min-height:30vh;display:flex;align-items:center;justify-content:center;background:#000;padding:48px 24px;text-align:center}
+html body .vws-fr p{margin:0!important;font-family:"VWS Sans",Inter,system-ui,sans-serif!important;font-size:clamp(32px,4.6vw,72px)!important;line-height:1.05!important;font-weight:400!important;letter-spacing:-.03em!important;color:#fff!important;max-width:20ch;text-wrap:balance}
+/* footer index/social links slide up in turn (same mask as the headings) */
+.vws-kf .col li{overflow:hidden}
+
+@media (prefers-reduced-motion: reduce){.vw-i,.hc{transform:none!important;opacity:1!important;transition:none!important}.vws-cr{clip-path:none!important}}

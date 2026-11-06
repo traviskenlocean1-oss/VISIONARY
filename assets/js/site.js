@@ -332,6 +332,16 @@
     });
   }
 
+  /* ── Old pricing-patch fades (.vws-pr-fade): shown while on screen, as the old page did ── */
+  function prFades() {
+    var els = $$('.vws-pr-fade'); if (!els.length) return;
+    if (reduced) { els.forEach(function (e) { e.classList.add('vws-revealed'); }); return; }
+    var io = new IntersectionObserver(function (es) {
+      es.forEach(function (en) { if (en.isIntersecting) en.target.classList.add('vws-revealed'); else if (en.boundingClientRect.top > 0) en.target.classList.remove('vws-revealed'); });
+    }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+    els.forEach(function (e) { io.observe(e); });
+  }
+
   /* ── Sections fade up as they come into view (what React's motion used to do) ── */
   function reveals() {
     var els = $$('[data-rv]'); if (!els.length || reduced) return;
@@ -359,9 +369,164 @@
     });
   }
 
+  /* ═════════ Motion borrowed from our own builds (11-06) ═════════ */
+
+  /* wrap every word of an element's text in a mask, keeping its own markup (<br>, coloured spans) */
+  function splitWords(el, cls, innerCls) {
+    var n = 0;
+    (function walk(node) {
+      Array.prototype.slice.call(node.childNodes).forEach(function (c) {
+        if (c.nodeType === 1) { if (c.tagName !== 'BR' && c.tagName !== 'SVG' && c.tagName !== 'IMG') walk(c); return; }
+        if (c.nodeType !== 3 || !c.textContent.trim()) return;
+        var frag = document.createDocumentFragment();
+        c.textContent.split(/(\s+)/).forEach(function (tok) {
+          if (!tok) return;
+          if (/^\s+$/.test(tok)) { frag.appendChild(document.createTextNode(tok)); return; }
+          var o = document.createElement('span'); o.className = cls;
+          var i = document.createElement('span'); i.className = innerCls; i.textContent = tok; i.style.setProperty('--wi', n++);
+          o.appendChild(i); frag.appendChild(o);
+        });
+        c.parentNode.replaceChild(frag, c);
+      });
+    })(el);
+    return n;
+  }
+  /* Marlow Interior: section headings rise word by word as they reach 80% of the screen,
+     and leave again when you scroll back up above them ("play none play reverse") */
+  function wordReveal() {
+    if (reduced) return;
+    var SKIP = '.vws-kh,.vws-kn,.vws-pr-title,.vws-ft,.vws-svc,.vws-sp-title,#vws-hero,.vws-mq,.vws-fr';
+    var els = $$('h2, .vws-ab-screen h1').filter(function (h) {
+      if (h.closest(SKIP) || !h.textContent.trim() || h.querySelector('.vw')) return false;
+      for (var e = h; e && e !== document.body; e = e.parentElement) if (/text/.test(getComputedStyle(e).webkitBackgroundClip || getComputedStyle(e).backgroundClip)) return false;
+      return true;
+    });
+    var io = new IntersectionObserver(function (es) {
+      es.forEach(function (e) {
+        if (e.isIntersecting) e.target.classList.add('vw-on');
+        else if (e.boundingClientRect.top > 0) e.target.classList.remove('vw-on');   /* only when it's back below */
+      });
+    }, { rootMargin: '0px 0px -20% 0px' });
+    els.forEach(function (h) {
+      splitWords(h, 'vw', 'vw-i');
+      var r = h.getBoundingClientRect();
+      if (r.top < innerHeight * 0.8 && r.bottom > 0) requestAnimationFrame(function () { requestAnimationFrame(function () { h.classList.add('vw-on'); }); });
+      io.observe(h);
+    });
+  }
+  /* Altura: titles arrive letter by letter: service-page heroes on load, Services cards as each comes in */
+  function letterReveal() {
+    if (reduced) return;
+    var els = $$('#vws-hero h1, .vws-sp-title');
+    var io = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('hc-on'); io.unobserve(e.target); } }); }, { rootMargin: '0px 0px -25% 0px' });
+    els.forEach(function (h) {
+      var ci = 0;
+      (function walk(node) {
+        Array.prototype.slice.call(node.childNodes).forEach(function (c) {
+          if (c.nodeType === 1) { if (c.tagName !== 'BR') walk(c); return; }
+          if (c.nodeType !== 3 || !c.textContent.trim()) return;
+          var frag = document.createDocumentFragment();
+          c.textContent.split(/(\s+)/).forEach(function (tok) {
+            if (!tok) return;
+            if (/^\s+$/.test(tok)) { frag.appendChild(document.createTextNode(tok)); return; }
+            var w = document.createElement('span'); w.className = 'hw';
+            Array.prototype.forEach.call(tok, function (ch) { var s = document.createElement('span'); s.className = 'hc'; s.textContent = ch; s.style.setProperty('--ci', ci); s.style.setProperty('--cy', Math.min(ci, 10)); ci++; w.appendChild(s); });
+            frag.appendChild(w);
+          });
+          c.parentNode.replaceChild(frag, c);
+        });
+      })(h);
+      io.observe(h);
+    });
+  }
+  /* SOLE Residence: a slow marquee band; your scroll speed pushes it along */
+  function marquee() {
+    var page = location.pathname.replace(/\/+$/, ''), items, after;
+    if (page === '/work') {
+      items = []; $$('.vws-pf2-lbl').forEach(function (l) { var t = l.textContent.trim(); if (t && items.indexOf(t) < 0) items.push(t); });
+      items = items.slice(0, 12);
+    } else if (page === '/pricing') {
+      items = ['One-time payment', 'No monthly fees', 'No surprises', 'You own everything on day one', 'Hosting & domain included'];
+    } else return;
+    after = $('.vws-kh[role="region"]'); if (!after || !items.length) return;
+    var band = document.createElement('div'); band.className = 'vws-mq'; band.setAttribute('aria-hidden', 'true');
+    var list = '<div class="vws-mq-l">' + items.map(function (t) { var s = document.createElement('span'); s.textContent = t; return s.outerHTML + '<i></i>'; }).join('') + '</div>';
+    band.innerHTML = '<div class="vws-mq-t">' + list + list + list + '</div>';
+    after.parentNode.insertBefore(band, after.nextSibling);
+    if (reduced) return;
+    var track = $('.vws-mq-t', band), one = $('.vws-mq-l', band), x = 0, last = performance.now(), lastY = scrollY, boost = 0;
+    (function loop(t) {
+      var dt = Math.min(64, t - last); last = t;
+      var dy = Math.abs(scrollY - lastY); lastY = scrollY;
+      boost += (Math.min(dy * 0.9, 40) - boost) * 0.08;
+      x -= (0.045 + boost * 0.02) * dt;
+      var w = one.offsetWidth; if (w && -x >= w) x += w;
+      track.style.transform = 'translate3d(' + x.toFixed(2) + 'px,0,0)';
+      requestAnimationFrame(loop);
+    })(last);
+  }
+  /* Marlow Interior: frame growth: each portfolio card's frame opens out as it scrolls in */
+  function frameGrowth() {
+    var cards = $$('.vws-pf2-card'); if (!cards.length || reduced) return;
+    cards.forEach(function (c) { c.classList.add('vws-fg'); });
+    function frame() {
+      var vh = innerHeight;
+      cards.forEach(function (c) {
+        var r = c.getBoundingClientRect(); if (r.bottom < -50 || r.top > vh + 50) return;
+        var p = easeOut(clamp((vh - r.top) / (vh * 0.55))), ix = (1 - p) * 9, iy = (1 - p) * 7;
+        c.style.clipPath = p >= 1 ? 'none' : 'inset(' + iy.toFixed(2) + '% ' + ix.toFixed(2) + '% round ' + (8 + 16 * (1 - p)).toFixed(1) + 'px)';
+      });
+    }
+    onFrame(frame); onResize(frame); frame();
+  }
+  /* Aurelia Med Spa: sky reveal: a circle opens from below (contact form card, pricing formula cards) */
+  function circleReveal() {
+    if (reduced) return;
+    var els = $$('#vws-contact-form-sec .rounded-2xl.shadow-2xl, #vws-contact-form-sec form').slice(0, 1);
+    var formula = $$('h2').filter(function (h) { return /Proven Formula/i.test(h.textContent); })[0];
+    if (formula) { var sec = formula.closest('section'); if (sec) els = els.concat($$('.grid > div', sec).slice(0, 8)); }
+    if (!els.length) return;
+    /* watch each element's parent: a fully clipped element never counts as on screen */
+    var io = new IntersectionObserver(function (es) {
+      es.forEach(function (e) { if (!e.isIntersecting) return; (e.target._cr || []).forEach(function (el) { el.classList.add('vws-cr-on'); }); io.unobserve(e.target); });
+    }, { rootMargin: '0px 0px -12% 0px' });
+    els.forEach(function (el, i) {
+      el.classList.add('vws-cr'); el.style.transitionDelay = ((i % 4) * 90) + 'ms';
+      var host = el.parentElement; (host._cr = host._cr || []).push(el); io.observe(host);
+    });
+  }
+  /* Clearwell: on Contact, the full-screen background video rounds into a framed window as you scroll
+     (Clearwell's hero: inset 16/12px with a growing corner radius while the video inside scales down;
+     here it stops at a window that stays visible around the form and the questions) */
+  function pillShrink() {
+    if (location.pathname.replace(/\/+$/, '') !== '/contact' || reduced) return;
+    var box = $('#root .fixed.inset-0.-z-10'), v = box && $('video', box); if (!box) return;
+    function frame() {
+      var p = easeOut(clamp(scrollY / (innerHeight * 0.9)));
+      if (p <= 0) { box.style.clipPath = ''; if (v) v.style.transform = ''; return; }
+      var sm = innerWidth < 810, ix = p * (sm ? 3 : 6), iy = p * (sm ? 4 : 8), rad = p * (sm ? 36 : 220);
+      box.style.clipPath = 'inset(' + iy.toFixed(2) + '% ' + ix.toFixed(2) + '% round ' + rad.toFixed(0) + 'px)';
+      if (v) { v.style.transform = 'scale(' + (1 - 0.14 * p).toFixed(4) + ')'; v.style.transformOrigin = '50% 50%'; }
+    }
+    onFrame(frame); frame();
+  }
+  /* Harbor Mind: a closing line under the footer, uncovered as the footer scrolls away;
+     the footer links slide up in turn when the footer arrives */
+  function footerReveal() {
+    var kend = $('.vws-kend'); if (!kend || $('.vws-fr', kend)) return;
+    var fr = document.createElement('div'); fr.className = 'vws-fr'; fr.innerHTML = '<p>Websites that turn searches into calls &amp; clients.</p>';
+    kend.appendChild(fr);
+    if (reduced) return;
+    var links = $$('.vws-kf .col li a', kend);
+    links.forEach(function (a, i) { var t = a.innerHTML; a.innerHTML = '<span class="vw-i" style="--wi:' + i + '">' + t + '</span>'; a.style.display = 'inline-block'; });
+    var cols = $('.vws-kf-top', kend);
+    if (cols) new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) cols.classList.add('vw-on'); else if (e.boundingClientRect.top > 0) cols.classList.remove('vw-on'); }); }, { rootMargin: '0px 0px -10% 0px' }).observe(cols);
+  }
+
   function start() {
     lenis(); header(); hero(); process(); offer(); pricing(); serviceStack(); about(); ending();
-    trustCards(); contactFaq(); portfolio(); reveals(); samePageLinks(); lazyVideos();
+    trustCards(); contactFaq(); portfolio(); prFades(); reveals(); samePageLinks(); lazyVideos();
+    marquee(); wordReveal(); letterReveal(); frameGrowth(); circleReveal(); pillShrink(); footerReveal();
     requestAnimationFrame(tick);
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start); else start();
