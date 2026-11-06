@@ -1,0 +1,27 @@
+/* Visionary Web Studio: static-site additions (page change, reveals, rebuilt React bits) */
+
+/* page change: the browser's cross-document view transition animates snapshots of
+   the two pages (old one scales back + fades, new one rises in), so nothing on the
+   real page is transformed and fixed parts (header, chat, background video) never jump.
+   Browsers without it simply change page. */
+@view-transition { navigation: auto; }
+@keyframes vws-vt-out { to { opacity: 0; transform: scale(.92); } }
+@keyframes vws-vt-in { from { opacity: 0; transform: scale(1.06); } }
+::view-transition-old(root) { animation: vws-vt-out .45s cubic-bezier(.7, 0, .84, 0) both; }
+::view-transition-new(root) { animation: vws-vt-in .7s cubic-bezier(.16, 1, .3, 1) .12s both; }
+@media (prefers-reduced-motion: reduce) { @view-transition { navigation: none; } }
+
+/* sections fade up into view */
+[data-rv].rv-pre { opacity: 0 !important; transform: translateY(28px) !important; }
+[data-rv].rv-pre.rv-in { opacity: 1 !important; transform: none !important; transition: opacity .8s cubic-bezier(.16, 1, .3, 1), transform .8s cubic-bezier(.16, 1, .3, 1) !important; }
+
+/* contact FAQ (rebuilt from the React accordion, same look) */
+.vws-cfaq { transition: border-color .3s; }
+.vws-cfaq.open { border-color: rgba(96, 165, 250, .25) !important; }
+.vws-cfaq .vws-cfaq-a { height: 0; overflow: hidden; transition: height .35s cubic-bezier(.16, 1, .3, 1); }
+.vws-cfaq .vws-cfaq-a > div { padding: 0 1.75rem 1.5rem; }
+.vws-cfaq .vws-cfaq-a i { display: block; height: 1px; margin-bottom: 1rem; background: rgba(255, 255, 255, .06); }
+.vws-cfaq .vws-cfaq-a p { font-size: 1rem; line-height: 1.625; color: rgba(225, 224, 204, .55); margin: 0; }
+.vws-cfaq.open button > span:first-child { color: #E1E0CC !important; }
+.vws-cfaq button > span:last-child { transition: transform .3s, background .3s, color .3s; }
+.vws-cfaq.open button > span:last-child { transform: rotate(45deg); background: rgba(59, 130, 246, .2) !important; color: #60a5fa !important; }

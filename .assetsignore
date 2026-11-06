@@ -32,3 +32,6 @@ recovered-index.html
 /services-panel-fix.png
 /serve-fb.js
 /vws-logo.svg
+
+# Build tools + the old React SPA kept only to re-run tools/prerender.js
+/tools/
