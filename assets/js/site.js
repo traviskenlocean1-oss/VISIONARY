@@ -100,9 +100,39 @@
   function process() {
     var root = $('.vws-pr'); if (!root) return;
     var masks = $$('.vws-pr-mask', root), imgs = $$('.vws-pr-mask img', root), items = $$('.vws-pr-item', root), N = masks.length, active = -2;
+    /* KOTA's reel: the hero's small video grows into this screen as it scrolls in
+       (left/size linear, vertical centre eased out, measured on madebykota.com), then
+       fades to black while the steps play. Lines of the title slide in from the sides. */
+    var reel = $('.vws-pr-reel', root), pin = $('.vws-pr-pin', root), thumb = $('.vws-kh-vid'), lines = $$('.vws-pr-title .ln', root);
+    var STEP0 = reel ? 0.4 : 0, ovs = null;   /* the steps start after the reel has had its screen */
+    function reelFrame() {
+      if (!reel) return;
+      if (innerWidth < 900) { reel.style.cssText = ''; lines.forEach(function (l) { l.style.transform = ''; }); document.documentElement.classList.remove('vws-reel-on'); return; }
+      document.documentElement.classList.add('vws-reel-on');
+      var vw = document.documentElement.clientWidth, vh = innerHeight, s = scrollY;
+      var T = root.getBoundingClientRect().top + s;            /* where the screen locks */
+      var g = clamp(s / T), ge = 1 - (1 - g) * (1 - g);
+      var tr = thumb ? thumb.getBoundingClientRect() : { left: vw / 2, top: vh / 2, width: 0, height: 0 };
+      var w = tr.width + (vw - tr.width) * g, h = tr.height + (vh - tr.height) * g, x = tr.left * (1 - g);
+      /* from the thumbnail's centre to the pinned screen's centre (viewport coords) */
+      var pr = pin.getBoundingClientRect();
+      var c0 = tr.top + tr.height / 2, cy = c0 + (pr.top + vh / 2 - c0) * ge;
+      reel.style.width = w.toFixed(1) + 'px'; reel.style.height = h.toFixed(1) + 'px';
+      reel.style.transform = 'translate(' + (x - pr.left).toFixed(1) + 'px,' + (cy - h / 2 - pr.top).toFixed(1) + 'px)';
+      var p = (s - T) / vh;
+      reel.style.opacity = (1 - clamp((p - 0.12) / 0.4)).toFixed(3);
+      /* the darkening only comes in as it grows: the hero thumbnail stays clear */
+      if (!ovs) ovs = $$('.ov, .ov2', reel);
+      ovs.forEach(function (o) { o.style.opacity = ge.toFixed(3); });
+      /* title lines converge like PLAY / REEL: ±300px while the screen arrives */
+      var off = 300 * (1 - g);
+      if (lines[0]) lines[0].style.transform = 'translateX(' + (-off).toFixed(1) + 'px)';
+      if (lines[1]) lines[1].style.transform = 'translateX(' + off.toFixed(1) + 'px)';
+    }
     function frame() {
+      reelFrame();
       if (innerWidth < 900) return;
-      var p = -root.getBoundingClientRect().top / innerHeight, e = [], k;
+      var p = -root.getBoundingClientRect().top / innerHeight - STEP0, e = [], k;
       for (k = 0; k < N; k++) e[k] = easeOut(clamp((p - k) / 0.6));
       for (k = 0; k < N; k++) {
         var L = (100 * (1 - e[k])).toFixed(3);
@@ -116,10 +146,12 @@
     items.forEach(function (it) {
       it.addEventListener('click', function () {
         if (innerWidth < 900) return;
-        smoothTo(scrollY + root.getBoundingClientRect().top + (+it.getAttribute('data-i')) * innerHeight + innerHeight * 0.65);
+        smoothTo(scrollY + root.getBoundingClientRect().top + (STEP0 + (+it.getAttribute('data-i'))) * innerHeight + innerHeight * 0.65);
       });
     });
-    onFrame(frame); frame();
+    onResize(frame); onFrame(frame); frame();
+    /* the hero reveal animates the thumbnail's box for ~1s: follow it */
+    var until = Date.now() + 1600; (function follow() { reelFrame(); if (Date.now() < until) requestAnimationFrame(follow); })();
   }
 
   /* ── What We Offer: ring of arcs follows the panel on screen ── */
