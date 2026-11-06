@@ -2,6 +2,8 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <!-- a refresh always opens at the top: the page builds in steps, so a restored mid-page position lands somewhere random -->
+    <script>try{history.scrollRestoration='manual';if(!location.hash)scrollTo(0,0);addEventListener('beforeunload',function(){scrollTo(0,0)})}catch(e){}</script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <!-- Real crawlable file, not an inline data: URI -- Google's favicon
          crawler fetches the icon as its own resource and doesn't reliably
@@ -397,7 +399,7 @@
     <link rel="dns-prefetch" href="https://va.tawk.to" />
     <link rel="dns-prefetch" href="https://www.google-analytics.com" />
     <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;800;900&family=Barlow+Condensed:wght@600;700;800;900&display=swap" rel="stylesheet" />
-    <script type="module" crossorigin src="/assets/index-CNkA1Y-Q-np2.js"></script>
+    <script type="module" crossorigin src="/assets/index-CNkA1Y-Q-np3.js"></script>
     <link rel="stylesheet" crossorigin href="/assets/index-B7NQdH4D.css">
     <link rel="preload" href="/assets/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
   </head>
@@ -1244,7 +1246,8 @@
         setTimeout(addServicePillScrollers, 1800);
 
         /* ── If user arrived via a specific service link, scroll to that panel ── */
-        var _pi = parseInt(sessionStorage.getItem('vwsPI') || '-1', 10);
+        try { sessionStorage.removeItem('vwsPI'); } catch (e) {}
+        var _pi = -1;
         if (_pi >= 0) {
           sessionStorage.removeItem('vwsPI');
           function scrollToSavedPanel() {
@@ -3311,7 +3314,8 @@
         if (href.indexOf('/services/') !== 0) return;
         var slug = href.replace('/services/','').replace(/[/#].*$/, '');
         if (_SVC_MAP[slug] === undefined) return;
-        sessionStorage.setItem('vwsPI', String(_SVC_MAP[slug]));
+        /* (no longer saves a "jump to this panel" note: service links open their own
+           page now, and the leftover note yanked the next /services visit mid-page) */
         /* Previously: if already on the services listing page, this intercepted the
            click to scroll to the matching panel instead of navigating. That made
            "More Details" behave differently from "Read More" on the home page
@@ -7135,6 +7139,9 @@
   <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js"></script>
   <style>
   html.lenis,html.lenis body{height:auto}
+  /* no scroll anchoring: the footer stays in the DOM across page changes,
+     and anchoring to it dropped visitors at the bottom of the next page */
+  html,body{overflow-anchor:none}
   .lenis.lenis-smooth{scroll-behavior:auto!important}
   .lenis.lenis-smooth [data-lenis-prevent]{overscroll-behavior:contain}
   .lenis.lenis-stopped{overflow:hidden}
@@ -7155,8 +7162,32 @@
       if (locked && !lenis.isStopped) lenis.stop();
       else if (!locked && lenis.isStopped) lenis.start();
     }, 250);
-    /* SPA route change: land at the top instantly, as before */
-    addEventListener('popstate', function () { lenis.scrollTo(0, { immediate: true }); });
+    /* SPA route change: land at the top instantly. `force` works even while
+       Lenis is paused (menu open), and we hold the top for ~1s while the new
+       page builds, so nothing can drag the page back down. */
+    var holdEnd = 0, holding = false;
+    function toTop() {
+      holdEnd = Date.now() + 1000;
+      if (holding) return; holding = true;
+      (function tick() {
+        if (scrollY !== 0 || lenis.animatedScroll !== 0) { lenis.scrollTo(0, { immediate: true, force: true }); scrollTo(0, 0); }
+        if (Date.now() < holdEnd) requestAnimationFrame(tick); else { holding = false; lenis.resize(); }
+      })();
+    }
+    var lastPath = location.pathname;
+    function routeChanged() { if (location.pathname !== lastPath) { lastPath = location.pathname; if (!location.hash) toTop(); } }
+    var _push = history.pushState;
+    history.pushState = function () {
+      var same = location.pathname, r = _push.apply(this, arguments);
+      /* a link to the page you're already on glides back to the top */
+      if (location.pathname === same && !location.hash) lenis.scrollTo(0, { force: true });
+      else routeChanged();
+      return r;
+    };
+    addEventListener('popstate', routeChanged);
+    /* the user scrolling cancels the hold right away */
+    addEventListener('wheel', function () { holdEnd = 0; }, { passive: true });
+    addEventListener('touchstart', function () { holdEnd = 0; }, { passive: true });
   })();
   </script>
   <!-- ── SITE ENDING (every page): KOTA "Section - CTA" + "Large" footer ──
