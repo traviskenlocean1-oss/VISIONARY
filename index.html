@@ -397,7 +397,7 @@
     <link rel="dns-prefetch" href="https://va.tawk.to" />
     <link rel="dns-prefetch" href="https://www.google-analytics.com" />
     <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;800;900&family=Barlow+Condensed:wght@600;700;800;900&display=swap" rel="stylesheet" />
-    <script type="module" crossorigin src="/assets/index-CNkA1Y-Q.js"></script>
+    <script type="module" crossorigin src="/assets/index-CNkA1Y-Q-np1.js"></script>
     <link rel="stylesheet" crossorigin href="/assets/index-B7NQdH4D.css">
     <link rel="preload" href="/assets/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
   </head>
@@ -1662,7 +1662,6 @@
 
   /* ══ BIGGER NAV TEXT ══ */
   header.fixed.top-0 a[class*="text-\[11px\]"],header.fixed.top-0 a[class*="tracking-\[0\.2em\]"]{font-size:13.5px!important;letter-spacing:0.14em!important}
-  header.fixed.top-0 a[href="/contact"][class*="inline-flex"]{font-size:13.5px!important;padding:12px 28px!important}
 
   /* ══ GLOBAL FONT BUMP ══ */
   body{font-size:17px}
@@ -1868,9 +1867,9 @@
   /* Nav links — dark on white */
   header.fixed.top-0 a[class*="text-\[11px\]"],header.fixed.top-0 a[class*="tracking-\[0\.2em\]"]{color:#374151!important}
   header.fixed.top-0 a[class*="text-\[11px\]"]:hover{color:#2563eb!important}
-  /* START A PROJECT CTA — blue pill on white navbar */
-  header.fixed.top-0 a[href="/contact"][class*="inline-flex"]{background:#2563eb!important;color:#ffffff!important;border-color:#2563eb!important}
-  header.fixed.top-0 a[href="/contact"][class*="inline-flex"]:hover{background:#1d4ed8!important}
+  /* START A PROJECT CTA — same black bubble as the About page button (.vws-ab-btn) */
+  header.fixed.top-0 a[href="/contact"][class*="inline-flex"]{background:#0b0f19!important;color:#ffffff!important;border:0!important;border-radius:1000px!important;text-transform:none!important;letter-spacing:-.005em!important;font-size:14px!important;font-weight:430!important;padding:0 28px!important;height:48px!important;box-shadow:0 0 0 1px rgba(255,255,255,.14),inset 0 1px 0 0 rgba(255,255,255,.16),inset 0 -1px 0 0 rgba(255,255,255,.08),0 10px 30px rgba(0,0,0,.28)!important;transition:transform .25s cubic-bezier(.2,.8,.2,1),box-shadow .25s!important}
+  header.fixed.top-0 a[href="/contact"][class*="inline-flex"]:hover{background:#0b0f19!important;color:#ffffff!important;border-color:transparent!important;transform:translateY(-1px);box-shadow:0 0 0 1px rgba(255,255,255,.2),inset 0 1px 0 0 rgba(255,255,255,.2),inset 0 -1px 0 0 rgba(255,255,255,.1),0 14px 34px rgba(0,0,0,.34)!important}
   /* Logo wordmark — dark on white */
   header.fixed.top-0 a.select-none p,header.fixed.top-0 .select-none p,header.fixed.top-0 p[class*="font-black"]{color:#0d1117!important}
   header.fixed.top-0 p[class*="tracking-"]{color:#374151!important}
@@ -2149,9 +2148,6 @@
   [data-vws-mega] .vws-mega-item:hover .vws-mega-item-name{color:#2563eb!important}
   [data-vws-mega] .vws-mega-item .vws-mega-item-desc{color:#9ca3af!important}
 
-  /* ══ SERVICES POPUP — "What would you like done?" buttons ══ */
-  /* Cream text rgb(225,224,204) on light-blue bg = invisible; force dark blue */
-  a[style*="rgba(37, 99, 235, 0.12)"][style*="rgb(225, 224, 204)"]{color:#1d4ed8!important}
 
 
   /* ══ ABOUT PAGE — CTA section (transparent → video bg shows through, same as Pricing hero) ══ */
@@ -4825,21 +4821,21 @@
           var cta = document.createElement('a');
           cta.id = 'vws-mob-cta';
           cta.href = '/contact';
-          cta.textContent = 'Start a Project →';
+          cta.textContent = 'Start a Project';
           cta.style.cssText = [
             'display:inline-flex',
             'align-items:center',
-            'background:#2563eb',
+            'background:#0b0f19',
             'color:#ffffff',
             'font-family:Barlow,system-ui,sans-serif',
             'font-size:15px',
-            'font-weight:800',
-            'letter-spacing:.06em',
+            'font-weight:500',
+            'letter-spacing:-.005em',
             'padding:14px 32px',
             'border-radius:999px',
             'text-decoration:none',
             'margin-top:16px',
-            'box-shadow:0 8px 28px rgba(37,99,235,0.45)',
+            'box-shadow:0 0 0 1px rgba(255,255,255,.14),inset 0 1px 0 0 rgba(255,255,255,.16),0 10px 30px rgba(0,0,0,.35)',
             'transition:background .2s,transform .2s',
             'cursor:pointer'
           ].join(';');
@@ -6411,106 +6407,6 @@
       }
     }, 150);
     } /* end runServiceDetail */
-
-    /* ── Task 2b: Modal whitener + home-only + 2-show cap ── */
-    (function(){
-      var POPUP_KEY = 'vws_popup_count';
-      var _busy = false;
-      var _shownThisNav = false;
-      var _prevPath = location.pathname;
-
-      /* Detect SPA navigations — reset per-nav flag */
-      setInterval(function() {
-        if (location.pathname !== _prevPath) { _prevPath = location.pathname; _shownThisNav = false; }
-      }, 250);
-
-      function findModal() {
-        var headings = Array.from(document.querySelectorAll('h2,h3,h4')).filter(function(h){
-          return h.textContent.toLowerCase().indexOf('would you like done') !== -1;
-        });
-        return headings.length ? headings[0] : null;
-      }
-
-      function dismissModal(heading) {
-        /* Walk up and find the fixed overlay, then click its close button or hide it */
-        var el = heading;
-        while (el && el.tagName !== 'BODY') {
-          if (window.getComputedStyle(el).position === 'fixed') {
-            /* Try the close/X button first */
-            var btns = el.querySelectorAll('button');
-            for (var b = 0; b < btns.length; b++) {
-              var t = btns[b].textContent.trim();
-              if (t.length <= 2 || btns[b].querySelector('svg')) { btns[b].click(); return; }
-            }
-            el.style.setProperty('display','none','important');
-            return;
-          }
-          el = el.parentElement;
-        }
-      }
-
-      function styleModal(heading) {
-        if (_busy) return;
-        _busy = true;
-        var card = heading.parentElement;
-        for (var i = 0; i < 5 && card && card.tagName !== 'BODY'; i++) {
-          if (window.getComputedStyle(card).borderRadius && card.children.length >= 3) break;
-          card = card.parentElement;
-        }
-        if (!card || card.tagName === 'BODY') card = heading.parentElement;
-        card.querySelectorAll('*').forEach(function(el){
-          var s = el.getAttribute('style') || '';
-          if (/opacity\s*:\s*0/.test(s)) { el.style.opacity = '1'; el.style.transform = 'none'; }
-        });
-        card.style.setProperty('background','#ffffff','important');
-        card.style.setProperty('border-radius','20px','important');
-        card.style.setProperty('border','1px solid rgba(37,99,235,0.12)','important');
-        card.style.setProperty('box-shadow','0 24px 60px rgba(0,0,0,0.12)','important');
-        card.querySelectorAll('h1,h2,h3,h4,h5').forEach(function(h){
-          h.style.setProperty('color','#0d1117','important');
-          h.style.setProperty('opacity','1','important');
-        });
-        card.querySelectorAll('p').forEach(function(p){
-          p.style.setProperty('color','#4b5563','important');
-          p.style.setProperty('opacity','1','important');
-        });
-        card.querySelectorAll('*').forEach(function(el){
-          if (el.children.length === 0 && el.textContent.trim() === 'GET STARTED') {
-            el.style.setProperty('color','#2563eb','important');
-            el.style.setProperty('opacity','1','important');
-          }
-        });
-        card.querySelectorAll('button').forEach(function(btn){
-          btn.style.setProperty('background','#f0f4ff','important');
-          btn.style.setProperty('color','#1d3a6b','important');
-          btn.style.setProperty('border','1px solid rgba(37,99,235,0.22)','important');
-          btn.style.setProperty('border-radius','10px','important');
-          btn.style.setProperty('font-weight','600','important');
-          btn.style.setProperty('opacity','1','important');
-        });
-        setTimeout(function(){ _busy = false; }, 6000);
-      }
-
-      var _t = null;
-      var vwsModalObs = new MutationObserver(function(){
-        clearTimeout(_t);
-        _t = setTimeout(function() {
-          var heading = findModal();
-          if (!heading) return;
-          var isHome = /^\/?$/.test(location.pathname);
-          /* Dismiss immediately on any non-home page */
-          if (!isHome) { dismissModal(heading); return; }
-          /* On home: enforce 2-show lifetime cap */
-          var count = parseInt(localStorage.getItem(POPUP_KEY) || '0', 10);
-          if (count >= 2) { dismissModal(heading); return; }
-          /* Show — count once per navigation to home */
-          if (!_shownThisNav) { _shownThisNav = true; localStorage.setItem(POPUP_KEY, String(count + 1)); }
-          styleModal(heading);
-        }, 80);
-      });
-      vwsModalObs.observe(document.body, {childList:true, subtree:true});
-    })();
-
 
     /* ── Kick off on initial load ── */
     setTimeout(function() { runAll(); _vwsNavReady = true; }, 400);
