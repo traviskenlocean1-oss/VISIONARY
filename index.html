@@ -427,39 +427,42 @@ html.vws-reel-on .vws-kh-vid video{visibility:hidden}
 }
 </style>
 <style id="vws-home-new">
-/* Home (11-06): the three sections after What We Offer move to the new style:
-   black, KOTA type (400 weight, tight tracking, white), dark glass cards, white pill buttons, no blue */
-html body #vws-hp-trust,html body [data-vws-76],html body #vws-hp-slider{background:#000!important;border:0!important}
-html body #vws-hp-trust h2,html body [data-vws-76] h2,html body #vws-hp-slider h2{color:#fff!important;font-weight:400!important;letter-spacing:-.035em!important;line-height:1.05!important}
-html body #vws-hp-trust h2 *,html body [data-vws-76] h2 *,html body #vws-hp-slider h2 *{color:#fff!important}
-html body #vws-hp-trust p,html body [data-vws-76] p,html body #vws-hp-slider p{color:rgba(255,255,255,.62)!important}
-html body #vws-hp-trust p span,html body [data-vws-76] p span{color:#fff!important;font-weight:500!important}
-html body #vws-hp-trust .vws-ps-eye,html body #vws-hp-trust p[class*="eye"],html body #vws-hp-slider .vws-ps-eye{color:rgba(255,255,255,.5)!important}
-/* platform chips + trust cards: dark glass */
-html body #vws-hp-trust .vws-platform-chip{background:rgba(255,255,255,.06)!important;border:1px solid rgba(255,255,255,.12)!important;box-shadow:none!important}
-html body #vws-hp-trust .vws-platform-chip span{color:#fff!important}
-html body #vws-hp-trust .vws-trust-card{background:rgba(255,255,255,.04)!important;border:1px solid rgba(255,255,255,.1)!important;border-radius:12px!important;box-shadow:none!important}
-html body #vws-hp-trust .vws-trust-card-title{color:#fff!important;font-weight:500!important}
-html body #vws-hp-trust .vws-trust-card-body{color:rgba(255,255,255,.6)!important}
-html body #vws-hp-trust .vws-trust-card-icon{background:rgba(255,255,255,.08)!important}
-html body #vws-hp-trust .vws-trust-card-icon svg,html body #vws-hp-trust .vws-trust-card-icon svg *{stroke:#fff!important;color:#fff!important}
-/* 76%: no blue side bars or glow; glass icon and cards */
+/* Home (11-06): "Local SEO", "76% More Likely" and "Stand Out" in the new style on white:
+   KOTA type (400 weight, tight tracking), light glass cards, black pill buttons, no blue */
+html body #vws-hp-trust,html body [data-vws-76],html body #vws-hp-slider{background:#fff!important;border:0!important}
+html body #vws-hp-trust h2,html body [data-vws-76] h2,html body #vws-hp-slider h2{color:#0b0f19!important;font-weight:400!important;letter-spacing:-.035em!important;line-height:1.05!important}
+html body #vws-hp-trust h2 *,html body [data-vws-76] h2 *,html body #vws-hp-slider h2 *{color:#0b0f19!important}
+html body #vws-hp-trust p,html body [data-vws-76] p,html body #vws-hp-slider p{color:rgba(11,15,25,.62)!important}
+html body #vws-hp-trust p span,html body [data-vws-76] p span{color:#0b0f19!important;font-weight:500!important}
+html body #vws-hp-trust .vws-ps-eye,html body #vws-hp-slider .vws-ps-eye{color:rgba(11,15,25,.5)!important}
+/* platform chips + trust cards */
+html body #vws-hp-trust .vws-platform-chip{background:#fff!important;border:1px solid rgba(11,15,25,.1)!important;box-shadow:0 2px 10px rgba(11,15,25,.04)!important}
+html body #vws-hp-trust .vws-platform-chip span{color:#0b0f19!important}
+html body #vws-hp-trust .vws-trust-card{background:#f5f6f8!important;border:1px solid rgba(11,15,25,.07)!important;border-radius:12px!important;box-shadow:none!important}
+html body #vws-hp-trust .vws-trust-card-title{color:#0b0f19!important;font-weight:500!important}
+html body #vws-hp-trust .vws-trust-card-body{color:rgba(11,15,25,.62)!important}
+html body #vws-hp-trust .vws-trust-card-icon{background:rgba(11,15,25,.06)!important}
+html body #vws-hp-trust .vws-trust-card-icon svg,html body #vws-hp-trust .vws-trust-card-icon svg *{stroke:#0b0f19!important;color:#0b0f19!important}
+/* 76%: no blue side bars or glow */
 html body [data-vws-76] > .absolute{display:none!important}
-html body [data-vws-76] .rounded-full{background:rgba(255,255,255,.08)!important;box-shadow:inset 0 0 0 1px rgba(255,255,255,.16)!important}
-html body [data-vws-76] .rounded-2xl{background:rgba(255,255,255,.04)!important;border:1px solid rgba(255,255,255,.1)!important;box-shadow:none!important;border-radius:12px!important}
-html body [data-vws-76] .rounded-2xl:nth-child(2){background:rgba(255,255,255,.08)!important;border-color:rgba(255,255,255,.24)!important}
-html body [data-vws-76] .rounded-2xl .absolute{background:linear-gradient(90deg,transparent,rgba(255,255,255,.6),transparent)!important}
-html body [data-vws-76] .rounded-2xl p{color:rgba(255,255,255,.6)!important}
-html body [data-vws-76] .rounded-2xl p.font-extrabold{color:#fff!important;font-weight:400!important;letter-spacing:-.03em!important}
-html body [data-vws-76] .rounded-2xl:first-child p.font-extrabold{color:rgba(255,255,255,.35)!important;text-decoration-color:rgba(255,255,255,.4)!important}
-html body [data-vws-76] .rounded-2xl span{color:rgba(255,255,255,.7)!important}
-html body [data-vws-76] .w-full.h-px{background:rgba(255,255,255,.12)!important}
-/* buttons: white pill, like the header CTA reversed for black */
-html body #vws-hp-trust a[href^="/contact"],html body [data-vws-76] a[href^="/contact"]{background:#fff!important;color:#0b0f19!important;border-radius:100px!important;box-shadow:none!important;font-weight:500!important;font-size:15px!important;padding:16px 28px!important}
-html body #vws-hp-trust a[href^="/contact"] *,html body [data-vws-76] a[href^="/contact"] *{color:#0b0f19!important;stroke:#0b0f19!important}
+html body [data-vws-76] .rounded-full{background:#0b0f19!important;box-shadow:none!important}
+html body [data-vws-76] .rounded-full svg,html body [data-vws-76] .rounded-full svg *{stroke:#fff!important;color:#fff!important}
+html body [data-vws-76] .rounded-2xl{background:#f5f6f8!important;border:1px solid rgba(11,15,25,.07)!important;box-shadow:none!important;border-radius:12px!important;backdrop-filter:none!important}
+html body [data-vws-76] .rounded-2xl:nth-child(2){background:#0b0f19!important;border-color:#0b0f19!important}
+html body [data-vws-76] .rounded-2xl:nth-child(2) .absolute{background:linear-gradient(90deg,transparent,rgba(255,255,255,.5),transparent)!important}
+html body [data-vws-76] .rounded-2xl p{color:rgba(11,15,25,.6)!important}
+html body [data-vws-76] .rounded-2xl:nth-child(2) p{color:rgba(255,255,255,.62)!important}
+html body [data-vws-76] .rounded-2xl p.font-extrabold{font-weight:400!important;letter-spacing:-.035em!important}
+html body [data-vws-76] .rounded-2xl:first-child p.font-extrabold{color:rgba(11,15,25,.35)!important;text-decoration-color:rgba(11,15,25,.35)!important}
+html body [data-vws-76] .rounded-2xl:nth-child(2) p.font-extrabold{color:#fff!important}
+html body [data-vws-76] .rounded-2xl span{color:rgba(11,15,25,.7)!important}
+html body [data-vws-76] .rounded-2xl:nth-child(2) span{color:rgba(255,255,255,.8)!important}
+html body [data-vws-76] .w-full.h-px{background:rgba(11,15,25,.1)!important}
+/* buttons: black pill, like the header CTA */
+html body #vws-hp-trust a[href^="/contact"],html body [data-vws-76] a[href^="/contact"]{background:#0b0f19!important;color:#fff!important;border-radius:100px!important;box-shadow:none!important;font-weight:500!important;font-size:15px!important;padding:16px 28px!important}
+html body #vws-hp-trust a[href^="/contact"] *,html body [data-vws-76] a[href^="/contact"] *{color:#fff!important;stroke:#fff!important}
 /* the heading mask needs room for heavy descenders */
 html body #vws-hp-trust .vw,html body [data-vws-76] .vw,html body #vws-hp-slider .vw{padding-bottom:.2em;margin-bottom:-.2em}
-html body #vws-hp-trust .vws-platform-chip:nth-child(4) svg{filter:invert(1)}
 </style>
 </head>
   <body>
