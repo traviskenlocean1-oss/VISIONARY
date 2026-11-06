@@ -104,7 +104,7 @@
        (left/size linear, vertical centre eased out, measured on madebykota.com), then
        fades to black while the steps play. Lines of the title slide in from the sides. */
     var reel = $('.vws-pr-reel', root), pin = $('.vws-pr-pin', root), thumb = $('.vws-kh-vid'), lines = $$('.vws-pr-title .ln', root);
-    var STEP0 = reel ? 0.4 : 0, ovs = null;   /* the steps start after the reel has had its screen */
+    var STEP0 = reel ? 0.4 : 0, ovs = null, rv = null;   /* the steps start after the reel has had its screen */
     function reelFrame() {
       if (!reel) return;
       if (innerWidth < 900) { reel.style.cssText = ''; lines.forEach(function (l) { l.style.transform = ''; }); document.documentElement.classList.remove('vws-reel-on'); return; }
@@ -122,8 +122,10 @@
       var p = (s - T) / vh;
       reel.style.opacity = (1 - clamp((p - 0.12) / 0.4)).toFixed(3);
       /* the darkening only comes in as it grows: the hero thumbnail stays clear */
-      if (!ovs) ovs = $$('.ov, .ov2', reel);
+      if (!ovs) { ovs = $$('.ov, .ov2', reel); rv = $('video', reel); }
       ovs.forEach(function (o) { o.style.opacity = ge.toFixed(3); });
+      /* small, the reel is zoomed onto its centre card so the thumbnail shows a site, not black */
+      if (rv) rv.style.transform = 'scale(' + (1 + 1.55 * (1 - ge)).toFixed(4) + ')';
       /* title lines converge like PLAY / REEL: ±300px while the screen arrives */
       var off = 300 * (1 - g);
       if (lines[0]) lines[0].style.transform = 'translateX(' + (-off).toFixed(1) + 'px)';
