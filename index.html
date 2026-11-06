@@ -1521,7 +1521,7 @@ html.vws-reel-on .vws-kh-vid video{visibility:hidden}
   .vws-ft-panels{position:absolute;inset:0;z-index:6}
   .vws-ft-panel{position:relative;height:var(--P);overflow:clip}
   @supports not (overflow:clip){.vws-ft-panel,.vws-ft{overflow:hidden}}
-  .vws-ft-bg{position:absolute;inset:0;opacity:.3;z-index:0}
+  .vws-ft-bg{position:absolute;inset:0;opacity:.3;z-index:0;-webkit-mask-image:radial-gradient(ellipse 46% 58% at 50% 50%,#000 30%,transparent 100%);mask-image:radial-gradient(ellipse 46% 58% at 50% 50%,#000 30%,transparent 100%)}
   .vws-ft-bg img{width:100%;height:100%;object-fit:cover;display:block}
   .vws-ft-content{position:absolute;left:0;right:0;top:calc(var(--P) * -1);height:calc(var(--P) * 3);z-index:1}
   .vws-ft-main{position:sticky;top:var(--vws-navh,0px);height:var(--U);overflow:clip}
