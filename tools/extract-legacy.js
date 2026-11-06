@@ -1,4 +1,6 @@
 // Pulls the two self-contained vanilla widgets out of the old SPA page into their own files:
+// NOTE (11-06): assets/js/chat.js and cookie.js have been edited by hand since extraction (no chat auto-open,
+// subtle cookie banner). They are the source now: do not re-run this script over them.
 //   assets/js/chat.js   (live chat widget + every form's honeypot/time-trap + FormSubmit sending)
 //   assets/js/cookie.js (cookie consent banner)
 const fs = require('fs'), path = require('path');

@@ -78,14 +78,14 @@
     banner.id = 'vws-cookie-banner';
     banner.setAttribute('role', 'dialog');
     banner.setAttribute('aria-label', 'Cookie consent');
+    /* subtle glass pill (11-06, Travis): one line + Decline / Accept, settings as a small link */
+    banner.className = 'vws-cb2';
     banner.innerHTML =
-      '<p class="vws-cb-title">We value your privacy</p>'
-      + '<p class="vws-cb-text">We use cookies to enhance your experience, analyze our traffic, and for marketing purposes. You are in full control of what you share. <a href="/privacy-policy" target="_blank" rel="noopener">Privacy Policy</a></p>'
+      '<p class="vws-cb-text">We use cookies to see how the site is used. <a href="/privacy-policy/">Privacy</a> · <button id="vws-cb-manage" type="button">Settings</button></p>'
       + '<div class="vws-cb-btns">'
-      + '<button id="vws-cb-deny">Reject All</button>'
-      + '<button id="vws-cb-accept">Accept All</button>'
-      + '</div>'
-      + '<div class="vws-cb-manage-wrap"><button id="vws-cb-manage">Manage cookie preferences</button></div>';
+      + '<button id="vws-cb-deny" type="button">Decline</button>'
+      + '<button id="vws-cb-accept" type="button">Accept</button>'
+      + '</div>';
 
     /* ── Build preferences modal ── */
     var catRows = CATS.map(function(c) {

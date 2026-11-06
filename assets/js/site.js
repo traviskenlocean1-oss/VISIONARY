@@ -465,17 +465,17 @@
   /* Clearwell: each portfolio card opens out of a pill as it scrolls in (Clearwell's hero runs
      the other way: full frame -> pill, with the picture scaling inside). Ends on a 12px card. */
   function workCards() {
-    var ms = $$('.vws-wk-m'); if (!ms.length || reduced) return;
+    var ms = $$('.vws-wk-m, #vws-svc-list .vws-sp-card-a'); if (!ms.length || reduced) return;
     var zs = ms.map(function (m) { return $('.vws-wk-z', m); });
     function frame() {
       var vh = innerHeight, sm = innerWidth < 810;
       ms.forEach(function (m, i) {
         var r = m.getBoundingClientRect(); if (r.bottom < -40 || r.top > vh + 40) return;
         var p = easeOut(clamp((vh - r.top) / (vh * 0.62)));
-        if (p >= 1) { m.style.clipPath = ''; zs[i].style.transform = ''; return; }
+        if (p >= 1) { m.style.clipPath = ''; if (zs[i]) zs[i].style.transform = ''; return; }
         var ix = (1 - p) * (sm ? 9 : 17), rad = 12 + (1 - p) * 700;
         m.style.clipPath = 'inset(' + ((1 - p) * 3).toFixed(2) + '% ' + ix.toFixed(2) + '% round ' + rad.toFixed(0) + 'px)';
-        zs[i].style.transform = 'scale(' + (1.14 - 0.14 * p).toFixed(4) + ')';
+        if (zs[i]) zs[i].style.transform = 'scale(' + (1.14 - 0.14 * p).toFixed(4) + ')';
       });
     }
     onFrame(frame); onResize(frame); frame();

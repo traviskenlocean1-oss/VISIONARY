@@ -676,17 +676,7 @@
     document.getElementById('vws-send').addEventListener('click', sendFreeText);
     document.getElementById('vws-input').addEventListener('keydown', function(e){ if(e.key==='Enter') sendFreeText(); });
 
-    /* ── Auto-open after 8s (if not dismissed this session) ── */
-    if (!sessionStorage.getItem(DISMISSED_KEY)) {
-      setTimeout(function(){
-        if (!isOpen && !sessionStorage.getItem(OPENED_KEY)) {
-          sessionStorage.setItem(OPENED_KEY, '1');
-          /* Show badge first for 2s, then open */
-          showBadge(1);
-          setTimeout(function(){ if (!isOpen) openChat(); }, 2000);
-        }
-      }, 8000);
-    }
+    /* (no auto-open: Travis 11-06, the chat opens only when someone taps it) */
   }
 
   buildChat();
