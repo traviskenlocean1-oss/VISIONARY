@@ -442,10 +442,7 @@
   /* SOLE Residence: a slow marquee band; your scroll speed pushes it along */
   function marquee() {
     var page = location.pathname.replace(/\/+$/, ''), items, after;
-    if (page === '/work') {
-      items = []; $$('.vws-pf2-lbl').forEach(function (l) { var t = l.textContent.trim(); if (t && items.indexOf(t) < 0) items.push(t); });
-      items = items.slice(0, 12);
-    } else if (page === '/pricing') {
+    if (page === '/pricing') {
       items = ['One-time payment', 'No monthly fees', 'No surprises', 'You own everything on day one', 'Hosting & domain included'];
     } else return;
     after = $('.vws-kh[role="region"]'); if (!after || !items.length) return;
@@ -465,16 +462,20 @@
       requestAnimationFrame(loop);
     })(last);
   }
-  /* Marlow Interior: frame growth: each portfolio card's frame opens out as it scrolls in */
-  function frameGrowth() {
-    var cards = $$('.vws-pf2-card'); if (!cards.length || reduced) return;
-    cards.forEach(function (c) { c.classList.add('vws-fg'); });
+  /* Clearwell: each portfolio card opens out of a pill as it scrolls in (Clearwell's hero runs
+     the other way: full frame -> pill, with the picture scaling inside). Ends on a 12px card. */
+  function workCards() {
+    var ms = $$('.vws-wk-m'); if (!ms.length || reduced) return;
+    var zs = ms.map(function (m) { return $('.vws-wk-z', m); });
     function frame() {
-      var vh = innerHeight;
-      cards.forEach(function (c) {
-        var r = c.getBoundingClientRect(); if (r.bottom < -50 || r.top > vh + 50) return;
-        var p = easeOut(clamp((vh - r.top) / (vh * 0.55))), ix = (1 - p) * 9, iy = (1 - p) * 7;
-        c.style.clipPath = p >= 1 ? 'none' : 'inset(' + iy.toFixed(2) + '% ' + ix.toFixed(2) + '% round ' + (8 + 16 * (1 - p)).toFixed(1) + 'px)';
+      var vh = innerHeight, sm = innerWidth < 810;
+      ms.forEach(function (m, i) {
+        var r = m.getBoundingClientRect(); if (r.bottom < -40 || r.top > vh + 40) return;
+        var p = easeOut(clamp((vh - r.top) / (vh * 0.62)));
+        if (p >= 1) { m.style.clipPath = ''; zs[i].style.transform = ''; return; }
+        var ix = (1 - p) * (sm ? 9 : 17), rad = 12 + (1 - p) * 700;
+        m.style.clipPath = 'inset(' + ((1 - p) * 3).toFixed(2) + '% ' + ix.toFixed(2) + '% round ' + rad.toFixed(0) + 'px)';
+        zs[i].style.transform = 'scale(' + (1.14 - 0.14 * p).toFixed(4) + ')';
       });
     }
     onFrame(frame); onResize(frame); frame();
@@ -526,7 +527,7 @@
   function start() {
     lenis(); header(); hero(); process(); offer(); pricing(); serviceStack(); about(); ending();
     trustCards(); contactFaq(); portfolio(); prFades(); reveals(); samePageLinks(); lazyVideos();
-    marquee(); wordReveal(); letterReveal(); frameGrowth(); circleReveal(); pillShrink(); footerReveal();
+    marquee(); wordReveal(); letterReveal(); workCards(); circleReveal(); pillShrink(); footerReveal();
     requestAnimationFrame(tick);
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start); else start();
