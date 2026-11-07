@@ -250,7 +250,9 @@
     var active = -1;
     function frame() {
       if (!bgc || !fade) return;
-      if (innerWidth < 900) { fade.style.opacity = 1; return; }
+      /* phones: same idea as desktop, the wall shows at the top and fades to black as you scroll
+         (it used to be forced black, so phones flashed the wall photo and then went black) */
+      if (innerWidth < 900) { fade.style.opacity = clamp(scrollY / (innerHeight * 0.85)).toFixed(3); return; }
       var f = -bgc.getBoundingClientRect().top / innerHeight;
       fade.style.opacity = (f < 0 ? 0 : f < 1 ? f : f < 2 ? 1 - 0.1 * (f - 1) : 0.9).toFixed(3);
       var iw = chain.length ? chain[0].offsetWidth : 464, ih = chain.length ? chain[0].offsetHeight : 348;
