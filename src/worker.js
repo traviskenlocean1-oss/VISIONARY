@@ -15,7 +15,7 @@ const PAGES = {
   '/work':    { title: 'Portfolio | Our Web Design Work | Visionary Web Studio Miami',
                 desc:  'Browse our portfolio of custom websites built for businesses across South Florida and beyond. See what Visionary Web Studio can do for your brand.' },
   '/contact': { title: 'Contact Us | Start Your Project | Visionary Web Studio Miami',
-                desc:  'Ready to transform your online presence? Contact Visionary Web Studio in Miami, FL. We respond within 24 hours — usually same day.' }
+                desc:  'Ready to transform your online presence? Contact Visionary Web Studio in Miami, FL. We respond right away.' }
 };
 
 class TextContentRewriter {
