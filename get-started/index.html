@@ -1,0 +1,455 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Miami Web Design, Pay the Rest When You Love It | Visionary Web Studio</title>
+<meta name="description" content="Custom websites for South Florida businesses. One-time price from $500, no monthly contract. Pay half to start and the rest only when you love it. Live in about 2 weeks.">
+<meta name="robots" content="noindex, follow">
+<link rel="canonical" href="https://getvisionarywebstudio.com/get-started/">
+<meta name="theme-color" content="#131313">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Pay the rest only when you love it | Visionary Web Studio">
+<meta property="og:description" content="Custom websites for South Florida businesses. One-time price from $500. Live in about 2 weeks.">
+<meta property="og:url" content="https://getvisionarywebstudio.com/get-started/">
+<meta property="og:image" content="https://getvisionarywebstudio.com/og-v4.jpg">
+<link rel="icon" href="/vws-logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Averia+Serif+Libre:wght@700&display=swap" rel="stylesheet">
+<link rel="preload" as="image" href="/assets/hero/reel.jpg">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"ProfessionalService","name":"Visionary Web Studio","url":"https://getvisionarywebstudio.com/","telephone":"+1-561-889-0507","email":"visionarywebstudio6@gmail.com","priceRange":"$500 - $2,000","address":{"@type":"PostalAddress","addressLocality":"North Miami Beach","addressRegion":"FL","addressCountry":"US"},"areaServed":["Miami-Dade County","Broward County"],"aggregateRating":{"@type":"AggregateRating","ratingValue":"5.0","reviewCount":"3"}}
+</script>
+<style>
+/* Structure and values cloned from baseline.agency (Awwwards SOTD), measured at 1512x696 and 1920x1080.
+   Hero: fixed #CDCDCD panel, white text with mix-blend-mode:difference, split at 55.43vw,
+   video box grows to 68.9vw while the panel goes #131313. */
+:root{
+  --u:clamp(14px, calc(6.86px + .5686vw), 22px);   /* 15.46px @1512, 17.78px @1920 (their html font-size) */
+  --gap:1.52vw;                                      /* 23px @1512 */
+  --pad:clamp(16px,1.65vw,32px);                     /* 25px @1512 */
+  --split:55.43vw;                                   /* 838px @1512 */
+  --ink:#131313; --gray:#cdcdcd; --white:#fff;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%;background:var(--ink)}
+body{font-family:Inter,system-ui,sans-serif;font-size:var(--u);line-height:1.5;color:#fff;background:var(--ink);overflow-x:clip;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+img,video{display:block;max-width:100%}
+.serif{font-family:"Averia Serif Libre",Georgia,serif;font-weight:700}
+:focus-visible{outline:2px solid #fff;outline-offset:3px}
+
+/* ---------- fixed header strip (always difference-blended, like theirs) ---------- */
+.hdr{position:fixed;inset:0 0 auto 0;z-index:100;mix-blend-mode:difference;color:#fff;pointer-events:none}
+.hdr *{pointer-events:auto}
+.logo{position:absolute;left:var(--pad);top:calc(var(--u)*1.75);font-weight:600;font-size:calc(var(--u)*.93);letter-spacing:-.07em;line-height:.75;display:grid;gap:calc(var(--u)*.6)}
+.logo span{display:flex;align-items:center;gap:6px}
+.logo span::after{content:"";height:calc(var(--u)*.6);background:#fff;flex:1;min-width:calc(var(--u)*2.5)}
+.logo{width:calc(var(--u)*6.1)}
+.ctas{position:absolute;left:var(--pad);top:calc(var(--u)*7.25);display:flex;gap:calc(var(--u)*1.17)}
+.btn{display:inline-flex;align-items:center;gap:.35em;font-size:calc(var(--u)*1.111);font-weight:500;letter-spacing:-.04em;line-height:1.24;padding:calc(var(--u)*.38) calc(var(--u)*1.03)}
+.btn svg{width:.6em;height:.6em}
+.btn-a{background:#fff;color:#000}
+.btn-b{background:#1d1d1d;color:#fff}
+.tag{position:absolute;left:calc(var(--split) + var(--gap));top:calc(var(--u)*1.88);font-size:calc(var(--u)*1.125);font-weight:700;line-height:1.25;letter-spacing:-.02em;max-width:14em}
+.nav{position:absolute;left:79.83vw;top:calc(var(--u)*1.8);display:grid;font-size:var(--u);font-weight:700;line-height:1.1875;letter-spacing:-.04em;gap:calc(var(--u)*.37)}
+.talk{position:absolute;right:var(--pad);top:calc(var(--u)*1.8);font-size:var(--u);font-weight:700;letter-spacing:-.04em}
+.nav a:hover,.talk:hover{text-decoration:underline;text-underline-offset:3px}
+
+/* solid band under the header, coloured like the section beneath it (theirs clips the page below a ~149px strip) */
+.band{position:fixed;top:0;left:0;right:0;height:var(--band,149px);z-index:99;pointer-events:none;opacity:0;transition:opacity .25s}
+.band.on{opacity:1}
+
+/* ---------- hero (pinned) ---------- */
+.hero{position:relative;height:210vh}
+.pin{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;background:var(--gray)}
+.pin .line{position:absolute;background:rgba(255,255,255,.2);mix-blend-mode:difference;z-index:3}
+.pin .lv{left:var(--split);width:1px;top:0;bottom:0}
+.pin .lh{left:0;right:0;height:1px;top:45.4%}
+.pin .cross{position:absolute;width:calc(var(--u)*1.6);height:calc(var(--u)*1.6);transform:translate(-50%,-50%);z-index:4;mix-blend-mode:difference}
+.pin .cross::before,.pin .cross::after{content:"";position:absolute;background:#fff;left:50%;top:50%;transform:translate(-50%,-50%)}
+.pin .cross::before{width:100%;height:1px}.pin .cross::after{height:100%;width:1px}
+.hcopy{position:absolute;inset:0;z-index:5;mix-blend-mode:difference;color:#fff;pointer-events:none}
+.hcopy a{pointer-events:auto}
+.lead{position:absolute;left:var(--pad);bottom:calc(100% - var(--s0,316px) + 1.6vw);width:31.75vw;font-size:calc(var(--u)*1.125);font-weight:500;line-height:1.25;letter-spacing:-.02em;color:rgba(255,255,255,.5)}
+.lead p+p{margin-top:calc(var(--u)*1.4)}
+.lead b{color:#fff;font-weight:700}
+h1{position:absolute;left:calc(var(--split) + var(--gap));bottom:calc(100% - var(--s0,316px) + 1.6vw);width:41.5vw;font-size:3.231vw;font-weight:700;line-height:.95;letter-spacing:-.03em;color:rgba(255,255,255,.6)}
+h1 .w{color:#fff}
+.proof{position:absolute;left:var(--pad);bottom:calc(var(--u)*1.25);display:flex;gap:calc(var(--u)*4.5);align-items:flex-start}
+.proof div{display:grid;gap:calc(var(--u)*.2)}
+.proof b{font-family:"Averia Serif Libre",Georgia,serif;font-size:calc(var(--u)*1.75);line-height:1.1;letter-spacing:-.02em}
+.proof span{font-size:var(--u);font-weight:700;letter-spacing:-.03em;line-height:1.2}
+.reel{position:absolute;z-index:2;overflow:hidden;background:#fff;will-change:left,top,width,height}
+.reel video,.reel img{width:100%;height:100%;object-fit:cover}
+.flank{position:absolute;z-index:5;mix-blend-mode:difference;color:#fff;font-size:var(--u);font-weight:600;letter-spacing:-.03em;opacity:0}
+
+/* ---------- dark sections ---------- */
+.sec{position:relative;z-index:2;background:var(--ink)}
+.intro{display:grid;grid-template-columns:var(--split) 1fr;min-height:100vh;padding:calc(var(--u)*12) 0 calc(var(--u)*4)}
+.intro .side{padding:0 var(--pad);position:sticky;top:calc(var(--u)*12);align-self:start;max-width:calc(var(--u)*26);font-size:calc(var(--u)*1.0625);font-weight:600;line-height:1.21;letter-spacing:-.03em;color:rgba(255,255,255,.7)}
+.intro .side b{color:#fff;font-weight:700;display:block;margin-bottom:calc(var(--u)*.75)}
+.big{padding:0 var(--gap);font-size:calc(var(--u)*2.05);font-weight:600;line-height:1.08;letter-spacing:-.035em;color:rgba(255,255,255,.35)}
+.big .hl{color:#fff}
+.big+.big{margin-top:calc(var(--u)*2.2)}
+.count{display:flex;align-items:flex-end;gap:calc(var(--u)*.8);padding:calc(var(--u)*5) var(--pad) 0}
+.count b{font-size:calc(var(--u)*4);line-height:.9;letter-spacing:-.03em}
+.count span{font-size:calc(var(--u)*.8);font-weight:600;max-width:13em;line-height:1.2;color:rgba(255,255,255,.7)}
+
+/* case studies: sticky text left, images right */
+.cases{padding-bottom:calc(var(--u)*6)}
+.case{display:grid;grid-template-columns:var(--split) 1fr;border-top:1px solid rgba(255,255,255,.12)}
+.case .meta{position:sticky;top:calc(var(--u)*11);align-self:start;padding:calc(var(--u)*2) var(--pad);display:grid;gap:calc(var(--u)*.9);max-width:calc(var(--u)*28)}
+.case .row{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.case h3{font-size:calc(var(--u)*1.6);font-weight:700;letter-spacing:-.04em;line-height:1}
+.case .pill{font-size:calc(var(--u)*.8);font-weight:600;background:#fff;color:#000;padding:.25em .7em;white-space:nowrap}
+.case .pill:hover{background:#cdcdcd}
+.case p{font-size:var(--u);font-weight:500;line-height:1.3;letter-spacing:-.02em;color:rgba(255,255,255,.7)}
+.case .chips{display:flex;flex-wrap:wrap;gap:6px}
+.case .chips span{font-size:calc(var(--u)*.72);font-weight:600;border:1px solid rgba(255,255,255,.3);padding:.2em .6em;color:rgba(255,255,255,.85)}
+.case .shots{padding:calc(var(--u)*2) var(--gap) calc(var(--u)*2) 0;display:grid;gap:var(--gap)}
+.case .shots img{width:100%;aspect-ratio:16/10;object-fit:cover;background:#222}
+.case .shots img:nth-child(2){width:72%;margin-left:auto}
+
+/* ---------- white sections ---------- */
+.light{background:#fff;color:#000}
+.state{padding:calc(var(--u)*9) var(--pad) calc(var(--u)*6);display:grid;grid-template-columns:var(--split) 1fr}
+.state .say{grid-column:1/-1;max-width:62vw;margin:0 auto;font-size:calc(var(--u)*2.05);font-weight:600;line-height:1.12;letter-spacing:-.035em;color:rgba(0,0,0,.32);text-align:center}
+.state .say b{color:#000;font-weight:700}
+.clients{grid-column:1/-1;display:flex;justify-content:center;flex-wrap:wrap;gap:calc(var(--u)*2.4);margin-top:calc(var(--u)*3);font-weight:700;letter-spacing:-.03em;font-size:calc(var(--u)*1.1);color:rgba(0,0,0,.55)}
+.quote{grid-column:2;margin-top:calc(var(--u)*5);max-width:calc(var(--u)*26);font-size:var(--u);font-weight:600;line-height:1.3;letter-spacing:-.02em}
+.quote q{display:block;font-size:calc(var(--u)*1.25);line-height:1.25;margin-bottom:calc(var(--u)*1)}
+.quote small{display:block;color:rgba(0,0,0,.55);font-size:calc(var(--u)*.85)}
+.stars{letter-spacing:2px}
+
+.steps{padding:calc(var(--u)*4) 0 calc(var(--u)*6)}
+.steps h2{padding:0 var(--pad);font-size:3.231vw;font-weight:700;line-height:.95;letter-spacing:-.03em;margin-bottom:calc(var(--u)*3)}
+.step{display:grid;grid-template-columns:var(--split) 1fr;border-top:1px solid rgba(0,0,0,.1);padding:calc(var(--u)*1.5) 0 calc(var(--u)*3)}
+.step .txt{padding:0 var(--pad);display:grid;gap:calc(var(--u)*.6);align-content:start;max-width:calc(var(--u)*30)}
+.step h3{font-size:calc(var(--u)*1.6);font-weight:700;letter-spacing:-.04em;line-height:1.05}
+.step p{font-weight:500;color:rgba(0,0,0,.6);line-height:1.35;letter-spacing:-.02em}
+.step .tags{display:flex;gap:6px;flex-wrap:wrap}
+.step .tags span{font-size:calc(var(--u)*.72);font-weight:600;border:1px solid rgba(0,0,0,.2);padding:.2em .6em}
+.step .pic{position:relative;padding-right:var(--gap)}
+.step .pic img{width:100%;aspect-ratio:16/10;object-fit:cover}
+.step .num{position:absolute;right:calc(var(--gap) + var(--u));bottom:calc(var(--u)*.4);font-size:calc(var(--u)*5);line-height:.8;color:#fff;mix-blend-mode:difference}
+
+.faq{padding:calc(var(--u)*3) 0 calc(var(--u)*6);display:grid;grid-template-columns:var(--split) 1fr;border-top:1px solid rgba(0,0,0,.1)}
+.faq h2{padding:0 var(--pad);font-size:calc(var(--u)*2.05);font-weight:700;letter-spacing:-.035em;line-height:1.05}
+.faq .list{padding-right:var(--gap)}
+.faq details{border-bottom:1px solid rgba(0,0,0,.12)}
+.faq summary{cursor:pointer;list-style:none;display:flex;justify-content:space-between;gap:16px;padding:calc(var(--u)*1.1) 0;font-weight:700;font-size:calc(var(--u)*1.1);letter-spacing:-.03em}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+";font-weight:500}
+.faq details[open] summary::after{content:"–"}
+.faq details p{padding:0 0 calc(var(--u)*1.2);color:rgba(0,0,0,.65);font-weight:500;line-height:1.4;max-width:36em}
+
+/* ---------- final call ---------- */
+.end{display:grid;grid-template-columns:var(--split) 1fr;padding:calc(var(--u)*7) 0 calc(var(--u)*5)}
+.end .l{padding:0 var(--pad);display:grid;gap:calc(var(--u)*1.2);align-content:start}
+.end h2{font-size:3.231vw;font-weight:700;line-height:.95;letter-spacing:-.03em;color:rgba(255,255,255,.6)}
+.end h2 .w{color:#fff}
+.end .phone{font-family:"Averia Serif Libre",Georgia,serif;font-size:calc(var(--u)*2.2);line-height:1}
+.end .l p{color:rgba(255,255,255,.6);font-weight:500;max-width:26em;line-height:1.35}
+form{padding-right:var(--gap);display:grid;grid-template-columns:1fr 1fr;gap:10px;align-content:start}
+.f{display:grid;gap:6px}
+.f.full{grid-column:1/-1}
+.f label{font-size:calc(var(--u)*.8);font-weight:600;color:rgba(255,255,255,.6)}
+.f input,.f textarea{font:inherit;color:#fff;background:#1d1d1d;border:1px solid rgba(255,255,255,.12);padding:.75em .9em;width:100%;border-radius:0}
+.f textarea{min-height:110px;resize:vertical}
+.f input:focus,.f textarea:focus{outline:none;border-color:#fff}
+.hp{position:absolute!important;left:-9999px!important;width:1px;height:1px;overflow:hidden}
+.send{grid-column:1/-1;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;margin-top:6px}
+.send small{color:rgba(255,255,255,.5);font-size:calc(var(--u)*.8)}
+.send button{border:0;cursor:pointer;font:inherit}
+.sent{grid-column:1/-1;padding:calc(var(--u)*1.4);background:#1d1d1d;border:1px solid rgba(255,255,255,.2)}
+.sent b{display:block;font-size:calc(var(--u)*1.3);margin-bottom:4px}
+.foot{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:calc(var(--u)*1.5) var(--pad);border-top:1px solid rgba(255,255,255,.12);font-size:calc(var(--u)*.8);color:rgba(255,255,255,.5)}
+.foot a:hover{color:#fff}
+
+/* reveal */
+.rv{opacity:0;transform:translateY(24px);transition:opacity .9s cubic-bezier(.16,1,.3,1),transform .9s cubic-bezier(.16,1,.3,1)}
+.rv.in{opacity:1;transform:none}
+
+/* ---------- phones/tablets: stacked, no pin (theirs hides the grid below md too) ---------- */
+@media (max-width:899px){
+  :root{--split:100%;--u:15px;--gap:16px;--pad:16px}
+  .nav,.tag{display:none}
+  .logo{top:18px}
+  .ctas{top:auto;left:auto;right:16px;top:14px;gap:6px}
+  .ctas .btn-b{display:none}
+  .talk{display:none}
+  .hdr .btn{font-size:14px;padding:.5em .8em}
+  .hero{height:auto}
+  .pin{position:relative;height:auto;padding:84px 16px 24px;display:grid;gap:22px}
+  .pin .line,.pin .cross,.flank{display:none}
+  .hcopy{position:relative;inset:auto;display:grid;gap:20px}
+  h1{position:relative;left:0;top:0;bottom:auto;width:auto;font-size:clamp(34px,10vw,48px);order:-1}
+  .lead{position:relative;left:0;top:0;bottom:auto;width:auto;font-size:16px}
+  .proof{position:relative;left:0;bottom:0;gap:22px}
+  .proof b{font-size:22px}.proof span{font-size:12px}
+  .mcta{display:flex!important;gap:8px;flex-wrap:wrap}
+  .hcopy{order:1}.reel{order:2}
+  .reel{position:relative!important;left:0!important;top:0!important;width:100%!important;height:auto!important;aspect-ratio:1.847}
+  .intro,.case,.state,.step,.faq,.end{grid-template-columns:1fr}
+  .intro{padding:60px 0 40px;min-height:0;gap:28px}
+  .intro .side{position:relative;top:0}
+  .big{padding:0 16px;font-size:24px}
+  .count{padding:40px 16px 0}.count b{font-size:56px}
+  .case .meta{position:relative;top:0}
+  .case .shots{padding:0 16px 24px}
+  .state .say{max-width:none;font-size:24px;text-align:left}
+  .clients{justify-content:flex-start;gap:16px;font-size:15px}
+  .quote{grid-column:1}
+  .steps h2,.end h2{font-size:clamp(32px,9vw,44px)}
+  .step .pic{padding:16px 16px 0}
+  .step .num{right:28px;font-size:56px}
+  .faq .list{padding:16px}
+  form{grid-template-columns:1fr;padding:24px 16px 0}
+}
+@media (min-width:900px){.mcta{display:none}}
+@media (prefers-reduced-motion:reduce){.rv{opacity:1;transform:none;transition:none}}
+</style>
+</head>
+<body>
+
+<div class="band" id="band" aria-hidden="true"></div>
+<header class="hdr" aria-label="Visionary Web Studio">
+  <a class="logo" href="/" aria-label="Visionary Web Studio home"><span>Visionary</span><span>Studio</span></a>
+  <div class="ctas">
+    <a class="btn btn-a" href="tel:+15618890507" data-conv="call">Call (561) 889-0507 <svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M2 8 8 2M3.5 2H8v4.5"/></svg></a>
+    <a class="btn btn-b" href="#quote">Get a free quote <svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M2 8 8 2M3.5 2H8v4.5"/></svg></a>
+  </div>
+  <p class="tag">(Websites for South Florida businesses)</p>
+  <nav class="nav" aria-label="Page"><a href="#work">Work</a><a href="#steps">How it works</a><a href="#faq">Questions</a><a href="#quote">Free quote</a></nav>
+  <a class="talk" href="tel:+15618890507">Let's talk ↗</a>
+</header>
+
+<main>
+<section class="hero" id="hero" aria-label="Pay the rest only when you love it">
+  <div class="pin" id="pin">
+    <i class="line lv" id="lv" aria-hidden="true"></i><i class="line lh" id="lh" aria-hidden="true"></i><i class="cross" id="cross" aria-hidden="true"></i>
+    <div class="reel" id="reel"><video id="reelVid" muted playsinline loop preload="metadata" poster="/assets/hero/reel.jpg" aria-label="A reel of websites built by Visionary Web Studio"></video></div>
+    <span class="flank" id="fl1" aria-hidden="true">Visionary</span><span class="flank" id="fl2" aria-hidden="true">Web Studio</span>
+    <div class="hcopy" id="hcopy">
+      <div class="lead">
+        <p>Your customers look you up before they ever call, and most of them judge the business by its website.</p>
+        <p><b>Pay half to start. Pay the rest only when you love it.</b> One-time price from $500, no monthly contract, live in about 2 weeks.</p>
+      </div>
+      <h1>Your website is quietly losing you calls. <span class="w">Let's turn it around.</span></h1>
+      <div class="mcta" style="display:none"><a class="btn btn-a" href="tel:+15618890507" data-conv="call" style="background:#000;color:#fff">Call (561) 889-0507</a><a class="btn btn-b" href="#quote" style="background:#fff;color:#000">Get a free quote</a></div>
+      <div class="proof">
+        <div><b>5.0★</b><span>Google rating</span></div>
+        <div><b>2 weeks</b><span>From kickoff to live</span></div>
+        <div><b>50%</b><span>Paid only when you love it</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec intro" aria-label="Who builds your site">
+  <div class="side rv"><b>I'm Travis, and I build every site myself.</b>No account managers, no templates and no hand-offs. You talk to the person writing the code, from the first call to launch day.</div>
+  <div>
+    <p class="big rv">Most small business websites were built once and forgotten. <span class="hl">They load slow, look dated on a phone, and don't show up when someone nearby searches.</span></p>
+    <p class="big rv">I fix all three. You get a site that looks like the business you actually run, <span class="hl">and you don't pay the second half until you love it.</span></p>
+    <div class="count rv"><b class="serif">23</b><span>Websites designed and built across 15+ industries</span></div>
+  </div>
+</section>
+
+<section class="sec cases" id="work" aria-label="Recent work">
+  <article class="case">
+    <div class="meta rv"><div class="row"><h3>Psychotic Love</h3><a class="pill" href="https://psychoticlove.net" target="_blank" rel="noopener">Live site ↗</a></div><p>A streetwear store for a paying client: members-only drops, real card payments and promo codes, with a storefront you walk into as you scroll.</p><div class="chips"><span>Client</span><span>E-commerce</span><span>Payments</span></div></div>
+    <div class="shots"><img src="/assets/lp/psychotic-a.jpg" alt="Psychotic Love storefront home page" loading="lazy"><img src="/assets/lp/psychotic-b.jpg" alt="Psychotic Love store interior section" loading="lazy"></div>
+  </article>
+  <article class="case">
+    <div class="meta rv"><div class="row"><h3>Aurelia Med Spa</h3><a class="pill" href="https://aurelia-med-spa.traviskenlocean1.workers.dev" target="_blank" rel="noopener">Live site ↗</a></div><p>A calm, high-end med spa site with treatment pages, gift cards and online booking built in.</p><div class="chips"><span>Med spa</span><span>Booking</span><span>Multi-page</span></div></div>
+    <div class="shots"><img src="/assets/lp/aurelia-a.jpg" alt="Aurelia Med Spa home page" loading="lazy"><img src="/assets/lp/aurelia-b.jpg" alt="Aurelia treatments section" loading="lazy"></div>
+  </article>
+  <article class="case">
+    <div class="meta rv"><div class="row"><h3>Artic Air &amp; Plumbing</h3><a class="pill" href="https://hvac-plumbing-demo.traviskenlocean1.workers.dev" target="_blank" rel="noopener">Live site ↗</a></div><p>An AC and plumbing company site built to get the phone ringing: call buttons everywhere, 24/7 emergency up front, every service and area listed.</p><div class="chips"><span>Trades</span><span>Local SEO</span><span>Calls</span></div></div>
+    <div class="shots"><img src="/assets/lp/artic-a.jpg" alt="Artic Air home page" loading="lazy"><img src="/assets/lp/artic-b.jpg" alt="Artic Air thermostat dial section" loading="lazy"></div>
+  </article>
+  <article class="case">
+    <div class="meta rv"><div class="row"><h3>Meadowline</h3><a class="pill" href="https://meadowline.traviskenlocean1.workers.dev" target="_blank" rel="noopener">Live site ↗</a></div><p>A landscaping company site with a free-estimate form, every service explained, and the areas they cover for Google.</p><div class="chips"><span>Landscaping</span><span>Lead form</span><span>Local SEO</span></div></div>
+    <div class="shots"><img src="/assets/lp/meadowline-a.jpg" alt="Meadowline home page" loading="lazy"><img src="/assets/lp/meadowline-b.jpg" alt="Meadowline services section" loading="lazy"></div>
+  </article>
+  <article class="case">
+    <div class="meta rv"><div class="row"><h3>SOLE Residence</h3><a class="pill" href="https://sole-residence.traviskenlocean1.workers.dev" target="_blank" rel="noopener">Live site ↗</a></div><p>A 28-page luxury real estate site with residence pages, floor plans and a cinematic intro.</p><div class="chips"><span>Real estate</span><span>28 pages</span><span>Motion</span></div></div>
+    <div class="shots"><img src="/assets/lp/sole-a.jpg" alt="SOLE Residence home page" loading="lazy"><img src="/assets/lp/sole-b.jpg" alt="SOLE Residence garden residence section" loading="lazy"></div>
+  </article>
+</section>
+
+<section class="light" aria-label="Why Visionary">
+  <div class="state">
+    <p class="say rv">I've designed and built <b>23 websites</b> for <b>med spas, contractors, restaurants, stores</b> and more, most with the kind of detail <b>you won't get from a template.</b> Every one is coded by hand, built to load fast, and <b>set up to get found on Google Maps and Bing.</b></p>
+    <div class="clients rv" aria-label="Clients"><span>Psychotic Love</span><span>A.M. Glow Up</span><span>Lala's Sweets</span></div>
+    <div class="quote rv"><span class="stars" aria-label="5 out of 5 stars">★★★★★</span><q>Professional, efficient, and QUICK… understood our vision.</q><small>Kay, Psychotic Love · Google review</small></div>
+  </div>
+
+  <div class="steps" id="steps">
+    <h2 class="rv">Three steps.<br>The first one is free.</h2>
+    <div class="step">
+      <div class="txt rv"><h3>A free 15-minute call</h3><p>We talk about your business, what the site needs to do, and your budget. You get a clear price before anything starts. No charge, no pressure.</p><div class="tags"><span>15 minutes</span><span>Free</span></div></div>
+      <div class="pic"><img src="/assets/process/discovery.jpg" alt="Planning a website on paper" loading="lazy"><span class="num serif">01</span></div>
+    </div>
+    <div class="step">
+      <div class="txt rv"><h3>Pay half, see your design in days</h3><p>A 50% deposit starts the work. Your first design is ready to review in 3 to 4 days, and we adjust it until it feels right.</p><div class="tags"><span>3-4 days</span><span>50% deposit</span></div></div>
+      <div class="pic"><img src="/assets/process/design.jpg" alt="Website design in progress" loading="lazy"><span class="num serif">02</span></div>
+    </div>
+    <div class="step">
+      <div class="txt rv"><h3>Love it, then pay the rest</h3><p>We test speed, phones and spam protection, set you up on Google Maps and Bing, and go live. The second half is only due once you've approved the finished site.</p><div class="tags"><span>About 2 weeks</span><span>You own it</span></div></div>
+      <div class="pic"><img src="/assets/process/launch.jpg" alt="Website launched and live" loading="lazy"><span class="num serif">03</span></div>
+    </div>
+  </div>
+
+  <div class="faq" id="faq">
+    <h2 class="rv">Questions people ask before they call.</h2>
+    <div class="list">
+      <details><summary>How much does a website cost?</summary><p>Sites start at $500, one time. Most land between $500 and $2,000 depending on pages and features like booking or payments. You get the exact price on the free call, before anything starts.</p></details>
+      <details><summary>What does "pay the rest when you love it" mean?</summary><p>You pay 50% to start. The other 50% is only due after you've reviewed and approved the finished site. You're not paying in full for something you haven't seen.</p></details>
+      <details><summary>How long does it take?</summary><p>About 2 weeks from kickoff to live. Your first design is ready to review in 3 to 4 days.</p></details>
+      <details><summary>Do I have to pay every month?</summary><p>No. It's a one-time price and you own the site. Ongoing updates and maintenance are available if you want them, but they're optional.</p></details>
+      <details><summary>Will people find me on Google?</summary><p>Every site is built for local search and set up with your Google Business Profile, Google Maps and Bing. Nobody can promise a #1 ranking, but you'll be set up the right way from day one.</p></details>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="quote" aria-labelledby="end-h">
+  <div class="end">
+    <div class="l rv">
+      <h2 id="end-h">Get your free quote. <span class="w">Pay the rest when you love it.</span></h2>
+      <a class="phone" href="tel:+15618890507" data-conv="call">(561) 889-0507</a>
+      <p>Call or text for the fastest answer, or send a few details and I'll get back to you right away.</p>
+    </div>
+    <form id="lpForm" novalidate>
+      <div class="f"><label for="q-name">Name</label><input id="q-name" name="name" autocomplete="name" required></div>
+      <div class="f"><label for="q-phone">Phone</label><input id="q-phone" name="phone" type="tel" autocomplete="tel" required></div>
+      <div class="f full"><label for="q-email">Email</label><input id="q-email" name="email" type="email" autocomplete="email"></div>
+      <div class="f full"><label for="q-msg">What's your business, and what do you need?</label><textarea id="q-msg" name="message" placeholder="Example: I run a barbershop in Hialeah and need a site with booking."></textarea></div>
+      <div class="hp" aria-hidden="true"><label>Website<input name="_hp_website" tabindex="-1" autocomplete="off"></label></div>
+      <div class="send"><small>Free quote. No obligation.</small><button class="btn btn-a" type="submit">Send my request ↗</button></div>
+    </form>
+  </div>
+  <footer class="foot"><span>© 2026 Visionary Web Studio · North Miami Beach, FL</span><span><a href="/">getvisionarywebstudio.com</a> · <a href="mailto:visionarywebstudio6@gmail.com">visionarywebstudio6@gmail.com</a></span></footer>
+</section>
+</main>
+
+<script>
+(function () {
+  'use strict';
+  var $ = function (s) { return document.querySelector(s); };
+  var clamp = function (v, a, b) { return Math.max(a, Math.min(b, v)); };
+  var mix = function (a, b, t) { return a + (b - a) * t; };
+  var ease = function (t) { return t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2; };
+  var reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var desk = matchMedia('(min-width: 900px)');
+
+  /* reel: load the small file on phones */
+  var vid = $('#reelVid');
+  vid.src = innerWidth < 900 ? '/assets/hero/reel-sm.mp4' : '/assets/hero/reel.mp4';
+  if (!reduced) { var pr = vid.play(); if (pr && pr.catch) pr.catch(function () {}); }
+
+  /* ---------- hero pin: video grows from the right column, panel goes #CDCDCD -> #131313 ---------- */
+  var hero = $('#hero'), pin = $('#pin'), reel = $('#reel'), hcopy = $('#hcopy');
+  var lv = $('#lv'), lh = $('#lh'), cross = $('#cross'), fl1 = $('#fl1'), fl2 = $('#fl2'), ctas = $('.ctas');
+  var g = null;
+  function layout() {
+    var W = innerWidth, H = innerHeight;
+    var split = W * 0.5543, gap = W * 0.0152;
+    var w0 = W - split - 2 * gap, h0 = w0 / 1.847;            /* 628x340 @1512 */
+    var top0 = H - h0 - W * 0.0126;                           /* sits ~19px off the bottom */
+    var strip0 = top0 - W * 0.0139;                           /* grid line ~21px above the box */
+    var w1 = W * 0.689, h1 = w1 / 1.847;                      /* 1042x564 @1512 */
+    var strip1 = Math.max(W * 0.0985, 120);                   /* header strip shrinks to ~149px */
+    var top1 = strip1 + Math.max(0, (H - strip1 - h1) / 2);
+    var u = parseFloat(getComputedStyle(document.body).fontSize);
+    g = { W: W, H: H, u: u, split: split, gap: gap, w0: w0, h0: h0, l0: split + gap, t0: top0, s0: strip0, w1: w1, h1: h1, l1: W - gap - w1, t1: top1, s1: strip1 };
+    /* their hero copy hangs off the bottom of the top strip (112/153px @1512 with a 316px strip, 358/395px @1920 with a 600px strip) */
+    document.documentElement.style.setProperty('--s0', strip0 + 'px');
+    var lead = document.querySelector('.lead'); g.c0 = lead.offsetTop - 3.23 * u;   /* buttons sit 50px above the intro @1512 */
+  }
+  function render() {
+    if (!desk.matches) { reel.removeAttribute('style'); pin.style.background = ''; hcopy.style.cssText = ''; ctas.style.top = ''; return; }
+    var r = hero.getBoundingClientRect();
+    var p = clamp(-r.top / (r.height - innerHeight), 0, 1);
+    var a = ease(clamp(p / 0.85, 0, 1));
+    reel.style.left = mix(g.l0, g.l1, a) + 'px';
+    reel.style.top = mix(g.t0, g.t1, a) + 'px';
+    reel.style.width = mix(g.w0, g.w1, a) + 'px';
+    reel.style.height = mix(g.h0, g.h1, a) + 'px';
+    /* theirs stays #CDCDCD for the first third of the grow, then drops to #131313 */
+    var c = Math.round(mix(205, 19, ease(clamp((p - 0.22) / 0.4, 0, 1))));
+    ctas.style.top = mix(g.c0, g.s1 - 4.2 * g.u, a) + 'px';
+    pin.style.background = 'rgb(' + c + ',' + c + ',' + c + ')';
+    var s = mix(g.s0, g.s1, a);
+    lh.style.top = s + 'px';
+    lv.style.height = s + 'px'; lv.style.opacity = 1 - a;
+    cross.style.left = g.split + 'px'; cross.style.top = s + 'px'; cross.style.opacity = 1 - a;
+    var o = clamp(1 - p / 0.3, 0, 1);
+    hcopy.style.opacity = o; hcopy.style.transform = 'translateY(' + (-30 * (1 - o)) + 'px)'; hcopy.style.visibility = o <= 0 ? 'hidden' : 'visible';
+    var f = clamp((p - 0.55) / 0.3, 0, 1);
+    fl1.style.opacity = f; fl2.style.opacity = f;
+    var my = mix(g.t0, g.t1, a) + mix(g.h0, g.h1, a) / 2;
+    fl1.style.left = (g.gap + 2) + 'px'; fl1.style.top = (my - 10) + 'px';
+    fl2.style.left = (mix(g.l0, g.l1, a) - g.gap - fl2.offsetWidth) + 'px'; fl2.style.top = (my - 10) + 'px';
+  }
+  var band = $('#band');
+  function paintBand() {
+    var bh = desk.matches ? g.s1 : 64;
+    band.style.height = bh + 'px';
+    var hr = hero.getBoundingClientRect();
+    var inHero = hr.bottom > bh + 1 && (!desk.matches ? hr.top > -1 : clamp(-hr.top / (hr.height - innerHeight), 0, 1) < 0.92);
+    if (inHero) { band.classList.remove('on'); return; }
+    var el = document.elementFromPoint(2, bh + 2);
+    var sec = el && el.closest('section');
+    band.style.background = sec && sec.classList.contains('light') ? '#fff' : (sec === hero ? getComputedStyle(pin).backgroundColor : '#131313');
+    band.classList.add('on');
+  }
+  layout(); render(); paintBand();
+  var ticking = false;
+  addEventListener('scroll', function () { if (!ticking) { ticking = true; requestAnimationFrame(function () { ticking = false; render(); paintBand(); }); } }, { passive: true });
+  addEventListener('resize', function () { layout(); render(); paintBand(); });
+
+  /* reveals */
+  if ('IntersectionObserver' in window && !reduced) {
+    var io = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }); }, { rootMargin: '0px 0px -10% 0px' });
+    document.querySelectorAll('.rv').forEach(function (el) { io.observe(el); });
+  } else document.querySelectorAll('.rv').forEach(function (el) { el.classList.add('in'); });
+
+  /* smooth same-page jumps */
+  document.querySelectorAll('a[href^="#"]').forEach(function (a) {
+    a.addEventListener('click', function (e) { var t = document.querySelector(a.getAttribute('href')); if (!t) return; e.preventDefault(); t.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth' }); });
+  });
+
+  /* ---------- quote form: same pipeline as the main site (FormSubmit -> Gmail + Apps Script lead inbox),
+     honeypot + 3s time trap; bots see the same "sent" screen and nothing is delivered ---------- */
+  var LOADED = Date.now();
+  var INBOX = 'https://script.google.com/macros/s/AKfycbxLPb9Xvrg7eEEnTTTE-PvGYu4cqQcjQWyUHg-InopWzRLYkewTmOwECPBHgIpbuUsMFA/exec';
+  var form = $('#lpForm');
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var v = function (n) { return (form.elements[n] && form.elements[n].value || '').trim(); };
+    var name = v('name'), phone = v('phone'), email = v('email'), msg = v('message');
+    var bot = v('_hp_website') !== '' || Date.now() - LOADED < 3000;
+    if (!bot && (!name || phone.replace(/\D/g, '').length < 10)) {
+      var bad = !name ? form.elements.name : form.elements.phone; bad.focus();
+      bad.setCustomValidity(!name ? 'Add your name so I know who to ask for.' : 'Add a 10-digit phone number so I can call you back.');
+      bad.reportValidity(); setTimeout(function () { bad.setCustomValidity(''); }, 2000); return;
+    }
+    if (!bot) {
+      var time = new Date().toLocaleString('en-US', { timeZone: 'America/New_York' });
+      var fd = new FormData();
+      [['name', name], ['email', email], ['phone', phone], ['message', msg], ['source', location.href], ['time', time], ['_subject', 'New Lead (Ads landing page) | Visionary Web Studio'], ['_template', 'table'], ['_captcha', 'false'], ['_honey', ''], ['_replyto', email]].forEach(function (kv) { fd.append(kv[0], kv[1]); });
+      fetch('https://formsubmit.co/ajax/visionarywebstudio6@gmail.com', { method: 'POST', headers: { Accept: 'application/json' }, body: fd }).catch(function () {});
+      fetch(INBOX, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify({ name: name, phone: phone, email: email, message: msg, page: location.href, time: time, form: 'ads landing page' }) }).catch(function () {});
+      if (window.gtag) window.gtag('event', 'generate_lead', { method: 'form' });
+    }
+    var first = bot ? '' : name.split(' ')[0].replace(/[<>&"]/g, '');
+    form.innerHTML = '<div class="sent" role="status"><b>Got it' + (first ? ', ' + first : '') + '.</b>I\'ll reach out right away. If it\'s urgent, call or text (561) 889-0507.</div>';
+  });
+  document.querySelectorAll('[data-conv="call"]').forEach(function (a) { a.addEventListener('click', function () { if (window.gtag) window.gtag('event', 'click_to_call'); }); });
+})();
+</script>
+</body>
+</html>
