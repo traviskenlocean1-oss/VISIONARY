@@ -17,7 +17,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Averia+Serif+Libre:wght@700&display=swap" rel="stylesheet">
-<link rel="preload" as="image" href="/assets/hero/reel.jpg">
+<link rel="preload" as="image" href="/assets/hero/reel-lp.jpg">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"ProfessionalService","name":"Visionary Web Studio","url":"https://getvisionarywebstudio.com/","telephone":"+1-561-889-0507","email":"visionarywebstudio6@gmail.com","priceRange":"$500 - $2,000","address":{"@type":"PostalAddress","addressLocality":"North Miami Beach","addressRegion":"FL","addressCountry":"US"},"areaServed":["Miami-Dade County","Broward County"],"aggregateRating":{"@type":"AggregateRating","ratingValue":"5.0","reviewCount":"3"}}
 </script>
@@ -82,7 +82,7 @@ h1 .w{color:#fff}
 .proof b{font-family:"Averia Serif Libre",Georgia,serif;font-size:calc(var(--u)*1.75);line-height:1.1;letter-spacing:-.02em}
 .proof span{font-size:var(--u);font-weight:700;letter-spacing:-.03em;line-height:1.2}
 .reel{position:absolute;z-index:2;overflow:hidden;background:#fff;will-change:left,top,width,height}
-.reel video,.reel img{width:100%;height:100%;object-fit:cover}
+.reel video,.reel img{width:100%;height:100%;object-fit:cover;transform:scale(1.55)}  /* the reel file is ~63% black margin; zoom so the site cards fill the box */
 .flank{position:absolute;z-index:5;mix-blend-mode:difference;color:#fff;font-size:var(--u);font-weight:600;letter-spacing:-.03em;opacity:0}
 
 /* ---------- dark sections ---------- */
@@ -223,14 +223,14 @@ form{padding-right:var(--gap);display:grid;grid-template-columns:1fr 1fr;gap:10p
   </div>
   <p class="tag">(Websites for South Florida businesses)</p>
   <nav class="nav" aria-label="Page"><a href="#work">Work</a><a href="#steps">How it works</a><a href="#faq">Questions</a><a href="#quote">Free quote</a></nav>
-  <a class="talk" href="tel:+15618890507">Let's talk ↗</a>
+  <a class="talk" href="#quote">Let's talk ↗</a>
 </header>
 
 <main>
 <section class="hero" id="hero" aria-label="Pay the rest only when you love it">
   <div class="pin" id="pin">
     <i class="line lv" id="lv" aria-hidden="true"></i><i class="line lh" id="lh" aria-hidden="true"></i><i class="cross" id="cross" aria-hidden="true"></i>
-    <div class="reel" id="reel"><video id="reelVid" muted playsinline loop preload="metadata" poster="/assets/hero/reel.jpg" aria-label="A reel of websites built by Visionary Web Studio"></video></div>
+    <div class="reel" id="reel"><video id="reelVid" muted playsinline loop preload="metadata" poster="/assets/hero/reel-lp.jpg" aria-label="A reel of websites built by Visionary Web Studio"></video></div>
     <span class="flank" id="fl1" aria-hidden="true">Visionary</span><span class="flank" id="fl2" aria-hidden="true">Web Studio</span>
     <div class="hcopy" id="hcopy">
       <div class="lead">
@@ -260,19 +260,27 @@ form{padding-right:var(--gap);display:grid;grid-template-columns:1fr 1fr;gap:10p
 <section class="sec cases" id="work" aria-label="Recent work">
   <article class="case">
     <div class="meta rv"><div class="row"><h3>Psychotic Love</h3><a class="pill" href="https://psychoticlove.net" target="_blank" rel="noopener">Live site ↗</a></div><p>A streetwear store for a paying client: members-only drops, real card payments and promo codes, with a storefront you walk into as you scroll.</p><div class="chips"><span>Client</span><span>E-commerce</span><span>Payments</span></div></div>
-    <div class="shots"><img src="/assets/lp/psychotic-a.jpg" alt="Psychotic Love storefront home page" loading="lazy"><img src="/assets/lp/psychotic-b.jpg" alt="Psychotic Love store interior section" loading="lazy"></div>
+    <div class="shots"><img src="/assets/lp/psychotic-a2.jpg" alt="Psychotic Love storefront home page" loading="lazy"><img src="/assets/lp/psychotic-b2.jpg" alt="Psychotic Love neon store interior" loading="lazy"></div>
   </article>
   <article class="case">
     <div class="meta rv"><div class="row"><h3>Aurelia Med Spa</h3><a class="pill" href="https://aurelia-med-spa.traviskenlocean1.workers.dev" target="_blank" rel="noopener">Live site ↗</a></div><p>A calm, high-end med spa site with treatment pages, gift cards and online booking built in.</p><div class="chips"><span>Med spa</span><span>Booking</span><span>Multi-page</span></div></div>
-    <div class="shots"><img src="/assets/lp/aurelia-a.jpg" alt="Aurelia Med Spa home page" loading="lazy"><img src="/assets/lp/aurelia-b.jpg" alt="Aurelia treatments section" loading="lazy"></div>
+    <div class="shots"><img src="/assets/lp/aurelia-a2.jpg" alt="Aurelia Med Spa home page" loading="lazy"><img src="/assets/lp/aurelia-b2.jpg" alt="Aurelia golden spa section" loading="lazy"></div>
   </article>
   <article class="case">
     <div class="meta rv"><div class="row"><h3>Artic Air &amp; Plumbing</h3><a class="pill" href="https://hvac-plumbing-demo.traviskenlocean1.workers.dev" target="_blank" rel="noopener">Live site ↗</a></div><p>An AC and plumbing company site built to get the phone ringing: call buttons everywhere, 24/7 emergency up front, every service and area listed.</p><div class="chips"><span>Trades</span><span>Local SEO</span><span>Calls</span></div></div>
-    <div class="shots"><img src="/assets/lp/artic-a.jpg" alt="Artic Air home page" loading="lazy"><img src="/assets/lp/artic-b.jpg" alt="Artic Air thermostat dial section" loading="lazy"></div>
+    <div class="shots"><img src="/assets/lp/artic-a2.jpg" alt="Artic Air home page" loading="lazy"><img src="/assets/lp/artic-b2.jpg" alt="Artic Air thermostat dial section" loading="lazy"></div>
   </article>
   <article class="case">
     <div class="meta rv"><div class="row"><h3>Meadowline</h3><a class="pill" href="https://meadowline.traviskenlocean1.workers.dev" target="_blank" rel="noopener">Live site ↗</a></div><p>A landscaping company site with a free-estimate form, every service explained, and the areas they cover for Google.</p><div class="chips"><span>Landscaping</span><span>Lead form</span><span>Local SEO</span></div></div>
-    <div class="shots"><img src="/assets/lp/meadowline-a.jpg" alt="Meadowline home page" loading="lazy"><img src="/assets/lp/meadowline-b.jpg" alt="Meadowline services section" loading="lazy"></div>
+    <div class="shots"><img src="/assets/lp/meadowline-a2.jpg" alt="Meadowline home page" loading="lazy"><img src="/assets/lp/meadowline-b2.jpg" alt="Meadowline field of yard photos" loading="lazy"></div>
+  </article>
+  <article class="case">
+    <div class="meta rv"><div class="row"><h3>STACK</h3><a class="pill" href="https://stack.traviskenlocean1.workers.dev" target="_blank" rel="noopener">Live site ↗</a></div><p>A burger restaurant site with a 3D burger that stacks itself as you scroll, bold color everywhere, and the menu one tap away.</p><div class="chips"><span>Restaurant</span><span>3D</span><span>Menu</span></div></div>
+    <div class="shots"><img src="/assets/lp/stack-a.jpg" alt="STACK burger restaurant home page" loading="lazy"><img src="/assets/lp/stack-b.jpg" alt="STACK Food That Feels Good section" loading="lazy"></div>
+  </article>
+  <article class="case">
+    <div class="meta rv"><div class="row"><h3>Steadfast</h3><a class="pill" href="https://steadfast.traviskenlocean1.workers.dev" target="_blank" rel="noopener">Live site ↗</a></div><p>A strength gym with its coaches, programs and a wall of member photos, so the site feels like walking into the gym.</p><div class="chips"><span>Gym</span><span>Programs</span><span>Community</span></div></div>
+    <div class="shots"><img src="/assets/lp/steadfast-a.jpg" alt="Steadfast gym home page" loading="lazy"><img src="/assets/lp/steadfast-b.jpg" alt="Steadfast member polaroid wall" loading="lazy"></div>
   </article>
   <article class="case">
     <div class="meta rv"><div class="row"><h3>SOLE Residence</h3><a class="pill" href="https://sole-residence.traviskenlocean1.workers.dev" target="_blank" rel="noopener">Live site ↗</a></div><p>A 28-page luxury real estate site with residence pages, floor plans and a cinematic intro.</p><div class="chips"><span>Real estate</span><span>28 pages</span><span>Motion</span></div></div>
@@ -348,6 +356,8 @@ form{padding-right:var(--gap);display:grid;grid-template-columns:1fr 1fr;gap:10p
   /* reel: load the small file on phones */
   var vid = $('#reelVid');
   vid.src = innerWidth < 900 ? '/assets/hero/reel-sm.mp4' : '/assets/hero/reel.mp4';
+  /* the reel opens on a faded black frame; start 1s in, where a site card sits centered */
+  vid.addEventListener('loadedmetadata', function () { try { vid.currentTime = 1; } catch (e) {} }, { once: true });
   if (!reduced) { var pr = vid.play(); if (pr && pr.catch) pr.catch(function () {}); }
 
   /* ---------- hero pin: video grows from the right column, panel goes #CDCDCD -> #131313 ---------- */
@@ -360,9 +370,9 @@ form{padding-right:var(--gap);display:grid;grid-template-columns:1fr 1fr;gap:10p
     var w0 = W - split - 2 * gap, h0 = w0 / 1.847;            /* 628x340 @1512 */
     var top0 = H - h0 - W * 0.0126;                           /* sits ~19px off the bottom */
     var strip0 = top0 - W * 0.0139;                           /* grid line ~21px above the box */
-    var w1 = W * 0.689, h1 = w1 / 1.847;                      /* 1042x564 @1512 */
+    var w1 = W * 0.80, h1 = w1 / 1.847;                       /* bigger than theirs (0.689W), per Travis: fuller */
     var strip1 = Math.max(W * 0.0985, 120);                   /* header strip shrinks to ~149px */
-    var top1 = strip1 + Math.max(0, (H - strip1 - h1) / 2);
+    var top1 = Math.max(gap, (H - h1) / 2);
     var u = parseFloat(getComputedStyle(document.body).fontSize);
     g = { W: W, H: H, u: u, split: split, gap: gap, w0: w0, h0: h0, l0: split + gap, t0: top0, s0: strip0, w1: w1, h1: h1, l1: W - gap - w1, t1: top1, s1: strip1 };
     /* their hero copy hangs off the bottom of the top strip (112/153px @1512 with a 316px strip, 358/395px @1920 with a 600px strip) */
