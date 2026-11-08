@@ -73,8 +73,9 @@ img,video{display:block;max-width:100%}
 .hcopy{position:absolute;inset:0;z-index:5;mix-blend-mode:difference;color:#fff;pointer-events:none}
 .hcopy a{pointer-events:auto}
 .lead{position:absolute;left:var(--pad);bottom:calc(100% - var(--s0,316px) + 1.6vw);width:31.75vw;font-size:calc(var(--u)*1.125);font-weight:500;line-height:1.25;letter-spacing:-.02em;color:rgba(255,255,255,.5)}
-.lead p+p{margin-top:calc(var(--u)*1.4)}
+.lead p+p{margin-top:calc(var(--u)*.9)}
 .lead b{color:#fff;font-weight:700}
+.lead .promise b{display:block;font-size:1.22em;line-height:1.12;letter-spacing:-.03em;margin-bottom:.25em}
 h1{position:absolute;left:calc(var(--split) + var(--gap));bottom:calc(100% - var(--s0,316px) + 1.6vw);width:41.5vw;font-size:3.231vw;font-weight:700;line-height:.95;letter-spacing:-.03em;color:rgba(255,255,255,.6)}
 h1 .w{color:#fff}
 .proof{position:absolute;left:var(--pad);bottom:calc(var(--u)*1.25);display:flex;gap:calc(var(--u)*4.5);align-items:flex-start}
@@ -184,7 +185,10 @@ form{padding-right:var(--gap);display:grid;grid-template-columns:1fr 1fr;gap:10p
   .hero{height:auto}
   .pin{position:relative;height:auto;padding:84px 16px 24px;display:grid;gap:22px}
   .pin .line,.pin .cross,.flank{display:none}
-  .hcopy{position:relative;inset:auto;display:grid;gap:20px}
+  .hcopy{position:relative;inset:auto;display:grid;gap:20px;mix-blend-mode:normal;color:#131313}
+  .hcopy h1{color:rgba(19,19,19,.5)}.hcopy h1 .w{color:#131313}
+  .hcopy .lead{color:rgba(19,19,19,.62)}.hcopy .lead b{color:#131313}
+  .mcta .btn{height:50px;padding:0 18px;font-size:16px;font-weight:600}
   h1{position:relative;left:0;top:0;bottom:auto;width:auto;font-size:clamp(34px,10vw,48px);order:-1}
   .lead{position:relative;left:0;top:0;bottom:auto;width:auto;font-size:16px}
   .proof{position:relative;left:0;bottom:0;gap:22px}
@@ -198,6 +202,8 @@ form{padding-right:var(--gap);display:grid;grid-template-columns:1fr 1fr;gap:10p
   .big{padding:0 16px;font-size:24px}
   .count{padding:40px 16px 0}.count b{font-size:56px}
   .case .meta{position:relative;top:0}
+  .case.more{display:none}
+  body{padding-bottom:76px}
   .case .shots{padding:0 16px 24px}
   .state .say{max-width:none;font-size:24px;text-align:left}
   .clients{justify-content:flex-start;gap:16px;font-size:15px}
@@ -208,7 +214,12 @@ form{padding-right:var(--gap);display:grid;grid-template-columns:1fr 1fr;gap:10p
   .faq .list{padding:16px}
   form{grid-template-columns:1fr;padding:24px 16px 0}
 }
-@media (min-width:900px){.mcta{display:none}}
+@media (min-width:900px){.mcta{display:none}.mbar{display:none!important}}
+.mbar{position:fixed;left:12px;right:12px;bottom:calc(12px + env(safe-area-inset-bottom));z-index:120;display:grid;grid-template-columns:1fr 1fr;gap:8px;transform:translateY(140%);transition:transform .45s cubic-bezier(.16,1,.3,1)}
+.mbar.on{transform:none}
+.mbar a{display:flex;align-items:center;justify-content:center;height:52px;font-weight:700;font-size:16px;letter-spacing:-.02em}
+.mbar a:first-child{background:#fff;color:#000;box-shadow:0 0 0 1px rgba(0,0,0,.15)}
+.mbar a:last-child{background:#131313;color:#fff;box-shadow:0 0 0 1px rgba(255,255,255,.18)}
 @media (prefers-reduced-motion:reduce){.rv{opacity:1;transform:none;transition:none}}
 </style>
 </head>
@@ -234,8 +245,8 @@ form{padding-right:var(--gap);display:grid;grid-template-columns:1fr 1fr;gap:10p
     <span class="flank" id="fl1" aria-hidden="true">Visionary</span><span class="flank" id="fl2" aria-hidden="true">Web Studio</span>
     <div class="hcopy" id="hcopy">
       <div class="lead">
+        <p class="promise"><b>Pay half to start. Pay the rest only when you love it.</b> One-time price from $500, no monthly contract, live in about 2 weeks.</p>
         <p>Your customers look you up before they ever call, and most of them judge the business by its website.</p>
-        <p><b>Pay half to start. Pay the rest only when you love it.</b> One-time price from $500, no monthly contract, live in about 2 weeks.</p>
       </div>
       <h1>Your website is quietly losing you calls. <span class="w">Let's turn it around.</span></h1>
       <div class="mcta" style="display:none"><a class="btn btn-a" href="tel:+15618890507" data-conv="call" style="background:#000;color:#fff">Call (561) 889-0507</a><a class="btn btn-b" href="#quote" style="background:#fff;color:#000">Get a free quote</a></div>
@@ -274,15 +285,15 @@ form{padding-right:var(--gap);display:grid;grid-template-columns:1fr 1fr;gap:10p
     <div class="meta rv"><div class="row"><h3>Meadowline</h3><a class="pill" href="https://meadowline.traviskenlocean1.workers.dev" target="_blank" rel="noopener">Live site ↗</a></div><p>A landscaping company site with a free-estimate form, every service explained, and the areas they cover for Google.</p><div class="chips"><span>Landscaping</span><span>Lead form</span><span>Local SEO</span></div></div>
     <div class="shots"><img src="/assets/lp/meadowline-a2.jpg" alt="Meadowline home page" loading="lazy"><img src="/assets/lp/meadowline-b2.jpg" alt="Meadowline field of yard photos" loading="lazy"></div>
   </article>
-  <article class="case">
+  <article class="case more">
     <div class="meta rv"><div class="row"><h3>STACK</h3><a class="pill" href="https://stack.traviskenlocean1.workers.dev" target="_blank" rel="noopener">Live site ↗</a></div><p>A burger restaurant site with a 3D burger that stacks itself as you scroll, bold color everywhere, and the menu one tap away.</p><div class="chips"><span>Restaurant</span><span>3D</span><span>Menu</span></div></div>
     <div class="shots"><img src="/assets/lp/stack-a.jpg" alt="STACK burger restaurant home page" loading="lazy"><img src="/assets/lp/stack-b.jpg" alt="STACK Food That Feels Good section" loading="lazy"></div>
   </article>
-  <article class="case">
+  <article class="case more">
     <div class="meta rv"><div class="row"><h3>Steadfast</h3><a class="pill" href="https://steadfast.traviskenlocean1.workers.dev" target="_blank" rel="noopener">Live site ↗</a></div><p>A strength gym with its coaches, programs and a wall of member photos, so the site feels like walking into the gym.</p><div class="chips"><span>Gym</span><span>Programs</span><span>Community</span></div></div>
     <div class="shots"><img src="/assets/lp/steadfast-a.jpg" alt="Steadfast gym home page" loading="lazy"><img src="/assets/lp/steadfast-b.jpg" alt="Steadfast member polaroid wall" loading="lazy"></div>
   </article>
-  <article class="case">
+  <article class="case more">
     <div class="meta rv"><div class="row"><h3>SOLE Residence</h3><a class="pill" href="https://sole-residence.traviskenlocean1.workers.dev" target="_blank" rel="noopener">Live site ↗</a></div><p>A 28-page luxury real estate site with residence pages, floor plans and a cinematic intro.</p><div class="chips"><span>Real estate</span><span>28 pages</span><span>Motion</span></div></div>
     <div class="shots"><img src="/assets/lp/sole-a.jpg" alt="SOLE Residence home page" loading="lazy"><img src="/assets/lp/sole-b.jpg" alt="SOLE Residence garden residence section" loading="lazy"></div>
   </article>
@@ -341,6 +352,8 @@ form{padding-right:var(--gap);display:grid;grid-template-columns:1fr 1fr;gap:10p
   <footer class="foot"><span>© 2026 Visionary Web Studio · North Miami Beach, FL</span><span><a href="/">getvisionarywebstudio.com</a> · <a href="mailto:visionarywebstudio6@gmail.com">visionarywebstudio6@gmail.com</a></span></footer>
 </section>
 </main>
+
+<div class="mbar" id="mbar"><a href="tel:+15618890507" data-conv="call">Call now</a><a href="#quote">Get a free quote</a></div>
 
 <script>
 (function () {
@@ -416,9 +429,17 @@ form{padding-right:var(--gap);display:grid;grid-template-columns:1fr 1fr;gap:10p
     band.classList.add('on');
   }
   layout(); render(); paintBand();
+  /* the intro grows once the web fonts arrive; re-measure so the buttons stay above it */
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { layout(); render(); });
+  addEventListener('load', function () { layout(); render(); paintBand(); });
   var ticking = false;
   addEventListener('scroll', function () { if (!ticking) { ticking = true; requestAnimationFrame(function () { ticking = false; render(); paintBand(); }); } }, { passive: true });
   addEventListener('resize', function () { layout(); render(); paintBand(); });
+
+  /* phone: sticky call / quote bar after the hero, hidden while the form is on screen */
+  var mbar = $('#mbar'), quote = $('#quote');
+  function paintBar() { if (desk.matches) return; var past = hero.getBoundingClientRect().bottom < innerHeight * 0.35; var q = quote.getBoundingClientRect(); var atForm = q.top < innerHeight && q.bottom > 0; mbar.classList.toggle('on', past && !atForm); }
+  addEventListener('scroll', paintBar, { passive: true }); paintBar();
 
   /* reveals */
   if ('IntersectionObserver' in window && !reduced) {
