@@ -139,10 +139,14 @@ button:disabled{opacity:.5;cursor:default}
   if (price) { var n = Number(price.replace(/[^0-9.]/g, '')); deposit = money(n / 2) + ' (50%)'; }
   var vals = { b: q.get('b') || '', pk: q.get('pk') || '', p: price, dep: deposit, t: q.get('t') || '', s: q.get('s') || '' };
   document.querySelectorAll('[data-f]').forEach(function(el){ var v = vals[el.dataset.f]; if (v) el.textContent = v; });
+  var who = [q.get('n') || '', vals.b].filter(Boolean).join(', ');
+  if (who) document.querySelector('[data-f="b"]').textContent = who;
+  if (q.get('n')) document.getElementById('fSig').placeholder = 'Type: ' + q.get('n');
   if (vals.s) document.querySelector('[data-scope-wrap]').hidden = false;
   if (q.get('n')) document.getElementById('fName').value = q.get('n');
   if (vals.b) document.getElementById('fBiz').value = vals.b;
-  document.getElementById('fBiz').addEventListener('input', function(e){ if (!vals.b) document.querySelector('[data-f="b"]').textContent = e.target.value || 'To be filled in below'; });
+  function whoNow(){ var t = [document.getElementById('fName').value.trim(), document.getElementById('fBiz').value.trim()].filter(Boolean).join(', '); document.querySelector('[data-f="b"]').textContent = t || 'To be filled in below'; }
+  document.getElementById('fName').addEventListener('input', whoNow); document.getElementById('fBiz').addEventListener('input', whoNow);
 
   var form = document.getElementById('signForm'), msg = form.querySelector('.msg'), t0 = Date.now();
   form.addEventListener('submit', function(e){
